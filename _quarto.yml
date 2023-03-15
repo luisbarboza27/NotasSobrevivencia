@@ -1,0 +1,22 @@
+project:
+  type: book
+
+book:
+  title: "Análisis de Sobrevivencia"
+  author: "Luis A. Barboza"
+  date: "3/13/2023"
+  chapters:
+    - index.qmd
+    - Preliminares.qmd
+    - references.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: scrreprt
+
+editor: visual
+

@@ -1,0 +1,767 @@
+# Preliminares {#prelim}
+
+```{r include=FALSE}
+library(tidyverse)
+```
+
+Sea $X$ el tiempo de vida hasta un cierto evento. Por ejemplo, este evento puede ser la enfermedad, muerte de un individuo. O bien $X$ puede denotar el tiempo hasta que falle una máquina bajo ciertas condiciones. Asimismo podemos pensar en que la variable $X$ puede representar el tiempo de espera hasta que un ser humano nace desde su concepción.
+
+En todos los casos anteriores, la variable aleatoria $X$ comparte una característica en común: $X$ es una variable aleatoria positiva. Recuerden que en el contexto de distribuciones de pérdidas, ya uds han hecho inferencia de modelos estadísticos de variables aleatorias positivas, pero en un contexto más actuarial y no tan demográfico.
+
+Existen cuatro características de interés para describir la variable $X$:
+
+-   Función de Sobrevivencia.
+-   Tasa o función de riesgo.
+-   Función de densidad.
+-   Vida residual media de $X$ en un cierto tiempo $x>0$.
+
+## Características de $X$:
+
+A continuación explicamos cada característica:
+
+### Función de Sobrevivencia
+
+::: {#def-Sobre}
+## Función de sobrevivencia
+
+$$S(x)=P(X>x)$$
+:::
+
+En un contexto de tiempo de vida de aparatos o máquinas, a la función $S(x)$ también se le llama función de utilidad o fiabilidad.
+
+Note que si $X$ es una variable aleatoria continua entonces $S(x)$ es una función monótona decreciente. Además, si $f$ es la función de densidad de $X$:
+
+$$S(x)=1-F(x)=\int_x^{\infty} f(t)dt$$ y por lo tanto: $$f(x)=-\frac{dS(x)}{dx}$$
+
+::: callout-tip
+## Ejemplo: Distribución Weibull
+
+En este caso $S(x)=\exp(-\lambda x^{\alpha})$, para $\lambda>0$ y $\alpha>0$.
+
+Note que si $\alpha=1$ entonces $X\sim \text{Exponencial}(\lambda)$.
+:::
+
+A continuación se ilustra $S(x)$ cuando $\lambda=\alpha=2$:
+
+```{r echo=TRUE}
+SWeibull <- function(x,lambda,alpha){
+  exp(-lambda*x^(alpha))
+}
+
+ggplot()+
+  xlim(0,3)+
+  geom_function(fun = SWeibull,args= list(lambda = 2, alpha = 2))+
+  ylab('S')+
+  theme_bw()
+```
+
+En términos generales $S(0)=1$ y $S(\infty)=0$, para cualquier función de sobrevivencia $S$. Además, es importante recalcar que una tabla de vida o una tabla de decrementos en general es un *estimador* de $S$ bajo un cierto conjunto de datos observados.
+
+Note que en el caso discreto: $$S(x)=\sum_{x_j>x}p(x_j)$$
+
+donde $p(x_j)$ es la función de masa evaluada en $x_j$.
+
+### Función o Tasa de Riesgo
+
+Esta función se conoce en otros contextos con otros nombres:
+
+-   Tasa de fallo condicional (aparatos electrónicos, ingeniería)
+-   Fuerza de mortalidad (demografía)
+-   Tasa de fallo específica por edad (epidemiología)
+-   Hazard (en inglés)
+
+::: {#def-riesgo}
+## Función de riesgo
+
+$$h(x)=\lim_{\Delta x\rightarrow 0}\frac{P[x\leq X < x+\Delta x|X\geq x]}{\Delta x}$$
+:::
+
+
+En el caso en que $X$ es una variable aleatoria continua: \begin{align*}
+h(x)&=\lim_{\Delta x\rightarrow 0}\frac{F(x+\Delta x)-F(x)}{\Delta x}\cdot \frac{1}{S(x)}\\
+&=\frac{f(x)}{S(x)}=-\frac{d}{dx}\log (S(x))
+\end{align*}
+
+Si la función de riesgo se acumula en el intervalo $[0,x]$, se obtiene la *función de riesgo acumulativo*: \begin{align*}
+H(x)=\int_0^xh(u)du&=-\int_0^x \frac{d}{du}\log(S(u))du\\
+&=-\log(S(x)).
+\end{align*}
+
+Entonces: 
+$$
+S(x)=\exp[-H(x)]=\exp\left[-\int_0^th(u)du\right]
+$${#eq-sobrevexp}
+
+en donde a la expresión $h(u)du$ dentro de la integral se le llama *probabilidad instantánea del riesgo*.
+
+La función de riesgo $h(x)$ necesita ser solamente positiva para asegurar de que la función de sobrevivencia esté bien definida. Por lo tanto no hay muchas restricciones en la forma que tiene la función de riesgo en $(0,\infty)$. Por ejemplo la función de riesgo es monótona creciente en la mayoría de situaciones en donde hay desgaste en las condiciones de existencia en seres o aparatos. También puede ser monótona decreciente en situaciones en donde el riesgo del evento disminuye conforme pasa el tiempo, por ejemplo en el caso de la mortalidad infantil. También se puede tener funciones de riesgo combinadas al tener episodios de riesgo creciente y después de un evento el riesgo disminuye hasta un cierto valor, por ejemplo cuando un paciente es intervenido en un momento de riesgo máximo y después se recupera disminuyendo su riesgo hasta un valor esperable.
+
+::: callout-tip
+## Ejemplo: Distribución Weibull
+En este caso la función de densidad es:
+  $$f(x)=-\frac{dS(x)}{dx}=\lambda \alpha x^{\alpha-1}\exp(-\lambda x^{\alpha})$$
+entonces:
+$$h(x)= \lambda \alpha x^{\alpha-1}$$
+Note que si $\alpha=1$ entonces $h(x)=h\alpha$, si $\alpha>1$ la función de riesgo es creciente y si $\alpha<1$ es decreciente.
+:::
+
+
+En el caso en que $\alpha=\lambda=2$
+
+```{r echo=TRUE}
+hWeibull <- function(x,lambda,alpha){
+  lambda*alpha*x^(alpha-1)
+}
+
+ggplot()+
+  xlim(0,3)+
+  geom_function(fun = hWeibull,args= list(lambda = 2, alpha = 2))+
+  ylab('h')+
+  theme_bw()
+```
+
+Para otro caso, ver ejemplo 2.2 del [@Klein2003a].
+
+En el caso en que $X$ es una variable aleatoria discreta: $$h(x_j)=P[X=x_j|X\geq x_j]=\frac{p(x_j)}{S(x_{j-1})}$$ para $j=1,2,\ldots$ y donde $S(x_0)=1$. Como $p(x_j)=S(x_{j-1})-S(x_j)$ entonces: $$h(x_j)=1-\frac{S(x_j)}{S(x_{j-1})}$$
+
+Además: \begin{align*}
+S(x)&=\prod_{x_j\leq x}\frac{S(x_j)}{S(x_{j-1})}\\
+&=\prod_{x_j\leq x}[1-h(x_j)]
+\end{align*}
+
+::: callout-tip
+## Ejemplo: Distribución Discreta
+
+Si $p(x_j)=\frac 1 3$ para $j=1,2,3$ entonces:
+$$S(x)=P(X>x)=
+  \begin{cases}
+  1 & 0\leq x <1\\
+  2/3 & 1\leq x <2 \\
+  1/3 & 2\leq x <3 \\
+  0 & x\geq 3
+  \end{cases}
+$$  
+y 
+$$h(x)=
+    \begin{cases}
+  1/3 & j=1 \\
+  1/2 & j=2 \\
+  1 & j=3
+    \end{cases}
+  $$  
+:::
+
+
+En términos generales la función de riesgo es más informativa que la función de sobrevivencia.
+
+Siguiendo con el caso discreto: $$H(x)=\sum_{x_j\leq x}h(x_j)$$ y la relación @eq-sobrevexp no aplica. Otros autores prefieren definir la función de riesgo acumulada: $$H(x)=-\sum_{x_j\leq x}\log(1-h(x_j))$$ y en este caso la relación exponencial entre $S(x)$ y $H(x)$ sí se preserva. Note que si $h(x_j)\approx 0$ entonces la definición anterior de $H(x)$ es una aproximación de Taylor de la definición original.
+
+### Vida Residual Media
+
+En muchas aplicaciones se requiere una estimación del tiempo esperado en que el evento va a ocurrir, dadas las condiciones actuales:
+
+::: {#def-vidaresidual}
+## Vida Residual Media
+
+\begin{align*}
+	mrl(x)&=E[X-x|X>x]=\frac{\int_x^{\infty}(t-x)f(t)dt}{S(x)}\\
+	&=\frac{\int_x^{\infty}S(t)dt}{S(x)}
+\end{align*}
+:::
+
+Cuando $x=0$, entonces $mrl(0)=\int_0^{\infty}S(t)dt=EX$. Por otro lado se puede comprobar (Ejercicio): \begin{align*}
+    \text{Var}(X)=2\int_0^{\infty}tS(t)dt-\left[\int_0^{\infty}S(t)dt\right]^2
+\end{align*}
+
+Además a partir de la función de sobrevivencia, también se puede calcular el cuantil correspondiente:
+
+::: {#def-cuantilp}
+## Cuantil-p
+
+Mínimo $x_p$ tal que $S(x_p)\leq 1-p$:
+  $$\inf\{t:S(t)\leq 1-p\}$$
+En el caso continuo: $S(x_p)=1-p$.
+:::
+
+
+::: callout-tip
+## Ejemplo: Ejemplos de vida media
+
+**Exponencial**: Vida media $\mu=EX=\frac 1 \lambda$. Vida mediana $S(x_{0.5})=0.5$, entonces:
+  
+$$S(x_{0.5})=e^{-\lambda x_{0.5}}=\frac 1 2 \Rightarrow x_{0.5}=\frac{\log 2}{\lambda}$$
+
+  Vida media residual (usando la propiedad de pérdida de memoria):
+  $$mrl(x)=E[X-x|X>x]=E[X]=\frac 1 \lambda$$
+
+  **Weibull:**:
+  $$1-p=\exp(-\lambda x^{\alpha}_p)\Rightarrow x_p=\left[-\frac{\log(1-p)}{\lambda}\right]^{1/\alpha}$$
+:::
+
+En el ejemplo desarrollado anteriormente, en donde $\alpha=\lambda=2$:
+
+```{r echo=TRUE}
+alpha <- lambda <- 2
+x_05 <- (-log(1-0.5)/lambda)^(1/alpha)
+show(x_05)
+```
+
+es la vida mediana bajo el supuesto Weibull.
+
+En el caso discreto: $$mrl(x)=\frac{(x_{i+1}-x)S(x_i)+\sum_{j\geq i+1}(x_{j+1}-x_j)S(x_j)}{S(x)}\qquad \text{para }x_i\leq x<x_{i+1}$$
+
+## Modelos Paraméricos Usuales
+
+Además del caso Weibull, existen otras escogencias para modelar la función de sobrevivencia. Las más usuales son:
+
+### Exponencial
+
+\begin{align*}
+    S(x)&=e^{-\lambda x}, \qquad x>0, \lambda>0\\
+    f(x)&=\lambda e^{-\lambda x}\\
+    h(x)&=\lambda
+\end{align*} Recuerden además que en el caso exponencial se cumple la propiedad de pérdida de memoria: $P(X\geq x+z|X\geq x)=P(X\geq z)$.
+
+### Weibull
+
+\begin{align*}
+    S(x)&=e^{-\lambda x^\alpha}, \qquad x>0, \lambda>0, \alpha>0\\
+    h(x)&=\lambda\alpha x^{\alpha-1}
+\end{align*} a los parámetros $\lambda$ y $\alpha$ se les llama de escala y forma respectivamente.
+
+Bajo la transformación $Y=\log X$ si $X\sim Weibull$ se puede escribir $Y=\mu+\sigma E$ donde $\mu=\frac{-\log \lambda}{\alpha}$ y $\sigma=\frac 1 \alpha$ y $E\sim$ Valor Extremo Estándar, es decir: $$f_e(w)=e^{w-e^w}, \quad w\in  \mathbb R$$ y $$S_E(w)=e^{-e^w}$$
+
+### Log-normal
+
+$X$ es una LogNormal$(\mu,\sigma^2)$ si $Y=\log X\sim N(\mu,\sigma^2)$. En este caso: \begin{align*}
+    S(x)&=1-\Phi\left(\frac{\log x-\mu}{\sigma}\right)\\
+    h(x)&=\frac{\phi(x)}{S(x)}
+\end{align*} En general la tasa de riesgo $h(x)$ no es monótona, por ejemplo tomando $\mu=0$ y $\sigma=1$:
+
+```{r}
+hLNormal <- function(x,mu,sigma){
+  dnorm(x)/plnorm(x,meanlog = mu,sdlog = sigma,lower.tail = F)
+}
+
+ggplot()+
+  xlim(0,3)+
+  geom_function(fun = hLNormal,args= list(mu = 0, sigma = 1))+
+  ylab('h')+
+  theme_bw()
+
+```
+
+lo cual no necesariamente tiene sentido en muchas aplicaciones.
+
+### Log-logístico
+
+$X$ es una variable aleatoria log-logística si $Y=\log X\sim$ logístico: $$f_Y(y)=\frac{e^{\frac{y-\mu}{\sigma}}}{\sigma\left[1+e^{\frac{y-\mu}{\sigma}}\right]^2},\qquad y \in \mathbb R$$
+
+con función de tasa y función de sobrevivencia: \begin{align*}
+    h(x)&=\frac{\alpha \lambda x^{\alpha-1}}{1+\lambda x^\alpha}\qquad \text{más flexible que Weibull}\\
+    S(x)&=\frac{1}{1+\lambda x^\alpha}
+\end{align*} con $\alpha=\frac 1 \sigma>0$, $\lambda=e^{-\mu/\sigma}$
+
+### Gamma
+
+$$f(x)=\frac{\lambda^\beta x^{\beta-1}e^{-\lambda x}}{\Gamma(\beta)},\qquad \lambda,\beta,x>0$$ Si $\beta=1$: exponencial, $\beta\longrightarrow \infty$: Normal. Además $h(x)$ tiene una forma complicada (ver Klein) pero no es muy flexible (solamente crece o decrece).
+
+### Gompertz
+
+\begin{align*}
+    f(x)&=\theta \exp(\alpha x)\exp \left(\frac \theta \alpha (1-e^{\alpha x})\right)\\
+    h(x)&=\theta \exp(\alpha x)                                                                                                               
+\end{align*} en este caso si $\alpha>1$ y $\theta>0$ entonces $h$ es monótona creciente. Además podemos generalizar levemente la ley anterior por medio del modelo de Makeham: $$h(x)=\theta \exp(\alpha x)+\lambda$$
+
+la cual permite que $h$ sea más flexible.
+
+```{r}
+hGompertz <- function(x,alpha,theta,lambda){
+  theta*exp(alpha*x)+lambda
+}
+
+ggplot()+
+  xlim(0,3)+
+  geom_function(fun = hGompertz,args= list(alpha = 0.5, theta = 0.5,lambda = 0.2))+
+  ylab('h')+
+  theme_bw()
+
+```
+
+## Modelos de regresión para datos de sobrevivencia
+
+Sea $X$ la variable aleatoria de tiempo de fallo u ocurrencia de riesgo. Usualmente la distribución de la variable $X$ se asocia con variables explicativas o covariables:
+
+$$Z^T=(Z_1,\ldots,Z_p)$$
+
+donde estas covariables pueden ser cuantitativas o categóricas, y no se descarta la posibilidad de que estas dependan del tiempo $x$:
+
+$$Z^T(x)=(Z_1(x),\ldots,Z_p(x))$$
+
+Usualmente los modelos de regresión en este contexto se definen de dos formas:
+
+**Enfoque 1**
+
+Usar la variable dependiente $X$ como variable transformada según $Y=\log(X)$ y hacer la regresión lineal múltiple:
+
+$$Y=\mu+\gamma^TZ+\sigma \epsilon$$
+
+donde $\gamma^T=(\gamma_1,\ldots,\gamma_p)$ es un vector de coeficientes y $\epsilon$ es un error independiente que se puede distribuir según:
+
+-   Una normal estándar (Regresión log-normal).
+-   Una distribución de valor extremo estándar (Regresión Weibull)
+-   Una distribución logística (Regresión log-logística).
+
+Método de estimación: Máxima Verosimilitud.
+
+Sea $S_0(x)$ la función de sobrevivencia de $X=e^Y$ cuando $Z=0$, es decir es la función de sobrevivencia de $\exp(\mu+\sigma \epsilon)$. Entonces:
+
+```{=tex}
+\begin{align*}
+    P[X>x|Z]&=P[Y>\log x|Z]=P[\mu+\gamma^TZ+\sigma \epsilon>\log x|Z]\\
+    &=P[\exp(\mu+\sigma \epsilon)>x\exp(-\gamma^T Z)|Z]=S_0(x\exp(-\gamma^T Z)).
+\end{align*}
+```
+Conclusión: el efecto de las covariables $Z$ en la función de sobrevivencia de $X$ es el escalamiento del tiempo $x$ a través del factor $\exp(-\gamma^T Z)$. Por este motivo a este modelo se le llama modelo de *tiempo de fallo acelerado*. Su función de riesgo es (ejercicio): $$h(x|Z)=h_0\left[x\exp(-\gamma^T Z)\right]\exp(-\gamma^T Z)$$
+
+::: callout-tip
+## Ejemplo: Regresión Weibull
+Sea $X\sim Weibull(\lambda, \alpha)$. Si $Y=\log X$ entonces $Y=\mu+\sigma W$ donde $mu=-\frac{\log \lambda}{\alpha}$, $\sigma=\frac 1 \alpha$ y $W\sim \text{VE-Estandard}$, es decir:
+$$f_W(w)=\exp\left(w-e^w\right)\qquad w\in \mathbb R$$
+  
+Si $Z_1=1$ en el vector de covariables $Z$, entonces bajo el modelo de regresión Weibull, se puede calcular:
+  
+\begin{align*}
+	S_Y(y|Z)&=P[Y>y|Z]=P\left[W>\frac{y-\gamma^T Z}{\sigma}|Z\right]\\
+	&=\exp\left[-\exp\left[\frac{y-\gamma^T Z}{\sigma}\right]\right]
+\end{align*} 
+	
+y cambiando a la variable original $X$:
+
+\begin{align*}
+S_X(x|Z)&=\exp\left[-\exp\left[\frac{\log x-\gamma^T Z}{\sigma}\right]\right]=\exp\left[-x^{1/\sigma}\exp\left[-\frac{\gamma^T Z}{\sigma}\right]\right]\\
+&=\exp\left[-\left[x\exp(-\gamma^T Z)\right]^\alpha\right]=S_0(x\exp(-\gamma^T Z))
+\end{align*}
+donde $S_0$ es la función de sobrevivencia Weibull.
+:::
+
+
+**Enfoque 2**
+
+Modelación de la tasa de riesgo condicional
+
+En este enfoque se trabaja con dos tipos de modelos:
+
+a.  Modelos con tasa de riesgo multiplicativa:
+
+```{=tex}
+\begin{align}
+    h(x|Z)=h_0(x)c(\beta^T Z)
+    (\#eq:riesgom)
+\end{align}
+```
+donde $h_0$ puede ser una función paramétrica o arbitraria y $c$ es una función arbitraria no-negativa. Cuando
+
+$$c(\beta^T Z)=\exp(\beta^T Z)$$
+
+al modelo en \@ref(eq:riesgom) se le llama Modelo de Cox. Para este último modelo, si existe dos individuos con distinto conjunto de covariables $Z_1$ y $Z_2$. Entonces:
+
+$$\frac{h(x|Z_1)}{h(x|Z_2)}=\frac{c(\beta^TZ_1)}{c(\beta^TZ_2)}$$
+
+lo cual es independiente de $x$ (propiedad de riesgos proporcionales). Además, note que
+
+```{=tex}
+\begin{align*}
+    S(x|Z)&=\exp\left[-\int_0^xh(u|Z)du\right]=\exp\left[-c(\beta^T Z)\int_0^xh_0(u)du\right]\\
+    &=S_0(x)^{c(\beta^T Z)}.
+\end{align*}
+```
+
+::: callout-tip
+## Ejemplo: Regresión Weibull
+En el caso Weibull: $h_0(x)=\alpha \lambda x^{\alpha-1}$ y la función de riesgo condicional en el caso de un modelo de Cox es:
+$$h(x|Z)=\alpha \lambda x^{\alpha-1}\exp(\beta^T Z)$$
+  
+Note que en este caso:
+\begin{align*}
+	S(x|Z)&=S_0(x)^{c(\beta^T Z)}\\
+	&=\exp[-\lambda (x\exp(\beta^T Z/\alpha))^\alpha]=S_0(x\exp(\beta^T Z/\alpha))
+\end{align*}  
+	por lo cual el modelo de regresión Weibull se puede expresar como modelo de tiempo de fallo acelerado o bien como modelo de riesgos proporcionales. (único caso)
+:::
+
+b.  Modelos con tasa de riesgo aditiva: $$h(x|Z)=h_0(x)+\sum_{j=1}^pZ_j(x)\beta_j(x)$$
+
+Este tipo de modelo tiene dificultades extra, por ejemplo los parámetros $\beta_j(x)$ deben ser seleccionados de manera que la tasa de riesgo $h(x|Z)$ sea positiva. Por otro lado también $\beta_j(x)$ puede depender del tiempo $x$.
+
+<!-- ## Modelos de riesgos en competencia -->
+
+<!-- Si $T$ denota el tiempo de fallo o bien el tiempo hasta que ocurre un evento. En este contexto, puede ser que existan $K$ distintas causas del fallo. Por ejemplo, ante el evento de muerte a los 65 años, esta se puede deber a muchas causas. -->
+
+<!-- Sea $X_i$ el tiempo hasta que ocurra el $i$-ésimo riesgo en competencia. Sea $T=\min(X_1,\ldots,X_K)$ y considere la variable $\delta$ que asume el valor $i$ si $T=X_i$. Definimos la tasa del riesgo $i$-ésimo como: -->
+
+<!-- \begin{align*} -->
+
+<!--    h_i(t)&=\lim_{\Delta t\rightarrow 0}\frac{P[t\leq T < t+\Delta t, \delta=i|T\geq t]}{\Delta t}\\ -->
+
+<!--    &=\lim_{\Delta t\rightarrow 0}\frac{P[t\leq X_i < t+\Delta t|X_j\geq t, \quad j=1,\ldots,K]}{\Delta t} -->
+
+<!-- \end{align*} -->
+
+<!-- Entonces, si $S(t_1,\ldots,t_K)=P[X_1>t_1,\ldots,X_K>t_K]$ -->
+
+<!-- \begin{align*} -->
+
+<!--    h_T(t)=\sum_{i=1}^Kh_i(t) \quad \text{y} \quad h_i(t)=\frac{-\frac{\delta}{\delta t_i}S(t_1,\ldots,t_k)|_{t_1=\cdots=t_K=t}}{S(t,\ldots,t)} -->
+
+<!-- \end{align*} -->
+
+<!-- **Caso especial**: si los $K$ riesgos en competencia son independientes: -->
+
+<!-- $$h_i(t)=\frac{-\frac{\delta}{\delta t_i}\prod_{j=1}^KS_j(t_j)|_{t_1=\cdots=t_K=t}}{\prod_{j=1}^KS_j(t)}=\frac{-\frac{\delta}{\delta t_i}S_i(t_i)|_{t_i=t}}{S_i(t)}$$ -->
+
+<!-- En el caso no independiente (ver Ejemplo 2.7 del Klein).  -->
+
+<!-- **Nota**: es fundamental hacer algún supuesto sobre la estructura de dependencia en los tiempos de fallo, ya que al acontecer el riesgo en una causa especifica no se observó el tiempo de fallo en los riesgos restantes.  -->
+
+<!-- En el contexto de riesgos en competencia, no siempre se utiliza la tasas de riesgo para sintetizar la información, sino que también se utiliza probabilidades con distinta interpretación: -->
+
+<!-- 1. *Probabilidades crudas*: probabilidad de muerte de un individuo bajo una causa en particular, cuando el resto de las causas también influyen en el comportamiento de sobrevivencia del individuo. -->
+
+<!-- Se calculan a través de la función de incidencia acumulativa: -->
+
+<!-- \begin{align*} -->
+
+<!--    F_i(t)&=P[T\leq t, \delta = i]\\ -->
+
+<!--    &=\int_0^th_i(u)\exp[-H_T(u)]du -->
+
+<!-- \end{align*} -->
+
+<!-- donde el último término exponencial es la tasa acumulativa de todos los riesgos en competencia. Note que $F_i$ no es una distribución ya que: -->
+
+<!-- $$F_i(\infty)=P[\delta = i]\neq 1$$ -->
+
+<!-- Al aplicar la función $F_i$ se puede calcular las probabilidades crudas directamente. -->
+
+<!-- 2. *Probabilidades netas*: Probabilidad de muerte de un individuo donde la causa de muerte o riesgo de interés es el único. Usando la notación: -->
+
+<!-- $$S_i(t)=S(0,\ldots,0,\stackrel{\text{posicion }i}{t},0,\ldots,0)$$ -->
+
+<!-- En el caso independiente: -->
+
+<!-- \begin{align*} -->
+
+<!--    S_i(t)&=\exp(0)\cdots \exp\left(-\int_0^th_i(u)du\right)\cdots \exp(0)\\ -->
+
+<!--    &=\exp\left[-\int_0^t\frac{dF_i(u)}{S_T(u)}du\right] -->
+
+<!-- \end{align*} -->
+
+<!-- 3. *Probabilidades parciales crudas*: Probabilidades de muerte en un contexto en donde algunos riesgos han sido eliminados. Sean $J$: conjunto de causas o riesgos de interés. Defina: -->
+
+<!-- $$T^J=\min(X_i,i\in J)\quad \text{y} \quad F_i^J(t)=P[T^J\leq t,\delta=i]$$ -->
+
+<!-- para $i \in J$. Definimos la tasa de riesgo cruda parcial: -->
+
+<!-- $$\lambda_i^J=\frac{-\frac{\delta S(t_1,\ldots,t_K)}{\delta t_i}\Big \vert_{t_j=t, j\in J; t_j=0, j\in J^C}}{S(t_1,\ldots,t_K)\Big \vert_{t_j=t, j\in J; t_j=0, j\in J^C}}$$ -->
+
+<!-- Entonces: -->
+
+<!-- $$F_i^J(t)=P[T^J\leq t, \delta=i]=\int_0^t\lambda^J_i(x)\exp\left[-\sum_{j\in J}\int_0^t\lambda_j^J(u)du\right]dx$$ -->
+
+<!-- Note que en el caso independiente, la tasa de riesgo cruda parcial es: -->
+
+<!-- $$\lambda_i^J(t)=\frac{dF_i(t)/dt}{S_T(t)}$$ -->
+
+<!-- ## Censura y Truncamiento -->
+
+<!-- Conceptos de censura y truncamiento: -->
+
+<!-- ```{definition, label="censura", name="Censura"} -->
+
+<!-- Información de sobrevivencia de un individuo, que solamente se conoce con respecto a un intervalo y no a un punto fijo de occurrencia del evento de riesgo. -->
+
+<!-- ``` -->
+
+<!-- ```{definition, label="trunc", name="Truncamiento"} -->
+
+<!-- Restricción de entrada o salida a un estudio de sobrevivencia.  -->
+
+<!-- ``` -->
+
+<!-- ### Censura por la derecha -->
+
+<!-- También conocida como Censura Tipo I: -->
+
+<!-- ```{definition, label="censI", name="Censura Tipo I"} -->
+
+<!-- Evento de interés es observado solamente si ocurre antes de un tiempo específico. -->
+
+<!-- ``` -->
+
+<!-- Recordando la notación que hemos usando hasta el momento, si $X$ es el tiempo aleatorio en que ocurre el riesgo, $X\sim f(x)$ con función de sobrevivencia $S(x)$ y además $C_r$ denota el tiempo de censura fijo, entonces $X$ es observado solamente si $X\leq C_r$ y si $X>C_r$ decimos que el evento es "censurado". -->
+
+<!-- En este caso los datos pueden ser representados en pares: -->
+
+<!-- $$(T,\delta)$$ -->
+
+<!-- donde $\delta=1$ indica que el evento se observa y $\delta=0$ indica que el evento es censurado. Además $T=\min(X,C_r)$. -->
+
+<!-- ```{example, label="ex7", name="Ejemplo de Censura"} -->
+
+<!-- En un estudio clínico, hay una serie de ratones alimentados con un agente cancerígeno. Se rastrea el tiempo de vida en cada ratón, hasta la muerte o bien hasta una censura pre-establecida (sacrificio): -->
+
+<!-- ``` -->
+
+<!-- ```{r, echo=FALSE, out.width='80%', fig.align='center', fig.cap='Censura Tipo I'} -->
+
+<!-- knitr::include_graphics("images/CensuraI.png") -->
+
+<!-- ``` -->
+
+<!-- También se puede dar el caso de que el tiempo de censura entre observaciones no sea único (censura progresiva): -->
+
+<!-- ```{r, echo=FALSE, out.width='80%', fig.align='center', fig.cap='Censura Tipo I-progresiva'} -->
+
+<!-- knitr::include_graphics("images/CensuraI_prog.png") -->
+
+<!-- ``` -->
+
+<!-- También se puede dar el caso de que no todos los sujetos de prueba (ratones) estuvieron al inicio del estudio (Censura Tipo I-generalizada): -->
+
+<!-- ```{r, echo=FALSE, out.width='80%', fig.align='center', fig.cap='Censura Tipo I-generalizada'} -->
+
+<!-- knitr::include_graphics("images/CensuraI_gene.png") -->
+
+<!-- ``` -->
+
+<!-- Otra forma de representar los tiempos de sobrevivencia y censura en una muestra es a través de un *Diagrama de Lexis*, en donde se representa en el eje x el tiempo transcurrido (calendario) del estudio y en el eje y el tiempo transcurrido de cualquier individuo en el estudio: -->
+
+<!-- ```{r, echo=FALSE, out.width='80%', fig.align='center', fig.cap='Diagrama de Lexis'} -->
+
+<!-- knitr::include_graphics("images/CensuraI_lexis.png") -->
+
+<!-- ``` -->
+
+<!-- Otro tipo de esquema de censura por la derecha es la *Censura Tipo II*: en donde un estudio termina cuando fallan los primeros $r$ individuos en un grupo de $n$ individuos. Este tipo de esquema se suele aplicar en lotes de equipo electrónico por ejemplo o sistemas que están conectados en red. En este caso $r$: número de fallos, $n-r$: número de censuras y $T_{(r)}$: tiempo de censura del estudio. -->
+
+<!-- También se puede utilizar un esquema progresivo para la censura tipo II. Suponga que hay $r_1$ fallos de un total de $n$ individuos. Además asuma que se censuran $n_1-r_1$ individuos ($n_1<n$) con un primer tiempo de censura $T_{(r_1)}$. El proceso puede continuar con los $n-n_1$ individuos restantes, ocurre $r_2$ fallos ($r_2<n-n_1$), $n_2-r_2$ censuras ($n_1+n_2<n$) y $T_{(n_1+r_2)}$ es el segundo tiempo de censura y así sucesivamente. -->
+
+<!-- ### Censura por la izquierda o de intervalo -->
+
+<!-- Suponga que para un tiempo de vida $X$ existe un tiempo $C_\ell$ en donde el evento de riesgo ocurrió antes de que el sujeto fuera observado. En este caso el tiempo $X$ es observado si $X>C_\ell$. Al igual que en el caso de censura por la derecha, podemos usar la notación:  -->
+
+<!-- $$(T,\epsilon)$$ -->
+
+<!-- donde $T=X$ si $\epsilon=1$ (observado) y $T=C_\ell$ si $\epsilon=0$ (censurado), es decir $T=\max(X,C_\ell)$. Por ejemplo, si un estudio busca cuantificar el riesgo de fumar marihuana por primera vez (Klein), un individuo tendría una censura por la izquierda si no recuerda la primera vez que fumó, pero afirma que sí la ha consumido antes del inicio del estudio.  -->
+
+<!-- Si por otro lado se combina la censura por la derecha y por la izquierda, se denomina *censura doble*, y en este caso los datos son: -->
+
+<!-- $$(T,\delta)\quad \text{donde} \quad T=\max\left(\min(X,C_r),C_\ell\right)$$ -->
+
+<!-- y  -->
+
+<!-- \begin{align*} -->
+
+<!-- \delta=\begin{cases} -->
+
+<!-- 1 & \text{si $T$ ocurre entre $C_\ell$ y $C_r$}\\ -->
+
+<!-- 0 & \text{censura por la derecha}\\ -->
+
+<!-- -1 & \text{censura por la izquierda} -->
+
+<!-- \end{cases} -->
+
+<!-- \end{align*} -->
+
+<!-- Finalmente, la *censura por intervalo* se utiliza en estudios en donde un paciente o individuo en general es visitado periódicamente y lo único que se sabe es que el evento de interés ocurrió en un intervalo $(L_i,R_i]$ cuyos extremos corresponde a los momentos de visitas consecutivas. -->
+
+<!-- ### Truncamiento -->
+
+<!-- El truncamiento ocurre cuando en un estudio solamente se incluyen y observan individuos cuyos eventos ocurren en $(Y_L,Y_R)$. Si el evento ocurriera fuera de ese intervalo entonces no se incluye en el estudio.  -->
+
+<!-- Si $Y_R=\infty$ entonces X es observado $\Leftrightarrow Y_L<X$ (*truncamiento por la izquierda*). Por ejemplo: (1) si se estudia la aparición de una enfermedad desde una fecha fija o (2) si se estudia el evento de muerte desde el inicio de un estudio clínico. -->
+
+<!-- **Nota**: Muchas veces el truncamiento por la izquierda es acompañado con censura por la derecha. -->
+
+<!-- Para el caso de truncamiento por la derecha: si $Y_L=0$: $X$ es observado $\Leftrightarrow X\leq Y_R$ (ver Ejemplo 3.8 del Klein). -->
+
+<!-- ## Verosimilitud bajo censura y truncamiento -->
+
+<!-- Supuesto: tiempos de ocurrencia de evento y tiempos de censura son independientes. Cada tipo de censura/truncamiento aporta distintos factores a la verosimilitud completa de los datos: -->
+
+<!-- - Tiempo exacto del evento en estudio: $f(x)$ -->
+
+<!-- - Censura por la derecha: $P(X>C_r)=S(C_r)$ -->
+
+<!-- - Censura por la izquierda: $P(X<C_\ell)=1-S(C_\ell)$ -->
+
+<!-- - Censura en intervalo: $P(L<X<R)=S(L)-S(R)$ -->
+
+<!-- - Truncamiento por la izquierda: $f(x|X>Y_L)=\frac{f(x)}{S(Y_L)}$ -->
+
+<!-- - Truncamiento por la derecha: $f(x|X<Y_R)=\frac{f(x)}{1-S(Y_R)}$ -->
+
+<!-- Por lo tanto la verosimilitud con datos censurados se puede escribir como: -->
+
+<!-- $$L\propto \prod_{i \in D}f(x_i)\prod_{i \in R}S(C_r)\prod_{i \in L}\left(1-S(C_\ell)\right) \prod_{i \in I}[S(L_i)-S(R_i)]$$ -->
+
+<!-- donde  -->
+
+<!-- - $D$: conjunto de eventos observables. -->
+
+<!-- - $R$: conjunto de observaciones con censura por la derecha. -->
+
+<!-- - $L$: conjunto de observaciones con censura por la izquierda. -->
+
+<!-- - $I$: conjunto de observaciones con censura por intervalo. -->
+
+<!-- Para datos truncados por la izquierda y censurados por la derecha con intervalo de truncamiento $(Y_{L_i},Y_{R_i})$ independientes del $i$-ésimo momento de muerte, se reemplaza $f(x_i)$ y $S(C_i)$ ($C_i$: tiempo de censura $i$-ésima) por: -->
+
+<!-- $$\frac{f(x_i)}{S(Y_{L_i})-S(Y_{R_i})} \quad \text{y} \quad \frac{S(C_i)}{S(Y_{L_i})-S(Y_{R_i})}$$ -->
+
+<!-- En el caso en donde cada individuo tiene una distribución de riesgo distinta (Ejemplo: regresión): -->
+
+<!-- $$L\propto \prod_{i \in D}f_i(x_i)\prod_{i \in R}S_i(C_r)\prod_{i \in L}\left(1-S_i(C_\ell)\right) \prod_{i \in I}[S_i(L_i)-S_i(R_i)]$$ -->
+
+<!-- **Caso particular**: censura tipo I (por la derecha) -->
+
+<!-- Si $\delta=0$ (censura): -->
+
+<!-- \begin{align*} -->
+
+<!--    P[T,\delta=0]&=P[T=C_r|\delta=0]P[\delta=0]=P[\delta=0]\\ -->
+
+<!--    &=P[X>C_r]=S(C_r). -->
+
+<!-- \end{align*} -->
+
+<!-- Si $\delta = 1$: -->
+
+<!-- \begin{align*} -->
+
+<!--    P[T,\delta=1]&=P[T=X|\delta=1]P[\delta=1]\\ -->
+
+<!--    &=P[T=X|X\leq C_r]P[X\leq C_r]\\ -->
+
+<!--    &=\frac{f(t)}{1-S(C_r)}[1-S(C_r)]=f(t). -->
+
+<!-- \end{align*} -->
+
+<!-- Entonces el aporte de $T=t$ a la verosimilitud es: -->
+
+<!-- $$[f(t)]^\delta[S(t)]^{1-\delta}$$ -->
+
+<!-- Si se tiene una muestra aleatoria de pares $(T_i,\delta_i)$, para $i=1,\ldots,n$: -->
+
+<!-- $$L=\prod_{i=1}^nf(t_i)^{\delta_i}[S(t_i)]^{1-\delta_i}$$ -->
+
+<!-- Como $f(t_i)=h(t_i)S(t_i)$ entonces: -->
+
+<!-- $$L=\prod_{i=1}^nh(t_i)^{\delta_i}S(t_i)^{\delta_i}[S(t_i)]^{1-\delta_i}=\prod_{i=1}^nh(t_i)^{\delta_i}\exp(-H(t_i))$$ -->
+
+<!-- ```{example, label="ex8", name="Caso Exponencial"} -->
+
+<!-- Asuma que $X\sim \text{Exponencial}(\lambda)$ con $f(x)=\lambda \exp(-\lambda x)$, entonces: -->
+
+<!-- \begin{align*} -->
+
+<!--    L&=\prod_{i=1}^n [\lambda \exp(-\lambda t_i)]^{\delta_i}[\exp(-\lambda t_i)]^{(1-\delta_i)}\\ -->
+
+<!--    &=\lambda^r\exp(-\lambda S_T) -->
+
+<!-- \end{align*}   -->
+
+<!-- donde $r=\sum \delta_i$ (total de eventos observados) y $S_T=\sum_{i=1}^n t_i$ (total de tiempo en el estudio).  -->
+
+<!-- ``` -->
+
+<!-- ## Laboratorio -->
+
+<!-- ### Ejemplos de datos de análisis de sobrevivencia -->
+
+<!-- ```{r} -->
+
+<!-- library(asaur) -->
+
+<!-- head(gastricXelox) -->
+
+<!-- dim(gastricXelox) -->
+
+<!-- ``` -->
+
+<!-- Estudio clínico en pacientes con cáncer gástrico avanzado. -->
+
+<!-- - *timeWeeks*: tiempo de sobrevivencia en semanas. -->
+
+<!-- - *delta*: variable de censura: (1) muerte, (2) censura. -->
+
+<!-- ```{r} -->
+
+<!-- head(prostateSurvival) -->
+
+<!-- dim(prostateSurvival) -->
+
+<!-- ``` -->
+
+<!-- Estudio de sobrevivencia de pacientes con cáncer de próstata.  -->
+
+<!-- - *ageGroup*: edad de diagnóstico. -->
+
+<!-- - *stage*: etapa del cáncer. -->
+
+<!-- - *survTime*: tiempo de sobrevivencia. -->
+
+<!-- - *status*: Muerte por cáncer de próstata (1), muerte por otra causa (2), sobrevivencia al final del estudio (0). -->
+
+<!-- ```{r} -->
+
+<!-- head(pharmacoSmoking) -->
+
+<!-- dim(pharmacoSmoking) -->
+
+<!-- ``` -->
+
+<!-- Estudio comparativo de dos terapias para fumadores (combinación de medicamentos vs parche de nicotina). -->
+
+<!-- - *ttr*: tiempo en dias hasta una recaída (volver a fumar). -->
+
+<!-- - *relapse*: (1): volvió a fumar vs (0): censura. -->
+
+<!-- - *employment*: jornada laboral. -->
+
+<!-- ### Tasas de riesgo (Tablas de vida en USA) -->
+
+<!-- Tasas de riesgo expresadas por día calendario: -->
+
+<!-- ```{r} -->
+
+<!-- library(survival) -->
+
+<!-- dim(survexp.us) -->
+
+<!-- hazMale <- survexp.us[,"male","2010"] -->
+
+<!-- hazFemale <- survexp.us[,"female","2010"] -->
+
+<!-- tm <- 1:110 -->
+
+<!-- tm.diff <- c(1,diff(tm)) -->
+
+<!-- survMale <- exp(-cumsum(hazMale*tm.diff)*365.24) -->
+
+<!-- survFemale <- exp(-cumsum(hazFemale *tm.diff)*365.24) -->
+
+<!-- data.tot <- data.frame(tm,hMale = as.numeric(hazMale),  -->
+
+<!--                        hFemale = as.numeric(hazFemale),  -->
+
+<!--                        sMale = survMale, sFemale = survFemale) -->
+
+<!-- data.tot.long <- pivot_longer(data.tot,cols = hMale:sFemale) -->
+
+<!-- ggplot(data = data.tot,mapping = aes(x = tm,y = )) -->
+
+<!-- ``` -->

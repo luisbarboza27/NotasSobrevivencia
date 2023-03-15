@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Análisis de Sobrevivencia - 1&nbsp; Preliminares</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./references.html" rel="next">
+<link href="./index.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Preliminares</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Análisis de Sobrevivencia</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Introducción</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Preliminares.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Preliminares</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">Referencias</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#características-de-x" id="toc-características-de-x" class="nav-link active" data-scroll-target="#características-de-x"><span class="toc-section-number">1.1</span>  Características de <span class="math inline">\(X\)</span>:</a>
+  <ul class="collapse">
+  <li><a href="#función-de-sobrevivencia" id="toc-función-de-sobrevivencia" class="nav-link" data-scroll-target="#función-de-sobrevivencia"><span class="toc-section-number">1.1.1</span>  Función de Sobrevivencia</a></li>
+  <li><a href="#función-o-tasa-de-riesgo" id="toc-función-o-tasa-de-riesgo" class="nav-link" data-scroll-target="#función-o-tasa-de-riesgo"><span class="toc-section-number">1.1.2</span>  Función o Tasa de Riesgo</a></li>
+  <li><a href="#vida-residual-media" id="toc-vida-residual-media" class="nav-link" data-scroll-target="#vida-residual-media"><span class="toc-section-number">1.1.3</span>  Vida Residual Media</a></li>
+  </ul></li>
+  <li><a href="#modelos-paraméricos-usuales" id="toc-modelos-paraméricos-usuales" class="nav-link" data-scroll-target="#modelos-paraméricos-usuales"><span class="toc-section-number">1.2</span>  Modelos Paraméricos Usuales</a>
+  <ul class="collapse">
+  <li><a href="#exponencial" id="toc-exponencial" class="nav-link" data-scroll-target="#exponencial"><span class="toc-section-number">1.2.1</span>  Exponencial</a></li>
+  <li><a href="#weibull" id="toc-weibull" class="nav-link" data-scroll-target="#weibull"><span class="toc-section-number">1.2.2</span>  Weibull</a></li>
+  <li><a href="#log-normal" id="toc-log-normal" class="nav-link" data-scroll-target="#log-normal"><span class="toc-section-number">1.2.3</span>  Log-normal</a></li>
+  <li><a href="#log-logístico" id="toc-log-logístico" class="nav-link" data-scroll-target="#log-logístico"><span class="toc-section-number">1.2.4</span>  Log-logístico</a></li>
+  <li><a href="#gamma" id="toc-gamma" class="nav-link" data-scroll-target="#gamma"><span class="toc-section-number">1.2.5</span>  Gamma</a></li>
+  <li><a href="#gompertz" id="toc-gompertz" class="nav-link" data-scroll-target="#gompertz"><span class="toc-section-number">1.2.6</span>  Gompertz</a></li>
+  </ul></li>
+  <li><a href="#modelos-de-regresión-para-datos-de-sobrevivencia" id="toc-modelos-de-regresión-para-datos-de-sobrevivencia" class="nav-link" data-scroll-target="#modelos-de-regresión-para-datos-de-sobrevivencia"><span class="toc-section-number">1.3</span>  Modelos de regresión para datos de sobrevivencia</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="prelim" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Preliminares</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Sea <span class="math inline">\(X\)</span> el tiempo de vida hasta un cierto evento. Por ejemplo, este evento puede ser la enfermedad, muerte de un individuo. O bien <span class="math inline">\(X\)</span> puede denotar el tiempo hasta que falle una máquina bajo ciertas condiciones. Asimismo podemos pensar en que la variable <span class="math inline">\(X\)</span> puede representar el tiempo de espera hasta que un ser humano nace desde su concepción.</p>
+<p>En todos los casos anteriores, la variable aleatoria <span class="math inline">\(X\)</span> comparte una característica en común: <span class="math inline">\(X\)</span> es una variable aleatoria positiva. Recuerden que en el contexto de distribuciones de pérdidas, ya uds han hecho inferencia de modelos estadísticos de variables aleatorias positivas, pero en un contexto más actuarial y no tan demográfico.</p>
+<p>Existen cuatro características de interés para describir la variable <span class="math inline">\(X\)</span>:</p>
+<ul>
+<li>Función de Sobrevivencia.</li>
+<li>Tasa o función de riesgo.</li>
+<li>Función de densidad.</li>
+<li>Vida residual media de <span class="math inline">\(X\)</span> en un cierto tiempo <span class="math inline">\(x&gt;0\)</span>.</li>
+</ul>
+<section id="características-de-x" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="características-de-x"><span class="header-section-number">1.1</span> Características de <span class="math inline">\(X\)</span>:</h2>
+<p>A continuación explicamos cada característica:</p>
+<section id="función-de-sobrevivencia" class="level3" data-number="1.1.1">
+<h3 data-number="1.1.1" class="anchored" data-anchor-id="función-de-sobrevivencia"><span class="header-section-number">1.1.1</span> Función de Sobrevivencia</h3>
+<div id="def-Sobre" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1.1 (Función de sobrevivencia) </strong></span><span class="math display">\[S(x)=P(X&gt;x)\]</span></p>
+</div>
+<p>En un contexto de tiempo de vida de aparatos o máquinas, a la función <span class="math inline">\(S(x)\)</span> también se le llama función de utilidad o fiabilidad.</p>
+<p>Note que si <span class="math inline">\(X\)</span> es una variable aleatoria continua entonces <span class="math inline">\(S(x)\)</span> es una función monótona decreciente. Además, si <span class="math inline">\(f\)</span> es la función de densidad de <span class="math inline">\(X\)</span>:</p>
+<p><span class="math display">\[S(x)=1-F(x)=\int_x^{\infty} f(t)dt\]</span> y por lo tanto: <span class="math display">\[f(x)=-\frac{dS(x)}{dx}\]</span></p>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Ejemplo: Distribución Weibull
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>En este caso <span class="math inline">\(S(x)=\exp(-\lambda x^{\alpha})\)</span>, para <span class="math inline">\(\lambda&gt;0\)</span> y <span class="math inline">\(\alpha&gt;0\)</span>.</p>
+<p>Note que si <span class="math inline">\(\alpha=1\)</span> entonces <span class="math inline">\(X\sim \text{Exponencial}(\lambda)\)</span>.</p>
+</div>
+</div>
+<p>A continuación se ilustra <span class="math inline">\(S(x)\)</span> cuando <span class="math inline">\(\lambda=\alpha=2\)</span>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>SWeibull <span class="ot">&lt;-</span> <span class="cf">function</span>(x,lambda,alpha){</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">exp</span>(<span class="sc">-</span>lambda<span class="sc">*</span>x<span class="sc">^</span>(alpha))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">0</span>,<span class="dv">3</span>)<span class="sc">+</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_function</span>(<span class="at">fun =</span> SWeibull,<span class="at">args=</span> <span class="fu">list</span>(<span class="at">lambda =</span> <span class="dv">2</span>, <span class="at">alpha =</span> <span class="dv">2</span>))<span class="sc">+</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">'S'</span>)<span class="sc">+</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Preliminares_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>En términos generales <span class="math inline">\(S(0)=1\)</span> y <span class="math inline">\(S(\infty)=0\)</span>, para cualquier función de sobrevivencia <span class="math inline">\(S\)</span>. Además, es importante recalcar que una tabla de vida o una tabla de decrementos en general es un <em>estimador</em> de <span class="math inline">\(S\)</span> bajo un cierto conjunto de datos observados.</p>
+<p>Note que en el caso discreto: <span class="math display">\[S(x)=\sum_{x_j&gt;x}p(x_j)\]</span></p>
+<p>donde <span class="math inline">\(p(x_j)\)</span> es la función de masa evaluada en <span class="math inline">\(x_j\)</span>.</p>
+</section>
+<section id="función-o-tasa-de-riesgo" class="level3" data-number="1.1.2">
+<h3 data-number="1.1.2" class="anchored" data-anchor-id="función-o-tasa-de-riesgo"><span class="header-section-number">1.1.2</span> Función o Tasa de Riesgo</h3>
+<p>Esta función se conoce en otros contextos con otros nombres:</p>
+<ul>
+<li>Tasa de fallo condicional (aparatos electrónicos, ingeniería)</li>
+<li>Fuerza de mortalidad (demografía)</li>
+<li>Tasa de fallo específica por edad (epidemiología)</li>
+<li>Hazard (en inglés)</li>
+</ul>
+<div id="def-riesgo" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1.2 (Función de riesgo) </strong></span><span class="math display">\[h(x)=\lim_{\Delta x\rightarrow 0}\frac{P[x\leq X &lt; x+\Delta x|X\geq x]}{\Delta x}\]</span></p>
+</div>
+<p>En el caso en que <span class="math inline">\(X\)</span> es una variable aleatoria continua: <span class="math display">\[\begin{align*}
+h(x)&amp;=\lim_{\Delta x\rightarrow 0}\frac{F(x+\Delta x)-F(x)}{\Delta x}\cdot \frac{1}{S(x)}\\
+&amp;=\frac{f(x)}{S(x)}=-\frac{d}{dx}\log (S(x))
+\end{align*}\]</span></p>
+<p>Si la función de riesgo se acumula en el intervalo <span class="math inline">\([0,x]\)</span>, se obtiene la <em>función de riesgo acumulativo</em>: <span class="math display">\[\begin{align*}
+H(x)=\int_0^xh(u)du&amp;=-\int_0^x \frac{d}{du}\log(S(u))du\\
+&amp;=-\log(S(x)).
+\end{align*}\]</span></p>
+<p>Entonces: <span id="eq-sobrevexp"><span class="math display">\[
+S(x)=\exp[-H(x)]=\exp\left[-\int_0^th(u)du\right]
+\tag{1.1}\]</span></span></p>
+<p>en donde a la expresión <span class="math inline">\(h(u)du\)</span> dentro de la integral se le llama <em>probabilidad instantánea del riesgo</em>.</p>
+<p>La función de riesgo <span class="math inline">\(h(x)\)</span> necesita ser solamente positiva para asegurar de que la función de sobrevivencia esté bien definida. Por lo tanto no hay muchas restricciones en la forma que tiene la función de riesgo en <span class="math inline">\((0,\infty)\)</span>. Por ejemplo la función de riesgo es monótona creciente en la mayoría de situaciones en donde hay desgaste en las condiciones de existencia en seres o aparatos. También puede ser monótona decreciente en situaciones en donde el riesgo del evento disminuye conforme pasa el tiempo, por ejemplo en el caso de la mortalidad infantil. También se puede tener funciones de riesgo combinadas al tener episodios de riesgo creciente y después de un evento el riesgo disminuye hasta un cierto valor, por ejemplo cuando un paciente es intervenido en un momento de riesgo máximo y después se recupera disminuyendo su riesgo hasta un valor esperable.</p>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Ejemplo: Distribución Weibull
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>En este caso la función de densidad es: <span class="math display">\[f(x)=-\frac{dS(x)}{dx}=\lambda \alpha x^{\alpha-1}\exp(-\lambda x^{\alpha})\]</span> entonces: <span class="math display">\[h(x)= \lambda \alpha x^{\alpha-1}\]</span> Note que si <span class="math inline">\(\alpha=1\)</span> entonces <span class="math inline">\(h(x)=h\alpha\)</span>, si <span class="math inline">\(\alpha&gt;1\)</span> la función de riesgo es creciente y si <span class="math inline">\(\alpha&lt;1\)</span> es decreciente.</p>
+</div>
+</div>
+<p>En el caso en que <span class="math inline">\(\alpha=\lambda=2\)</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>hWeibull <span class="ot">&lt;-</span> <span class="cf">function</span>(x,lambda,alpha){</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  lambda<span class="sc">*</span>alpha<span class="sc">*</span>x<span class="sc">^</span>(alpha<span class="dv">-1</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">0</span>,<span class="dv">3</span>)<span class="sc">+</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_function</span>(<span class="at">fun =</span> hWeibull,<span class="at">args=</span> <span class="fu">list</span>(<span class="at">lambda =</span> <span class="dv">2</span>, <span class="at">alpha =</span> <span class="dv">2</span>))<span class="sc">+</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">'h'</span>)<span class="sc">+</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Preliminares_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Para otro caso, ver ejemplo 2.2 del <span class="citation" data-cites="Klein2003a">(<a href="references.html#ref-Klein2003a" role="doc-biblioref">Klein and Moeschberger 2003</a>)</span>.</p>
+<p>En el caso en que <span class="math inline">\(X\)</span> es una variable aleatoria discreta: <span class="math display">\[h(x_j)=P[X=x_j|X\geq x_j]=\frac{p(x_j)}{S(x_{j-1})}\]</span> para <span class="math inline">\(j=1,2,\ldots\)</span> y donde <span class="math inline">\(S(x_0)=1\)</span>. Como <span class="math inline">\(p(x_j)=S(x_{j-1})-S(x_j)\)</span> entonces: <span class="math display">\[h(x_j)=1-\frac{S(x_j)}{S(x_{j-1})}\]</span></p>
+<p>Además: <span class="math display">\[\begin{align*}
+S(x)&amp;=\prod_{x_j\leq x}\frac{S(x_j)}{S(x_{j-1})}\\
+&amp;=\prod_{x_j\leq x}[1-h(x_j)]
+\end{align*}\]</span></p>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Ejemplo: Distribución Discreta
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Si <span class="math inline">\(p(x_j)=\frac 1 3\)</span> para <span class="math inline">\(j=1,2,3\)</span> entonces: <span class="math display">\[S(x)=P(X&gt;x)=
+  \begin{cases}
+  1 &amp; 0\leq x &lt;1\\
+  2/3 &amp; 1\leq x &lt;2 \\
+  1/3 &amp; 2\leq x &lt;3 \\
+  0 &amp; x\geq 3
+  \end{cases}
+\]</span><br>
+y <span class="math display">\[h(x)=
+    \begin{cases}
+  1/3 &amp; j=1 \\
+  1/2 &amp; j=2 \\
+  1 &amp; j=3
+    \end{cases}
+  \]</span></p>
+</div>
+</div>
+<p>En términos generales la función de riesgo es más informativa que la función de sobrevivencia.</p>
+<p>Siguiendo con el caso discreto: <span class="math display">\[H(x)=\sum_{x_j\leq x}h(x_j)\]</span> y la relación <a href="#eq-sobrevexp">Equation&nbsp;<span>1.1</span></a> no aplica. Otros autores prefieren definir la función de riesgo acumulada: <span class="math display">\[H(x)=-\sum_{x_j\leq x}\log(1-h(x_j))\]</span> y en este caso la relación exponencial entre <span class="math inline">\(S(x)\)</span> y <span class="math inline">\(H(x)\)</span> sí se preserva. Note que si <span class="math inline">\(h(x_j)\approx 0\)</span> entonces la definición anterior de <span class="math inline">\(H(x)\)</span> es una aproximación de Taylor de la definición original.</p>
+</section>
+<section id="vida-residual-media" class="level3" data-number="1.1.3">
+<h3 data-number="1.1.3" class="anchored" data-anchor-id="vida-residual-media"><span class="header-section-number">1.1.3</span> Vida Residual Media</h3>
+<p>En muchas aplicaciones se requiere una estimación del tiempo esperado en que el evento va a ocurrir, dadas las condiciones actuales:</p>
+<div id="def-vidaresidual" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1.3 (Vida Residual Media) </strong></span><span class="math display">\[\begin{align*}
+    mrl(x)&amp;=E[X-x|X&gt;x]=\frac{\int_x^{\infty}(t-x)f(t)dt}{S(x)}\\
+    &amp;=\frac{\int_x^{\infty}S(t)dt}{S(x)}
+\end{align*}\]</span></p>
+</div>
+<p>Cuando <span class="math inline">\(x=0\)</span>, entonces <span class="math inline">\(mrl(0)=\int_0^{\infty}S(t)dt=EX\)</span>. Por otro lado se puede comprobar (Ejercicio): <span class="math display">\[\begin{align*}
+    \text{Var}(X)=2\int_0^{\infty}tS(t)dt-\left[\int_0^{\infty}S(t)dt\right]^2
+\end{align*}\]</span></p>
+<p>Además a partir de la función de sobrevivencia, también se puede calcular el cuantil correspondiente:</p>
+<div id="def-cuantilp" class="theorem definition">
+<p><span class="theorem-title"><strong>Definition 1.4 (Cuantil-p) </strong></span>Mínimo <span class="math inline">\(x_p\)</span> tal que <span class="math inline">\(S(x_p)\leq 1-p\)</span>: <span class="math display">\[\inf\{t:S(t)\leq 1-p\}\]</span> En el caso continuo: <span class="math inline">\(S(x_p)=1-p\)</span>.</p>
+</div>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Ejemplo: Ejemplos de vida media
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Exponencial</strong>: Vida media <span class="math inline">\(\mu=EX=\frac 1 \lambda\)</span>. Vida mediana <span class="math inline">\(S(x_{0.5})=0.5\)</span>, entonces:</p>
+<p><span class="math display">\[S(x_{0.5})=e^{-\lambda x_{0.5}}=\frac 1 2 \Rightarrow x_{0.5}=\frac{\log 2}{\lambda}\]</span></p>
+<p>Vida media residual (usando la propiedad de pérdida de memoria): <span class="math display">\[mrl(x)=E[X-x|X&gt;x]=E[X]=\frac 1 \lambda\]</span></p>
+<p><strong>Weibull:</strong>: <span class="math display">\[1-p=\exp(-\lambda x^{\alpha}_p)\Rightarrow x_p=\left[-\frac{\log(1-p)}{\lambda}\right]^{1/\alpha}\]</span></p>
+</div>
+</div>
+<p>En el ejemplo desarrollado anteriormente, en donde <span class="math inline">\(\alpha=\lambda=2\)</span>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> lambda <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>x_05 <span class="ot">&lt;-</span> (<span class="sc">-</span><span class="fu">log</span>(<span class="dv">1</span><span class="fl">-0.5</span>)<span class="sc">/</span>lambda)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span>alpha)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">show</span>(x_05)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.588705</code></pre>
+</div>
+</div>
+<p>es la vida mediana bajo el supuesto Weibull.</p>
+<p>En el caso discreto: <span class="math display">\[mrl(x)=\frac{(x_{i+1}-x)S(x_i)+\sum_{j\geq i+1}(x_{j+1}-x_j)S(x_j)}{S(x)}\qquad \text{para }x_i\leq x&lt;x_{i+1}\]</span></p>
+</section>
+</section>
+<section id="modelos-paraméricos-usuales" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="modelos-paraméricos-usuales"><span class="header-section-number">1.2</span> Modelos Paraméricos Usuales</h2>
+<p>Además del caso Weibull, existen otras escogencias para modelar la función de sobrevivencia. Las más usuales son:</p>
+<section id="exponencial" class="level3" data-number="1.2.1">
+<h3 data-number="1.2.1" class="anchored" data-anchor-id="exponencial"><span class="header-section-number">1.2.1</span> Exponencial</h3>
+<p><span class="math display">\[\begin{align*}
+    S(x)&amp;=e^{-\lambda x}, \qquad x&gt;0, \lambda&gt;0\\
+    f(x)&amp;=\lambda e^{-\lambda x}\\
+    h(x)&amp;=\lambda
+\end{align*}\]</span> Recuerden además que en el caso exponencial se cumple la propiedad de pérdida de memoria: <span class="math inline">\(P(X\geq x+z|X\geq x)=P(X\geq z)\)</span>.</p>
+</section>
+<section id="weibull" class="level3" data-number="1.2.2">
+<h3 data-number="1.2.2" class="anchored" data-anchor-id="weibull"><span class="header-section-number">1.2.2</span> Weibull</h3>
+<p><span class="math display">\[\begin{align*}
+    S(x)&amp;=e^{-\lambda x^\alpha}, \qquad x&gt;0, \lambda&gt;0, \alpha&gt;0\\
+    h(x)&amp;=\lambda\alpha x^{\alpha-1}
+\end{align*}\]</span> a los parámetros <span class="math inline">\(\lambda\)</span> y <span class="math inline">\(\alpha\)</span> se les llama de escala y forma respectivamente.</p>
+<p>Bajo la transformación <span class="math inline">\(Y=\log X\)</span> si <span class="math inline">\(X\sim Weibull\)</span> se puede escribir <span class="math inline">\(Y=\mu+\sigma E\)</span> donde <span class="math inline">\(\mu=\frac{-\log \lambda}{\alpha}\)</span> y <span class="math inline">\(\sigma=\frac 1 \alpha\)</span> y <span class="math inline">\(E\sim\)</span> Valor Extremo Estándar, es decir: <span class="math display">\[f_e(w)=e^{w-e^w}, \quad w\in  \mathbb R\]</span> y <span class="math display">\[S_E(w)=e^{-e^w}\]</span></p>
+</section>
+<section id="log-normal" class="level3" data-number="1.2.3">
+<h3 data-number="1.2.3" class="anchored" data-anchor-id="log-normal"><span class="header-section-number">1.2.3</span> Log-normal</h3>
+<p><span class="math inline">\(X\)</span> es una LogNormal<span class="math inline">\((\mu,\sigma^2)\)</span> si <span class="math inline">\(Y=\log X\sim N(\mu,\sigma^2)\)</span>. En este caso: <span class="math display">\[\begin{align*}
+    S(x)&amp;=1-\Phi\left(\frac{\log x-\mu}{\sigma}\right)\\
+    h(x)&amp;=\frac{\phi(x)}{S(x)}
+\end{align*}\]</span> En general la tasa de riesgo <span class="math inline">\(h(x)\)</span> no es monótona, por ejemplo tomando <span class="math inline">\(\mu=0\)</span> y <span class="math inline">\(\sigma=1\)</span>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>hLNormal <span class="ot">&lt;-</span> <span class="cf">function</span>(x,mu,sigma){</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dnorm</span>(x)<span class="sc">/</span><span class="fu">plnorm</span>(x,<span class="at">meanlog =</span> mu,<span class="at">sdlog =</span> sigma,<span class="at">lower.tail =</span> F)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">0</span>,<span class="dv">3</span>)<span class="sc">+</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_function</span>(<span class="at">fun =</span> hLNormal,<span class="at">args=</span> <span class="fu">list</span>(<span class="at">mu =</span> <span class="dv">0</span>, <span class="at">sigma =</span> <span class="dv">1</span>))<span class="sc">+</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">'h'</span>)<span class="sc">+</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Preliminares_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>lo cual no necesariamente tiene sentido en muchas aplicaciones.</p>
+</section>
+<section id="log-logístico" class="level3" data-number="1.2.4">
+<h3 data-number="1.2.4" class="anchored" data-anchor-id="log-logístico"><span class="header-section-number">1.2.4</span> Log-logístico</h3>
+<p><span class="math inline">\(X\)</span> es una variable aleatoria log-logística si <span class="math inline">\(Y=\log X\sim\)</span> logístico: <span class="math display">\[f_Y(y)=\frac{e^{\frac{y-\mu}{\sigma}}}{\sigma\left[1+e^{\frac{y-\mu}{\sigma}}\right]^2},\qquad y \in \mathbb R\]</span></p>
+<p>con función de tasa y función de sobrevivencia: <span class="math display">\[\begin{align*}
+    h(x)&amp;=\frac{\alpha \lambda x^{\alpha-1}}{1+\lambda x^\alpha}\qquad \text{más flexible que Weibull}\\
+    S(x)&amp;=\frac{1}{1+\lambda x^\alpha}
+\end{align*}\]</span> con <span class="math inline">\(\alpha=\frac 1 \sigma&gt;0\)</span>, <span class="math inline">\(\lambda=e^{-\mu/\sigma}\)</span></p>
+</section>
+<section id="gamma" class="level3" data-number="1.2.5">
+<h3 data-number="1.2.5" class="anchored" data-anchor-id="gamma"><span class="header-section-number">1.2.5</span> Gamma</h3>
+<p><span class="math display">\[f(x)=\frac{\lambda^\beta x^{\beta-1}e^{-\lambda x}}{\Gamma(\beta)},\qquad \lambda,\beta,x&gt;0\]</span> Si <span class="math inline">\(\beta=1\)</span>: exponencial, <span class="math inline">\(\beta\longrightarrow \infty\)</span>: Normal. Además <span class="math inline">\(h(x)\)</span> tiene una forma complicada (ver Klein) pero no es muy flexible (solamente crece o decrece).</p>
+</section>
+<section id="gompertz" class="level3" data-number="1.2.6">
+<h3 data-number="1.2.6" class="anchored" data-anchor-id="gompertz"><span class="header-section-number">1.2.6</span> Gompertz</h3>
+<p><span class="math display">\[\begin{align*}
+    f(x)&amp;=\theta \exp(\alpha x)\exp \left(\frac \theta \alpha (1-e^{\alpha x})\right)\\
+    h(x)&amp;=\theta \exp(\alpha x)                                                                                                               
+\end{align*}\]</span> en este caso si <span class="math inline">\(\alpha&gt;1\)</span> y <span class="math inline">\(\theta&gt;0\)</span> entonces <span class="math inline">\(h\)</span> es monótona creciente. Además podemos generalizar levemente la ley anterior por medio del modelo de Makeham: <span class="math display">\[h(x)=\theta \exp(\alpha x)+\lambda\]</span></p>
+<p>la cual permite que <span class="math inline">\(h\)</span> sea más flexible.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>hGompertz <span class="ot">&lt;-</span> <span class="cf">function</span>(x,alpha,theta,lambda){</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  theta<span class="sc">*</span><span class="fu">exp</span>(alpha<span class="sc">*</span>x)<span class="sc">+</span>lambda</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="dv">0</span>,<span class="dv">3</span>)<span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_function</span>(<span class="at">fun =</span> hGompertz,<span class="at">args=</span> <span class="fu">list</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">theta =</span> <span class="fl">0.5</span>,<span class="at">lambda =</span> <span class="fl">0.2</span>))<span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">'h'</span>)<span class="sc">+</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Preliminares_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="modelos-de-regresión-para-datos-de-sobrevivencia" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="modelos-de-regresión-para-datos-de-sobrevivencia"><span class="header-section-number">1.3</span> Modelos de regresión para datos de sobrevivencia</h2>
+<p>Sea <span class="math inline">\(X\)</span> la variable aleatoria de tiempo de fallo u ocurrencia de riesgo. Usualmente la distribución de la variable <span class="math inline">\(X\)</span> se asocia con variables explicativas o covariables:</p>
+<p><span class="math display">\[Z^T=(Z_1,\ldots,Z_p)\]</span></p>
+<p>donde estas covariables pueden ser cuantitativas o categóricas, y no se descarta la posibilidad de que estas dependan del tiempo <span class="math inline">\(x\)</span>:</p>
+<p><span class="math display">\[Z^T(x)=(Z_1(x),\ldots,Z_p(x))\]</span></p>
+<p>Usualmente los modelos de regresión en este contexto se definen de dos formas:</p>
+<p><strong>Enfoque 1</strong></p>
+<p>Usar la variable dependiente <span class="math inline">\(X\)</span> como variable transformada según <span class="math inline">\(Y=\log(X)\)</span> y hacer la regresión lineal múltiple:</p>
+<p><span class="math display">\[Y=\mu+\gamma^TZ+\sigma \epsilon\]</span></p>
+<p>donde <span class="math inline">\(\gamma^T=(\gamma_1,\ldots,\gamma_p)\)</span> es un vector de coeficientes y <span class="math inline">\(\epsilon\)</span> es un error independiente que se puede distribuir según:</p>
+<ul>
+<li>Una normal estándar (Regresión log-normal).</li>
+<li>Una distribución de valor extremo estándar (Regresión Weibull)</li>
+<li>Una distribución logística (Regresión log-logística).</li>
+</ul>
+<p>Método de estimación: Máxima Verosimilitud.</p>
+<p>Sea <span class="math inline">\(S_0(x)\)</span> la función de sobrevivencia de <span class="math inline">\(X=e^Y\)</span> cuando <span class="math inline">\(Z=0\)</span>, es decir es la función de sobrevivencia de <span class="math inline">\(\exp(\mu+\sigma \epsilon)\)</span>. Entonces:</p>
+<span class="math display">\[\begin{align*}
+    P[X&gt;x|Z]&amp;=P[Y&gt;\log x|Z]=P[\mu+\gamma^TZ+\sigma \epsilon&gt;\log x|Z]\\
+    &amp;=P[\exp(\mu+\sigma \epsilon)&gt;x\exp(-\gamma^T Z)|Z]=S_0(x\exp(-\gamma^T Z)).
+\end{align*}\]</span>
+<p>Conclusión: el efecto de las covariables <span class="math inline">\(Z\)</span> en la función de sobrevivencia de <span class="math inline">\(X\)</span> es el escalamiento del tiempo <span class="math inline">\(x\)</span> a través del factor <span class="math inline">\(\exp(-\gamma^T Z)\)</span>. Por este motivo a este modelo se le llama modelo de <em>tiempo de fallo acelerado</em>. Su función de riesgo es (ejercicio): <span class="math display">\[h(x|Z)=h_0\left[x\exp(-\gamma^T Z)\right]\exp(-\gamma^T Z)\]</span></p>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Ejemplo: Regresión Weibull
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Sea <span class="math inline">\(X\sim Weibull(\lambda, \alpha)\)</span>. Si <span class="math inline">\(Y=\log X\)</span> entonces <span class="math inline">\(Y=\mu+\sigma W\)</span> donde <span class="math inline">\(mu=-\frac{\log \lambda}{\alpha}\)</span>, <span class="math inline">\(\sigma=\frac 1 \alpha\)</span> y <span class="math inline">\(W\sim \text{VE-Estandard}\)</span>, es decir: <span class="math display">\[f_W(w)=\exp\left(w-e^w\right)\qquad w\in \mathbb R\]</span></p>
+<p>Si <span class="math inline">\(Z_1=1\)</span> en el vector de covariables <span class="math inline">\(Z\)</span>, entonces bajo el modelo de regresión Weibull, se puede calcular:</p>
+<p><span class="math display">\[\begin{align*}
+    S_Y(y|Z)&amp;=P[Y&gt;y|Z]=P\left[W&gt;\frac{y-\gamma^T Z}{\sigma}|Z\right]\\
+    &amp;=\exp\left[-\exp\left[\frac{y-\gamma^T Z}{\sigma}\right]\right]
+\end{align*}\]</span></p>
+<p>y cambiando a la variable original <span class="math inline">\(X\)</span>:</p>
+<p><span class="math display">\[\begin{align*}
+S_X(x|Z)&amp;=\exp\left[-\exp\left[\frac{\log x-\gamma^T Z}{\sigma}\right]\right]=\exp\left[-x^{1/\sigma}\exp\left[-\frac{\gamma^T Z}{\sigma}\right]\right]\\
+&amp;=\exp\left[-\left[x\exp(-\gamma^T Z)\right]^\alpha\right]=S_0(x\exp(-\gamma^T Z))
+\end{align*}\]</span> donde <span class="math inline">\(S_0\)</span> es la función de sobrevivencia Weibull.</p>
+</div>
+</div>
+<p><strong>Enfoque 2</strong></p>
+<p>Modelación de la tasa de riesgo condicional</p>
+<p>En este enfoque se trabaja con dos tipos de modelos:</p>
+<ol type="a">
+<li>Modelos con tasa de riesgo multiplicativa:</li>
+</ol>
+<span class="math display">\[\begin{align}
+    h(x|Z)=h_0(x)c(\beta^T Z)
+    (\#eq:riesgom)
+\end{align}\]</span>
+<p>donde <span class="math inline">\(h_0\)</span> puede ser una función paramétrica o arbitraria y <span class="math inline">\(c\)</span> es una función arbitraria no-negativa. Cuando</p>
+<p><span class="math display">\[c(\beta^T Z)=\exp(\beta^T Z)\]</span></p>
+<p>al modelo en @ref(eq:riesgom) se le llama Modelo de Cox. Para este último modelo, si existe dos individuos con distinto conjunto de covariables <span class="math inline">\(Z_1\)</span> y <span class="math inline">\(Z_2\)</span>. Entonces:</p>
+<p><span class="math display">\[\frac{h(x|Z_1)}{h(x|Z_2)}=\frac{c(\beta^TZ_1)}{c(\beta^TZ_2)}\]</span></p>
+<p>lo cual es independiente de <span class="math inline">\(x\)</span> (propiedad de riesgos proporcionales). Además, note que</p>
+<span class="math display">\[\begin{align*}
+    S(x|Z)&amp;=\exp\left[-\int_0^xh(u|Z)du\right]=\exp\left[-c(\beta^T Z)\int_0^xh_0(u)du\right]\\
+    &amp;=S_0(x)^{c(\beta^T Z)}.
+\end{align*}\]</span>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Ejemplo: Regresión Weibull
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>En el caso Weibull: <span class="math inline">\(h_0(x)=\alpha \lambda x^{\alpha-1}\)</span> y la función de riesgo condicional en el caso de un modelo de Cox es: <span class="math display">\[h(x|Z)=\alpha \lambda x^{\alpha-1}\exp(\beta^T Z)\]</span></p>
+<p>Note que en este caso: <span class="math display">\[\begin{align*}
+    S(x|Z)&amp;=S_0(x)^{c(\beta^T Z)}\\
+    &amp;=\exp[-\lambda (x\exp(\beta^T Z/\alpha))^\alpha]=S_0(x\exp(\beta^T Z/\alpha))
+\end{align*}\]</span><br>
+por lo cual el modelo de regresión Weibull se puede expresar como modelo de tiempo de fallo acelerado o bien como modelo de riesgos proporcionales. (único caso)</p>
+</div>
+</div>
+<ol start="2" type="a">
+<li>Modelos con tasa de riesgo aditiva: <span class="math display">\[h(x|Z)=h_0(x)+\sum_{j=1}^pZ_j(x)\beta_j(x)\]</span></li>
+</ol>
+<p>Este tipo de modelo tiene dificultades extra, por ejemplo los parámetros <span class="math inline">\(\beta_j(x)\)</span> deben ser seleccionados de manera que la tasa de riesgo <span class="math inline">\(h(x|Z)\)</span> sea positiva. Por otro lado también <span class="math inline">\(\beta_j(x)\)</span> puede depender del tiempo <span class="math inline">\(x\)</span>.</p>
+<!-- ## Modelos de riesgos en competencia -->
+<!-- Si $T$ denota el tiempo de fallo o bien el tiempo hasta que ocurre un evento. En este contexto, puede ser que existan $K$ distintas causas del fallo. Por ejemplo, ante el evento de muerte a los 65 años, esta se puede deber a muchas causas. -->
+<!-- Sea $X_i$ el tiempo hasta que ocurra el $i$-ésimo riesgo en competencia. Sea $T=\min(X_1,\ldots,X_K)$ y considere la variable $\delta$ que asume el valor $i$ si $T=X_i$. Definimos la tasa del riesgo $i$-ésimo como: -->
+<!-- \begin{align*} -->
+<!--    h_i(t)&=\lim_{\Delta t\rightarrow 0}\frac{P[t\leq T < t+\Delta t, \delta=i|T\geq t]}{\Delta t}\\ -->
+<!--    &=\lim_{\Delta t\rightarrow 0}\frac{P[t\leq X_i < t+\Delta t|X_j\geq t, \quad j=1,\ldots,K]}{\Delta t} -->
+<!-- \end{align*} -->
+<!-- Entonces, si $S(t_1,\ldots,t_K)=P[X_1>t_1,\ldots,X_K>t_K]$ -->
+<!-- \begin{align*} -->
+<!--    h_T(t)=\sum_{i=1}^Kh_i(t) \quad \text{y} \quad h_i(t)=\frac{-\frac{\delta}{\delta t_i}S(t_1,\ldots,t_k)|_{t_1=\cdots=t_K=t}}{S(t,\ldots,t)} -->
+<!-- \end{align*} -->
+<!-- **Caso especial**: si los $K$ riesgos en competencia son independientes: -->
+<!-- $$h_i(t)=\frac{-\frac{\delta}{\delta t_i}\prod_{j=1}^KS_j(t_j)|_{t_1=\cdots=t_K=t}}{\prod_{j=1}^KS_j(t)}=\frac{-\frac{\delta}{\delta t_i}S_i(t_i)|_{t_i=t}}{S_i(t)}$$ -->
+<!-- En el caso no independiente (ver Ejemplo 2.7 del Klein).  -->
+<!-- **Nota**: es fundamental hacer algún supuesto sobre la estructura de dependencia en los tiempos de fallo, ya que al acontecer el riesgo en una causa especifica no se observó el tiempo de fallo en los riesgos restantes.  -->
+<!-- En el contexto de riesgos en competencia, no siempre se utiliza la tasas de riesgo para sintetizar la información, sino que también se utiliza probabilidades con distinta interpretación: -->
+<!-- 1. *Probabilidades crudas*: probabilidad de muerte de un individuo bajo una causa en particular, cuando el resto de las causas también influyen en el comportamiento de sobrevivencia del individuo. -->
+<!-- Se calculan a través de la función de incidencia acumulativa: -->
+<!-- \begin{align*} -->
+<!--    F_i(t)&=P[T\leq t, \delta = i]\\ -->
+<!--    &=\int_0^th_i(u)\exp[-H_T(u)]du -->
+<!-- \end{align*} -->
+<!-- donde el último término exponencial es la tasa acumulativa de todos los riesgos en competencia. Note que $F_i$ no es una distribución ya que: -->
+<!-- $$F_i(\infty)=P[\delta = i]\neq 1$$ -->
+<!-- Al aplicar la función $F_i$ se puede calcular las probabilidades crudas directamente. -->
+<!-- 2. *Probabilidades netas*: Probabilidad de muerte de un individuo donde la causa de muerte o riesgo de interés es el único. Usando la notación: -->
+<!-- $$S_i(t)=S(0,\ldots,0,\stackrel{\text{posicion }i}{t},0,\ldots,0)$$ -->
+<!-- En el caso independiente: -->
+<!-- \begin{align*} -->
+<!--    S_i(t)&=\exp(0)\cdots \exp\left(-\int_0^th_i(u)du\right)\cdots \exp(0)\\ -->
+<!--    &=\exp\left[-\int_0^t\frac{dF_i(u)}{S_T(u)}du\right] -->
+<!-- \end{align*} -->
+<!-- 3. *Probabilidades parciales crudas*: Probabilidades de muerte en un contexto en donde algunos riesgos han sido eliminados. Sean $J$: conjunto de causas o riesgos de interés. Defina: -->
+<!-- $$T^J=\min(X_i,i\in J)\quad \text{y} \quad F_i^J(t)=P[T^J\leq t,\delta=i]$$ -->
+<!-- para $i \in J$. Definimos la tasa de riesgo cruda parcial: -->
+<!-- $$\lambda_i^J=\frac{-\frac{\delta S(t_1,\ldots,t_K)}{\delta t_i}\Big \vert_{t_j=t, j\in J; t_j=0, j\in J^C}}{S(t_1,\ldots,t_K)\Big \vert_{t_j=t, j\in J; t_j=0, j\in J^C}}$$ -->
+<!-- Entonces: -->
+<!-- $$F_i^J(t)=P[T^J\leq t, \delta=i]=\int_0^t\lambda^J_i(x)\exp\left[-\sum_{j\in J}\int_0^t\lambda_j^J(u)du\right]dx$$ -->
+<!-- Note que en el caso independiente, la tasa de riesgo cruda parcial es: -->
+<!-- $$\lambda_i^J(t)=\frac{dF_i(t)/dt}{S_T(t)}$$ -->
+<!-- ## Censura y Truncamiento -->
+<!-- Conceptos de censura y truncamiento: -->
+<!-- ```{definition, label="censura", name="Censura"} -->
+<!-- Información de sobrevivencia de un individuo, que solamente se conoce con respecto a un intervalo y no a un punto fijo de occurrencia del evento de riesgo. -->
+<!-- ``` -->
+<!-- ```{definition, label="trunc", name="Truncamiento"} -->
+<!-- Restricción de entrada o salida a un estudio de sobrevivencia.  -->
+<!-- ``` -->
+<!-- ### Censura por la derecha -->
+<!-- También conocida como Censura Tipo I: -->
+<!-- ```{definition, label="censI", name="Censura Tipo I"} -->
+<!-- Evento de interés es observado solamente si ocurre antes de un tiempo específico. -->
+<!-- ``` -->
+<!-- Recordando la notación que hemos usando hasta el momento, si $X$ es el tiempo aleatorio en que ocurre el riesgo, $X\sim f(x)$ con función de sobrevivencia $S(x)$ y además $C_r$ denota el tiempo de censura fijo, entonces $X$ es observado solamente si $X\leq C_r$ y si $X>C_r$ decimos que el evento es "censurado". -->
+<!-- En este caso los datos pueden ser representados en pares: -->
+<!-- $$(T,\delta)$$ -->
+<!-- donde $\delta=1$ indica que el evento se observa y $\delta=0$ indica que el evento es censurado. Además $T=\min(X,C_r)$. -->
+<!-- ```{example, label="ex7", name="Ejemplo de Censura"} -->
+
+<!-- En un estudio clínico, hay una serie de ratones alimentados con un agente cancerígeno. Se rastrea el tiempo de vida en cada ratón, hasta la muerte o bien hasta una censura pre-establecida (sacrificio): -->
+<!-- ``` -->
+<!-- ```{r, echo=FALSE, out.width='80%', fig.align='center', fig.cap='Censura Tipo I'} -->
+<!-- knitr::include_graphics("images/CensuraI.png") -->
+<!-- ``` -->
+<!-- También se puede dar el caso de que el tiempo de censura entre observaciones no sea único (censura progresiva): -->
+<!-- ```{r, echo=FALSE, out.width='80%', fig.align='center', fig.cap='Censura Tipo I-progresiva'} -->
+<!-- knitr::include_graphics("images/CensuraI_prog.png") -->
+<!-- ``` -->
+<!-- También se puede dar el caso de que no todos los sujetos de prueba (ratones) estuvieron al inicio del estudio (Censura Tipo I-generalizada): -->
+<!-- ```{r, echo=FALSE, out.width='80%', fig.align='center', fig.cap='Censura Tipo I-generalizada'} -->
+<!-- knitr::include_graphics("images/CensuraI_gene.png") -->
+<!-- ``` -->
+<!-- Otra forma de representar los tiempos de sobrevivencia y censura en una muestra es a través de un *Diagrama de Lexis*, en donde se representa en el eje x el tiempo transcurrido (calendario) del estudio y en el eje y el tiempo transcurrido de cualquier individuo en el estudio: -->
+<!-- ```{r, echo=FALSE, out.width='80%', fig.align='center', fig.cap='Diagrama de Lexis'} -->
+<!-- knitr::include_graphics("images/CensuraI_lexis.png") -->
+<!-- ``` -->
+<!-- Otro tipo de esquema de censura por la derecha es la *Censura Tipo II*: en donde un estudio termina cuando fallan los primeros $r$ individuos en un grupo de $n$ individuos. Este tipo de esquema se suele aplicar en lotes de equipo electrónico por ejemplo o sistemas que están conectados en red. En este caso $r$: número de fallos, $n-r$: número de censuras y $T_{(r)}$: tiempo de censura del estudio. -->
+<!-- También se puede utilizar un esquema progresivo para la censura tipo II. Suponga que hay $r_1$ fallos de un total de $n$ individuos. Además asuma que se censuran $n_1-r_1$ individuos ($n_1<n$) con un primer tiempo de censura $T_{(r_1)}$. El proceso puede continuar con los $n-n_1$ individuos restantes, ocurre $r_2$ fallos ($r_2<n-n_1$), $n_2-r_2$ censuras ($n_1+n_2<n$) y $T_{(n_1+r_2)}$ es el segundo tiempo de censura y así sucesivamente. -->
+<!-- ### Censura por la izquierda o de intervalo -->
+<!-- Suponga que para un tiempo de vida $X$ existe un tiempo $C_\ell$ en donde el evento de riesgo ocurrió antes de que el sujeto fuera observado. En este caso el tiempo $X$ es observado si $X>C_\ell$. Al igual que en el caso de censura por la derecha, podemos usar la notación:  -->
+<!-- $$(T,\epsilon)$$ -->
+<!-- donde $T=X$ si $\epsilon=1$ (observado) y $T=C_\ell$ si $\epsilon=0$ (censurado), es decir $T=\max(X,C_\ell)$. Por ejemplo, si un estudio busca cuantificar el riesgo de fumar marihuana por primera vez (Klein), un individuo tendría una censura por la izquierda si no recuerda la primera vez que fumó, pero afirma que sí la ha consumido antes del inicio del estudio.  -->
+<!-- Si por otro lado se combina la censura por la derecha y por la izquierda, se denomina *censura doble*, y en este caso los datos son: -->
+<!-- $$(T,\delta)\quad \text{donde} \quad T=\max\left(\min(X,C_r),C_\ell\right)$$ -->
+<!-- y  -->
+<!-- \begin{align*} -->
+<!-- \delta=\begin{cases} -->
+<!-- 1 & \text{si $T$ ocurre entre $C_\ell$ y $C_r$}\\ -->
+<!-- 0 & \text{censura por la derecha}\\ -->
+<!-- -1 & \text{censura por la izquierda} -->
+<!-- \end{cases} -->
+<!-- \end{align*} -->
+<!-- Finalmente, la *censura por intervalo* se utiliza en estudios en donde un paciente o individuo en general es visitado periódicamente y lo único que se sabe es que el evento de interés ocurrió en un intervalo $(L_i,R_i]$ cuyos extremos corresponde a los momentos de visitas consecutivas. -->
+<!-- ### Truncamiento -->
+<!-- El truncamiento ocurre cuando en un estudio solamente se incluyen y observan individuos cuyos eventos ocurren en $(Y_L,Y_R)$. Si el evento ocurriera fuera de ese intervalo entonces no se incluye en el estudio.  -->
+<!-- Si $Y_R=\infty$ entonces X es observado $\Leftrightarrow Y_L<X$ (*truncamiento por la izquierda*). Por ejemplo: (1) si se estudia la aparición de una enfermedad desde una fecha fija o (2) si se estudia el evento de muerte desde el inicio de un estudio clínico. -->
+<!-- **Nota**: Muchas veces el truncamiento por la izquierda es acompañado con censura por la derecha. -->
+<!-- Para el caso de truncamiento por la derecha: si $Y_L=0$: $X$ es observado $\Leftrightarrow X\leq Y_R$ (ver Ejemplo 3.8 del Klein). -->
+<!-- ## Verosimilitud bajo censura y truncamiento -->
+<!-- Supuesto: tiempos de ocurrencia de evento y tiempos de censura son independientes. Cada tipo de censura/truncamiento aporta distintos factores a la verosimilitud completa de los datos: -->
+<!-- - Tiempo exacto del evento en estudio: $f(x)$ -->
+<!-- - Censura por la derecha: $P(X>C_r)=S(C_r)$ -->
+<!-- - Censura por la izquierda: $P(X<C_\ell)=1-S(C_\ell)$ -->
+<!-- - Censura en intervalo: $P(L<X<R)=S(L)-S(R)$ -->
+<!-- - Truncamiento por la izquierda: $f(x|X>Y_L)=\frac{f(x)}{S(Y_L)}$ -->
+<!-- - Truncamiento por la derecha: $f(x|X<Y_R)=\frac{f(x)}{1-S(Y_R)}$ -->
+<!-- Por lo tanto la verosimilitud con datos censurados se puede escribir como: -->
+<!-- $$L\propto \prod_{i \in D}f(x_i)\prod_{i \in R}S(C_r)\prod_{i \in L}\left(1-S(C_\ell)\right) \prod_{i \in I}[S(L_i)-S(R_i)]$$ -->
+<!-- donde  -->
+<!-- - $D$: conjunto de eventos observables. -->
+<!-- - $R$: conjunto de observaciones con censura por la derecha. -->
+<!-- - $L$: conjunto de observaciones con censura por la izquierda. -->
+<!-- - $I$: conjunto de observaciones con censura por intervalo. -->
+<!-- Para datos truncados por la izquierda y censurados por la derecha con intervalo de truncamiento $(Y_{L_i},Y_{R_i})$ independientes del $i$-ésimo momento de muerte, se reemplaza $f(x_i)$ y $S(C_i)$ ($C_i$: tiempo de censura $i$-ésima) por: -->
+<!-- $$\frac{f(x_i)}{S(Y_{L_i})-S(Y_{R_i})} \quad \text{y} \quad \frac{S(C_i)}{S(Y_{L_i})-S(Y_{R_i})}$$ -->
+<!-- En el caso en donde cada individuo tiene una distribución de riesgo distinta (Ejemplo: regresión): -->
+<!-- $$L\propto \prod_{i \in D}f_i(x_i)\prod_{i \in R}S_i(C_r)\prod_{i \in L}\left(1-S_i(C_\ell)\right) \prod_{i \in I}[S_i(L_i)-S_i(R_i)]$$ -->
+<!-- **Caso particular**: censura tipo I (por la derecha) -->
+<!-- Si $\delta=0$ (censura): -->
+<!-- \begin{align*} -->
+<!--    P[T,\delta=0]&=P[T=C_r|\delta=0]P[\delta=0]=P[\delta=0]\\ -->
+<!--    &=P[X>C_r]=S(C_r). -->
+<!-- \end{align*} -->
+<!-- Si $\delta = 1$: -->
+<!-- \begin{align*} -->
+<!--    P[T,\delta=1]&=P[T=X|\delta=1]P[\delta=1]\\ -->
+<!--    &=P[T=X|X\leq C_r]P[X\leq C_r]\\ -->
+<!--    &=\frac{f(t)}{1-S(C_r)}[1-S(C_r)]=f(t). -->
+<!-- \end{align*} -->
+<!-- Entonces el aporte de $T=t$ a la verosimilitud es: -->
+<!-- $$[f(t)]^\delta[S(t)]^{1-\delta}$$ -->
+<!-- Si se tiene una muestra aleatoria de pares $(T_i,\delta_i)$, para $i=1,\ldots,n$: -->
+<!-- $$L=\prod_{i=1}^nf(t_i)^{\delta_i}[S(t_i)]^{1-\delta_i}$$ -->
+<!-- Como $f(t_i)=h(t_i)S(t_i)$ entonces: -->
+<!-- $$L=\prod_{i=1}^nh(t_i)^{\delta_i}S(t_i)^{\delta_i}[S(t_i)]^{1-\delta_i}=\prod_{i=1}^nh(t_i)^{\delta_i}\exp(-H(t_i))$$ -->
+<!-- ```{example, label="ex8", name="Caso Exponencial"} -->
+<!-- Asuma que $X\sim \text{Exponencial}(\lambda)$ con $f(x)=\lambda \exp(-\lambda x)$, entonces: -->
+<!-- \begin{align*} -->
+<!--    L&=\prod_{i=1}^n [\lambda \exp(-\lambda t_i)]^{\delta_i}[\exp(-\lambda t_i)]^{(1-\delta_i)}\\ -->
+<!--    &=\lambda^r\exp(-\lambda S_T) -->
+<!-- \end{align*}   -->
+<!-- donde $r=\sum \delta_i$ (total de eventos observados) y $S_T=\sum_{i=1}^n t_i$ (total de tiempo en el estudio).  -->
+<!-- ``` -->
+<!-- ## Laboratorio -->
+<!-- ### Ejemplos de datos de análisis de sobrevivencia -->
+<!-- ```{r} -->
+<!-- library(asaur) -->
+<!-- head(gastricXelox) -->
+<!-- dim(gastricXelox) -->
+<!-- ``` -->
+<!-- Estudio clínico en pacientes con cáncer gástrico avanzado. -->
+<!-- - *timeWeeks*: tiempo de sobrevivencia en semanas. -->
+<!-- - *delta*: variable de censura: (1) muerte, (2) censura. -->
+<!-- ```{r} -->
+<!-- head(prostateSurvival) -->
+<!-- dim(prostateSurvival) -->
+<!-- ``` -->
+<!-- Estudio de sobrevivencia de pacientes con cáncer de próstata.  -->
+<!-- - *ageGroup*: edad de diagnóstico. -->
+<!-- - *stage*: etapa del cáncer. -->
+<!-- - *survTime*: tiempo de sobrevivencia. -->
+<!-- - *status*: Muerte por cáncer de próstata (1), muerte por otra causa (2), sobrevivencia al final del estudio (0). -->
+<!-- ```{r} -->
+<!-- head(pharmacoSmoking) -->
+<!-- dim(pharmacoSmoking) -->
+<!-- ``` -->
+<!-- Estudio comparativo de dos terapias para fumadores (combinación de medicamentos vs parche de nicotina). -->
+<!-- - *ttr*: tiempo en dias hasta una recaída (volver a fumar). -->
+<!-- - *relapse*: (1): volvió a fumar vs (0): censura. -->
+<!-- - *employment*: jornada laboral. -->
+<!-- ### Tasas de riesgo (Tablas de vida en USA) -->
+<!-- Tasas de riesgo expresadas por día calendario: -->
+<!-- ```{r} -->
+<!-- library(survival) -->
+<!-- dim(survexp.us) -->
+<!-- hazMale <- survexp.us[,"male","2010"] -->
+<!-- hazFemale <- survexp.us[,"female","2010"] -->
+<!-- tm <- 1:110 -->
+<!-- tm.diff <- c(1,diff(tm)) -->
+<!-- survMale <- exp(-cumsum(hazMale*tm.diff)*365.24) -->
+<!-- survFemale <- exp(-cumsum(hazFemale *tm.diff)*365.24) -->
+<!-- data.tot <- data.frame(tm,hMale = as.numeric(hazMale),  -->
+<!--                        hFemale = as.numeric(hazFemale),  -->
+<!--                        sMale = survMale, sFemale = survFemale) -->
+<!-- data.tot.long <- pivot_longer(data.tot,cols = hMale:sFemale) -->
+<!-- ggplot(data = data.tot,mapping = aes(x = tm,y = )) -->
+<!-- ``` -->
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography" style="display: none">
+<div id="ref-Klein2003a" class="csl-entry" role="doc-biblioentry">
+Klein, John P., and Melvin L. Moeschberger. 2003. <em><span class="nocase">Survival analysis : techniques for censored and truncated data</span></em>. Springer.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./index.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Introducción</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./references.html" class="pagination-link">
+        <span class="nav-page-text">Referencias</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
