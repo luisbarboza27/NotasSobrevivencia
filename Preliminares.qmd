@@ -394,199 +394,204 @@ b.  Modelos con tasa de riesgo aditiva: $$h(x|Z)=h_0(x)+\sum_{j=1}^pZ_j(x)\beta_
 
 Este tipo de modelo tiene dificultades extra, por ejemplo los parámetros $\beta_j(x)$ deben ser seleccionados de manera que la tasa de riesgo $h(x|Z)$ sea positiva. Por otro lado también $\beta_j(x)$ puede depender del tiempo $x$.
 
-<!-- ## Modelos de riesgos en competencia -->
+## Modelos de riesgos en competencia
 
-<!-- Si $T$ denota el tiempo de fallo o bien el tiempo hasta que ocurre un evento. En este contexto, puede ser que existan $K$ distintas causas del fallo. Por ejemplo, ante el evento de muerte a los 65 años, esta se puede deber a muchas causas. -->
+Si $T$ denota el tiempo de fallo o bien el tiempo hasta que ocurre un evento. En este contexto, puede ser que existan $K$ distintas causas del fallo. Por ejemplo, ante el evento de muerte a los 65 años, esta se puede deber a muchas causas.
 
-<!-- Sea $X_i$ el tiempo hasta que ocurra el $i$-ésimo riesgo en competencia. Sea $T=\min(X_1,\ldots,X_K)$ y considere la variable $\delta$ que asume el valor $i$ si $T=X_i$. Definimos la tasa del riesgo $i$-ésimo como: -->
+Sea $X_i$ el tiempo hasta que ocurra el $i$-ésimo riesgo en competencia. Sea $T=\min(X_1,\ldots,X_K)$ y considere la variable $\delta$ que asume el valor $i$ si $T=X_i$. Definimos la tasa del riesgo $i$-ésimo como:
 
-<!-- \begin{align*} -->
+\begin{align*}
 
-<!--    h_i(t)&=\lim_{\Delta t\rightarrow 0}\frac{P[t\leq T < t+\Delta t, \delta=i|T\geq t]}{\Delta t}\\ -->
+   h_i(t)&=\lim_{\Delta t\rightarrow 0}\frac{P[t\leq T < t+\Delta t, \delta=i|T\geq t]}{\Delta t}\\
 
-<!--    &=\lim_{\Delta t\rightarrow 0}\frac{P[t\leq X_i < t+\Delta t|X_j\geq t, \quad j=1,\ldots,K]}{\Delta t} -->
+   &=\lim_{\Delta t\rightarrow 0}\frac{P[t\leq X_i < t+\Delta t|X_j\geq t, \quad j=1,\ldots,K]}{\Delta t}
 
-<!-- \end{align*} -->
+\end{align*}
 
-<!-- Entonces, si $S(t_1,\ldots,t_K)=P[X_1>t_1,\ldots,X_K>t_K]$ -->
+Entonces, si $S(t_1,\ldots,t_K)=P[X_1>t_1,\ldots,X_K>t_K]$
 
-<!-- \begin{align*} -->
+\begin{align*}
 
-<!--    h_T(t)=\sum_{i=1}^Kh_i(t) \quad \text{y} \quad h_i(t)=\frac{-\frac{\delta}{\delta t_i}S(t_1,\ldots,t_k)|_{t_1=\cdots=t_K=t}}{S(t,\ldots,t)} -->
+   h_T(t)=\sum_{i=1}^Kh_i(t) \quad \text{y} \quad h_i(t)=\frac{-\frac{\delta}{\delta t_i}S(t_1,\ldots,t_k)|_{t_1=\cdots=t_K=t}}{S(t,\ldots,t)}
 
-<!-- \end{align*} -->
+\end{align*}
 
-<!-- **Caso especial**: si los $K$ riesgos en competencia son independientes: -->
+**Caso especial**: si los $K$ riesgos en competencia son independientes:
 
-<!-- $$h_i(t)=\frac{-\frac{\delta}{\delta t_i}\prod_{j=1}^KS_j(t_j)|_{t_1=\cdots=t_K=t}}{\prod_{j=1}^KS_j(t)}=\frac{-\frac{\delta}{\delta t_i}S_i(t_i)|_{t_i=t}}{S_i(t)}$$ -->
+$$h_i(t)=\frac{-\frac{\delta}{\delta t_i}\prod_{j=1}^KS_j(t_j)|_{t_1=\cdots=t_K=t}}{\prod_{j=1}^KS_j(t)}=\frac{-\frac{\delta}{\delta t_i}S_i(t_i)|_{t_i=t}}{S_i(t)}$$
 
-<!-- En el caso no independiente (ver Ejemplo 2.7 del Klein).  -->
+En el caso no independiente (ver Ejemplo 2.7 del Klein).
 
-<!-- **Nota**: es fundamental hacer algún supuesto sobre la estructura de dependencia en los tiempos de fallo, ya que al acontecer el riesgo en una causa especifica no se observó el tiempo de fallo en los riesgos restantes.  -->
+**Nota**: es fundamental hacer algún supuesto sobre la estructura de dependencia en los tiempos de fallo, ya que al acontecer el riesgo en una causa especifica no se observó el tiempo de fallo en los riesgos restantes.
 
-<!-- En el contexto de riesgos en competencia, no siempre se utiliza la tasas de riesgo para sintetizar la información, sino que también se utiliza probabilidades con distinta interpretación: -->
+En el contexto de riesgos en competencia, no siempre se utiliza la tasas de riesgo para sintetizar la información, sino que también se utiliza probabilidades con distinta interpretación:
 
-<!-- 1. *Probabilidades crudas*: probabilidad de muerte de un individuo bajo una causa en particular, cuando el resto de las causas también influyen en el comportamiento de sobrevivencia del individuo. -->
+1. *Probabilidades crudas*: probabilidad de muerte de un individuo bajo una causa en particular, cuando el resto de las causas también influyen en el comportamiento de sobrevivencia del individuo.
 
-<!-- Se calculan a través de la función de incidencia acumulativa: -->
+Se calculan a través de la función de incidencia acumulativa:
 
-<!-- \begin{align*} -->
+\begin{align*}
 
-<!--    F_i(t)&=P[T\leq t, \delta = i]\\ -->
+   F_i(t)&=P[T\leq t, \delta = i]\\
 
-<!--    &=\int_0^th_i(u)\exp[-H_T(u)]du -->
+   &=\int_0^th_i(u)\exp[-H_T(u)]du
 
-<!-- \end{align*} -->
+\end{align*}
 
-<!-- donde el último término exponencial es la tasa acumulativa de todos los riesgos en competencia. Note que $F_i$ no es una distribución ya que: -->
+donde el último término exponencial es la tasa acumulativa de todos los riesgos en competencia. Note que $F_i$ no es una distribución ya que:
 
-<!-- $$F_i(\infty)=P[\delta = i]\neq 1$$ -->
+$$F_i(\infty)=P[\delta = i]\neq 1$$
 
-<!-- Al aplicar la función $F_i$ se puede calcular las probabilidades crudas directamente. -->
+Al aplicar la función $F_i$ se puede calcular las probabilidades crudas directamente.
 
-<!-- 2. *Probabilidades netas*: Probabilidad de muerte de un individuo donde la causa de muerte o riesgo de interés es el único. Usando la notación: -->
+2. *Probabilidades netas*: Probabilidad de muerte de un individuo donde la causa de muerte o riesgo de interés es el único. Usando la notación:
 
-<!-- $$S_i(t)=S(0,\ldots,0,\stackrel{\text{posicion }i}{t},0,\ldots,0)$$ -->
+$$S_i(t)=S(0,\ldots,0,\stackrel{\text{posicion }i}{t},0,\ldots,0)$$
 
-<!-- En el caso independiente: -->
+En el caso independiente:
 
-<!-- \begin{align*} -->
+\begin{align*}
 
-<!--    S_i(t)&=\exp(0)\cdots \exp\left(-\int_0^th_i(u)du\right)\cdots \exp(0)\\ -->
+   S_i(t)&=\exp(0)\cdots \exp\left(-\int_0^th_i(u)du\right)\cdots \exp(0)\\
 
-<!--    &=\exp\left[-\int_0^t\frac{dF_i(u)}{S_T(u)}du\right] -->
+   &=\exp\left[-\int_0^t\frac{dF_i(u)}{S_T(u)}du\right]
 
-<!-- \end{align*} -->
+\end{align*}
 
-<!-- 3. *Probabilidades parciales crudas*: Probabilidades de muerte en un contexto en donde algunos riesgos han sido eliminados. Sean $J$: conjunto de causas o riesgos de interés. Defina: -->
+3. *Probabilidades parciales crudas*: Probabilidades de muerte en un contexto en donde algunos riesgos han sido eliminados. Sean $J$: conjunto de causas o riesgos de interés. Defina:
 
-<!-- $$T^J=\min(X_i,i\in J)\quad \text{y} \quad F_i^J(t)=P[T^J\leq t,\delta=i]$$ -->
+$$T^J=\min(X_i,i\in J)\quad \text{y} \quad F_i^J(t)=P[T^J\leq t,\delta=i]$$
 
-<!-- para $i \in J$. Definimos la tasa de riesgo cruda parcial: -->
+para $i \in J$. Definimos la tasa de riesgo cruda parcial:
 
-<!-- $$\lambda_i^J=\frac{-\frac{\delta S(t_1,\ldots,t_K)}{\delta t_i}\Big \vert_{t_j=t, j\in J; t_j=0, j\in J^C}}{S(t_1,\ldots,t_K)\Big \vert_{t_j=t, j\in J; t_j=0, j\in J^C}}$$ -->
+$$\lambda_i^J=\frac{-\frac{\delta S(t_1,\ldots,t_K)}{\delta t_i}\Big \vert_{t_j=t, j\in J; t_j=0, j\in J^C}}{S(t_1,\ldots,t_K)\Big \vert_{t_j=t, j\in J; t_j=0, j\in J^C}}$$
 
-<!-- Entonces: -->
+Entonces:
 
-<!-- $$F_i^J(t)=P[T^J\leq t, \delta=i]=\int_0^t\lambda^J_i(x)\exp\left[-\sum_{j\in J}\int_0^t\lambda_j^J(u)du\right]dx$$ -->
+$$F_i^J(t)=P[T^J\leq t, \delta=i]=\int_0^t\lambda^J_i(x)\exp\left[-\sum_{j\in J}\int_0^t\lambda_j^J(u)du\right]dx$$
 
-<!-- Note que en el caso independiente, la tasa de riesgo cruda parcial es: -->
+Note que en el caso independiente, la tasa de riesgo cruda parcial es:
 
-<!-- $$\lambda_i^J(t)=\frac{dF_i(t)/dt}{S_T(t)}$$ -->
+$$\lambda_i^J(t)=\frac{dF_i(t)/dt}{S_T(t)}$$
 
-<!-- ## Censura y Truncamiento -->
+## Censura y Truncamiento
 
-<!-- Conceptos de censura y truncamiento: -->
+Conceptos de censura y truncamiento:
 
-<!-- ```{definition, label="censura", name="Censura"} -->
+::: {#def-censura}
+## Censura
 
-<!-- Información de sobrevivencia de un individuo, que solamente se conoce con respecto a un intervalo y no a un punto fijo de occurrencia del evento de riesgo. -->
+Información de sobrevivencia de un individuo, que solamente se conoce con respecto a un intervalo y no a un punto fijo de occurrencia del evento de riesgo.
+:::
 
-<!-- ``` -->
+::: {#def-truncamiento}
+## Truncamiento
 
-<!-- ```{definition, label="trunc", name="Truncamiento"} -->
+Restricción de entrada o salida a un estudio de sobrevivencia.
 
-<!-- Restricción de entrada o salida a un estudio de sobrevivencia.  -->
+:::
 
-<!-- ``` -->
 
-<!-- ### Censura por la derecha -->
+### Censura por la derecha
 
-<!-- También conocida como Censura Tipo I: -->
+También conocida como Censura Tipo I:
 
-<!-- ```{definition, label="censI", name="Censura Tipo I"} -->
+::: {#def-censuraI}
+## Censura Tipo I
 
-<!-- Evento de interés es observado solamente si ocurre antes de un tiempo específico. -->
+Evento de interés es observado solamente si ocurre antes de un tiempo específico.
 
-<!-- ``` -->
+:::
 
-<!-- Recordando la notación que hemos usando hasta el momento, si $X$ es el tiempo aleatorio en que ocurre el riesgo, $X\sim f(x)$ con función de sobrevivencia $S(x)$ y además $C_r$ denota el tiempo de censura fijo, entonces $X$ es observado solamente si $X\leq C_r$ y si $X>C_r$ decimos que el evento es "censurado". -->
 
-<!-- En este caso los datos pueden ser representados en pares: -->
+Recordando la notación que hemos usando hasta el momento, si $X$ es el tiempo aleatorio en que ocurre el riesgo, $X\sim f(x)$ con función de sobrevivencia $S(x)$ y además $C_r$ denota el tiempo de censura fijo, entonces $X$ es observado solamente si $X\leq C_r$ y si $X>C_r$ decimos que el evento es "censurado".
 
-<!-- $$(T,\delta)$$ -->
+En este caso los datos pueden ser representados en pares:
 
-<!-- donde $\delta=1$ indica que el evento se observa y $\delta=0$ indica que el evento es censurado. Además $T=\min(X,C_r)$. -->
+$$(T,\delta)$$
 
-<!-- ```{example, label="ex7", name="Ejemplo de Censura"} -->
+donde $\delta=1$ indica que el evento se observa y $\delta=0$ indica que el evento es censurado. Además $T=\min(X,C_r)$.
 
-<!-- En un estudio clínico, hay una serie de ratones alimentados con un agente cancerígeno. Se rastrea el tiempo de vida en cada ratón, hasta la muerte o bien hasta una censura pre-establecida (sacrificio): -->
+::: callout-tip
+## Ejemplo: Ejemplo de Censura
 
-<!-- ``` -->
+En un estudio clínico, hay una serie de ratones alimentados con un agente cancerígeno. Se rastrea el tiempo de vida en cada ratón, hasta la muerte o bien hasta una censura pre-establecida (sacrificio):
 
-<!-- ```{r, echo=FALSE, out.width='80%', fig.align='center', fig.cap='Censura Tipo I'} -->
+```{r, echo=FALSE, out.width='80%', fig.align='center', fig.cap='Censura Tipo I'}
 
-<!-- knitr::include_graphics("images/CensuraI.png") -->
+knitr::include_graphics("images/CensuraI.png")
 
-<!-- ``` -->
+```
 
-<!-- También se puede dar el caso de que el tiempo de censura entre observaciones no sea único (censura progresiva): -->
+También se puede dar el caso de que el tiempo de censura entre observaciones no sea único (censura progresiva):
 
-<!-- ```{r, echo=FALSE, out.width='80%', fig.align='center', fig.cap='Censura Tipo I-progresiva'} -->
+```{r, echo=FALSE, out.width='80%', fig.align='center', fig.cap='Censura Tipo I-progresiva'}
 
-<!-- knitr::include_graphics("images/CensuraI_prog.png") -->
+knitr::include_graphics("images/CensuraI_prog.png")
 
-<!-- ``` -->
+```
 
-<!-- También se puede dar el caso de que no todos los sujetos de prueba (ratones) estuvieron al inicio del estudio (Censura Tipo I-generalizada): -->
+También se puede dar el caso de que no todos los sujetos de prueba (ratones) estuvieron al inicio del estudio (Censura Tipo I-generalizada):
 
-<!-- ```{r, echo=FALSE, out.width='80%', fig.align='center', fig.cap='Censura Tipo I-generalizada'} -->
+```{r, echo=FALSE, out.width='80%', fig.align='center', fig.cap='Censura Tipo I-generalizada'}
 
-<!-- knitr::include_graphics("images/CensuraI_gene.png") -->
+knitr::include_graphics("images/CensuraI_gene.png")
 
-<!-- ``` -->
+```
 
-<!-- Otra forma de representar los tiempos de sobrevivencia y censura en una muestra es a través de un *Diagrama de Lexis*, en donde se representa en el eje x el tiempo transcurrido (calendario) del estudio y en el eje y el tiempo transcurrido de cualquier individuo en el estudio: -->
+:::
 
-<!-- ```{r, echo=FALSE, out.width='80%', fig.align='center', fig.cap='Diagrama de Lexis'} -->
+Otra forma de representar los tiempos de sobrevivencia y censura en una muestra es a través de un *Diagrama de Lexis*, en donde se representa en el eje x el tiempo transcurrido (calendario) del estudio y en el eje y el tiempo transcurrido de cualquier individuo en el estudio:
 
-<!-- knitr::include_graphics("images/CensuraI_lexis.png") -->
+```{r, echo=FALSE, out.width='80%', fig.align='center', fig.cap='Diagrama de Lexis'}
 
-<!-- ``` -->
+knitr::include_graphics("images/CensuraI_lexis.png")
 
-<!-- Otro tipo de esquema de censura por la derecha es la *Censura Tipo II*: en donde un estudio termina cuando fallan los primeros $r$ individuos en un grupo de $n$ individuos. Este tipo de esquema se suele aplicar en lotes de equipo electrónico por ejemplo o sistemas que están conectados en red. En este caso $r$: número de fallos, $n-r$: número de censuras y $T_{(r)}$: tiempo de censura del estudio. -->
+```
 
-<!-- También se puede utilizar un esquema progresivo para la censura tipo II. Suponga que hay $r_1$ fallos de un total de $n$ individuos. Además asuma que se censuran $n_1-r_1$ individuos ($n_1<n$) con un primer tiempo de censura $T_{(r_1)}$. El proceso puede continuar con los $n-n_1$ individuos restantes, ocurre $r_2$ fallos ($r_2<n-n_1$), $n_2-r_2$ censuras ($n_1+n_2<n$) y $T_{(n_1+r_2)}$ es el segundo tiempo de censura y así sucesivamente. -->
+Otro tipo de esquema de censura por la derecha es la *Censura Tipo II*: en donde un estudio termina cuando fallan los primeros $r$ individuos en un grupo de $n$ individuos. Este tipo de esquema se suele aplicar en lotes de equipo electrónico por ejemplo o sistemas que están conectados en red. En este caso $r$: número de fallos, $n-r$: número de censuras y $T_{(r)}$: tiempo de censura del estudio.
 
-<!-- ### Censura por la izquierda o de intervalo -->
+También se puede utilizar un esquema progresivo para la censura tipo II. Suponga que hay $r_1$ fallos de un total de $n$ individuos. Además asuma que se censuran $n_1-r_1$ individuos ($n_1<n$) con un primer tiempo de censura $T_{(r_1)}$. El proceso puede continuar con los $n-n_1$ individuos restantes, ocurre $r_2$ fallos ($r_2<n-n_1$), $n_2-r_2$ censuras ($n_1+n_2<n$) y $T_{(n_1+r_2)}$ es el segundo tiempo de censura y así sucesivamente.
 
-<!-- Suponga que para un tiempo de vida $X$ existe un tiempo $C_\ell$ en donde el evento de riesgo ocurrió antes de que el sujeto fuera observado. En este caso el tiempo $X$ es observado si $X>C_\ell$. Al igual que en el caso de censura por la derecha, podemos usar la notación:  -->
+### Censura por la izquierda o de intervalo
 
-<!-- $$(T,\epsilon)$$ -->
+Suponga que para un tiempo de vida $X$ existe un tiempo $C_\ell$ en donde el evento de riesgo ocurrió antes de que el sujeto fuera observado. En este caso el tiempo $X$ es observado si $X>C_\ell$. Al igual que en el caso de censura por la derecha, podemos usar la notación:
 
-<!-- donde $T=X$ si $\epsilon=1$ (observado) y $T=C_\ell$ si $\epsilon=0$ (censurado), es decir $T=\max(X,C_\ell)$. Por ejemplo, si un estudio busca cuantificar el riesgo de fumar marihuana por primera vez (Klein), un individuo tendría una censura por la izquierda si no recuerda la primera vez que fumó, pero afirma que sí la ha consumido antes del inicio del estudio.  -->
+$$(T,\epsilon)$$
 
-<!-- Si por otro lado se combina la censura por la derecha y por la izquierda, se denomina *censura doble*, y en este caso los datos son: -->
+donde $T=X$ si $\epsilon=1$ (observado) y $T=C_\ell$ si $\epsilon=0$ (censurado), es decir $T=\max(X,C_\ell)$. Por ejemplo, si un estudio busca cuantificar el riesgo de fumar marihuana por primera vez (Klein), un individuo tendría una censura por la izquierda si no recuerda la primera vez que fumó, pero afirma que sí la ha consumido antes del inicio del estudio.
 
-<!-- $$(T,\delta)\quad \text{donde} \quad T=\max\left(\min(X,C_r),C_\ell\right)$$ -->
+Si por otro lado se combina la censura por la derecha y por la izquierda, se denomina *censura doble*, y en este caso los datos son:
 
-<!-- y  -->
+$$(T,\delta)\quad \text{donde} \quad T=\max\left(\min(X,C_r),C_\ell\right)$$
 
-<!-- \begin{align*} -->
+y
 
-<!-- \delta=\begin{cases} -->
+\begin{align*}
 
-<!-- 1 & \text{si $T$ ocurre entre $C_\ell$ y $C_r$}\\ -->
+\delta=\begin{cases}
 
-<!-- 0 & \text{censura por la derecha}\\ -->
+1 & \text{si $T$ ocurre entre $C_\ell$ y $C_r$}\\
 
-<!-- -1 & \text{censura por la izquierda} -->
+0 & \text{censura por la derecha}\\
 
-<!-- \end{cases} -->
+-1 & \text{censura por la izquierda}
 
-<!-- \end{align*} -->
+\end{cases}
 
-<!-- Finalmente, la *censura por intervalo* se utiliza en estudios en donde un paciente o individuo en general es visitado periódicamente y lo único que se sabe es que el evento de interés ocurrió en un intervalo $(L_i,R_i]$ cuyos extremos corresponde a los momentos de visitas consecutivas. -->
+\end{align*}
 
-<!-- ### Truncamiento -->
+Finalmente, la *censura por intervalo* se utiliza en estudios en donde un paciente o individuo en general es visitado periódicamente y lo único que se sabe es que el evento de interés ocurrió en un intervalo $(L_i,R_i]$ cuyos extremos corresponde a los momentos de visitas consecutivas.
 
-<!-- El truncamiento ocurre cuando en un estudio solamente se incluyen y observan individuos cuyos eventos ocurren en $(Y_L,Y_R)$. Si el evento ocurriera fuera de ese intervalo entonces no se incluye en el estudio.  -->
+### Truncamiento
 
-<!-- Si $Y_R=\infty$ entonces X es observado $\Leftrightarrow Y_L<X$ (*truncamiento por la izquierda*). Por ejemplo: (1) si se estudia la aparición de una enfermedad desde una fecha fija o (2) si se estudia el evento de muerte desde el inicio de un estudio clínico. -->
+El truncamiento ocurre cuando en un estudio solamente se incluyen y observan individuos cuyos eventos ocurren en $(Y_L,Y_R)$. Si el evento ocurriera fuera de ese intervalo entonces no se incluye en el estudio.
 
-<!-- **Nota**: Muchas veces el truncamiento por la izquierda es acompañado con censura por la derecha. -->
+Si $Y_R=\infty$ entonces X es observado $\Leftrightarrow Y_L<X$ (*truncamiento por la izquierda*). Por ejemplo: (1) si se estudia la aparición de una enfermedad desde una fecha fija o (2) si se estudia el evento de muerte desde el inicio de un estudio clínico.
 
-<!-- Para el caso de truncamiento por la derecha: si $Y_L=0$: $X$ es observado $\Leftrightarrow X\leq Y_R$ (ver Ejemplo 3.8 del Klein). -->
+**Nota**: Muchas veces el truncamiento por la izquierda es acompañado con censura por la derecha.
+
+Para el caso de truncamiento por la derecha: si $Y_L=0$: $X$ es observado $\Leftrightarrow X\leq Y_R$ (ver Ejemplo 3.8 del Klein).
 
 <!-- ## Verosimilitud bajo censura y truncamiento -->
 
