@@ -315,7 +315,8 @@ Ejemplo: Distribución Weibull
 h(x)&amp;=\lim_{\Delta x\rightarrow 0}\frac{F(x+\Delta x)-F(x)}{\Delta x}\cdot \frac{1}{S(x)}\\
 &amp;=\frac{f(x)}{S(x)}=-\frac{d}{dx}\log (S(x))
 \end{align*}\]</span></p>
-<p>Si la función de riesgo se acumula en el intervalo <span class="math inline">\([0,x]\)</span>, se obtiene la <em>función de riesgo acumulativo</em>: <span class="math display">\[\begin{align*}
+<p>Si la función de riesgo se acumula en el intervalo <span class="math inline">\([0,x]\)</span>, se obtiene la <em>función de riesgo acumulativo</em>:</p>
+<p><span class="math display">\[\begin{align*}
 H(x)=\int_0^xh(u)du&amp;=-\int_0^x \frac{d}{du}\log(S(u))du\\
 &amp;=-\log(S(x)).
 \end{align*}\]</span></p>
@@ -354,7 +355,8 @@ Ejemplo: Distribución Weibull
 </div>
 <p>Para otro caso, ver ejemplo 2.2 del <span class="citation" data-cites="Klein2003a">(<a href="references.html#ref-Klein2003a" role="doc-biblioref">Klein and Moeschberger 2003</a>)</span>.</p>
 <p>En el caso en que <span class="math inline">\(X\)</span> es una variable aleatoria discreta: <span class="math display">\[h(x_j)=P[X=x_j|X\geq x_j]=\frac{p(x_j)}{S(x_{j-1})}\]</span> para <span class="math inline">\(j=1,2,\ldots\)</span> y donde <span class="math inline">\(S(x_0)=1\)</span>. Como <span class="math inline">\(p(x_j)=S(x_{j-1})-S(x_j)\)</span> entonces: <span class="math display">\[h(x_j)=1-\frac{S(x_j)}{S(x_{j-1})}\]</span></p>
-<p>Además: <span class="math display">\[\begin{align*}
+<p>Además:</p>
+<p><span class="math display">\[\begin{align*}
 S(x)&amp;=\prod_{x_j\leq x}\frac{S(x_j)}{S(x_{j-1})}\\
 &amp;=\prod_{x_j\leq x}[1-h(x_j)]
 \end{align*}\]</span></p>
@@ -397,7 +399,8 @@ y <span class="math display">\[h(x)=
     &amp;=\frac{\int_x^{\infty}S(t)dt}{S(x)}
 \end{align*}\]</span></p>
 </div>
-<p>Cuando <span class="math inline">\(x=0\)</span>, entonces <span class="math inline">\(mrl(0)=\int_0^{\infty}S(t)dt=EX\)</span>. Por otro lado se puede comprobar (Ejercicio): <span class="math display">\[\begin{align*}
+<p>Cuando <span class="math inline">\(x=0\)</span>, entonces <span class="math inline">\(mrl(0)=\int_0^{\infty}S(t)dt=EX\)</span>. Por otro lado se puede comprobar (Ejercicio):</p>
+<p><span class="math display">\[\begin{align*}
     \text{Var}(X)=2\int_0^{\infty}tS(t)dt-\left[\int_0^{\infty}S(t)dt\right]^2
 \end{align*}\]</span></p>
 <p>Además a partir de la función de sobrevivencia, también se puede calcular el cuantil correspondiente:</p>
@@ -442,22 +445,26 @@ Ejemplo: Ejemplos de vida media
     S(x)&amp;=e^{-\lambda x}, \qquad x&gt;0, \lambda&gt;0\\
     f(x)&amp;=\lambda e^{-\lambda x}\\
     h(x)&amp;=\lambda
-\end{align*}\]</span> Recuerden además que en el caso exponencial se cumple la propiedad de pérdida de memoria: <span class="math inline">\(P(X\geq x+z|X\geq x)=P(X\geq z)\)</span>.</p>
+\end{align*}\]</span></p>
+<p>Recuerden además que en el caso exponencial se cumple la propiedad de pérdida de memoria: <span class="math inline">\(P(X\geq x+z|X\geq x)=P(X\geq z)\)</span>.</p>
 </section>
 <section id="weibull" class="level3" data-number="1.2.2">
 <h3 data-number="1.2.2" class="anchored" data-anchor-id="weibull"><span class="header-section-number">1.2.2</span> Weibull</h3>
 <p><span class="math display">\[\begin{align*}
     S(x)&amp;=e^{-\lambda x^\alpha}, \qquad x&gt;0, \lambda&gt;0, \alpha&gt;0\\
     h(x)&amp;=\lambda\alpha x^{\alpha-1}
-\end{align*}\]</span> a los parámetros <span class="math inline">\(\lambda\)</span> y <span class="math inline">\(\alpha\)</span> se les llama de escala y forma respectivamente.</p>
+\end{align*}\]</span></p>
+<p>a los parámetros <span class="math inline">\(\lambda\)</span> y <span class="math inline">\(\alpha\)</span> se les llama de escala y forma respectivamente.</p>
 <p>Bajo la transformación <span class="math inline">\(Y=\log X\)</span> si <span class="math inline">\(X\sim Weibull\)</span> se puede escribir <span class="math inline">\(Y=\mu+\sigma E\)</span> donde <span class="math inline">\(\mu=\frac{-\log \lambda}{\alpha}\)</span> y <span class="math inline">\(\sigma=\frac 1 \alpha\)</span> y <span class="math inline">\(E\sim\)</span> Valor Extremo Estándar, es decir: <span class="math display">\[f_e(w)=e^{w-e^w}, \quad w\in  \mathbb R\]</span> y <span class="math display">\[S_E(w)=e^{-e^w}\]</span></p>
 </section>
 <section id="log-normal" class="level3" data-number="1.2.3">
 <h3 data-number="1.2.3" class="anchored" data-anchor-id="log-normal"><span class="header-section-number">1.2.3</span> Log-normal</h3>
-<p><span class="math inline">\(X\)</span> es una LogNormal<span class="math inline">\((\mu,\sigma^2)\)</span> si <span class="math inline">\(Y=\log X\sim N(\mu,\sigma^2)\)</span>. En este caso: <span class="math display">\[\begin{align*}
+<p><span class="math inline">\(X\)</span> es una LogNormal<span class="math inline">\((\mu,\sigma^2)\)</span> si <span class="math inline">\(Y=\log X\sim N(\mu,\sigma^2)\)</span>. En este caso:</p>
+<p><span class="math display">\[\begin{align*}
     S(x)&amp;=1-\Phi\left(\frac{\log x-\mu}{\sigma}\right)\\
     h(x)&amp;=\frac{\phi(x)}{S(x)}
-\end{align*}\]</span> En general la tasa de riesgo <span class="math inline">\(h(x)\)</span> no es monótona, por ejemplo tomando <span class="math inline">\(\mu=0\)</span> y <span class="math inline">\(\sigma=1\)</span>:</p>
+\end{align*}\]</span></p>
+<p>En general la tasa de riesgo <span class="math inline">\(h(x)\)</span> no es monótona, por ejemplo tomando <span class="math inline">\(\mu=0\)</span> y <span class="math inline">\(\sigma=1\)</span>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>hLNormal <span class="ot">&lt;-</span> <span class="cf">function</span>(x,mu,sigma){</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dnorm</span>(x)<span class="sc">/</span><span class="fu">plnorm</span>(x,<span class="at">meanlog =</span> mu,<span class="at">sdlog =</span> sigma,<span class="at">lower.tail =</span> F)</span>
@@ -477,10 +484,12 @@ Ejemplo: Ejemplos de vida media
 <section id="log-logístico" class="level3" data-number="1.2.4">
 <h3 data-number="1.2.4" class="anchored" data-anchor-id="log-logístico"><span class="header-section-number">1.2.4</span> Log-logístico</h3>
 <p><span class="math inline">\(X\)</span> es una variable aleatoria log-logística si <span class="math inline">\(Y=\log X\sim\)</span> logístico: <span class="math display">\[f_Y(y)=\frac{e^{\frac{y-\mu}{\sigma}}}{\sigma\left[1+e^{\frac{y-\mu}{\sigma}}\right]^2},\qquad y \in \mathbb R\]</span></p>
-<p>con función de tasa y función de sobrevivencia: <span class="math display">\[\begin{align*}
+<p>con función de tasa y función de sobrevivencia:</p>
+<p><span class="math display">\[\begin{align*}
     h(x)&amp;=\frac{\alpha \lambda x^{\alpha-1}}{1+\lambda x^\alpha}\qquad \text{más flexible que Weibull}\\
     S(x)&amp;=\frac{1}{1+\lambda x^\alpha}
-\end{align*}\]</span> con <span class="math inline">\(\alpha=\frac 1 \sigma&gt;0\)</span>, <span class="math inline">\(\lambda=e^{-\mu/\sigma}\)</span></p>
+\end{align*}\]</span></p>
+<p>con <span class="math inline">\(\alpha=\frac 1 \sigma&gt;0\)</span>, <span class="math inline">\(\lambda=e^{-\mu/\sigma}\)</span></p>
 </section>
 <section id="gamma" class="level3" data-number="1.2.5">
 <h3 data-number="1.2.5" class="anchored" data-anchor-id="gamma"><span class="header-section-number">1.2.5</span> Gamma</h3>
@@ -490,8 +499,9 @@ Ejemplo: Ejemplos de vida media
 <h3 data-number="1.2.6" class="anchored" data-anchor-id="gompertz"><span class="header-section-number">1.2.6</span> Gompertz</h3>
 <p><span class="math display">\[\begin{align*}
     f(x)&amp;=\theta \exp(\alpha x)\exp \left(\frac \theta \alpha (1-e^{\alpha x})\right)\\
-    h(x)&amp;=\theta \exp(\alpha x)                                                                                                               
-\end{align*}\]</span> en este caso si <span class="math inline">\(\alpha&gt;1\)</span> y <span class="math inline">\(\theta&gt;0\)</span> entonces <span class="math inline">\(h\)</span> es monótona creciente. Además podemos generalizar levemente la ley anterior por medio del modelo de Makeham: <span class="math display">\[h(x)=\theta \exp(\alpha x)+\lambda\]</span></p>
+    h(x)&amp;=\theta \exp(\alpha x)
+\end{align*}\]</span></p>
+<p>en este caso si <span class="math inline">\(\alpha&gt;1\)</span> y <span class="math inline">\(\theta&gt;0\)</span> entonces <span class="math inline">\(h\)</span> es monótona creciente. Además podemos generalizar levemente la ley anterior por medio del modelo de Makeham: <span class="math display">\[h(x)=\theta \exp(\alpha x)+\lambda\]</span></p>
 <p>la cual permite que <span class="math inline">\(h\)</span> sea más flexible.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>hGompertz <span class="ot">&lt;-</span> <span class="cf">function</span>(x,alpha,theta,lambda){</span>
@@ -542,7 +552,7 @@ Ejemplo: Regresión Weibull
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Sea <span class="math inline">\(X\sim Weibull(\lambda, \alpha)\)</span>. Si <span class="math inline">\(Y=\log X\)</span> entonces <span class="math inline">\(Y=\mu+\sigma W\)</span> donde <span class="math inline">\(mu=-\frac{\log \lambda}{\alpha}\)</span>, <span class="math inline">\(\sigma=\frac 1 \alpha\)</span> y <span class="math inline">\(W\sim \text{VE-Estandard}\)</span>, es decir: <span class="math display">\[f_W(w)=\exp\left(w-e^w\right)\qquad w\in \mathbb R\]</span></p>
+<p>Sea <span class="math inline">\(X\sim Weibull(\lambda, \alpha)\)</span>. Si <span class="math inline">\(Y=\log X\)</span> entonces <span class="math inline">\(Y=\mu+\sigma W\)</span> donde <span class="math inline">\(\mu=-\frac{\log \lambda}{\alpha}\)</span>, <span class="math inline">\(\sigma=\frac 1 \alpha\)</span> y <span class="math inline">\(W\sim \text{VE-Standard}\)</span>, es decir: <span class="math display">\[f_W(w)=\exp\left(w-e^w\right)\qquad w\in \mathbb R\]</span></p>
 <p>Si <span class="math inline">\(Z_1=1\)</span> en el vector de covariables <span class="math inline">\(Z\)</span>, entonces bajo el modelo de regresión Weibull, se puede calcular:</p>
 <p><span class="math display">\[\begin{align*}
     S_Y(y|Z)&amp;=P[Y&gt;y|Z]=P\left[W&gt;\frac{y-\gamma^T Z}{\sigma}|Z\right]\\
@@ -561,13 +571,12 @@ S_X(x|Z)&amp;=\exp\left[-\exp\left[\frac{\log x-\gamma^T Z}{\sigma}\right]\right
 <ol type="a">
 <li>Modelos con tasa de riesgo multiplicativa:</li>
 </ol>
-<span class="math display">\[\begin{align}
-    h(x|Z)=h_0(x)c(\beta^T Z)
-    (\#eq:riesgom)
-\end{align}\]</span>
+<p><span id="eq-riesgom"><span class="math display">\[
+h(x|Z)=h_0(x)c(\beta^T Z)
+\tag{1.2}\]</span></span></p>
 <p>donde <span class="math inline">\(h_0\)</span> puede ser una función paramétrica o arbitraria y <span class="math inline">\(c\)</span> es una función arbitraria no-negativa. Cuando</p>
 <p><span class="math display">\[c(\beta^T Z)=\exp(\beta^T Z)\]</span></p>
-<p>al modelo en @ref(eq:riesgom) se le llama Modelo de Cox. Para este último modelo, si existe dos individuos con distinto conjunto de covariables <span class="math inline">\(Z_1\)</span> y <span class="math inline">\(Z_2\)</span>. Entonces:</p>
+<p>al modelo en <a href="#eq-riesgom">Equation&nbsp;<span>1.2</span></a> se le llama Modelo de Cox. Para este último modelo, si existe dos individuos con distinto conjunto de covariables <span class="math inline">\(Z_1\)</span> y <span class="math inline">\(Z_2\)</span>. Entonces:</p>
 <p><span class="math display">\[\frac{h(x|Z_1)}{h(x|Z_2)}=\frac{c(\beta^TZ_1)}{c(\beta^TZ_2)}\]</span></p>
 <p>lo cual es independiente de <span class="math inline">\(x\)</span> (propiedad de riesgos proporcionales). Además, note que</p>
 <span class="math display">\[\begin{align*}
@@ -602,17 +611,12 @@ por lo cual el modelo de regresión Weibull se puede expresar como modelo de tie
 <p>Si <span class="math inline">\(T\)</span> denota el tiempo de fallo o bien el tiempo hasta que ocurre un evento. En este contexto, puede ser que existan <span class="math inline">\(K\)</span> distintas causas del fallo. Por ejemplo, ante el evento de muerte a los 65 años, esta se puede deber a muchas causas.</p>
 <p>Sea <span class="math inline">\(X_i\)</span> el tiempo hasta que ocurra el <span class="math inline">\(i\)</span>-ésimo riesgo en competencia. Sea <span class="math inline">\(T=\min(X_1,\ldots,X_K)\)</span> y considere la variable <span class="math inline">\(\delta\)</span> que asume el valor <span class="math inline">\(i\)</span> si <span class="math inline">\(T=X_i\)</span>. Definimos la tasa del riesgo <span class="math inline">\(i\)</span>-ésimo como:</p>
 <p><span class="math display">\[\begin{align*}
-
    h_i(t)&amp;=\lim_{\Delta t\rightarrow 0}\frac{P[t\leq T &lt; t+\Delta t, \delta=i|T\geq t]}{\Delta t}\\
-
    &amp;=\lim_{\Delta t\rightarrow 0}\frac{P[t\leq X_i &lt; t+\Delta t|X_j\geq t, \quad j=1,\ldots,K]}{\Delta t}
-
 \end{align*}\]</span></p>
 <p>Entonces, si <span class="math inline">\(S(t_1,\ldots,t_K)=P[X_1&gt;t_1,\ldots,X_K&gt;t_K]\)</span></p>
 <p><span class="math display">\[\begin{align*}
-
    h_T(t)=\sum_{i=1}^Kh_i(t) \quad \text{y} \quad h_i(t)=\frac{-\frac{\delta}{\delta t_i}S(t_1,\ldots,t_k)|_{t_1=\cdots=t_K=t}}{S(t,\ldots,t)}
-
 \end{align*}\]</span></p>
 <p><strong>Caso especial</strong>: si los <span class="math inline">\(K\)</span> riesgos en competencia son independientes:</p>
 <p><span class="math display">\[h_i(t)=\frac{-\frac{\delta}{\delta t_i}\prod_{j=1}^KS_j(t_j)|_{t_1=\cdots=t_K=t}}{\prod_{j=1}^KS_j(t)}=\frac{-\frac{\delta}{\delta t_i}S_i(t_i)|_{t_i=t}}{S_i(t)}\]</span></p>
@@ -624,11 +628,8 @@ por lo cual el modelo de regresión Weibull se puede expresar como modelo de tie
 </ol>
 <p>Se calculan a través de la función de incidencia acumulativa:</p>
 <p><span class="math display">\[\begin{align*}
-
    F_i(t)&amp;=P[T\leq t, \delta = i]\\
-
    &amp;=\int_0^th_i(u)\exp[-H_T(u)]du
-
 \end{align*}\]</span></p>
 <p>donde el último término exponencial es la tasa acumulativa de todos los riesgos en competencia. Note que <span class="math inline">\(F_i\)</span> no es una distribución ya que:</p>
 <p><span class="math display">\[F_i(\infty)=P[\delta = i]\neq 1\]</span></p>
@@ -639,11 +640,8 @@ por lo cual el modelo de regresión Weibull se puede expresar como modelo de tie
 <p><span class="math display">\[S_i(t)=S(0,\ldots,0,\stackrel{\text{posicion }i}{t},0,\ldots,0)\]</span></p>
 <p>En el caso independiente:</p>
 <p><span class="math display">\[\begin{align*}
-
    S_i(t)&amp;=\exp(0)\cdots \exp\left(-\int_0^th_i(u)du\right)\cdots \exp(0)\\
-
    &amp;=\exp\left[-\int_0^t\frac{dF_i(u)}{S_T(u)}du\right]
-
 \end{align*}\]</span></p>
 <ol start="3" type="1">
 <li><em>Probabilidades parciales crudas</em>: Probabilidades de muerte en un contexto en donde algunos riesgos han sido eliminados. Sean <span class="math inline">\(J\)</span>: conjunto de causas o riesgos de interés. Defina:</li>
@@ -743,17 +741,11 @@ Ejemplo: Ejemplo de Censura
 <p><span class="math display">\[(T,\delta)\quad \text{donde} \quad T=\max\left(\min(X,C_r),C_\ell\right)\]</span></p>
 <p>y</p>
 <p><span class="math display">\[\begin{align*}
-
 \delta=\begin{cases}
-
 1 &amp; \text{si $T$ ocurre entre $C_\ell$ y $C_r$}\\
-
 0 &amp; \text{censura por la derecha}\\
-
 -1 &amp; \text{censura por la izquierda}
-
 \end{cases}
-
 \end{align*}\]</span></p>
 <p>Finalmente, la <em>censura por intervalo</em> se utiliza en estudios en donde un paciente o individuo en general es visitado periódicamente y lo único que se sabe es que el evento de interés ocurrió en un intervalo <span class="math inline">\((L_i,R_i]\)</span> cuyos extremos corresponde a los momentos de visitas consecutivas.</p>
 </section>

@@ -82,7 +82,9 @@ h(x)&=\lim_{\Delta x\rightarrow 0}\frac{F(x+\Delta x)-F(x)}{\Delta x}\cdot \frac
 &=\frac{f(x)}{S(x)}=-\frac{d}{dx}\log (S(x))
 \end{align*}
 
-Si la función de riesgo se acumula en el intervalo $[0,x]$, se obtiene la *función de riesgo acumulativo*: \begin{align*}
+Si la función de riesgo se acumula en el intervalo $[0,x]$, se obtiene la *función de riesgo acumulativo*: 
+
+\begin{align*}
 H(x)=\int_0^xh(u)du&=-\int_0^x \frac{d}{du}\log(S(u))du\\
 &=-\log(S(x)).
 \end{align*}
@@ -124,7 +126,9 @@ Para otro caso, ver ejemplo 2.2 del [@Klein2003a].
 
 En el caso en que $X$ es una variable aleatoria discreta: $$h(x_j)=P[X=x_j|X\geq x_j]=\frac{p(x_j)}{S(x_{j-1})}$$ para $j=1,2,\ldots$ y donde $S(x_0)=1$. Como $p(x_j)=S(x_{j-1})-S(x_j)$ entonces: $$h(x_j)=1-\frac{S(x_j)}{S(x_{j-1})}$$
 
-Además: \begin{align*}
+Además: 
+
+\begin{align*}
 S(x)&=\prod_{x_j\leq x}\frac{S(x_j)}{S(x_{j-1})}\\
 &=\prod_{x_j\leq x}[1-h(x_j)]
 \end{align*}
@@ -169,7 +173,9 @@ En muchas aplicaciones se requiere una estimación del tiempo esperado en que el
 \end{align*}
 :::
 
-Cuando $x=0$, entonces $mrl(0)=\int_0^{\infty}S(t)dt=EX$. Por otro lado se puede comprobar (Ejercicio): \begin{align*}
+Cuando $x=0$, entonces $mrl(0)=\int_0^{\infty}S(t)dt=EX$. Por otro lado se puede comprobar (Ejercicio): 
+
+\begin{align*}
     \text{Var}(X)=2\int_0^{\infty}tS(t)dt-\left[\int_0^{\infty}S(t)dt\right]^2
 \end{align*}
 
@@ -220,23 +226,31 @@ Además del caso Weibull, existen otras escogencias para modelar la función de 
     S(x)&=e^{-\lambda x}, \qquad x>0, \lambda>0\\
     f(x)&=\lambda e^{-\lambda x}\\
     h(x)&=\lambda
-\end{align*} Recuerden además que en el caso exponencial se cumple la propiedad de pérdida de memoria: $P(X\geq x+z|X\geq x)=P(X\geq z)$.
+\end{align*} 
+
+Recuerden además que en el caso exponencial se cumple la propiedad de pérdida de memoria: $P(X\geq x+z|X\geq x)=P(X\geq z)$.
 
 ### Weibull
 
 \begin{align*}
     S(x)&=e^{-\lambda x^\alpha}, \qquad x>0, \lambda>0, \alpha>0\\
     h(x)&=\lambda\alpha x^{\alpha-1}
-\end{align*} a los parámetros $\lambda$ y $\alpha$ se les llama de escala y forma respectivamente.
+\end{align*} 
+
+a los parámetros $\lambda$ y $\alpha$ se les llama de escala y forma respectivamente.
 
 Bajo la transformación $Y=\log X$ si $X\sim Weibull$ se puede escribir $Y=\mu+\sigma E$ donde $\mu=\frac{-\log \lambda}{\alpha}$ y $\sigma=\frac 1 \alpha$ y $E\sim$ Valor Extremo Estándar, es decir: $$f_e(w)=e^{w-e^w}, \quad w\in  \mathbb R$$ y $$S_E(w)=e^{-e^w}$$
 
 ### Log-normal
 
-$X$ es una LogNormal$(\mu,\sigma^2)$ si $Y=\log X\sim N(\mu,\sigma^2)$. En este caso: \begin{align*}
+$X$ es una LogNormal$(\mu,\sigma^2)$ si $Y=\log X\sim N(\mu,\sigma^2)$. En este caso: 
+
+\begin{align*}
     S(x)&=1-\Phi\left(\frac{\log x-\mu}{\sigma}\right)\\
     h(x)&=\frac{\phi(x)}{S(x)}
-\end{align*} En general la tasa de riesgo $h(x)$ no es monótona, por ejemplo tomando $\mu=0$ y $\sigma=1$:
+\end{align*} 
+
+En general la tasa de riesgo $h(x)$ no es monótona, por ejemplo tomando $\mu=0$ y $\sigma=1$:
 
 ```{r}
 hLNormal <- function(x,mu,sigma){
@@ -257,10 +271,14 @@ lo cual no necesariamente tiene sentido en muchas aplicaciones.
 
 $X$ es una variable aleatoria log-logística si $Y=\log X\sim$ logístico: $$f_Y(y)=\frac{e^{\frac{y-\mu}{\sigma}}}{\sigma\left[1+e^{\frac{y-\mu}{\sigma}}\right]^2},\qquad y \in \mathbb R$$
 
-con función de tasa y función de sobrevivencia: \begin{align*}
+con función de tasa y función de sobrevivencia: 
+
+\begin{align*}
     h(x)&=\frac{\alpha \lambda x^{\alpha-1}}{1+\lambda x^\alpha}\qquad \text{más flexible que Weibull}\\
     S(x)&=\frac{1}{1+\lambda x^\alpha}
-\end{align*} con $\alpha=\frac 1 \sigma>0$, $\lambda=e^{-\mu/\sigma}$
+\end{align*} 
+
+con $\alpha=\frac 1 \sigma>0$, $\lambda=e^{-\mu/\sigma}$
 
 ### Gamma
 
@@ -270,8 +288,10 @@ $$f(x)=\frac{\lambda^\beta x^{\beta-1}e^{-\lambda x}}{\Gamma(\beta)},\qquad \lam
 
 \begin{align*}
     f(x)&=\theta \exp(\alpha x)\exp \left(\frac \theta \alpha (1-e^{\alpha x})\right)\\
-    h(x)&=\theta \exp(\alpha x)                                                                                                               
-\end{align*} en este caso si $\alpha>1$ y $\theta>0$ entonces $h$ es monótona creciente. Además podemos generalizar levemente la ley anterior por medio del modelo de Makeham: $$h(x)=\theta \exp(\alpha x)+\lambda$$
+    h(x)&=\theta \exp(\alpha x) 
+\end{align*} 
+
+en este caso si $\alpha>1$ y $\theta>0$ entonces $h$ es monótona creciente. Además podemos generalizar levemente la ley anterior por medio del modelo de Makeham: $$h(x)=\theta \exp(\alpha x)+\lambda$$
 
 la cual permite que $h$ sea más flexible.
 
@@ -326,7 +346,7 @@ Conclusión: el efecto de las covariables $Z$ en la función de sobrevivencia de
 
 ::: callout-tip
 ## Ejemplo: Regresión Weibull
-Sea $X\sim Weibull(\lambda, \alpha)$. Si $Y=\log X$ entonces $Y=\mu+\sigma W$ donde $mu=-\frac{\log \lambda}{\alpha}$, $\sigma=\frac 1 \alpha$ y $W\sim \text{VE-Estandard}$, es decir:
+Sea $X\sim Weibull(\lambda, \alpha)$. Si $Y=\log X$ entonces $Y=\mu+\sigma W$ donde $\mu=-\frac{\log \lambda}{\alpha}$, $\sigma=\frac 1 \alpha$ y $W\sim \text{VE-Standard}$, es decir:
 $$f_W(w)=\exp\left(w-e^w\right)\qquad w\in \mathbb R$$
   
 Si $Z_1=1$ en el vector de covariables $Z$, entonces bajo el modelo de regresión Weibull, se puede calcular:
@@ -354,17 +374,15 @@ En este enfoque se trabaja con dos tipos de modelos:
 
 a.  Modelos con tasa de riesgo multiplicativa:
 
-```{=tex}
-\begin{align}
-    h(x|Z)=h_0(x)c(\beta^T Z)
-    (\#eq:riesgom)
-\end{align}
-```
+$$
+h(x|Z)=h_0(x)c(\beta^T Z)
+$${#eq-riesgom}
+
 donde $h_0$ puede ser una función paramétrica o arbitraria y $c$ es una función arbitraria no-negativa. Cuando
 
 $$c(\beta^T Z)=\exp(\beta^T Z)$$
 
-al modelo en \@ref(eq:riesgom) se le llama Modelo de Cox. Para este último modelo, si existe dos individuos con distinto conjunto de covariables $Z_1$ y $Z_2$. Entonces:
+al modelo en @eq-riesgom se le llama Modelo de Cox. Para este último modelo, si existe dos individuos con distinto conjunto de covariables $Z_1$ y $Z_2$. Entonces:
 
 $$\frac{h(x|Z_1)}{h(x|Z_2)}=\frac{c(\beta^TZ_1)}{c(\beta^TZ_2)}$$
 
@@ -401,19 +419,14 @@ Si $T$ denota el tiempo de fallo o bien el tiempo hasta que ocurre un evento. En
 Sea $X_i$ el tiempo hasta que ocurra el $i$-ésimo riesgo en competencia. Sea $T=\min(X_1,\ldots,X_K)$ y considere la variable $\delta$ que asume el valor $i$ si $T=X_i$. Definimos la tasa del riesgo $i$-ésimo como:
 
 \begin{align*}
-
    h_i(t)&=\lim_{\Delta t\rightarrow 0}\frac{P[t\leq T < t+\Delta t, \delta=i|T\geq t]}{\Delta t}\\
-
    &=\lim_{\Delta t\rightarrow 0}\frac{P[t\leq X_i < t+\Delta t|X_j\geq t, \quad j=1,\ldots,K]}{\Delta t}
-
 \end{align*}
 
 Entonces, si $S(t_1,\ldots,t_K)=P[X_1>t_1,\ldots,X_K>t_K]$
 
 \begin{align*}
-
    h_T(t)=\sum_{i=1}^Kh_i(t) \quad \text{y} \quad h_i(t)=\frac{-\frac{\delta}{\delta t_i}S(t_1,\ldots,t_k)|_{t_1=\cdots=t_K=t}}{S(t,\ldots,t)}
-
 \end{align*}
 
 **Caso especial**: si los $K$ riesgos en competencia son independientes:
@@ -431,11 +444,8 @@ En el contexto de riesgos en competencia, no siempre se utiliza la tasas de ries
 Se calculan a través de la función de incidencia acumulativa:
 
 \begin{align*}
-
    F_i(t)&=P[T\leq t, \delta = i]\\
-
    &=\int_0^th_i(u)\exp[-H_T(u)]du
-
 \end{align*}
 
 donde el último término exponencial es la tasa acumulativa de todos los riesgos en competencia. Note que $F_i$ no es una distribución ya que:
@@ -451,11 +461,8 @@ $$S_i(t)=S(0,\ldots,0,\stackrel{\text{posicion }i}{t},0,\ldots,0)$$
 En el caso independiente:
 
 \begin{align*}
-
    S_i(t)&=\exp(0)\cdots \exp\left(-\int_0^th_i(u)du\right)\cdots \exp(0)\\
-
    &=\exp\left[-\int_0^t\frac{dF_i(u)}{S_T(u)}du\right]
-
 \end{align*}
 
 3. *Probabilidades parciales crudas*: Probabilidades de muerte en un contexto en donde algunos riesgos han sido eliminados. Sean $J$: conjunto de causas o riesgos de interés. Defina:
@@ -568,17 +575,11 @@ $$(T,\delta)\quad \text{donde} \quad T=\max\left(\min(X,C_r),C_\ell\right)$$
 y
 
 \begin{align*}
-
 \delta=\begin{cases}
-
 1 & \text{si $T$ ocurre entre $C_\ell$ y $C_r$}\\
-
 0 & \text{censura por la derecha}\\
-
 -1 & \text{censura por la izquierda}
-
 \end{cases}
-
 \end{align*}
 
 Finalmente, la *censura por intervalo* se utiliza en estudios en donde un paciente o individuo en general es visitado periódicamente y lo único que se sabe es que el evento de interés ocurrió en un intervalo $(L_i,R_i]$ cuyos extremos corresponde a los momentos de visitas consecutivas.
