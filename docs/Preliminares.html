@@ -223,6 +223,7 @@ div.csl-indent {
   <li><a href="#censura-por-la-izquierda-o-de-intervalo" id="toc-censura-por-la-izquierda-o-de-intervalo" class="nav-link" data-scroll-target="#censura-por-la-izquierda-o-de-intervalo"><span class="toc-section-number">1.5.2</span>  Censura por la izquierda o de intervalo</a></li>
   <li><a href="#truncamiento-1" id="toc-truncamiento-1" class="nav-link" data-scroll-target="#truncamiento-1"><span class="toc-section-number">1.5.3</span>  Truncamiento</a></li>
   </ul></li>
+  <li><a href="#verosimilitud-bajo-censura-y-truncamiento" id="toc-verosimilitud-bajo-censura-y-truncamiento" class="nav-link" data-scroll-target="#verosimilitud-bajo-censura-y-truncamiento"><span class="toc-section-number">1.6</span>  Verosimilitud bajo censura y truncamiento</a></li>
   </ul>
 </nav>
     </div>
@@ -316,10 +317,10 @@ h(x)&amp;=\lim_{\Delta x\rightarrow 0}\frac{F(x+\Delta x)-F(x)}{\Delta x}\cdot \
 &amp;=\frac{f(x)}{S(x)}=-\frac{d}{dx}\log (S(x))
 \end{align*}\]</span></p>
 <p>Si la función de riesgo se acumula en el intervalo <span class="math inline">\([0,x]\)</span>, se obtiene la <em>función de riesgo acumulativo</em>:</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
 H(x)=\int_0^xh(u)du&amp;=-\int_0^x \frac{d}{du}\log(S(u))du\\
 &amp;=-\log(S(x)).
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>Entonces: <span id="eq-sobrevexp"><span class="math display">\[
 S(x)=\exp[-H(x)]=\exp\left[-\int_0^th(u)du\right]
 \tag{1.1}\]</span></span></p>
@@ -356,10 +357,10 @@ Ejemplo: Distribución Weibull
 <p>Para otro caso, ver ejemplo 2.2 del <span class="citation" data-cites="Klein2003a">(<a href="references.html#ref-Klein2003a" role="doc-biblioref">Klein and Moeschberger 2003</a>)</span>.</p>
 <p>En el caso en que <span class="math inline">\(X\)</span> es una variable aleatoria discreta: <span class="math display">\[h(x_j)=P[X=x_j|X\geq x_j]=\frac{p(x_j)}{S(x_{j-1})}\]</span> para <span class="math inline">\(j=1,2,\ldots\)</span> y donde <span class="math inline">\(S(x_0)=1\)</span>. Como <span class="math inline">\(p(x_j)=S(x_{j-1})-S(x_j)\)</span> entonces: <span class="math display">\[h(x_j)=1-\frac{S(x_j)}{S(x_{j-1})}\]</span></p>
 <p>Además:</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
 S(x)&amp;=\prod_{x_j\leq x}\frac{S(x_j)}{S(x_{j-1})}\\
 &amp;=\prod_{x_j\leq x}[1-h(x_j)]
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <div class="callout-tip callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -394,15 +395,16 @@ y <span class="math display">\[h(x)=
 <h3 data-number="1.1.3" class="anchored" data-anchor-id="vida-residual-media"><span class="header-section-number">1.1.3</span> Vida Residual Media</h3>
 <p>En muchas aplicaciones se requiere una estimación del tiempo esperado en que el evento va a ocurrir, dadas las condiciones actuales:</p>
 <div id="def-vidaresidual" class="theorem definition">
-<p><span class="theorem-title"><strong>Definition 1.3 (Vida Residual Media) </strong></span><span class="math display">\[\begin{align*}
+<p><span class="theorem-title"><strong>Definition 1.3 (Vida Residual Media) </strong></span>&nbsp;</p>
+<span class="math display">\[\begin{align*}
     mrl(x)&amp;=E[X-x|X&gt;x]=\frac{\int_x^{\infty}(t-x)f(t)dt}{S(x)}\\
     &amp;=\frac{\int_x^{\infty}S(t)dt}{S(x)}
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 </div>
 <p>Cuando <span class="math inline">\(x=0\)</span>, entonces <span class="math inline">\(mrl(0)=\int_0^{\infty}S(t)dt=EX\)</span>. Por otro lado se puede comprobar (Ejercicio):</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
     \text{Var}(X)=2\int_0^{\infty}tS(t)dt-\left[\int_0^{\infty}S(t)dt\right]^2
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>Además a partir de la función de sobrevivencia, también se puede calcular el cuantil correspondiente:</p>
 <div id="def-cuantilp" class="theorem definition">
 <p><span class="theorem-title"><strong>Definition 1.4 (Cuantil-p) </strong></span>Mínimo <span class="math inline">\(x_p\)</span> tal que <span class="math inline">\(S(x_p)\leq 1-p\)</span>: <span class="math display">\[\inf\{t:S(t)\leq 1-p\}\]</span> En el caso continuo: <span class="math inline">\(S(x_p)=1-p\)</span>.</p>
@@ -441,29 +443,29 @@ Ejemplo: Ejemplos de vida media
 <p>Además del caso Weibull, existen otras escogencias para modelar la función de sobrevivencia. Las más usuales son:</p>
 <section id="exponencial" class="level3" data-number="1.2.1">
 <h3 data-number="1.2.1" class="anchored" data-anchor-id="exponencial"><span class="header-section-number">1.2.1</span> Exponencial</h3>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
     S(x)&amp;=e^{-\lambda x}, \qquad x&gt;0, \lambda&gt;0\\
     f(x)&amp;=\lambda e^{-\lambda x}\\
     h(x)&amp;=\lambda
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>Recuerden además que en el caso exponencial se cumple la propiedad de pérdida de memoria: <span class="math inline">\(P(X\geq x+z|X\geq x)=P(X\geq z)\)</span>.</p>
 </section>
 <section id="weibull" class="level3" data-number="1.2.2">
 <h3 data-number="1.2.2" class="anchored" data-anchor-id="weibull"><span class="header-section-number">1.2.2</span> Weibull</h3>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
     S(x)&amp;=e^{-\lambda x^\alpha}, \qquad x&gt;0, \lambda&gt;0, \alpha&gt;0\\
     h(x)&amp;=\lambda\alpha x^{\alpha-1}
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>a los parámetros <span class="math inline">\(\lambda\)</span> y <span class="math inline">\(\alpha\)</span> se les llama de escala y forma respectivamente.</p>
 <p>Bajo la transformación <span class="math inline">\(Y=\log X\)</span> si <span class="math inline">\(X\sim Weibull\)</span> se puede escribir <span class="math inline">\(Y=\mu+\sigma E\)</span> donde <span class="math inline">\(\mu=\frac{-\log \lambda}{\alpha}\)</span> y <span class="math inline">\(\sigma=\frac 1 \alpha\)</span> y <span class="math inline">\(E\sim\)</span> Valor Extremo Estándar, es decir: <span class="math display">\[f_e(w)=e^{w-e^w}, \quad w\in  \mathbb R\]</span> y <span class="math display">\[S_E(w)=e^{-e^w}\]</span></p>
 </section>
 <section id="log-normal" class="level3" data-number="1.2.3">
 <h3 data-number="1.2.3" class="anchored" data-anchor-id="log-normal"><span class="header-section-number">1.2.3</span> Log-normal</h3>
 <p><span class="math inline">\(X\)</span> es una LogNormal<span class="math inline">\((\mu,\sigma^2)\)</span> si <span class="math inline">\(Y=\log X\sim N(\mu,\sigma^2)\)</span>. En este caso:</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
     S(x)&amp;=1-\Phi\left(\frac{\log x-\mu}{\sigma}\right)\\
     h(x)&amp;=\frac{\phi(x)}{S(x)}
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>En general la tasa de riesgo <span class="math inline">\(h(x)\)</span> no es monótona, por ejemplo tomando <span class="math inline">\(\mu=0\)</span> y <span class="math inline">\(\sigma=1\)</span>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>hLNormal <span class="ot">&lt;-</span> <span class="cf">function</span>(x,mu,sigma){</span>
@@ -485,10 +487,10 @@ Ejemplo: Ejemplos de vida media
 <h3 data-number="1.2.4" class="anchored" data-anchor-id="log-logístico"><span class="header-section-number">1.2.4</span> Log-logístico</h3>
 <p><span class="math inline">\(X\)</span> es una variable aleatoria log-logística si <span class="math inline">\(Y=\log X\sim\)</span> logístico: <span class="math display">\[f_Y(y)=\frac{e^{\frac{y-\mu}{\sigma}}}{\sigma\left[1+e^{\frac{y-\mu}{\sigma}}\right]^2},\qquad y \in \mathbb R\]</span></p>
 <p>con función de tasa y función de sobrevivencia:</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
     h(x)&amp;=\frac{\alpha \lambda x^{\alpha-1}}{1+\lambda x^\alpha}\qquad \text{más flexible que Weibull}\\
     S(x)&amp;=\frac{1}{1+\lambda x^\alpha}
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>con <span class="math inline">\(\alpha=\frac 1 \sigma&gt;0\)</span>, <span class="math inline">\(\lambda=e^{-\mu/\sigma}\)</span></p>
 </section>
 <section id="gamma" class="level3" data-number="1.2.5">
@@ -497,10 +499,10 @@ Ejemplo: Ejemplos de vida media
 </section>
 <section id="gompertz" class="level3" data-number="1.2.6">
 <h3 data-number="1.2.6" class="anchored" data-anchor-id="gompertz"><span class="header-section-number">1.2.6</span> Gompertz</h3>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
     f(x)&amp;=\theta \exp(\alpha x)\exp \left(\frac \theta \alpha (1-e^{\alpha x})\right)\\
     h(x)&amp;=\theta \exp(\alpha x)
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>en este caso si <span class="math inline">\(\alpha&gt;1\)</span> y <span class="math inline">\(\theta&gt;0\)</span> entonces <span class="math inline">\(h\)</span> es monótona creciente. Además podemos generalizar levemente la ley anterior por medio del modelo de Makeham: <span class="math display">\[h(x)=\theta \exp(\alpha x)+\lambda\]</span></p>
 <p>la cual permite que <span class="math inline">\(h\)</span> sea más flexible.</p>
 <div class="cell">
@@ -554,10 +556,10 @@ Ejemplo: Regresión Weibull
 <div class="callout-body-container callout-body">
 <p>Sea <span class="math inline">\(X\sim Weibull(\lambda, \alpha)\)</span>. Si <span class="math inline">\(Y=\log X\)</span> entonces <span class="math inline">\(Y=\mu+\sigma W\)</span> donde <span class="math inline">\(\mu=-\frac{\log \lambda}{\alpha}\)</span>, <span class="math inline">\(\sigma=\frac 1 \alpha\)</span> y <span class="math inline">\(W\sim \text{VE-Standard}\)</span>, es decir: <span class="math display">\[f_W(w)=\exp\left(w-e^w\right)\qquad w\in \mathbb R\]</span></p>
 <p>Si <span class="math inline">\(Z_1=1\)</span> en el vector de covariables <span class="math inline">\(Z\)</span>, entonces bajo el modelo de regresión Weibull, se puede calcular:</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
     S_Y(y|Z)&amp;=P[Y&gt;y|Z]=P\left[W&gt;\frac{y-\gamma^T Z}{\sigma}|Z\right]\\
     &amp;=\exp\left[-\exp\left[\frac{y-\gamma^T Z}{\sigma}\right]\right]
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>y cambiando a la variable original <span class="math inline">\(X\)</span>:</p>
 <p><span class="math display">\[\begin{align*}
 S_X(x|Z)&amp;=\exp\left[-\exp\left[\frac{\log x-\gamma^T Z}{\sigma}\right]\right]=\exp\left[-x^{1/\sigma}\exp\left[-\frac{\gamma^T Z}{\sigma}\right]\right]\\
@@ -610,14 +612,14 @@ por lo cual el modelo de regresión Weibull se puede expresar como modelo de tie
 <h2 data-number="1.4" class="anchored" data-anchor-id="modelos-de-riesgos-en-competencia"><span class="header-section-number">1.4</span> Modelos de riesgos en competencia</h2>
 <p>Si <span class="math inline">\(T\)</span> denota el tiempo de fallo o bien el tiempo hasta que ocurre un evento. En este contexto, puede ser que existan <span class="math inline">\(K\)</span> distintas causas del fallo. Por ejemplo, ante el evento de muerte a los 65 años, esta se puede deber a muchas causas.</p>
 <p>Sea <span class="math inline">\(X_i\)</span> el tiempo hasta que ocurra el <span class="math inline">\(i\)</span>-ésimo riesgo en competencia. Sea <span class="math inline">\(T=\min(X_1,\ldots,X_K)\)</span> y considere la variable <span class="math inline">\(\delta\)</span> que asume el valor <span class="math inline">\(i\)</span> si <span class="math inline">\(T=X_i\)</span>. Definimos la tasa del riesgo <span class="math inline">\(i\)</span>-ésimo como:</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
    h_i(t)&amp;=\lim_{\Delta t\rightarrow 0}\frac{P[t\leq T &lt; t+\Delta t, \delta=i|T\geq t]}{\Delta t}\\
    &amp;=\lim_{\Delta t\rightarrow 0}\frac{P[t\leq X_i &lt; t+\Delta t|X_j\geq t, \quad j=1,\ldots,K]}{\Delta t}
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>Entonces, si <span class="math inline">\(S(t_1,\ldots,t_K)=P[X_1&gt;t_1,\ldots,X_K&gt;t_K]\)</span></p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
    h_T(t)=\sum_{i=1}^Kh_i(t) \quad \text{y} \quad h_i(t)=\frac{-\frac{\delta}{\delta t_i}S(t_1,\ldots,t_k)|_{t_1=\cdots=t_K=t}}{S(t,\ldots,t)}
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p><strong>Caso especial</strong>: si los <span class="math inline">\(K\)</span> riesgos en competencia son independientes:</p>
 <p><span class="math display">\[h_i(t)=\frac{-\frac{\delta}{\delta t_i}\prod_{j=1}^KS_j(t_j)|_{t_1=\cdots=t_K=t}}{\prod_{j=1}^KS_j(t)}=\frac{-\frac{\delta}{\delta t_i}S_i(t_i)|_{t_i=t}}{S_i(t)}\]</span></p>
 <p>En el caso no independiente (ver Ejemplo 2.7 del Klein).</p>
@@ -627,10 +629,10 @@ por lo cual el modelo de regresión Weibull se puede expresar como modelo de tie
 <li><em>Probabilidades crudas</em>: probabilidad de muerte de un individuo bajo una causa en particular, cuando el resto de las causas también influyen en el comportamiento de sobrevivencia del individuo.</li>
 </ol>
 <p>Se calculan a través de la función de incidencia acumulativa:</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
    F_i(t)&amp;=P[T\leq t, \delta = i]\\
    &amp;=\int_0^th_i(u)\exp[-H_T(u)]du
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>donde el último término exponencial es la tasa acumulativa de todos los riesgos en competencia. Note que <span class="math inline">\(F_i\)</span> no es una distribución ya que:</p>
 <p><span class="math display">\[F_i(\infty)=P[\delta = i]\neq 1\]</span></p>
 <p>Al aplicar la función <span class="math inline">\(F_i\)</span> se puede calcular las probabilidades crudas directamente.</p>
@@ -639,10 +641,10 @@ por lo cual el modelo de regresión Weibull se puede expresar como modelo de tie
 </ol>
 <p><span class="math display">\[S_i(t)=S(0,\ldots,0,\stackrel{\text{posicion }i}{t},0,\ldots,0)\]</span></p>
 <p>En el caso independiente:</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
    S_i(t)&amp;=\exp(0)\cdots \exp\left(-\int_0^th_i(u)du\right)\cdots \exp(0)\\
    &amp;=\exp\left[-\int_0^t\frac{dF_i(u)}{S_T(u)}du\right]
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <ol start="3" type="1">
 <li><em>Probabilidades parciales crudas</em>: Probabilidades de muerte en un contexto en donde algunos riesgos han sido eliminados. Sean <span class="math inline">\(J\)</span>: conjunto de causas o riesgos de interés. Defina:</li>
 </ol>
@@ -740,13 +742,13 @@ Ejemplo: Ejemplo de Censura
 <p>Si por otro lado se combina la censura por la derecha y por la izquierda, se denomina <em>censura doble</em>, y en este caso los datos son:</p>
 <p><span class="math display">\[(T,\delta)\quad \text{donde} \quad T=\max\left(\min(X,C_r),C_\ell\right)\]</span></p>
 <p>y</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
 \delta=\begin{cases}
 1 &amp; \text{si $T$ ocurre entre $C_\ell$ y $C_r$}\\
 0 &amp; \text{censura por la derecha}\\
 -1 &amp; \text{censura por la izquierda}
 \end{cases}
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>Finalmente, la <em>censura por intervalo</em> se utiliza en estudios en donde un paciente o individuo en general es visitado periódicamente y lo único que se sabe es que el evento de interés ocurrió en un intervalo <span class="math inline">\((L_i,R_i]\)</span> cuyos extremos corresponde a los momentos de visitas consecutivas.</p>
 </section>
 <section id="truncamiento-1" class="level3" data-number="1.5.3">
@@ -755,51 +757,68 @@ Ejemplo: Ejemplo de Censura
 <p>Si <span class="math inline">\(Y_R=\infty\)</span> entonces X es observado <span class="math inline">\(\Leftrightarrow Y_L&lt;X\)</span> (<em>truncamiento por la izquierda</em>). Por ejemplo: (1) si se estudia la aparición de una enfermedad desde una fecha fija o (2) si se estudia el evento de muerte desde el inicio de un estudio clínico.</p>
 <p><strong>Nota</strong>: Muchas veces el truncamiento por la izquierda es acompañado con censura por la derecha.</p>
 <p>Para el caso de truncamiento por la derecha: si <span class="math inline">\(Y_L=0\)</span>: <span class="math inline">\(X\)</span> es observado <span class="math inline">\(\Leftrightarrow X\leq Y_R\)</span> (ver Ejemplo 3.8 del Klein).</p>
-<!-- ## Verosimilitud bajo censura y truncamiento -->
-<!-- Supuesto: tiempos de ocurrencia de evento y tiempos de censura son independientes. Cada tipo de censura/truncamiento aporta distintos factores a la verosimilitud completa de los datos: -->
-<!-- - Tiempo exacto del evento en estudio: $f(x)$ -->
-<!-- - Censura por la derecha: $P(X>C_r)=S(C_r)$ -->
-<!-- - Censura por la izquierda: $P(X<C_\ell)=1-S(C_\ell)$ -->
-<!-- - Censura en intervalo: $P(L<X<R)=S(L)-S(R)$ -->
-<!-- - Truncamiento por la izquierda: $f(x|X>Y_L)=\frac{f(x)}{S(Y_L)}$ -->
-<!-- - Truncamiento por la derecha: $f(x|X<Y_R)=\frac{f(x)}{1-S(Y_R)}$ -->
-<!-- Por lo tanto la verosimilitud con datos censurados se puede escribir como: -->
-<!-- $$L\propto \prod_{i \in D}f(x_i)\prod_{i \in R}S(C_r)\prod_{i \in L}\left(1-S(C_\ell)\right) \prod_{i \in I}[S(L_i)-S(R_i)]$$ -->
-<!-- donde  -->
-<!-- - $D$: conjunto de eventos observables. -->
-<!-- - $R$: conjunto de observaciones con censura por la derecha. -->
-<!-- - $L$: conjunto de observaciones con censura por la izquierda. -->
-<!-- - $I$: conjunto de observaciones con censura por intervalo. -->
-<!-- Para datos truncados por la izquierda y censurados por la derecha con intervalo de truncamiento $(Y_{L_i},Y_{R_i})$ independientes del $i$-ésimo momento de muerte, se reemplaza $f(x_i)$ y $S(C_i)$ ($C_i$: tiempo de censura $i$-ésima) por: -->
-<!-- $$\frac{f(x_i)}{S(Y_{L_i})-S(Y_{R_i})} \quad \text{y} \quad \frac{S(C_i)}{S(Y_{L_i})-S(Y_{R_i})}$$ -->
-<!-- En el caso en donde cada individuo tiene una distribución de riesgo distinta (Ejemplo: regresión): -->
-<!-- $$L\propto \prod_{i \in D}f_i(x_i)\prod_{i \in R}S_i(C_r)\prod_{i \in L}\left(1-S_i(C_\ell)\right) \prod_{i \in I}[S_i(L_i)-S_i(R_i)]$$ -->
-<!-- **Caso particular**: censura tipo I (por la derecha) -->
-<!-- Si $\delta=0$ (censura): -->
-<!-- \begin{align*} -->
-<!--    P[T,\delta=0]&=P[T=C_r|\delta=0]P[\delta=0]=P[\delta=0]\\ -->
-<!--    &=P[X>C_r]=S(C_r). -->
-<!-- \end{align*} -->
-<!-- Si $\delta = 1$: -->
-<!-- \begin{align*} -->
-<!--    P[T,\delta=1]&=P[T=X|\delta=1]P[\delta=1]\\ -->
-<!--    &=P[T=X|X\leq C_r]P[X\leq C_r]\\ -->
-<!--    &=\frac{f(t)}{1-S(C_r)}[1-S(C_r)]=f(t). -->
-<!-- \end{align*} -->
-<!-- Entonces el aporte de $T=t$ a la verosimilitud es: -->
-<!-- $$[f(t)]^\delta[S(t)]^{1-\delta}$$ -->
-<!-- Si se tiene una muestra aleatoria de pares $(T_i,\delta_i)$, para $i=1,\ldots,n$: -->
-<!-- $$L=\prod_{i=1}^nf(t_i)^{\delta_i}[S(t_i)]^{1-\delta_i}$$ -->
-<!-- Como $f(t_i)=h(t_i)S(t_i)$ entonces: -->
-<!-- $$L=\prod_{i=1}^nh(t_i)^{\delta_i}S(t_i)^{\delta_i}[S(t_i)]^{1-\delta_i}=\prod_{i=1}^nh(t_i)^{\delta_i}\exp(-H(t_i))$$ -->
-<!-- ```{example, label="ex8", name="Caso Exponencial"} -->
-<!-- Asuma que $X\sim \text{Exponencial}(\lambda)$ con $f(x)=\lambda \exp(-\lambda x)$, entonces: -->
-<!-- \begin{align*} -->
-<!--    L&=\prod_{i=1}^n [\lambda \exp(-\lambda t_i)]^{\delta_i}[\exp(-\lambda t_i)]^{(1-\delta_i)}\\ -->
-<!--    &=\lambda^r\exp(-\lambda S_T) -->
-<!-- \end{align*}   -->
-<!-- donde $r=\sum \delta_i$ (total de eventos observados) y $S_T=\sum_{i=1}^n t_i$ (total de tiempo en el estudio).  -->
-<!-- ``` -->
+</section>
+</section>
+<section id="verosimilitud-bajo-censura-y-truncamiento" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="verosimilitud-bajo-censura-y-truncamiento"><span class="header-section-number">1.6</span> Verosimilitud bajo censura y truncamiento</h2>
+<p>Supuesto: tiempos de ocurrencia de evento y tiempos de censura son independientes. Cada tipo de censura/truncamiento aporta distintos factores a la verosimilitud completa de los datos:</p>
+<ul>
+<li><p>Tiempo exacto del evento en estudio: <span class="math inline">\(f(x)\)</span></p></li>
+<li><p>Censura por la derecha: <span class="math inline">\(P(X&gt;C_r)=S(C_r)\)</span></p></li>
+<li><p>Censura por la izquierda: <span class="math inline">\(P(X&lt;C_\ell)=1-S(C_\ell)\)</span></p></li>
+<li><p>Censura en intervalo: <span class="math inline">\(P(L&lt;X&lt;R)=S(L)-S(R)\)</span></p></li>
+<li><p>Truncamiento por la izquierda: <span class="math inline">\(f(x|X&gt;Y_L)=\frac{f(x)}{S(Y_L)}\)</span></p></li>
+<li><p>Truncamiento por la derecha: <span class="math inline">\(f(x|X&lt;Y_R)=\frac{f(x)}{1-S(Y_R)}\)</span></p></li>
+</ul>
+<p>Por lo tanto la verosimilitud con datos censurados se puede escribir como:</p>
+<p><span class="math display">\[L\propto \prod_{i \in D}f(x_i)\prod_{i \in R}S(C_r)\prod_{i \in L}\left(1-S(C_\ell)\right) \prod_{i \in I}[S(L_i)-S(R_i)]\]</span></p>
+<p>donde</p>
+<ul>
+<li><p><span class="math inline">\(D\)</span>: conjunto de eventos observables.</p></li>
+<li><p><span class="math inline">\(R\)</span>: conjunto de observaciones con censura por la derecha.</p></li>
+<li><p><span class="math inline">\(L\)</span>: conjunto de observaciones con censura por la izquierda.</p></li>
+<li><p><span class="math inline">\(I\)</span>: conjunto de observaciones con censura por intervalo.</p></li>
+</ul>
+<p>Para datos truncados por la izquierda y censurados por la derecha con intervalo de truncamiento <span class="math inline">\((Y_{L_i},Y_{R_i})\)</span> independientes del <span class="math inline">\(i\)</span>-ésimo momento de muerte, se reemplaza <span class="math inline">\(f(x_i)\)</span> y <span class="math inline">\(S(C_i)\)</span> (<span class="math inline">\(C_i\)</span>: tiempo de censura <span class="math inline">\(i\)</span>-ésima) por:</p>
+<p><span class="math display">\[\frac{f(x_i)}{S(Y_{L_i})-S(Y_{R_i})} \quad \text{y} \quad \frac{S(C_i)}{S(Y_{L_i})-S(Y_{R_i})}\]</span></p>
+<p>En el caso en donde cada individuo tiene una distribución de riesgo distinta (Ejemplo: regresión):</p>
+<p><span class="math display">\[L\propto \prod_{i \in D}f_i(x_i)\prod_{i \in R}S_i(C_r)\prod_{i \in L}\left(1-S_i(C_\ell)\right) \prod_{i \in I}[S_i(L_i)-S_i(R_i)]\]</span></p>
+<p><strong>Caso particular</strong>: censura tipo I (por la derecha)</p>
+<p>Si <span class="math inline">\(\delta=0\)</span> (censura):</p>
+<p><span class="math display">\[\begin{align*}
+   P[T,\delta=0]&amp;=P[T=C_r|\delta=0]P[\delta=0]=P[\delta=0]\\
+   &amp;=P[X&gt;C_r]=S(C_r).
+\end{align*}\]</span></p>
+<p>Si <span class="math inline">\(\delta = 1\)</span>:</p>
+<p><span class="math display">\[\begin{align*}
+   P[T,\delta=1]&amp;=P[T=X|\delta=1]P[\delta=1]\\
+   &amp;=P[T=X|X\leq C_r]P[X\leq C_r]\\
+   &amp;=\frac{f(t)}{1-S(C_r)}[1-S(C_r)]=f(t).
+\end{align*}\]</span></p>
+<p>Entonces el aporte de <span class="math inline">\(T=t\)</span> a la verosimilitud es:</p>
+<p><span class="math display">\[[f(t)]^\delta[S(t)]^{1-\delta}\]</span></p>
+<p>Si se tiene una muestra aleatoria de pares <span class="math inline">\((T_i,\delta_i)\)</span>, para <span class="math inline">\(i=1,\ldots,n\)</span>:</p>
+<p><span class="math display">\[L=\prod_{i=1}^nf(t_i)^{\delta_i}[S(t_i)]^{1-\delta_i}\]</span></p>
+<p>Como <span class="math inline">\(f(t_i)=h(t_i)S(t_i)\)</span> entonces:</p>
+<p><span class="math display">\[L=\prod_{i=1}^nh(t_i)^{\delta_i}S(t_i)^{\delta_i}[S(t_i)]^{1-\delta_i}=\prod_{i=1}^nh(t_i)^{\delta_i}\exp(-H(t_i))\]</span></p>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Ejemplo: Caso Exponencial
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Asuma que <span class="math inline">\(X\sim \text{Exponencial}(\lambda)\)</span> con <span class="math inline">\(f(x)=\lambda \exp(-\lambda x)\)</span>, entonces:</p>
+<p><span class="math display">\[\begin{align*}
+   L&amp;=\prod_{i=1}^n [\lambda \exp(-\lambda t_i)]^{\delta_i}[\exp(-\lambda t_i)]^{(1-\delta_i)}\\
+   &amp;=\lambda^r\exp(-\lambda S_T)
+\end{align*}\]</span></p>
+<p>donde <span class="math inline">\(r=\sum \delta_i\)</span> (total de eventos observados) y <span class="math inline">\(S_T=\sum_{i=1}^n t_i\)</span> (total de tiempo en el estudio).</p>
+</div>
+</div>
 <!-- ## Laboratorio -->
 <!-- ### Ejemplos de datos de análisis de sobrevivencia -->
 <!-- ```{r} -->
@@ -851,7 +870,6 @@ Ejemplo: Ejemplo de Censura
 Klein, John P., and Melvin L. Moeschberger. 2003. <em><span class="nocase">Survival analysis : techniques for censored and truncated data</span></em>. Springer.
 </div>
 </div>
-</section>
 </section>
 
 </main> <!-- /main -->
