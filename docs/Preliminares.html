@@ -112,7 +112,7 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./references.html" rel="next">
+<link href="./estNP.html" rel="next">
 <link href="./index.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -184,6 +184,11 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./Preliminares.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Preliminares</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./estNP.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Estimación No-Paramétrica</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -738,7 +743,7 @@ Ejemplo: Ejemplo de Censura
 <h3 data-number="1.5.2" class="anchored" data-anchor-id="censura-por-la-izquierda-o-de-intervalo"><span class="header-section-number">1.5.2</span> Censura por la izquierda o de intervalo</h3>
 <p>Suponga que para un tiempo de vida <span class="math inline">\(X\)</span> existe un tiempo <span class="math inline">\(C_\ell\)</span> en donde el evento de riesgo ocurrió antes de que el sujeto fuera observado. En este caso el tiempo <span class="math inline">\(X\)</span> es observado si <span class="math inline">\(X&gt;C_\ell\)</span>. Al igual que en el caso de censura por la derecha, podemos usar la notación:</p>
 <p><span class="math display">\[(T,\epsilon)\]</span></p>
-<p>donde <span class="math inline">\(T=X\)</span> si <span class="math inline">\(\epsilon=1\)</span> (observado) y <span class="math inline">\(T=C_\ell\)</span> si <span class="math inline">\(\epsilon=0\)</span> (censurado), es decir <span class="math inline">\(T=\max(X,C_\ell)\)</span>. Por ejemplo, si un estudio busca cuantificar el riesgo de fumar marihuana por primera vez (Klein), un individuo tendría una censura por la izquierda si no recuerda la primera vez que fumó, pero afirma que sí la ha consumido antes del inicio del estudio.</p>
+<p>donde <span class="math inline">\(T=X\)</span> si <span class="math inline">\(\epsilon=1\)</span> (observado) y <span class="math inline">\(T=C_\ell\)</span> si <span class="math inline">\(\epsilon=0\)</span> (censurado), es decir <span class="math inline">\(T=\max(X,C_\ell)\)</span>. Por ejemplo, si un estudio busca cuantificar el riesgo de fumar marihuana por primera vez <span class="citation" data-cites="Klein2003a">(<a href="references.html#ref-Klein2003a" role="doc-biblioref">Klein and Moeschberger 2003</a>)</span>, un individuo tendría una censura por la izquierda si no recuerda la primera vez que fumó, pero afirma que sí la ha consumido antes del inicio del estudio.</p>
 <p>Si por otro lado se combina la censura por la derecha y por la izquierda, se denomina <em>censura doble</em>, y en este caso los datos son:</p>
 <p><span class="math display">\[(T,\delta)\quad \text{donde} \quad T=\max\left(\min(X,C_r),C_\ell\right)\]</span></p>
 <p>y</p>
@@ -756,7 +761,7 @@ Ejemplo: Ejemplo de Censura
 <p>El truncamiento ocurre cuando en un estudio solamente se incluyen y observan individuos cuyos eventos ocurren en <span class="math inline">\((Y_L,Y_R)\)</span>. Si el evento ocurriera fuera de ese intervalo entonces no se incluye en el estudio.</p>
 <p>Si <span class="math inline">\(Y_R=\infty\)</span> entonces X es observado <span class="math inline">\(\Leftrightarrow Y_L&lt;X\)</span> (<em>truncamiento por la izquierda</em>). Por ejemplo: (1) si se estudia la aparición de una enfermedad desde una fecha fija o (2) si se estudia el evento de muerte desde el inicio de un estudio clínico.</p>
 <p><strong>Nota</strong>: Muchas veces el truncamiento por la izquierda es acompañado con censura por la derecha.</p>
-<p>Para el caso de truncamiento por la derecha: si <span class="math inline">\(Y_L=0\)</span>: <span class="math inline">\(X\)</span> es observado <span class="math inline">\(\Leftrightarrow X\leq Y_R\)</span> (ver Ejemplo 3.8 del Klein).</p>
+<p>Para el caso de truncamiento por la derecha: si <span class="math inline">\(Y_L=0\)</span>: <span class="math inline">\(X\)</span> es observado <span class="math inline">\(\Leftrightarrow X\leq Y_R\)</span> (ver Ejemplo 3.8 del <span class="citation" data-cites="Klein2003a">(<a href="references.html#ref-Klein2003a" role="doc-biblioref">Klein and Moeschberger 2003</a>)</span>).</p>
 </section>
 </section>
 <section id="verosimilitud-bajo-censura-y-truncamiento" class="level2" data-number="1.6">
@@ -1013,8 +1018,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./references.html" class="pagination-link">
-        <span class="nav-page-text">Referencias</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./estNP.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Estimación No-Paramétrica</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -9,6 +9,7 @@ book:
   chapters:
     - index.qmd
     - Preliminares.qmd
+    - estNP.qmd
     - references.qmd
 
 bibliography: references.bib

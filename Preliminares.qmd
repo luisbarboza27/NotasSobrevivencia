@@ -558,7 +558,7 @@ Suponga que para un tiempo de vida $X$ existe un tiempo $C_\ell$ en donde el eve
 
 $$(T,\epsilon)$$
 
-donde $T=X$ si $\epsilon=1$ (observado) y $T=C_\ell$ si $\epsilon=0$ (censurado), es decir $T=\max(X,C_\ell)$. Por ejemplo, si un estudio busca cuantificar el riesgo de fumar marihuana por primera vez (Klein), un individuo tendría una censura por la izquierda si no recuerda la primera vez que fumó, pero afirma que sí la ha consumido antes del inicio del estudio.
+donde $T=X$ si $\epsilon=1$ (observado) y $T=C_\ell$ si $\epsilon=0$ (censurado), es decir $T=\max(X,C_\ell)$. Por ejemplo, si un estudio busca cuantificar el riesgo de fumar marihuana por primera vez [@Klein2003a], un individuo tendría una censura por la izquierda si no recuerda la primera vez que fumó, pero afirma que sí la ha consumido antes del inicio del estudio.
 
 Si por otro lado se combina la censura por la derecha y por la izquierda, se denomina *censura doble*, y en este caso los datos son:
 
@@ -585,7 +585,7 @@ Si $Y_R=\infty$ entonces X es observado $\Leftrightarrow Y_L<X$ (*truncamiento p
 
 **Nota**: Muchas veces el truncamiento por la izquierda es acompañado con censura por la derecha.
 
-Para el caso de truncamiento por la derecha: si $Y_L=0$: $X$ es observado $\Leftrightarrow X\leq Y_R$ (ver Ejemplo 3.8 del Klein).
+Para el caso de truncamiento por la derecha: si $Y_L=0$: $X$ es observado $\Leftrightarrow X\leq Y_R$ (ver Ejemplo 3.8 del [@Klein2003a]).
 
 ## Verosimilitud bajo censura y truncamiento
 
