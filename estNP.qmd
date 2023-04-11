@@ -14,14 +14,15 @@ $$\frac{d_i}{Y_i}$$
 
 El estimador estándar de $S(t)$ es el **estimador de Kaplan-Meier**. Si $t\leq t_{\text{max}}$:
 
+```{=tex}
 \begin{align*}
-	\hat S(t)=
-	\begin{cases}
-	1 & \text{si $\quad t<t_1$}\\
-	\prod_{t_i\leq t}\left[1-\frac{d_i}{Y_i}\right] & \text{si $\quad t_1\leq t$}.
-	\end{cases}
+    \hat S(t)=
+    \begin{cases}
+    1 & \text{si $\quad t<t_1$}\\
+    \prod_{t_i\leq t}\left[1-\frac{d_i}{Y_i}\right] & \text{si $\quad t_1\leq t$}.
+    \end{cases}
 \end{align*}
-
+```
 la cual es una función escalonada con respecto a $t$. La varianza de $\hat S(t)$ puede ser estimada a través de la fórmula de Greenwood:
 
 $$\hat V[\hat S(t)]=\hat S(t)^2\sum_{t_i\leq t}\frac{d_i}{Y_i(Y_i-d_i)}.$$
@@ -32,20 +33,21 @@ $$\hat H(t)=-\log[\hat S(t)].$$
 
 Una alternativa al estimador anterior es el **estimador de Nelson-Aalen** (Nelson-Altschuler):
 
+```{=tex}
 \begin{align*}
-	\hat H(t)=
-	\begin{cases}
-	0 & \text{si $\quad t<t_1$}\\
-	\sum_{t_i\leq t}\frac{d_i}{Y_i}  & \text{si $\quad t_1\leq t$}.
-	\end{cases}
+    \hat H(t)=
+    \begin{cases}
+    0 & \text{si $\quad t<t_1$}\\
+    \sum_{t_i\leq t}\frac{d_i}{Y_i}  & \text{si $\quad t_1\leq t$}.
+    \end{cases}
 \end{align*}
-
+```
 con varianza:
 
 $$\sigma_H^2(t)=\sum_{t_i\leq t}\frac{d_i}{Y_i^2}$$
 
 y usando el estimador anterior, podemos estimar la función de sobrevivencia con:
- 
+
 $$\hat S(t)=\exp[-\hat H(t)]$$
 
 Dos principales usos del estimador de Nelson-Aalen:
@@ -62,350 +64,434 @@ permite identificar un modelo exponencial sobre otras alternativas.
 
 **Nota:** ¿Qué pasa si $t>t_{\text{max}}$? (extrapolación). Soluciones:
 
-- $\hat S(t)=0$: el sobreviviente con el tiempo en estudio más grande muere inmediatamente.
-- $\hat S(t)=\hat S(t_{\text{max}})$: el mismo individuo nunca muere.
-- Completar $\hat S(t)$ con una exponencial que arranca con $\hat S(t_{\text{max}})$:
+-   $\hat S(t)=0$: el sobreviviente con el tiempo en estudio más grande muere inmediatamente.
+-   $\hat S(t)=\hat S(t_{\text{max}})$: el mismo individuo nunca muere.
+-   Completar $\hat S(t)$ con una exponencial que arranca con $\hat S(t_{\text{max}})$:
 
 $$\hat S(t)=\exp[t\log[\hat S(t_{\text{max}})]/t_{\text{max}}]$$
 
 **Ejercicio**: Si no hay censura, el estimador de Kaplan-Meier es la función de sobrevivencia empírica.
 
-<!-- ## Intervalos de confianza puntuales de $S(t)$ -->
+## Intervalos de confianza puntuales de $S(t)$
 
-<!-- Sea $\sigma_S(t)^2=\frac{\hat V[\hat S(t)]}{\hat S(t)^2}$. Si $t_0$ es un punto fijo de tiempo, definimos el intervalo de confianza lineal al $100\cdot (1-\alpha)$\% para $S(t_0)$ como:  -->
+Sea $\sigma_S(t)^2=\frac{\hat V[\hat S(t)]}{\hat S(t)^2}$. Si $t_0$ es un punto fijo de tiempo, definimos el intervalo de confianza lineal al $100\cdot (1-\alpha)$\% para $S(t_0)$ como:
 
-<!-- $$\hat S(t_0)\pm z_{1-\alpha/2}\sigma_S(t_0)\hat S(t_0)$$ -->
+$$\hat S(t_0)\pm z_{1-\alpha/2}\sigma_S(t_0)\hat S(t_0)$$
 
-<!-- Con el fin de mejorar el intervalo de confianza anterior, se puede considerar un intervalo de confianza sobre el logaritmo de $H(t)$: -->
+Con el fin de mejorar el intervalo de confianza anterior, se puede considerar un intervalo de confianza sobre el logaritmo de $H(t)$:
 
-<!-- $$\log \hat H(t_0)\pm z_{1-\alpha/2}\cdot \sigma^*(t_0)$$ -->
+$$\log \hat H(t_0)\pm z_{1-\alpha/2}\cdot \sigma^*(t_0)$$
 
-<!-- donde $\sigma^*(t_0)$ lo tenemos que calcular o bien aproximar. Como $\text{Var}(\hat S(t))\approx \hat S(t)^2\sigma_S(t)^2$ entonces por el método delta (Ejercicio): -->
+donde $\sigma^*(t_0)$ lo tenemos que calcular o bien aproximar. Como $\text{Var}(\hat S(t))\approx \hat S(t)^2\sigma_S(t)^2$ entonces por el método delta (Ejercicio):
 
-<!-- \begin{align*} -->
-<!-- 	\text{Var}[\log H(t_0)]&=\text{Var}[\log(-\log S(t_0))]\\ -->
-<!-- 	&\approx \frac{1}{[\log \hat S(t_0)]^2}\underbrace{\sum_{t_i\leq t}\frac{d_i}{Y_i(Y_i-d_i)}}_{\sigma_S(t_0)^2} -->
-<!-- \end{align*} -->
+\begin{align*}
+   \text{Var}[\log H(t_0)]&=\text{Var}[\log(-\log S(t_0))]\\
+   &\approx \frac{1}{[\log \hat S(t_0)]^2}\underbrace{\sum_{t_i\leq t}\frac{d_i}{Y_i(Y_i-d_i)}}_{\sigma_S(t_0)^2}
+\end{align*}
 
-<!-- entonces podemos aproximar el término $\sigma^*(t_0)$ y obtener: -->
+entonces podemos aproximar el término $\sigma^*(t_0)$ y obtener:
 
-<!-- $$\log \hat H(t_0)\pm z_{1-\alpha/2}\cdot \frac{1}{\log S(t_0)}\sigma_S(t_0)$$ -->
-<!-- es un intervalo de confianza al $100(1-\alpha)$'% para $\log[-\log S(t_0)]$. Entonces: -->
+$$\log \hat H(t_0)\pm z_{1-\alpha/2}\cdot \frac{1}{\log S(t_0)}\sigma_S(t_0)$$
 
-<!-- $$\hat H(t_0)\exp\left[\pm\frac{z_{1-\alpha/2}\sigma_S(t_0)}{\log S(t_0)}\right]$$ -->
+es un intervalo de confianza al $100(1-\alpha)$'% para $\log[-\log S(t_0)]$. Entonces:
 
-<!-- es un IC para $H(t_0)$ y $[\hat S(t_0)^{1/\theta},\hat S(t_0)^\theta]$ donde $\theta=\exp\left[\frac{z_{1-\alpha/2}\sigma_S(t_0)}{\log \hat S(t_0)}\right]$ es el IC al $100(1-\alpha)$\% para $S(t_0)$. -->
+$$\hat H(t_0)\exp\left[\pm\frac{z_{1-\alpha/2}\sigma_S(t_0)}{\log S(t_0)}\right]$$
 
-<!-- Otra posibilidad es utilizar la transformación $\text{arcsen}[\hat S(t_0)^{1/2}]$ -->
+es un IC para $H(t_0)$ y $[\hat S(t_0)^{1/\theta},\hat S(t_0)^\theta]$ donde $\theta=\exp\left[\frac{z_{1-\alpha/2}\sigma_S(t_0)}{\log \hat S(t_0)}\right]$ es el IC al $100(1-\alpha)$\% para $S(t_0)$.
 
-<!-- *Ventaja*: ambas posibilidades permiten que el IC de $S(t_0)$ no salga del intervalo $[0,1]$. -->
+Otra posibilidad es utilizar la transformación $\text{arcsen}[\hat S(t_0)^{1/2}]$
 
-<!-- Por otro lado, para muestras pequeñas, el IC con la transformación arcsen es más conservador, seguido del IC con transformación log-log y de último el lineal (sin transformación). -->
+*Ventaja*: ambas posibilidades permiten que el IC de $S(t_0)$ no salga del intervalo $[0,1]$.
 
-<!-- *Nota*: los intervalos log-log y arcsen no son simétricos. -->
+Por otro lado, para muestras pequeñas, el IC con la transformación arcsen es más conservador, seguido del IC con transformación log-log y de último el lineal (sin transformación).
 
-<!-- ## Bandas de confianza para $S(t)$ -->
+*Nota*: los intervalos log-log y arcsen no son simétricos.
 
-<!-- Queremos encontrar dos funciones aleatorias $L(t)$ y $U(t)$ tal que: -->
+## Bandas de confianza para $S(t)$
 
-<!-- $$P[L(t)\leq S(t)\leq U(t)\quad \forall t: t_L\leq t\leq t_U]=1-\alpha$$ -->
-<!-- A $[L(t),U(t)]$ le llamamos banda de confianza al $100(1-\alpha)$\% para $S(t)$. -->
+Queremos encontrar dos funciones aleatorias $L(t)$ y $U(t)$ tal que:
 
-<!-- Nair(1984) define el concepto de **Bandas EP**, las cuales son proporcionales a los intervalos puntuales. Sean $t_L<t_U$ tal que $t_L\geq \text{tiempo más pequeño del evento observado}$ y $t_U\leq \text{tiempo más grande del evento observado}$. Si $n$ es el tamaño de muestra, defina: -->
+$$P[L(t)\leq S(t)\leq U(t)\quad \forall t: t_L\leq t\leq t_U]=1-\alpha$$
 
-<!-- $$a_L=\frac{n\sigma_S(t_L)^2}{1+n\sigma_S(t_L)^2},\qquad a_U=\frac{n\sigma_S(t_U)^2}{1+n\sigma_S(t_U)^2}$$ -->
-<!-- y tomando $c_\alpha(a_L,a_U)$ de la tabla C.3 del Klein (también se puede obtener de R) entonces los tres tipos de Banda de confianza al $100(1-\alpha)$\% son: -->
+A $[L(t),U(t)]$ le llamamos banda de confianza al $100(1-\alpha)$\% para $S(t)$.
 
-<!-- - Lineal: $\hat S(t)\pm c_\alpha(a_L,a_U)\sigma_S(t)\hat S(t)$ -->
-<!-- - Log-log; $(\hat S(t)^{1/\theta},\hat S(t)^\theta)$, donde $\theta=\exp\left[\frac{c_\alpha(a_L,a_U)\sigma_S(t)}{\log[\hat S(t)]}\right]$. -->
-<!-- - Arcsen-raíz cuadrada: ver fórmula 4.4.4 del Klein. -->
+Nair(1984) define el concepto de **Bandas EP**, las cuales son proporcionales a los intervalos puntuales. Sean $t_L<t_U$ tal que $t_L\geq \text{tiempo más pequeño del evento observado}$ y $t_U\leq \text{tiempo más grande del evento observado}$. Si $n$ es el tamaño de muestra, defina:
 
-<!-- Otro método para construir las bandas es el de Hall y Wellner (1980) (ver Klein). -->
+$$a_L=\frac{n\sigma_S(t_L)^2}{1+n\sigma_S(t_L)^2},\qquad a_U=\frac{n\sigma_S(t_U)^2}{1+n\sigma_S(t_U)^2}$$
 
-<!-- *Notas*: -->
+y tomando $c_\alpha(a_L,a_U)$ de la tabla C.3 del Klein (también se puede obtener de R) entonces los tres tipos de Banda de confianza al $100(1-\alpha)$\% son:
 
-<!-- - Se pueden construir bandas de confianza para la tasa de riesgo acumulativo. -->
-<!-- - Igual que en el caso de los intervalos puntuales, los intervalos log-log y arcsen se comportan mejor bajo muestras pequeñas. -->
+- Lineal: $\hat S(t)\pm c_\alpha(a_L,a_U)\sigma_S(t)\hat S(t)$
 
-<!-- ## Estimación del tiempo medio y mediano de sobrevivencia -->
+- Log-log; $(\hat S(t)^{1/\theta},\hat S(t)^\theta)$, donde $\theta=\exp\left[\frac{c_\alpha(a_L,a_U)\sigma_S(t)}{\log[\hat S(t)]}\right]$.
 
-<!-- Recuerden que el tiempo medio de sobrevivencia es: -->
+- Arcsen-raíz cuadrada: ver fórmula 4.4.4 del Klein.
 
-<!-- $$\mu=\int_0^\infty S(t)dt$$ -->
+Otro método para construir las bandas es el de Hall y Wellner (1980) (ver Klein).
 
-<!-- Un estimador plug-in para este caso es: -->
+*Notas*:
 
-<!-- $$\hat \mu=\int_0^\infty\hat S(t)dt$$ -->
+- Se pueden construir bandas de confianza para la tasa de riesgo acumulativo.
 
-<!-- con el principal inconveniente de que el estimador de Kaplan-Meier está definido hasta un valor de $t$ máximo, llámese $\tau$ (tiempo de sobrevivencia máximo condicionado con respecto a censuras): -->
+- Igual que en el caso de los intervalos puntuales, los intervalos log-log y arcsen se comportan mejor bajo muestras pequeñas.
 
-<!-- $$\hat \mu_\tau=\int_0^\tau \hat S(t)dt$$ -->
+## Estimación del tiempo medio y mediano de sobrevivencia
 
-<!-- Normalmente $\tau$ es el tiempo de muerte máximo o bien el tiempo máximo de censura asumiendo muerte del individuo (corrección de Efron). Para el estimador $\mu_\tau$, su varianza es: -->
+Recuerden que el tiempo medio de sobrevivencia es:
 
-<!-- $$\hat V[\hat \mu_\tau]=\sum_{i=1}^D\left[\int_{t_i}^\tau \hat S(t)dt\right]^2\frac{d_i}{Y_i(Y_i-d_i)}$$ -->
-<!-- y un intervalo de confianza para $\mu$ al $100(1-\alpha)$\% es: -->
+$$\mu=\int_0^\infty S(t)dt$$
 
-<!-- $$\hat \mu_\tau\pm z_{1-\alpha/2}\sqrt{\hat V[\hat \mu_\tau]}$$ -->
-<!-- Por otro lado, también es posible estimar cuantiles de la distribución de $T$: -->
+Un estimador plug-in para este caso es:
 
-<!-- $$\text{cuantil-}p = x_p = \inf\{t:S(t)\leq 1-p\}$$ -->
+$$\hat \mu=\int_0^\infty\hat S(t)dt$$
 
-<!-- el cual puede ser estimado con un estimador plug-in: -->
+con el principal inconveniente de que el estimador de Kaplan-Meier está definido hasta un valor de $t$ máximo, llámese $\tau$ (tiempo de sobrevivencia máximo condicionado con respecto a censuras):
 
-<!-- $$\hat x_p = \inf\{t:\hat S(t)\leq 1-p\}$$ -->
+$$\hat \mu_\tau=\int_0^\tau \hat S(t)dt$$
 
-<!-- La varianza del estimador anterior se pueden estimar como: -->
+Normalmente $\tau$ es el tiempo de muerte máximo o bien el tiempo máximo de censura asumiendo muerte del individuo (corrección de Efron). Para el estimador $\mu_\tau$, su varianza es:
 
-<!-- $$\hat V(\hat x_p)=\frac{\hat V[\hat S(x_p)]}{\hat f(\hat x_p)^2}$$ -->
-<!-- donde $\hat f(\hat x_p)$ es un estimador no-paramétrico de $f(\hat x_p)$ (densidad). Por ejemplo, cualquier estimador por kernel de $f$ es una opción válida. -->
+$$\hat V[\hat \mu_\tau]=\sum_{i=1}^D\left[\int_{t_i}^\tau \hat S(t)dt\right]^2\frac{d_i}{Y_i(Y_i-d_i)}$$
 
-<!-- **Aproximación de Brookmeyer y Crowley** -->
+y un intervalo de confianza para $\mu$ al $100(1-\alpha)$\% es:
 
-<!-- $$-z_{1-\alpha/2}\leq \frac{\hat S(t)-(1-p)}{\hat V^{1/2}[\hat S(t)]}\leq z_{1-\alpha/2}$$ -->
-<!-- es un intervalo de confianza al $100(1-\alpha)$\% para $x_p$. Un IC para $x_p$ basado en la transformación log-log es: -->
+$$\hat \mu_\tau\pm z_{1-\alpha/2}\sqrt{\hat V[\hat \mu_\tau]}$$
 
-<!-- $$-z_{1-\alpha/2}\leq \frac{\log(-\log \hat S(t))-\log(-\log(1-p))}{\frac{\hat V^{1/2}(\hat S(t))}{\hat S(t)\log \hat S(t)}}\leq z_{1-\alpha/2}$$ -->
-<!-- *Nota*: caso más usual es $p=1/2$. -->
+Por otro lado, también es posible estimar cuantiles de la distribución de $T$:
 
-<!-- ## Estimadores para datos censurados por la derecha y truncados por la izquierda -->
+$$\text{cuantil-}p = x_p = \inf\{t:S(t)\leq 1-p\}$$
 
-<!-- Considere para cada individuo: -->
+el cual puede ser estimado con un estimador plug-in:
 
-<!-- - $L_j$: edad aleatoria de ingreso del individuo $j$-ésimo. -->
-<!-- - $T_j$: tiempo de ocurrencia del evento o censura para el individuo $j$-ésimo. -->
+$$\hat x_p = \inf\{t:\hat S(t)\leq 1-p\}$$
 
-<!-- Sea $t_1<t_2<\cdots <t_D$ los tiempos distintos de ocurrencia de los eventos. Además, siguiendo la notación de las secciones anteriores: -->
+La varianza del estimador anterior se pueden estimar como:
 
-<!-- - $d_i$: número de individuos que experimentan el evento o riesgo de interés en tiempo $t_i$ ($i=1,\ldots,D$) -->
-<!-- - $Y_i$: individuos en riesgo al tiempo $t_i$. -->
+$$\hat V(\hat x_p)=\frac{\hat V[\hat S(x_p)]}{\hat f(\hat x_p)^2}$$
 
-<!-- Con el fin de considerar esquemas de censura/truncamiento más amplios, se tienen las siguientes dos definiciones para la población en riesgo: -->
+donde $\hat f(\hat x_p)$ es un estimador no-paramétrico de $f(\hat x_p)$ (densidad). Por ejemplo, cualquier estimador por kernel de $f$ es una opción válida.
 
-<!-- - $Y_i$: número de individuos en el estudio en tiempo $0$ y que están en riesgo al momento $t_i$ (esquema sin truncamiento ) -->
-<!-- - $Y_i$: número de individuos en riesgo al momento $t_i$ tales que (Truncamiento por la izquierda): -->
+**Aproximación de Brookmeyer y Crowley**
 
-<!-- $$L_j<t_i \leq T_j$$ -->
+$$-z_{1-\alpha/2}\leq \frac{\hat S(t)-(1-p)}{\hat V^{1/2}[\hat S(t)]}\leq z_{1-\alpha/2}$$
 
-<!-- Todos los estimadores de $S(t)$ vistos hasta ahora aplican, pero la interpretación debe hacerse con cuidado. Por ejemplo, el estimador de KM se debe interpretar como el estimador de la función de sobrevivencia en tiempo $t$, pero condicional en $L=\min_j\{L_j\}$: -->
+es un intervalo de confianza al $100(1-\alpha)$\% para $x_p$. Un IC para $x_p$ basado en la transformación log-log es:
 
-<!-- $$P[X>t|X\geq L]=\frac{S(t)}{S(L)}$$ -->
-<!-- Por lo tanto el estimador de KM sería: -->
+$$-z_{1-\alpha/2}\leq \frac{\log(-\log \hat S(t))-\log(-\log(1-p))}{\frac{\hat V^{1/2}(\hat S(t))}{\hat S(t)\log \hat S(t)}}\leq z_{1-\alpha/2}$$
 
-<!-- $$\hat S_L(t)=\prod_{L\leq t_i \leq t}\left[1-\frac{d_i}{Y_i}\right]\qquad t\geq L$$ -->
-<!-- es decir se estaía incluyendo solamente eventos o censuras que estén después de $a$, donde $a=L$. -->
+*Nota*: caso más usual es $p=1/2$.
 
-<!-- *Nota*: las fórmulas de Nelson-Aalen y Greenwood también se pueden calcular en este contexto. -->
+## Estimadores para datos censurados por la derecha y truncados por la izquierda
 
-<!-- ## Estimadores para riesgos en competencia -->
+Considere para cada individuo:
 
-<!-- Para modelos de riesgos de competencia, el supuesto de independencia entre tiempos de eventos y censuras no necesariamente se puede aplicar. En este caso, definimos tres formas distintas de resumir información: -->
+- $L_j$: edad aleatoria de ingreso del individuo $j$-ésimo.
 
-<!-- **Estimador de Kaplan-Meier complementario** -->
+- $T_j$: tiempo de ocurrencia del evento o censura para el individuo $j$-ésimo.
 
-<!-- Si existieran dos riesgos en competencia (A y B) se define el estimador: -->
+Sea $t_1<t_2<\cdots <t_D$ los tiempos distintos de ocurrencia de los eventos. Además, siguiendo la notación de las secciones anteriores:
 
-<!-- $$\hat S_A(t)=KM(\text{ocurrencias de A como eventos, ocurrencias de B como censuras})$$ -->
-<!-- La idea se generaliza muy fácilmente para el caso de más de dos riesgos. Inconveniente: estimador muy crudo para generar interpretaciones apropiadas. -->
+- $d_i$: número de individuos que experimentan el evento o riesgo de interés en tiempo $t_i$ ($i=1,\ldots,D$)
 
+- $Y_i$: individuos en riesgo al tiempo $t_i$.
 
-<!-- **Función acumulada de incidencia** -->
+Con el fin de considerar esquemas de censura/truncamiento más amplios, se tienen las siguientes dos definiciones para la población en riesgo:
 
-<!-- Sea $t_1,\ldots,t_k$ los tiempos distintos en los cuales uno de los riesgos en competencia ocurre. En tiempo $t_i$ definimos lo siguiente: -->
+- $Y_i$: número de individuos en el estudio en tiempo $0$ y que están en riesgo al momento $t_i$ (esquema sin truncamiento )
 
-<!-- - $Y_i$: número de sujetos en riesgo al momento $t_i$. -->
-<!-- - $r_i$: número de sujetos que les ocurrió el evento de interés. -->
-<!-- - $d_i$: número de sujetos que les ocurrió otro evento que no sea el de interés (sin incluir censuras). -->
+- $Y_i$: número de individuos en riesgo al momento $t_i$ tales que (Truncamiento por la izquierda):
 
-<!-- La función acumulada de incidencia se define: -->
+$$L_j<t_i \leq T_j$$
 
-<!-- \begin{align*} -->
-<!-- 	CI(t)=\begin{cases} -->
-<!-- 	  0 & t\leq t_1\\ -->
-<!-- 	  \sum_{t_i\leq t}\underbrace{\left[\prod_{j=1}^{i-1}\frac{1-(d_j+r_j)}{Y_j}\right]}_{\hat S(t_{i-})}\frac{r_i}{Y_i} & t_1\leq t -->
-<!--   \end{cases} -->
-<!-- \end{align*} -->
+Todos los estimadores de $S(t)$ vistos hasta ahora aplican, pero la interpretación debe hacerse con cuidado. Por ejemplo, el estimador de KM se debe interpretar como el estimador de la función de sobrevivencia en tiempo $t$, pero condicional en $L=\min_j\{L_j\}$:
 
-<!-- donde $\hat S(t_{i-})$ es el estimador KM evaluado justo antes de $t_i$.  -->
+$$P[X>t|X\geq L]=\frac{S(t)}{S(L)}$$
 
-<!-- Interpretación de $CI(t)$: probabilidad de que el evento de interés ocurra antes de tiempo $t$ y antes de cualquier otro evento en competencia. La varianza de $CI(t)$ es: (fórmula 4.7.2-Klein) -->
+Por lo tanto el estimador de KM sería:
 
-<!-- $$V[CI(t)]=\sum_{t_i\leq t}\hat S(t_i)^2\left[(CI(t)-CI(t_i))^2\cdot \frac{r_i+d_i}{Y_i^2}+[1-2(CI(t)-CI(t_i))]\cdot \frac{r_i}{Y_i^2}\right]$$ -->
-<!-- de lo anterior es posible construir un intervalo de confianza al $100(1-\alpha)$\% para la incidencia acumulada: -->
+$$\hat S_L(t)=\prod_{L\leq t_i \leq t}\left[1-\frac{d_i}{Y_i}\right]\qquad t\geq L$$
 
-<!-- $$CI(t)\pm z_{1-\alpha/2}V[CI(t)]^{1/2}$$ -->
+es decir se estaía incluyendo solamente eventos o censuras que estén después de $a$, donde $a=L$.
 
-<!-- **Probabilidad condicional para un riesgo en competencia** -->
+*Nota*: las fórmulas de Nelson-Aalen y Greenwood también se pueden calcular en este contexto.
 
-<!-- Si $CI_k(t)$ es la función acumulada de incidencia para el riesgo $k$-ésimo y $CI_{k^c}(t)$ es la función acumulada de incidencia para todos los riesgos excepto el $k$-ésimo. Entonces definimos la probabilidad condicional para el riesgo $k$-ésimo como: -->
+## Estimadores para riesgos en competencia
 
-<!-- $$CP_k(t)=\frac{CI_k(t)}{1-CI_{k^c}(t)}$$ -->
-<!-- con varianza: -->
+Para modelos de riesgos de competencia, el supuesto de independencia entre tiempos de eventos y censuras no necesariamente se puede aplicar. En este caso, definimos tres formas distintas de resumir información:
 
-<!-- $$V[CP_k(t)]=\frac{\hat S(t_{-})^2}{[1-CI_{k^c}(t)]^4}\sum_{t_i\leq t}\frac{[1-CI_{k^c}(t_i)]^2r_i+CI_k(t_i)^2d_i}{Y_i^2}$$ -->
+**Estimador de Kaplan-Meier complementario**
 
-<!-- Interpretación de $CP_k(t)$: estima la probabilidad condicional de que el evento $k$ ocurre en tiempo $t$ si ninguna de las otras causas de riesgo han ocurrido antes de $t$. -->
+Si existieran dos riesgos en competencia (A y B) se define el estimador:
 
-<!-- ## Estimación de $S(t)$ para otros esquemas de censura -->
+$$\hat S_A(t)=KM(\text{ocurrencias de A como eventos, ocurrencias de B como censuras})$$
 
-<!-- ### Censura por la izquierda -->
+La idea se generaliza muy fácilmente para el caso de más de dos riesgos. Inconveniente: estimador muy crudo para generar interpretaciones apropiadas.
 
-<!-- En este caso los individuos experimentan el evento antes del periodo de observación, o bien lo experimentan dentro del periodo de observacion.  -->
+**Función acumulada de incidencia**
 
-<!-- Solución: redefinir el tiempo al fijar para $\tau>0$ (grande): -->
+Sea $t_1,\ldots,t_k$ los tiempos distintos en los cuales uno de los riesgos en competencia ocurre. En tiempo $t_i$ definimos lo siguiente:
 
-<!-- $$\tilde t=\tau-t$$ -->
-<!-- y transformar entonces la censura por la izquierda por censura por la derecha. Como estimadores se pueden utilizar KM o Nelson-Aalen con la particularidad de que: -->
+- $Y_i$: número de sujetos en riesgo al momento $t_i$.
 
-<!-- $$P[\tau-X>t]=P[X<t-\tau]$$ -->
+- $r_i$: número de sujetos que les ocurrió el evento de interés.
 
-<!-- ### Censura doble -->
+- $d_i$: número de sujetos que les ocurrió otro evento que no sea el de interés (sin incluir censuras).
 
-<!-- Para estimar $S(t)$ bajo este esquema, usaremos el *Proceso o algoritmo de Turnbull*: -->
+La función acumulada de incidencia se define:
 
-<!-- Suponga una grilla de puntos en el tiempo: -->
+\begin{align*}
+   CI(t)=\begin{cases}
+     0 & t\leq t_1\\
+     \sum_{t_i\leq t}\underbrace{\left[\prod_{j=1}^{i-1}\frac{1-(d_j+r_j)}{Y_j}\right]}_{\hat S(t_{i-})}\frac{r_i}{Y_i} & t_1\leq t
+  \end{cases}
+\end{align*}
 
-<!-- $$0=t_0<t_1<t_2<\cdots<t_m$$ -->
-<!-- y defina: -->
+donde $\hat S(t_{i-})$ es el estimador KM evaluado justo antes de $t_i$.
 
-<!-- - $d_i$: número de eventos en tiempo $t_i$ ($d_i$ puede ser 0). -->
-<!-- - $r_i$: número de individuos con censura por la derecha en tiempo $t_i$. -->
-<!-- - $c_i$: número de individuos con censura por la izquierda en tiempo $t_i$. -->
+Interpretación de $CI(t)$: probabilidad de que el evento de interés ocurra antes de tiempo $t$ y antes de cualquier otro evento en competencia. La varianza de $CI(t)$ es: (fórmula 4.7.2-Klein)
 
-<!-- **Algoritmo** -->
+$$V[CI(t)]=\sum_{t_i\leq t}\hat S(t_i)^2\left[(CI(t)-CI(t_i))^2\cdot \frac{r_i+d_i}{Y_i^2}+[1-2(CI(t)-CI(t_i))]\cdot \frac{r_i}{Y_i^2}\right]$$
 
-<!-- - Paso 0: Produzca un estimador inicial de $S(t)$ en cada $t_j$ llamado $S_0(t_j)$. Turnbull (1974): tome $S_0(t)=KM(t)$ ignorando la censura por la izquierda. -->
-<!-- - Paso $k+1$: -->
-<!--    - Con $S_k(\cdot)$ calcule, para $j\leq i$: -->
-<!-- $$p_{ij}=P[t_{j-1}<X\leq t_i|X\leq t_i]=\frac{S_k(t_{j-1})-S_k(t_j)}{1-S_k(t_i)}$$ -->
-<!--    - Estime el número de eventos en tiempo $t_i$ como: -->
-<!-- $$\hat d_i=d_i+\sum_{i=j}^m c_ip_{ij}$$ -->
-<!--    - Calcule el estimador KM con datos censurados por la derecha usando $\hat d_i$ como eventos y $r_i$ como censuras. -->
+de lo anterior es posible construir un intervalo de confianza al $100(1-\alpha)$\% para la incidencia acumulada:
 
-<!-- - Si $S_{k+1}(t)$ es cercano a $S_k(t)$ para todo $t_i$ entonces el proceso termina. -->
+$$CI(t)\pm z_{1-\alpha/2}V[CI(t)]^{1/2}$$
 
-<!-- ### Censura por intervalo -->
+**Probabilidad condicional para un riesgo en competencia**
 
-<!-- Para este esquema cada individuo tiene un intervalo $(L_i,R_i]$ en donde el evento ocurre, pero el tiempo exacto es desconocido ($i=1,\ldots,n$) -->
+Si $CI_k(t)$ es la función acumulada de incidencia para el riesgo $k$-ésimo y $CI_{k^c}(t)$ es la función acumulada de incidencia para todos los riesgos excepto el $k$-ésimo. Entonces definimos la probabilidad condicional para el riesgo $k$-ésimo como:
 
-<!-- Para estimar la función de sobrevivencia, se utiliza una modificación del algoritmo de Turnbull. Considere una grilla de tiempos $0=\tau_0<\tau_1<\cdots<\tau_m$ que incluyen a $L_i,R_i$ para todo $i=1,\ldots,n$.  -->
+$$CP_k(t)=\frac{CI_k(t)}{1-CI_{k^c}(t)}$$
 
-<!-- Para la observación $i$-ésima, defina: -->
+con varianza:
 
-<!-- \begin{align*} -->
-<!-- \alpha_{ij}= -->
-<!-- 	\begin{cases} -->
-<!-- 		1 & \text{si } (\tau_{j-1},\tau_j]\subseteq (L_i,R_i] \\ -->
-<!-- 		0 & \text{otro caso} -->
-<!-- 	\end{cases} -->
-<!-- \end{align*} -->
+$$V[CP_k(t)]=\frac{\hat S(t_{-})^2}{[1-CI_{k^c}(t)]^4}\sum_{t_i\leq t}\frac{[1-CI_{k^c}(t_i)]^2r_i+CI_k(t_i)^2d_i}{Y_i^2}$$
 
-<!-- y dado un estimador inicial de $S(\tau_j)$: -->
+Interpretación de $CP_k(t)$: estima la probabilidad condicional de que el evento $k$ ocurre en tiempo $t$ si ninguna de las otras causas de riesgo han ocurrido antes de $t$.
 
-<!-- - Paso 1: Calcule la probabilidad de que el evento ocurre en tiempo $\tau_j$: -->
+## Estimación de $S(t)$ para otros esquemas de censura
 
-<!-- $$p_j=S(\tau_{j-1})-S(\tau_j) \qquad j=1,\ldots,m$$ -->
+### Censura por la izquierda
 
-<!-- - Paso 2: Estime el número de eventos al tiempo $\tau_i$: -->
+En este caso los individuos experimentan el evento antes del periodo de observación, o bien lo experimentan dentro del periodo de observacion.
 
-<!-- $$d_i=\sum_{i=1}^n \frac{\alpha_{ij}p_j}{\sum_k \alpha_{ik}p_k}$$ -->
+Solución: redefinir el tiempo al fijar para $\tau>0$ (grande):
 
-<!-- - Paso 3: Calcule una estimación de los sujetos en riesgo al tiempo $\tau_i$: -->
+$$\tilde t=\tau-t$$
 
-<!-- $$Y_i=\sum_{k=i}^m d_k$$ -->
+y transformar entonces la censura por la izquierda por censura por la derecha. Como estimadores se pueden utilizar KM o Nelson-Aalen con la particularidad de que:
 
-<!-- - Paso 4: Calcule el estimador KM con los datos en los pasos 3 y 4 hasta que haya convergencia de $S$ uniformemente en $\tau_i$. -->
+$$P[\tau-X>t]=P[X<t-\tau]$$
 
+### Censura doble
+
+Para estimar $S(t)$ bajo este esquema, usaremos el *Proceso o algoritmo de Turnbull*:
+
+Suponga una grilla de puntos en el tiempo:
+
+$$0=t_0<t_1<t_2<\cdots<t_m$$
+
+y defina:
+
+- $d_i$: número de eventos en tiempo $t_i$ ($d_i$ puede ser 0).
+
+- $r_i$: número de individuos con censura por la derecha en tiempo $t_i$.
+
+- $c_i$: número de individuos con censura por la izquierda en tiempo $t_i$.
+
+**Algoritmo**
+
+- Paso 0: Produzca un estimador inicial de $S(t)$ en cada $t_j$ llamado $S_0(t_j)$. Turnbull (1974): tome $S_0(t)=KM(t)$ ignorando la censura por la izquierda.
+
+- Paso $k+1$:
+
+   - Con $S_k(\cdot)$ calcule, para $j\leq i$:
+
+$$p_{ij}=P[t_{j-1}<X\leq t_i|X\leq t_i]=\frac{S_k(t_{j-1})-S_k(t_j)}{1-S_k(t_i)}$$
+
+   - Estime el número de eventos en tiempo $t_i$ como:
+
+$$\hat d_i=d_i+\sum_{i=j}^m c_ip_{ij}$$
+
+   - Calcule el estimador KM con datos censurados por la derecha usando $\hat d_i$ como eventos y $r_i$ como censuras.
+
+- Si $S_{k+1}(t)$ es cercano a $S_k(t)$ para todo $t_i$ entonces el proceso termina.
+
+### Censura por intervalo
+
+Para este esquema cada individuo tiene un intervalo $(L_i,R_i]$ en donde el evento ocurre, pero el tiempo exacto es desconocido ($i=1,\ldots,n$)
+
+Para estimar la función de sobrevivencia, se utiliza una modificación del algoritmo de Turnbull. Considere una grilla de tiempos $0=\tau_0<\tau_1<\cdots<\tau_m$ que incluyen a $L_i,R_i$ para todo $i=1,\ldots,n$.
+
+Para la observación $i$-ésima, defina:
+
+\begin{align*}
+\alpha_{ij}=
+   \begin{cases}
+       1 & \text{si } (\tau_{j-1},\tau_j]\subseteq (L_i,R_i] \\
+       0 & \text{otro caso}
+   \end{cases}
+\end{align*}
+
+y dado un estimador inicial de $S(\tau_j)$:
+
+- Paso 1: Calcule la probabilidad de que el evento ocurre en tiempo $\tau_j$:
+
+$$p_j=S(\tau_{j-1})-S(\tau_j) \qquad j=1,\ldots,m$$
+
+- Paso 2: Estime el número de eventos al tiempo $\tau_i$:
+
+$$d_i=\sum_{i=1}^n \frac{\alpha_{ij}p_j}{\sum_k \alpha_{ik}p_k}$$
+
+- Paso 3: Calcule una estimación de los sujetos en riesgo al tiempo $\tau_i$:
+
+$$Y_i=\sum_{k=i}^m d_k$$
+
+- Paso 4: Calcule el estimador KM con los datos en los pasos 3 y 4 hasta que haya convergencia de $S$ uniformemente en $\tau_i$.
 
 <!-- ## Laboratorio -->
 
 <!-- ### Ajustes básicos -->
 
 <!-- Paquete base de análisis de sobrevivencia: *survival*. Junto con el paquete KMsurv que contiene los datos del libro de Klein y M. -->
+
 <!-- ```{r} -->
+
 <!-- library(survival) -->
+
 <!-- library(KMsurv) -->
+
 <!-- library(survMisc) -->
+
 <!-- library(tidyverse) -->
+
 <!-- ``` -->
 
 <!-- Para ilustrar el cálculo de los estimadores no paramétricos de sobrevivencia con el paquete survival, trabajamos con la base de la sección 1.2 del Klein: Estudio clínico de la droga 6-MP vs un placebo en 42 niños con leucemia aguda. Todos los pacientes presentaban una remisión en el cańcer a nivel de la médula ósea, gracias a un tratamiento con prednisona. A los pacientes se agruparon en pares y se les administró 6-MP o el placebo y se monitoreó hasta que la leucemia regresaba o hasta el fin del estudio (meses). A continuación un vistazo de los datos: -->
+
 <!-- ```{r} -->
+
 <!-- data("drug6mp") -->
+
 <!-- head(drug6mp) -->
+
 <!-- ``` -->
 
 <!-- Para una explicación de las variables ver la ayuda de drug6mp o bien la tabla 1.1 en el Klein. Noten que la última columna corresponde al indicador del evento (recaída de los pacientes) para el grupo que se le administró el tratamiento (6-MP). -->
 
 <!-- Como un primer ejercicio, se calcula el estimador de Kaplan-Meier para el grupo tratamiento (6_MP). Para eso primero calculamos el objeto Surv que contiene los tiempos de ocurrencia junto con las censuras: -->
+
 <!-- ```{r} -->
+
 <!-- surv_6MP <- Surv(time = drug6mp$t2,event = drug6mp$relapse) -->
+
 <!-- surv_6MP -->
+
 <!-- ``` -->
+
 <!-- y después calculamos el estimador de Kaplan-Meier: -->
+
 <!-- ```{r} -->
+
 <!-- KM_6MP <- survfit(surv_6MP~1) -->
+
 <!-- summary(KM_6MP) -->
+
 <!-- ``` -->
 
 <!-- Comparen esta tabla con Tabla 4.1A del Klein. La quinta columna con el error estándar corresponde a $\sigma_S(t)$. Un gráfico de $\hat S(t)$ es: -->
+
 <!-- ```{r} -->
+
 <!-- plot(KM_6MP) -->
+
 <!-- ``` -->
 
 <!-- Por default, los intervalos de confianza se calculan sobre el logaritmo de $S(t)$. Para calcular los intervalos con la transformación log-log al 95% de confianza: -->
 
 <!-- ```{r} -->
+
 <!-- KM_6MP_loglog <- survfit(surv_6MP~1,conf.type='log-log',) -->
+
 <!-- summary(KM_6MP_loglog) -->
+
 <!-- ``` -->
 
 <!-- Asimismo se puede calcular bandas de confianza a través del paquete km.ci: -->
+
 <!-- ```{r} -->
+
 <!-- library(km.ci) -->
+
 <!-- bandasEP_KM_6MP <- km.ci(KM_6MP,conf.level = 0.95,tl = NA,tu = NA, -->
+
 <!--                          method = 'epband') -->
+
 <!-- bandasHall_KM_6MP <- km.ci(KM_6MP,conf.level = 0.95,tl = NA,tu = NA, -->
+
 <!--                          method = 'hall-wellner') -->
 
 <!-- plot(bandasEP_KM_6MP,lty = 2,lwd=2) -->
+
 <!-- lines(bandasHall_KM_6MP,lty = 3,lwd=2) -->
+
 <!-- lines(KM_6MP_loglog,lty=1,lwd=2) -->
+
 <!-- lines(KM_6MP_loglog,lty=4,lwd=2,conf.int = T) -->
+
 <!-- linetype<-c(1, 2, 3, 4) -->
+
 <!-- legend(0, .4, c("Kaplan-Meier", "EP","Hall-Wellner", "Pointwise"), -->
+
 <!--        lty=(linetype)) -->
+
 <!-- ``` -->
 
 <!-- y también pueden utilizar la función ci del paquete survMisc. -->
 
 <!-- También se puede estimar $S(t)$ a través del estimador de Nelson-Aalen: -->
+
 <!-- ```{r} -->
+
 <!-- NA_6MP <- survfit(coxph(surv_6MP~1), type="aalen") -->
+
 <!-- summary(NA_6MP) -->
+
 <!-- ``` -->
 
 <!-- o bien se puede calcular el riesgo acumulado $H$ y su varianza a través de la función sf de survMisc: -->
+
 <!-- ```{r} -->
+
 <!-- t_6MP <- ten(surv_6MP) -->
+
 <!-- H_6MP <- sf(x = t_6MP$e,n = t_6MP$n,what = 'H') -->
+
 <!-- Hv_6MP <- sf(x = t_6MP$e,n = t_6MP$n,what = 'Hv') -->
+
 <!-- Tabla4_2 <- data.frame(tiempo=t_6MP$t,d=t_6MP$e,H_6MP,Hv_6MP) -->
+
 <!-- Tabla4_2 <- Tabla4_2 %>% filter(d>0) %>% mutate(ErrorS=sqrt(Hv_6MP)) -->
+
 <!-- round(Tabla4_2,4) -->
+
 <!-- ``` -->
 
 <!-- Comparen este resultado con la Tabla 4.2 del Klein. -->
 
 <!-- Otro aspecto a calcular es el tiempo medio de sobrevivencia de este grupo de pacientes. Para ello usamos la función _print_ del paquete _survival_: -->
+
 <!-- ```{r} -->
+
 <!-- print(KM_6MP,print.rmean = T) -->
+
 <!-- ``` -->
 
 <!-- y al igual que en el Klein obtenemos un valor estimado de 23.29 días usando corrección de Efron, y un error estándar de 2.83 días. La mediana del tiempo de sobrevivencia usando la transformación log-log se puede obtener también con: -->
 
 <!-- ```{r} -->
+
 <!-- quantile(KM_6MP_loglog,probs = c(0.5,0.15)) -->
+
 <!-- ``` -->
 
 <!-- en donde también calculamos el cuantil 0.15 de la misma distribución junto con sus intervalos de confianza usando la definición de Klein. Note que para el caso de la mediana, la intersección con el límite superior del intervalo de confianza es nula, por eso nos da un NA. -->
@@ -413,27 +499,39 @@ $$\hat S(t)=\exp[t\log[\hat S(t_{\text{max}})]/t_{\text{max}}]$$
 <!-- Para ilustrar el esquema de truncamiento por la izquierda y censura por la derecha, usaremos los datos de la sección 1.16 del Klein, en donde se tiene la edad de muerte (en meses) o su salida de 462 ancianos en un centro de retiro en California y además la edad cuando entraron al mismo centro. Los datos deben ser truncados para medir la mortalidad dentro del centro de retiro, y no debido a otras causas. Un vistazo de los datos es el siguiente: -->
 
 <!-- ```{r} -->
+
 <!-- data("channing") -->
+
 <!-- head(channing) -->
+
 <!-- ``` -->
 
 <!-- Note que la variable _ageentry_ es la edad de entrada en meses a la casa de retiro y _age_ es la edad de muerte o censura por la derecha. De nuevo el truncamiento por la izquierda es la mejor opción cuando se tiene un subconjunto de edades más limitado como el que se tiene en esta muestra. Los estimadores de Kaplan-Meier condicionados en 68 y 80 años para hombres y mujeres se ilustra a continuación (transformando los datos a datos anuales): -->
 
 <!-- ```{r} -->
+
 <!-- channing_Years <- channing %>% mutate(ageentry=ageentry/12,age=age/12) -->
+
 <!-- attach(channing_Years) -->
+
 <!-- KM_Chan_68 <- survfit(Surv(time = ageentry,time2 = age,event = death, -->
+
 <!--                            type = 'counting')~gender,start.time=68, -->
+
 <!--                       data=channing_Years) -->
 
 <!-- plot(KM_Chan_68,conf.int = F,col = c(1,2)) -->
 
 <!-- KM_Chan_80 <- survfit(Surv(time = ageentry,time2 = age,event = death, -->
+
 <!--                            type = 'counting')~gender,start.time=80, -->
+
 <!--                       data=channing_Years) -->
 
 <!-- lines(KM_Chan_80,conf.int = F,col = c(3,4)) -->
+
 <!-- legend(90, 1, c("Male-68", "Female-68","Male-80", "Female-80"), col=1:4,lty=1) -->
+
 <!-- ``` -->
 
 <!-- ### Riesgos en competencia -->
@@ -441,33 +539,53 @@ $$\hat S(t)=\exp[t\log[\hat S(t_{\text{max}})]/t_{\text{max}}]$$
 <!-- 1384 Pacientes con gammapatía monoclonal de significado incierto (MGUS) a los cuales se les hace un seguimiento hasta la aparición de neoplasia de células plasmáticas (PCM) o la muerte (en meses). Por ejemplo, el estimador KM de la sobrevivencia (riesgo de muerte) de los pacientes clasificado por sexo es: -->
 
 <!-- ```{r} -->
+
 <!-- mfit1 <- survfit(Surv(futime, death) ~ sex, data=mgus2) -->
+
 <!-- plot(mfit1, col=c(1,2), xscale=12, mark.time=FALSE, lwd=2, -->
+
 <!--      xlab="Years post diagnosis", ylab="Survival") -->
+
 <!-- legend("topright", c("female", "male"), col=1:2, lwd=2, bty='n') -->
+
 <!-- ``` -->
 
 <!-- Considere dos riesgos en competencia: PCM y muerte no relacionada a PCM.  -->
 
 <!-- ```{r} -->
+
 <!-- mgus3 <- mgus2 %>% mutate(etime=ifelse(pstat==0, futime,ptime), -->
+
 <!--                           event = ifelse(pstat==0, 2*death, 1)) -->
+
 <!-- mgus3$event <- factor(mgus3$event, 0:2, labels=c("censor", "pcm", "death")) -->
 
 <!-- table(mgus3$event) -->
+
 <!-- ``` -->
 
 <!-- con el cálculo correspondiente de la incidencia cumulada: -->
+
 <!-- ```{r} -->
+
 <!-- mfit2 <- survfit(Surv(etime, event) ~ sex, data=mgus3) -->
+
 <!-- print(mfit2, rmean=240, scale=12) -->
+
 <!-- ``` -->
+
 <!-- ```{r} -->
+
 <!-- plot(mfit2, col=c(1,2,1,2), lty=c(2,2,1,1), -->
+
 <!-- mark.time=FALSE, lwd=2, xscale=12, -->
+
 <!-- xlab="Years post diagnosis", ylab="Probability in State") -->
+
 <!-- legend(240, .6, c("death:female", "death:male", "pcm:female", "pcm:male"), -->
+
 <!-- col=c(1,2,1,2), lty=c(1,1,2,2), lwd=2, bty='n') -->
+
 <!-- ``` -->
 
 <!-- ### Otros esquemas de muestreo -->
@@ -477,88 +595,141 @@ $$\hat S(t)=\exp[t\log[\hat S(t_{\text{max}})]/t_{\text{max}}]$$
 <!-- #### Censura doble (Censura por derecha y por izquierda) -->
 
 <!-- Vamos a replicar aproximadamente el ejemplo 5.1 del Klein. A continuación la carga de datos: -->
+
 <!-- ```{r} -->
+
 <!-- library(survival) -->
+
 <!-- library(KMsurv) -->
+
 <!-- library(survMisc) -->
 
 <!-- edades <- 10:18 -->
+
 <!-- eventos <- c(4,12,19,24,20,13,3,1,4) -->
+
 <!-- censuras_izq <- c(0,0,0,1,2,3,2,3,1) -->
+
 <!-- censuras_der <- c(0,0,2,15,24,18,14,6,0) -->
 
 <!-- tabla_5_1 <- data.frame(edades,censuras_izq,eventos,censuras_der) -->
+
 <!-- tabla_5_1 -->
+
 <!-- ``` -->
 
 <!-- comparen esta tabla con la Tabla 5.1 del Klein. El ajuste de este tipo de datos se hace con el paquete *survival* con el algoritmo de Turnbull ajustado a través de EM (Método de Esperanza-Maximización). Antes, hay que convertir los datos a intervalos individualizados según el tipo de censura: -->
 
 <!-- ```{r} -->
+
 <!-- censuras_izq_v <- NULL -->
+
 <!-- for(i in 1:dim(tabla_5_1)[1]){ -->
+
 <!--   if(tabla_5_1[i,2]>0){ -->
+
 <!--     censuras_izq_v <- rbind(censuras_izq_v,matrix(rep(c(-Inf,tabla_5_1[i,1]), -->
+
 <!--                                                       each=tabla_5_1[i,2]), -->
+
 <!--                                                   nrow = tabla_5_1[i,2])) -->
+
 <!--     } -->
+
 <!-- } -->
 
 <!-- eventos_v <- NULL -->
+
 <!-- for(i in 1:dim(tabla_5_1)[1]){ -->
+
 <!--   if(tabla_5_1[i,3]>0){ -->
+
 <!--     eventos_v <- rbind(eventos_v,matrix(rep(c(tabla_5_1[i,1],tabla_5_1[i,1]), -->
+
 <!--                                             each=tabla_5_1[i,3]), -->
+
 <!--                                         nrow = tabla_5_1[i,3])) -->
+
 <!--     } -->
+
 <!-- } -->
 
 <!-- censuras_der_v <- NULL -->
+
 <!-- for(i in 1:dim(tabla_5_1)[1]){ -->
+
 <!--   if(tabla_5_1[i,4]>0){ -->
+
 <!--     censuras_der_v <- rbind(censuras_der_v,matrix(rep(c(tabla_5_1[i,1],Inf), -->
+
 <!--                                                       each=tabla_5_1[i,4]), -->
+
 <!--                                                   nrow = tabla_5_1[i,4])) -->
+
 <!--     } -->
+
 <!-- } -->
 
 <!-- datos_5_1 <- rbind(censuras_der_v,censuras_izq_v,eventos_v) -->
+
 <!-- head(datos_5_1) -->
+
 <!-- tail(datos_5_1) -->
+
 <!-- ``` -->
 
 <!-- y ya con los datos convertidos se puede estimar la función de sobrevivencia: -->
 
 <!-- ```{r} -->
+
 <!-- surv_obj_5_1 <- Surv(time = datos_5_1[,1],time2 = datos_5_1[,2], -->
+
 <!--                      type = 'interval2') -->
 
 <!-- S_5_1 <- survfit(surv_obj_5_1~1) -->
-<!-- summary(S_5_1) -->
-<!-- plot(S_5_1) -->
-<!-- ``` -->
 
+<!-- summary(S_5_1) -->
+
+<!-- plot(S_5_1) -->
+
+<!-- ``` -->
 
 <!-- #### Censura por intervalo -->
 
 <!-- En el caso de censura por intervalo, se ilustrará el algoritmo de Turnbull-EM con los datos del ejemplo 5.2. Estos datos consisten en  -->
+
 <!-- la comparación de dos tratamientos de cáncer de mama a nivel de 95 mujeres (Variable *treat*: 1-Radioterapia, 2-Radioterapia+quimioterapia). Durante visitas periodicas, los médicos midieron el deterioro cosmético en el seno de cada mujer bajo los dos tratamientos. Lo único que se guarda en cada caso en el periodo de tiempo en donde el deterioro fue severo o moderado entre dos visitas sucesivas. El tiempo se mide en meses.  -->
+
 <!-- ```{r} -->
+
 <!-- data("bcdeter") -->
+
 <!-- head(bcdeter) -->
+
 <!-- ``` -->
 
 <!-- La estimación de la función de sobrevivencia para el riesgo de deterioro se estima por tipo de tratamiento: -->
+
 <!-- ```{r} -->
+
 <!-- surv_obj_5_2 <- Surv(time = bcdeter$lower,time2 = bcdeter$upper, -->
+
 <!--                      type = 'interval2') -->
+
 <!-- S_5_2 <- survfit(surv_obj_5_2~treat,data = bcdeter) -->
+
 <!-- summary(S_5_2) -->
+
 <!-- ``` -->
+
 <!--  y gráficamente: -->
 
 <!-- ```{r} -->
+
 <!-- plot(S_5_2,col = c(1,2)) -->
+
 <!-- legend(0,0.4,legend = c('T-1','T-2'),col=c(1,2),lty=1) -->
+
 <!-- ``` -->
 
 <!-- #### Estimación de $S(x)$ con un tabla de vida de un cohorte . -->
@@ -566,32 +737,59 @@ $$\hat S(t)=\exp[t\log[\hat S(t_{\text{max}})]/t_{\text{max}}]$$
 <!-- A manera de resumen (les recomiendo que estudien esta sección por su propia cuenta, ya que no presenta diferencias sustanciales con respecto al resto del curso), estos son los principales indicadores que se calculan en una tabla de vida de forma no-paramétrica: -->
 
 <!-- - Cohorte: grupo de individuos con un origen en común en cuanto al tiempo en el cual un evento es calculado (por ejemplo, la misma edad al momento de inicial el estudio) -->
+
 <!-- - Se considera intervalos disjuntos $I_j=(a_{j-1},a_j]$, $j=1,\ldots,k+1$ con $a_0=0$ y $a_{k+1}=\infty$, en donde cada individuo del cohorte tendrá el evento de interés. -->
+
 <!-- - Sea $Y_j'$: número de individuos que no han experimentado el evento en el $j$-ésimo intervalo. -->
+
 <!-- - $W_j$: número de individuos del cohorte que no presentan el evento en el intervalo $j$-ésimo (censuras). -->
+
 <!-- - $d_j$: número de individuos del cohorte que presentan el evento en el intervalo $j$-ésimo (eventos). -->
+
 <!-- - La población en riesgo del intervalo $j$-ésimo se estima asumiendo una distribución uniforme de las censuras: -->
+
 <!-- \begin{align*} -->
+
 <!-- Y_j=Y_j'-W_j/2 -->
+
 <!-- \end{align*} -->
+
 <!-- - La función de sobrevivencia estimada es análoga al estimador de Kaplan-Meier: -->
+
 <!-- \begin{align*} -->
+
 <!-- \hat S(a_j)=\prod_{i=1}^j\left(1-d_i/Y_i\right) -->
+
 <!-- \end{align*} -->
+
 <!-- - La densidad estimada en el punto medio del intervalo $j$-ésimo ($a_{mj}=(a_j+a_{j-1})/2$) es: -->
+
 <!-- \begin{align*} -->
+
 <!-- \hat f(a_{mj})=\frac{\hat S(a_{j-1})-\hat S(a_j)}{a_{j-1}-a_j} -->
+
 <!-- \end{align*} -->
+
 <!-- - La tasa de riesgo estimada en el punto medio del intervalo $j$-ésimo: -->
+
 <!-- \begin{align*} -->
+
 <!-- \hat h(a_{mj})&=\frac{\hat f(a_{mj})}{\hat S(a_{mj})}\\ -->
+
 <!-- &=\frac{2\hat f(a_{mj})}{\hat S(a_{j})+\hat S(a_{j-1})} -->
+
 <!-- \end{align*} -->
+
 <!-- usando interpolación lineal para calcular $\hat S(a_{mj})$. -->
+
 <!-- - Las probabilidad condicionales de sobrevivencia en el $j$-ésimo intervalo es: -->
+
 <!-- \begin{align*} -->
+
 <!-- \hat p_j=1-\hat q_j=1-d_j/Y_j -->
+
 <!-- \end{align*} -->
+
 <!-- donde $\hat q_j$ es la probabilidad condicional de ocurrencia del evento en el mismo intervalo. -->
 
 <!-- Vamos a replicar el ejemplo 5.4 en donde se tiene datos de 927 recién nacidos cuyas madres los alimentaron con lactancia materna. La duración de lactancia materna se midió en semanas, y el evento de interés es la interrupción de la lactancia materna. En cada intervalo también hubo salidas del estudio. -->
@@ -599,39 +797,63 @@ $$\hat S(t)=\exp[t\log[\hat S(t_{\text{max}})]/t_{\text{max}}]$$
 <!-- Extraemos los datos y hacemos el cálculo de la tabla de sobreviencia del cohorte: -->
 
 <!-- ```{r} -->
+
 <!-- data("bfeed") -->
+
 <!-- library(tidyverse) -->
+
 <!-- head(bfeed) -->
+
 <!-- ninit <- dim(bfeed)[1] -->
+
 <!-- tis <- c(0,2,3,5,7,11,17,25,37,53,NA) -->
+
 <!-- tis_2 <- c(0,2,3,5,7,11,17,25,37,53,Inf) -->
+
 <!-- pretablas <- bfeed %>% dplyr::select(duration,delta) %>% -->
+
 <!--   mutate(intervalo=cut(duration,breaks = tis_2))%>% -->
+
 <!--   group_by(delta,intervalo)%>% -->
+
 <!--   summarise(conteo=n()) -->
 
 <!-- tabla_resumen <- data.frame(intervalos=unique(pretablas$intervalo), -->
+
 <!--                             eventos=pretablas$conteo[pretablas$delta==1], -->
+
 <!--                             censuras=c(pretablas$conteo[pretablas$delta==0], -->
+
 <!--                                        rep(0,3))) -->
 
 <!-- tabla_resumen$Yprima <- 0 -->
+
 <!-- tabla_resumen$Yprima[1] <-ninit -->
+
 <!-- for(i in 2:dim(tabla_resumen)[1]){ -->
+
 <!--   tabla_resumen$Yprima[i] <-tabla_resumen$Yprima[i-1]-tabla_resumen$eventos[i]- -->
+
 <!--     tabla_resumen$censuras[i] -->
+
 <!-- } -->
+
 <!-- ``` -->
 
 <!-- La tabla resultante y el cálculo de la función de sobrevivencia: -->
+
 <!-- ```{r} -->
+
 <!-- show(tabla_resumen) -->
+
 <!-- tabla_vida <- lifetab(tis,ninit, -->
+
 <!--                       nlost = tabla_resumen$censuras, -->
+
 <!--                       nevent = tabla_resumen$eventos) -->
+
 <!-- show(tabla_vida) -->
+
 <!-- ``` -->
 
 <!-- Las columnas de desviaciones estándar de las función de sobrevivencia, tasa de riesgo y función de densidad se calculan según las fórmulas 5.4.5, 5.4.6 y 5.4.7 del Klein. -->
-
-

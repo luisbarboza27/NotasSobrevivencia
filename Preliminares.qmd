@@ -669,90 +669,177 @@ donde $r=\sum \delta_i$ (total de eventos observados) y $S_T=\sum_{i=1}^n t_i$ (
 :::
 
 
-<!-- ## Laboratorio -->
+## Laboratorio
 
-<!-- ### Ejemplos de datos de análisis de sobrevivencia -->
+### Ejemplos de datos de análisis de sobrevivencia
 
-<!-- ```{r} -->
 
-<!-- library(asaur) -->
+```{r}
+library(tidyverse)
+library(KMsurv)
+```
 
-<!-- head(gastricXelox) -->
+#### Ejemplo 1
 
-<!-- dim(gastricXelox) -->
+Ensayo clínico de un fármaco, 6-mercaptopurina (6-MP), frente a un placebo en 42 niños con leucemia aguda. El ensayo se llevó a cabo en 11 hospitales estadounidenses. Se seleccionaron pacientes que habían experimentado una remisión completa o parcial de su leucemia inducida por el tratamiento con el fármaco prednisona. (Una remisión completa o parcial significa que la mayoría o todos los signos de la enfermedad habían desaparecido de la médula ósea). El ensayo se realizó emparejando pares de pacientes en un hospital determinado por estado de remisión (completa o parcial) y aleatorizando dentro del par para recibir terapia de mantenimiento con 6-MP o placebo. Los pacientes fueron seguidos hasta que su leucemia regresó (relapse) o hasta el final del estudio (en meses).
 
-<!-- ``` -->
+```{r}
+data("drug6mp")
+#help("drug6mp")
 
-<!-- Estudio clínico en pacientes con cáncer gástrico avanzado. -->
+glimpse(drug6mp)
+```
 
-<!-- - *timeWeeks*: tiempo de sobrevivencia en semanas. -->
+```{r}
+ggplot()+geom_histogram(data = drug6mp,mapping = aes(t2),bins = 6,fill='white',col = 'black')+
+  theme_bw()
+```
 
-<!-- - *delta*: variable de censura: (1) muerte, (2) censura. -->
+```{r}
+table(drug6mp$relapse)
+```
 
-<!-- ```{r} -->
+#### Ejemplo 2
 
-<!-- head(prostateSurvival) -->
+Evaluación del tiempo hasta la primera infección del sitio de salida (en meses) en pacientes con insuficiencia renal, 43 pacientes utilizaron un catéter colocado quirúrgicamente (Grupo 1), y 76 pacientes utilizaron una colocación percutánea de su catéter (Grupo 2).
 
-<!-- dim(prostateSurvival) -->
+```{r}
+data(kidney)
+#help(kidney)
 
-<!-- ``` -->
+glimpse(kidney)
+```
 
-<!-- Estudio de sobrevivencia de pacientes con cáncer de próstata.  -->
+```{r}
+ggplot()+geom_histogram(data = kidney,mapping = aes(time),bins = 6,fill='white',col = 'black')+
+  theme_bw()
+```
 
-<!-- - *ageGroup*: edad de diagnóstico. -->
+```{r}
+table(kidney$delta)
+```
 
-<!-- - *stage*: etapa del cáncer. -->
+#### Ejemplo 3
 
-<!-- - *survTime*: tiempo de sobrevivencia. -->
+Estudio diseñado para determinar si las pacientes con cáncer de mama, clasificadas originalmente como negativas en los ganglios linfáticos por microscopía de luz estándar (SLM), podrían ser clasificadas de manera más precisa mediante examen inmunohistoquímico (IH) de sus ganglios linfáticos con un cóctel de anticuerpos monoclonales anticitokeratina. Se seleccionaron 45 pacientes con cáncer de mama femenino y ganglios linfáticos axilares negativos y un seguimiento mínimo de 10 años del Registro de Cáncer de los Hospitales de la Universidad Estatal de Ohio. De las 45 pacientes, 9 fueron positivas para inmunoperoxidasa, y las 36 restantes permanecieron negativas.
 
-<!-- - *status*: Muerte por cáncer de próstata (1), muerte por otra causa (2), sobrevivencia al final del estudio (0). -->
+```{r}
+data(btrial)
+#help(btrial)
 
-<!-- ```{r} -->
+glimpse(btrial)
+```
 
-<!-- head(pharmacoSmoking) -->
+```{r}
+tabla_1 <- btrial %>% group_by(death,im) %>% summarise(total = n()) %>%
+  ungroup() %>% mutate(total = round(total / sum(total)*100,2))
+show(tabla_1)
+```
 
-<!-- dim(pharmacoSmoking) -->
+```{r}
+tabla_2 <- btrial %>% group_by(death,im) %>% summarise(total = round(mean(time),2)) 
+show(tabla_2)
+```
 
-<!-- ``` -->
+#### Ejemplo 4
 
-<!-- Estudio comparativo de dos terapias para fumadores (combinación de medicamentos vs parche de nicotina). -->
+Muestra de 101 pacientes con leucemia mieloide aguda avanzada reportados en el Registro Internacional de Trasplante de Médula Ósea. 51 de estos pacientes recibieron un trasplante autólogo de médula ósea en el que, después de altas dosis de quimioterapia, su propia médula fue reinfundida para reemplazar su sistema inmunológico destruido. 50 pacientes recibieron un trasplante alogénico de médula ósea en el que se utilizó médula de un hermano compatible en cuanto a antígenos leucocitarios humanos (HLA) para reponer sus sistemas inmunológicos. Una pregunta importante en el trasplante de médula ósea es la comparación de la efectividad de estos dos métodos de trasplante medida por la duración de la supervivencia libre de leucemia de los pacientes, el tiempo que viven y cuánto tiempo permanecen libres de enfermedad después de sus trasplantes.
 
-<!-- - *ttr*: tiempo en dias hasta una recaída (volver a fumar). -->
+```{r}
+data("alloauto")
+#help("alloauto")
 
-<!-- - *relapse*: (1): volvió a fumar vs (0): censura. -->
+glimpse(alloauto)
+```
 
-<!-- - *employment*: jornada laboral. -->
+```{r}
+alloauto <- alloauto %>% mutate(type = factor(type))
 
-<!-- ### Tasas de riesgo (Tablas de vida en USA) -->
+ggplot()+geom_histogram(data = alloauto,aes(x = time),bins = 7,fill='white',col = 'black')+
+  facet_wrap(facets = vars(type),nrow = 2)+
+  theme_bw()
+```
 
-<!-- Tasas de riesgo expresadas por día calendario: -->
 
-<!-- ```{r} -->
 
-<!-- library(survival) -->
+```{r}
+library(asaur)
+head(gastricXelox)
+dim(gastricXelox)
+```
 
-<!-- dim(survexp.us) -->
+#### Ejemplo 5
 
-<!-- hazMale <- survexp.us[,"male","2010"] -->
+Este es un ensayo clínico de Fase II (muestra única) de quimioterapia Xeloda y oxaliplatino (XELOX) administrado antes de la cirugía a 48 pacientes con cáncer gástrico avanzado con metástasis en los ganglios linfáticos paraaórticos (Wang et al.). 
 
-<!-- hazFemale <- survexp.us[,"female","2010"] -->
+- *timeWeeks*: tiempo de sobrevivencia en semanas.
 
-<!-- tm <- 1:110 -->
+- *delta*: variable de censura: (1) muerte, (2) censura.
 
-<!-- tm.diff <- c(1,diff(tm)) -->
+```{r}
+head(prostateSurvival)
+dim(prostateSurvival)
+```
 
-<!-- survMale <- exp(-cumsum(hazMale*tm.diff)*365.24) -->
 
-<!-- survFemale <- exp(-cumsum(hazFemale *tm.diff)*365.24) -->
+#### Ejemplo 6
 
-<!-- data.tot <- data.frame(tm,hMale = as.numeric(hazMale),  -->
+Datos simulados de 14,294 pacientes con cáncer de próstata basados en análisis detallados de riesgos competitivos publicados por Lu-Yao et al. Para cada paciente, tenemos la clasificación histológica (poco o moderadamente diferenciado), la edad del diagnóstico (66-70, 71-75, 76-80 y 80+), el estadio del cáncer (T1c si se diagnosticó mediante una prueba de detección de antígeno específico de próstata, T1ab si se diagnosticó clínicamente sin cribado, o T2 si fue palpable en el momento del diagnóstico), el tiempo de supervivencia (días desde el diagnóstico hasta la muerte o la última fecha de seguimiento) y un indicador ("estado") que indica si el paciente murió de cáncer de próstata (estado = 1), murió de otra causa (estado = 2) o seguía vivo en la última fecha de seguimiento (estado = 0).
 
-<!--                        hFemale = as.numeric(hazFemale),  -->
 
-<!--                        sMale = survMale, sFemale = survFemale) -->
+- *ageGroup*: edad de diagnóstico.
 
-<!-- data.tot.long <- pivot_longer(data.tot,cols = hMale:sFemale) -->
+- *stage*: etapa del cáncer.
 
-<!-- ggplot(data = data.tot,mapping = aes(x = tm,y = )) -->
+- *survTime*: tiempo de sobrevivencia.
 
-<!-- ``` -->
+- *status*: Muerte por cáncer de próstata (1), muerte por otra causa (2), sobrevivencia al final del estudio (0).
+
+```{r}
+head(pharmacoSmoking)
+dim(pharmacoSmoking)
+```
+
+#### Ejemplo 7
+
+
+El propósito de este estudio (Steinberg et al. [63]) fue evaluar la duración prolongada de una combinación de tres medicamentos versus la terapia con parche de nicotina sola en fumadores con enfermedades médicas. Los pacientes con antecedentes de tabaquismo fueron asignados al azar a la combinación de tres medicamentos o a la terapia con parche, y se siguieron durante un máximo de seis meses. La variable de resultado primaria fue el tiempo desde la asignación aleatoria hasta la recaída (vuelta al tabaquismo); las personas que permanecieron sin fumar durante seis meses fueron censuradas.
+
+
+- *ttr*: tiempo en dias hasta una recaída (volver a fumar).
+
+- *relapse*: (1): volvió a fumar vs (0): censura.
+
+- *employment*: jornada laboral.
+
+#### Ejemplo 8
+Tasas de riesgo (Tablas de vida en USA) expresadas por día calendario:
+
+```{r}
+library(survival)
+dim(survexp.us)
+hazMale <- survexp.us[,"male","2010"]
+hazFemale <- survexp.us[,"female","2010"]
+tm <- 1:110
+tm.diff <- c(1,diff(tm))
+survMale <- exp(-cumsum(hazMale*tm.diff)*365.24)
+survFemale <- exp(-cumsum(hazFemale *tm.diff)*365.24)
+data.tot <- data.frame(tm,hMale = as.numeric(hazMale),
+                       hFemale = as.numeric(hazFemale),
+                       sMale = survMale, sFemale = survFemale)
+data.tot.long <- pivot_longer(data.tot,cols = hMale:sFemale)
+```
+
+Grafico de tasas de riesgo:
+
+```{r}
+data.tot.long.h <- data.tot.long %>% filter(name == 'hMale' | name == 'hFemale')
+ggplot(data = data.tot.long.h)+geom_line(mapping = aes(x = tm,y = value,col = name)) + theme_bw() + xlab('Age')+ylab('Hazard')
+```
+
+Grafico de probabilidades de sobrevivencia:
+
+```{r}
+data.tot.long.s <- data.tot.long %>% filter(name == 'sMale' | name == 'sFemale')
+ggplot(data = data.tot.long.s)+geom_line(mapping = aes(x = tm,y = value,col = name)) + theme_bw() + xlab('Age')+ylab('Hazard')
+```

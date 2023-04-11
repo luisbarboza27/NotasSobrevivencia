@@ -229,6 +229,10 @@ div.csl-indent {
   <li><a href="#truncamiento-1" id="toc-truncamiento-1" class="nav-link" data-scroll-target="#truncamiento-1"><span class="toc-section-number">1.5.3</span>  Truncamiento</a></li>
   </ul></li>
   <li><a href="#verosimilitud-bajo-censura-y-truncamiento" id="toc-verosimilitud-bajo-censura-y-truncamiento" class="nav-link" data-scroll-target="#verosimilitud-bajo-censura-y-truncamiento"><span class="toc-section-number">1.6</span>  Verosimilitud bajo censura y truncamiento</a></li>
+  <li><a href="#laboratorio" id="toc-laboratorio" class="nav-link" data-scroll-target="#laboratorio"><span class="toc-section-number">1.7</span>  Laboratorio</a>
+  <ul class="collapse">
+  <li><a href="#ejemplos-de-datos-de-análisis-de-sobrevivencia" id="toc-ejemplos-de-datos-de-análisis-de-sobrevivencia" class="nav-link" data-scroll-target="#ejemplos-de-datos-de-análisis-de-sobrevivencia"><span class="toc-section-number">1.7.1</span>  Ejemplos de datos de análisis de sobrevivencia</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -824,50 +828,289 @@ Ejemplo: Caso Exponencial
 <p>donde <span class="math inline">\(r=\sum \delta_i\)</span> (total de eventos observados) y <span class="math inline">\(S_T=\sum_{i=1}^n t_i\)</span> (total de tiempo en el estudio).</p>
 </div>
 </div>
-<!-- ## Laboratorio -->
-<!-- ### Ejemplos de datos de análisis de sobrevivencia -->
-<!-- ```{r} -->
-<!-- library(asaur) -->
-<!-- head(gastricXelox) -->
-<!-- dim(gastricXelox) -->
-<!-- ``` -->
-<!-- Estudio clínico en pacientes con cáncer gástrico avanzado. -->
-<!-- - *timeWeeks*: tiempo de sobrevivencia en semanas. -->
-<!-- - *delta*: variable de censura: (1) muerte, (2) censura. -->
-<!-- ```{r} -->
-<!-- head(prostateSurvival) -->
-<!-- dim(prostateSurvival) -->
-<!-- ``` -->
-<!-- Estudio de sobrevivencia de pacientes con cáncer de próstata.  -->
-<!-- - *ageGroup*: edad de diagnóstico. -->
-<!-- - *stage*: etapa del cáncer. -->
-<!-- - *survTime*: tiempo de sobrevivencia. -->
-<!-- - *status*: Muerte por cáncer de próstata (1), muerte por otra causa (2), sobrevivencia al final del estudio (0). -->
-<!-- ```{r} -->
-<!-- head(pharmacoSmoking) -->
-<!-- dim(pharmacoSmoking) -->
-<!-- ``` -->
-<!-- Estudio comparativo de dos terapias para fumadores (combinación de medicamentos vs parche de nicotina). -->
-<!-- - *ttr*: tiempo en dias hasta una recaída (volver a fumar). -->
-<!-- - *relapse*: (1): volvió a fumar vs (0): censura. -->
-<!-- - *employment*: jornada laboral. -->
-<!-- ### Tasas de riesgo (Tablas de vida en USA) -->
-<!-- Tasas de riesgo expresadas por día calendario: -->
-<!-- ```{r} -->
-<!-- library(survival) -->
-<!-- dim(survexp.us) -->
-<!-- hazMale <- survexp.us[,"male","2010"] -->
-<!-- hazFemale <- survexp.us[,"female","2010"] -->
-<!-- tm <- 1:110 -->
-<!-- tm.diff <- c(1,diff(tm)) -->
-<!-- survMale <- exp(-cumsum(hazMale*tm.diff)*365.24) -->
-<!-- survFemale <- exp(-cumsum(hazFemale *tm.diff)*365.24) -->
-<!-- data.tot <- data.frame(tm,hMale = as.numeric(hazMale),  -->
-<!--                        hFemale = as.numeric(hazFemale),  -->
-<!--                        sMale = survMale, sFemale = survFemale) -->
-<!-- data.tot.long <- pivot_longer(data.tot,cols = hMale:sFemale) -->
-<!-- ggplot(data = data.tot,mapping = aes(x = tm,y = )) -->
-<!-- ``` -->
+</section>
+<section id="laboratorio" class="level2" data-number="1.7">
+<h2 data-number="1.7" class="anchored" data-anchor-id="laboratorio"><span class="header-section-number">1.7</span> Laboratorio</h2>
+<section id="ejemplos-de-datos-de-análisis-de-sobrevivencia" class="level3" data-number="1.7.1">
+<h3 data-number="1.7.1" class="anchored" data-anchor-id="ejemplos-de-datos-de-análisis-de-sobrevivencia"><span class="header-section-number">1.7.1</span> Ejemplos de datos de análisis de sobrevivencia</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(KMsurv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="ejemplo-1" class="level4" data-number="1.7.1.1">
+<h4 data-number="1.7.1.1" class="anchored" data-anchor-id="ejemplo-1"><span class="header-section-number">1.7.1.1</span> Ejemplo 1</h4>
+<p>Ensayo clínico de un fármaco, 6-mercaptopurina (6-MP), frente a un placebo en 42 niños con leucemia aguda. El ensayo se llevó a cabo en 11 hospitales estadounidenses. Se seleccionaron pacientes que habían experimentado una remisión completa o parcial de su leucemia inducida por el tratamiento con el fármaco prednisona. (Una remisión completa o parcial significa que la mayoría o todos los signos de la enfermedad habían desaparecido de la médula ósea). El ensayo se realizó emparejando pares de pacientes en un hospital determinado por estado de remisión (completa o parcial) y aleatorizando dentro del par para recibir terapia de mantenimiento con 6-MP o placebo. Los pacientes fueron seguidos hasta que su leucemia regresó (relapse) o hasta el final del estudio (en meses).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"drug6mp"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#help("drug6mp")</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(drug6mp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 21
+Columns: 5
+$ pair    &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,…
+$ remstat &lt;int&gt; 1, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 1, 2, 2, 2, 1, 1, 2, 2, 2, 2
+$ t1      &lt;int&gt; 1, 22, 3, 12, 8, 17, 2, 11, 8, 12, 2, 5, 4, 15, 8, 23, 5, 11, …
+$ t2      &lt;int&gt; 10, 7, 32, 23, 22, 6, 16, 34, 32, 25, 11, 20, 19, 6, 17, 35, 6…
+$ relapse &lt;int&gt; 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span><span class="fu">geom_histogram</span>(<span class="at">data =</span> drug6mp,<span class="at">mapping =</span> <span class="fu">aes</span>(t2),<span class="at">bins =</span> <span class="dv">6</span>,<span class="at">fill=</span><span class="st">'white'</span>,<span class="at">col =</span> <span class="st">'black'</span>)<span class="sc">+</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Preliminares_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(drug6mp<span class="sc">$</span>relapse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ 0  1 
+12  9 </code></pre>
+</div>
+</div>
+</section>
+<section id="ejemplo-2" class="level4" data-number="1.7.1.2">
+<h4 data-number="1.7.1.2" class="anchored" data-anchor-id="ejemplo-2"><span class="header-section-number">1.7.1.2</span> Ejemplo 2</h4>
+<p>Evaluación del tiempo hasta la primera infección del sitio de salida (en meses) en pacientes con insuficiencia renal, 43 pacientes utilizaron un catéter colocado quirúrgicamente (Grupo 1), y 76 pacientes utilizaron una colocación percutánea de su catéter (Grupo 2).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(kidney)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#help(kidney)</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(kidney)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 119
+Columns: 3
+$ time  &lt;dbl&gt; 1.5, 3.5, 4.5, 4.5, 5.5, 8.5, 8.5, 9.5, 10.5, 11.5, 15.5, 16.5, …
+$ delta &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0…
+$ type  &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span><span class="fu">geom_histogram</span>(<span class="at">data =</span> kidney,<span class="at">mapping =</span> <span class="fu">aes</span>(time),<span class="at">bins =</span> <span class="dv">6</span>,<span class="at">fill=</span><span class="st">'white'</span>,<span class="at">col =</span> <span class="st">'black'</span>)<span class="sc">+</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Preliminares_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(kidney<span class="sc">$</span>delta)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ 0  1 
+93 26 </code></pre>
+</div>
+</div>
+</section>
+<section id="ejemplo-3" class="level4" data-number="1.7.1.3">
+<h4 data-number="1.7.1.3" class="anchored" data-anchor-id="ejemplo-3"><span class="header-section-number">1.7.1.3</span> Ejemplo 3</h4>
+<p>Estudio diseñado para determinar si las pacientes con cáncer de mama, clasificadas originalmente como negativas en los ganglios linfáticos por microscopía de luz estándar (SLM), podrían ser clasificadas de manera más precisa mediante examen inmunohistoquímico (IH) de sus ganglios linfáticos con un cóctel de anticuerpos monoclonales anticitokeratina. Se seleccionaron 45 pacientes con cáncer de mama femenino y ganglios linfáticos axilares negativos y un seguimiento mínimo de 10 años del Registro de Cáncer de los Hospitales de la Universidad Estatal de Ohio. De las 45 pacientes, 9 fueron positivas para inmunoperoxidasa, y las 36 restantes permanecieron negativas.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(btrial)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">#help(btrial)</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(btrial)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 45
+Columns: 3
+$ time  &lt;int&gt; 19, 25, 30, 34, 37, 46, 47, 51, 56, 57, 61, 66, 67, 74, 78, 86, …
+$ death &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0…
+$ im    &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>tabla_1 <span class="ot">&lt;-</span> btrial <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(death,im) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">total =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">total =</span> <span class="fu">round</span>(total <span class="sc">/</span> <span class="fu">sum</span>(total)<span class="sc">*</span><span class="dv">100</span>,<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'death'. You can override using the
+`.groups` argument.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show</span>(tabla_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 3
+  death    im total
+  &lt;int&gt; &lt;int&gt; &lt;dbl&gt;
+1     0     1 44.4 
+2     0     2  2.22
+3     1     1 35.6 
+4     1     2 17.8 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>tabla_2 <span class="ot">&lt;-</span> btrial <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(death,im) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">total =</span> <span class="fu">round</span>(<span class="fu">mean</span>(time),<span class="dv">2</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'death'. You can override using the
+`.groups` argument.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show</span>(tabla_2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 3
+# Groups:   death [2]
+  death    im total
+  &lt;int&gt; &lt;int&gt; &lt;dbl&gt;
+1     0     1 148. 
+2     0     2 144  
+3     1     1  52.1
+4     1     2  59.9</code></pre>
+</div>
+</div>
+</section>
+<section id="ejemplo-4" class="level4" data-number="1.7.1.4">
+<h4 data-number="1.7.1.4" class="anchored" data-anchor-id="ejemplo-4"><span class="header-section-number">1.7.1.4</span> Ejemplo 4</h4>
+<p>Muestra de 101 pacientes con leucemia mieloide aguda avanzada reportados en el Registro Internacional de Trasplante de Médula Ósea. 51 de estos pacientes recibieron un trasplante autólogo de médula ósea en el que, después de altas dosis de quimioterapia, su propia médula fue reinfundida para reemplazar su sistema inmunológico destruido. 50 pacientes recibieron un trasplante alogénico de médula ósea en el que se utilizó médula de un hermano compatible en cuanto a antígenos leucocitarios humanos (HLA) para reponer sus sistemas inmunológicos. Una pregunta importante en el trasplante de médula ósea es la comparación de la efectividad de estos dos métodos de trasplante medida por la duración de la supervivencia libre de leucemia de los pacientes, el tiempo que viven y cuánto tiempo permanecen libres de enfermedad después de sus trasplantes.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"alloauto"</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="co">#help("alloauto")</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(alloauto)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 101
+Columns: 3
+$ time  &lt;dbl&gt; 0.030, 0.493, 0.855, 1.184, 1.283, 1.480, 1.776, 2.138, 2.500, 2…
+$ type  &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
+$ delta &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1…</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>alloauto <span class="ot">&lt;-</span> alloauto <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">type =</span> <span class="fu">factor</span>(type))</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span><span class="fu">geom_histogram</span>(<span class="at">data =</span> alloauto,<span class="fu">aes</span>(<span class="at">x =</span> time),<span class="at">bins =</span> <span class="dv">7</span>,<span class="at">fill=</span><span class="st">'white'</span>,<span class="at">col =</span> <span class="st">'black'</span>)<span class="sc">+</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="at">facets =</span> <span class="fu">vars</span>(type),<span class="at">nrow =</span> <span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Preliminares_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(asaur)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gastricXelox)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  timeWeeks delta
+1         4     1
+2         8     1
+3         8     1
+4         8     1
+5         9     1
+6        11     1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(gastricXelox)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 48  2</code></pre>
+</div>
+</div>
+</section>
+<section id="ejemplo-5" class="level4" data-number="1.7.1.5">
+<h4 data-number="1.7.1.5" class="anchored" data-anchor-id="ejemplo-5"><span class="header-section-number">1.7.1.5</span> Ejemplo 5</h4>
+<p>Este es un ensayo clínico de Fase II (muestra única) de quimioterapia Xeloda y oxaliplatino (XELOX) administrado antes de la cirugía a 48 pacientes con cáncer gástrico avanzado con metástasis en los ganglios linfáticos paraaórticos (Wang et al.).</p>
+<ul>
+<li><p><em>timeWeeks</em>: tiempo de sobrevivencia en semanas.</p></li>
+<li><p><em>delta</em>: variable de censura: (1) muerte, (2) censura.</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(prostateSurvival)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  grade stage ageGroup survTime status
+1  mode   T1c      80+       18      0
+2  mode  T1ab    75-79       23      0
+3  poor   T1c    75-79       37      0
+4  mode    T2    70-74       27      0
+5  mode   T1c    70-74       42      0
+6  poor    T2    75-79       38      2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(prostateSurvival)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 14294     5</code></pre>
+</div>
+</div>
+</section>
+<section id="ejemplo-6" class="level4" data-number="1.7.1.6">
+<h4 data-number="1.7.1.6" class="anchored" data-anchor-id="ejemplo-6"><span class="header-section-number">1.7.1.6</span> Ejemplo 6</h4>
+<p>Datos simulados de 14,294 pacientes con cáncer de próstata basados en análisis detallados de riesgos competitivos publicados por Lu-Yao et al.&nbsp;Para cada paciente, tenemos la clasificación histológica (poco o moderadamente diferenciado), la edad del diagnóstico (66-70, 71-75, 76-80 y 80+), el estadio del cáncer (T1c si se diagnosticó mediante una prueba de detección de antígeno específico de próstata, T1ab si se diagnosticó clínicamente sin cribado, o T2 si fue palpable en el momento del diagnóstico), el tiempo de supervivencia (días desde el diagnóstico hasta la muerte o la última fecha de seguimiento) y un indicador (“estado”) que indica si el paciente murió de cáncer de próstata (estado = 1), murió de otra causa (estado = 2) o seguía vivo en la última fecha de seguimiento (estado = 0).</p>
+<ul>
+<li><p><em>ageGroup</em>: edad de diagnóstico.</p></li>
+<li><p><em>stage</em>: etapa del cáncer.</p></li>
+<li><p><em>survTime</em>: tiempo de sobrevivencia.</p></li>
+<li><p><em>status</em>: Muerte por cáncer de próstata (1), muerte por otra causa (2), sobrevivencia al final del estudio (0).</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pharmacoSmoking)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   id ttr relapse         grp age gender     race employment yearsSmoking
+1  21 182       0   patchOnly  36   Male    white         ft           26
+2 113  14       1   patchOnly  41   Male    white      other           27
+3  39   5       1 combination  25 Female    white      other           12
+4  80  16       1 combination  54   Male    white         ft           39
+5  87   0       1 combination  45   Male    white      other           30
+6  29 182       0 combination  43   Male hispanic         ft           30
+  levelSmoking ageGroup2 ageGroup4 priorAttempts longestNoSmoke
+1        heavy     21-49     35-49             0              0
+2        heavy     21-49     35-49             3             90
+3        heavy     21-49     21-34             3             21
+4        heavy       50+     50-64             0              0
+5        heavy     21-49     35-49             0              0
+6        heavy     21-49     35-49             2           1825</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(pharmacoSmoking)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 125  14</code></pre>
+</div>
+</div>
+</section>
+<section id="ejemplo-7" class="level4" data-number="1.7.1.7">
+<h4 data-number="1.7.1.7" class="anchored" data-anchor-id="ejemplo-7"><span class="header-section-number">1.7.1.7</span> Ejemplo 7</h4>
+<p>El propósito de este estudio (Steinberg et al.&nbsp;[63]) fue evaluar la duración prolongada de una combinación de tres medicamentos versus la terapia con parche de nicotina sola en fumadores con enfermedades médicas. Los pacientes con antecedentes de tabaquismo fueron asignados al azar a la combinación de tres medicamentos o a la terapia con parche, y se siguieron durante un máximo de seis meses. La variable de resultado primaria fue el tiempo desde la asignación aleatoria hasta la recaída (vuelta al tabaquismo); las personas que permanecieron sin fumar durante seis meses fueron censuradas.</p>
+<ul>
+<li><p><em>ttr</em>: tiempo en dias hasta una recaída (volver a fumar).</p></li>
+<li><p><em>relapse</em>: (1): volvió a fumar vs (0): censura.</p></li>
+<li><p><em>employment</em>: jornada laboral.</p></li>
+</ul>
+</section>
+<section id="ejemplo-8" class="level4" data-number="1.7.1.8">
+<h4 data-number="1.7.1.8" class="anchored" data-anchor-id="ejemplo-8"><span class="header-section-number">1.7.1.8</span> Ejemplo 8</h4>
+<p>Tasas de riesgo (Tablas de vida en USA) expresadas por día calendario:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'survival'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked _by_ '.GlobalEnv':
+
+    kidney</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(survexp.us)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 110   2  75</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>hazMale <span class="ot">&lt;-</span> survexp.us[,<span class="st">"male"</span>,<span class="st">"2010"</span>]</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>hazFemale <span class="ot">&lt;-</span> survexp.us[,<span class="st">"female"</span>,<span class="st">"2010"</span>]</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>tm <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">110</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>tm.diff <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="fu">diff</span>(tm))</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>survMale <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">cumsum</span>(hazMale<span class="sc">*</span>tm.diff)<span class="sc">*</span><span class="fl">365.24</span>)</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>survFemale <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">cumsum</span>(hazFemale <span class="sc">*</span>tm.diff)<span class="sc">*</span><span class="fl">365.24</span>)</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>data.tot <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(tm,<span class="at">hMale =</span> <span class="fu">as.numeric</span>(hazMale),</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>                       <span class="at">hFemale =</span> <span class="fu">as.numeric</span>(hazFemale),</span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>                       <span class="at">sMale =</span> survMale, <span class="at">sFemale =</span> survFemale)</span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>data.tot.long <span class="ot">&lt;-</span> <span class="fu">pivot_longer</span>(data.tot,<span class="at">cols =</span> hMale<span class="sc">:</span>sFemale)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Grafico de tasas de riesgo:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>data.tot.long.h <span class="ot">&lt;-</span> data.tot.long <span class="sc">%&gt;%</span> <span class="fu">filter</span>(name <span class="sc">==</span> <span class="st">'hMale'</span> <span class="sc">|</span> name <span class="sc">==</span> <span class="st">'hFemale'</span>)</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> data.tot.long.h)<span class="sc">+</span><span class="fu">geom_line</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> tm,<span class="at">y =</span> value,<span class="at">col =</span> name)) <span class="sc">+</span> <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">'Age'</span>)<span class="sc">+</span><span class="fu">ylab</span>(<span class="st">'Hazard'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Preliminares_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Grafico de probabilidades de sobrevivencia:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>data.tot.long.s <span class="ot">&lt;-</span> data.tot.long <span class="sc">%&gt;%</span> <span class="fu">filter</span>(name <span class="sc">==</span> <span class="st">'sMale'</span> <span class="sc">|</span> name <span class="sc">==</span> <span class="st">'sFemale'</span>)</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> data.tot.long.s)<span class="sc">+</span><span class="fu">geom_line</span>(<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> tm,<span class="at">y =</span> value,<span class="at">col =</span> name)) <span class="sc">+</span> <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">'Age'</span>)<span class="sc">+</span><span class="fu">ylab</span>(<span class="st">'Hazard'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Preliminares_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography" style="display: none">
@@ -875,6 +1118,8 @@ Ejemplo: Caso Exponencial
 Klein, John P., and Melvin L. Moeschberger. 2003. <em><span class="nocase">Survival analysis : techniques for censored and truncated data</span></em>. Springer.
 </div>
 </div>
+</section>
+</section>
 </section>
 
 </main> <!-- /main -->
