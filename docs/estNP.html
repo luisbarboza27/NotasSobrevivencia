@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.269">
+<meta name="generator" content="quarto-1.2.335">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -20,6 +20,69 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -134,6 +197,10 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#censura-doble" id="toc-censura-doble" class="nav-link" data-scroll-target="#censura-doble"><span class="toc-section-number">2.6.2</span>  Censura doble</a></li>
   <li><a href="#censura-por-intervalo" id="toc-censura-por-intervalo" class="nav-link" data-scroll-target="#censura-por-intervalo"><span class="toc-section-number">2.6.3</span>  Censura por intervalo</a></li>
   </ul></li>
+  <li><a href="#laboratorio" id="toc-laboratorio" class="nav-link" data-scroll-target="#laboratorio"><span class="toc-section-number">2.7</span>  Laboratorio</a>
+  <ul class="collapse">
+  <li><a href="#ajustes-básicos" id="toc-ajustes-básicos" class="nav-link" data-scroll-target="#ajustes-básicos"><span class="toc-section-number">2.7.1</span>  Ajustes básicos</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -214,10 +281,10 @@ ul.task-list li input[type="checkbox"] {
 <p>Con el fin de mejorar el intervalo de confianza anterior, se puede considerar un intervalo de confianza sobre el logaritmo de <span class="math inline">\(H(t)\)</span>:</p>
 <p><span class="math display">\[\log \hat H(t_0)\pm z_{1-\alpha/2}\cdot \sigma^*(t_0)\]</span></p>
 <p>donde <span class="math inline">\(\sigma^*(t_0)\)</span> lo tenemos que calcular o bien aproximar. Como <span class="math inline">\(\text{Var}(\hat S(t))\approx \hat S(t)^2\sigma_S(t)^2\)</span> entonces por el método delta (Ejercicio):</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
    \text{Var}[\log H(t_0)]&amp;=\text{Var}[\log(-\log S(t_0))]\\
    &amp;\approx \frac{1}{[\log \hat S(t_0)]^2}\underbrace{\sum_{t_i\leq t}\frac{d_i}{Y_i(Y_i-d_i)}}_{\sigma_S(t_0)^2}
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>entonces podemos aproximar el término <span class="math inline">\(\sigma^*(t_0)\)</span> y obtener:</p>
 <p><span class="math display">\[\log \hat H(t_0)\pm z_{1-\alpha/2}\cdot \frac{1}{\log S(t_0)}\sigma_S(t_0)\]</span></p>
 <p>es un intervalo de confianza al <span class="math inline">\(100(1-\alpha)\)</span>’% para <span class="math inline">\(\log[-\log S(t_0)]\)</span>. Entonces:</p>
@@ -265,7 +332,7 @@ ul.task-list li input[type="checkbox"] {
 <p>el cual puede ser estimado con un estimador plug-in:</p>
 <p><span class="math display">\[\hat x_p = \inf\{t:\hat S(t)\leq 1-p\}\]</span></p>
 <p>La varianza del estimador anterior se pueden estimar como:</p>
-<p><span class="math display">\[\hat V(\hat x_p)=\frac{\hat V[\hat S(x_p)]}{\hat f(\hat x_p)^2}\]</span></p>
+<p><span class="math display">\[\hat V(\hat x_p)=\frac{\hat V[\hat S(\hat x_p)]}{\hat f(\hat x_p)^2}\]</span></p>
 <p>donde <span class="math inline">\(\hat f(\hat x_p)\)</span> es un estimador no-paramétrico de <span class="math inline">\(f(\hat x_p)\)</span> (densidad). Por ejemplo, cualquier estimador por kernel de <span class="math inline">\(f\)</span> es una opción válida.</p>
 <p><strong>Aproximación de Brookmeyer y Crowley</strong></p>
 <p><span class="math display">\[-z_{1-\alpha/2}\leq \frac{\hat S(t)-(1-p)}{\hat V^{1/2}[\hat S(t)]}\leq z_{1-\alpha/2}\]</span></p>
@@ -313,12 +380,12 @@ ul.task-list li input[type="checkbox"] {
 <li><p><span class="math inline">\(d_i\)</span>: número de sujetos que les ocurrió otro evento que no sea el de interés (sin incluir censuras).</p></li>
 </ul>
 <p>La función acumulada de incidencia se define:</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
    CI(t)=\begin{cases}
      0 &amp; t\leq t_1\\
      \sum_{t_i\leq t}\underbrace{\left[\prod_{j=1}^{i-1}\frac{1-(d_j+r_j)}{Y_j}\right]}_{\hat S(t_{i-})}\frac{r_i}{Y_i} &amp; t_1\leq t
   \end{cases}
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>donde <span class="math inline">\(\hat S(t_{i-})\)</span> es el estimador KM evaluado justo antes de <span class="math inline">\(t_i\)</span>.</p>
 <p>Interpretación de <span class="math inline">\(CI(t)\)</span>: probabilidad de que el evento de interés ocurra antes de tiempo <span class="math inline">\(t\)</span> y antes de cualquier otro evento en competencia. La varianza de <span class="math inline">\(CI(t)\)</span> es: (fórmula 4.7.2-Klein)</p>
 <p><span class="math display">\[V[CI(t)]=\sum_{t_i\leq t}\hat S(t_i)^2\left[(CI(t)-CI(t_i))^2\cdot \frac{r_i+d_i}{Y_i^2}+[1-2(CI(t)-CI(t_i))]\cdot \frac{r_i}{Y_i^2}\right]\]</span></p>
@@ -375,13 +442,13 @@ ul.task-list li input[type="checkbox"] {
 <p>Para este esquema cada individuo tiene un intervalo <span class="math inline">\((L_i,R_i]\)</span> en donde el evento ocurre, pero el tiempo exacto es desconocido (<span class="math inline">\(i=1,\ldots,n\)</span>)</p>
 <p>Para estimar la función de sobrevivencia, se utiliza una modificación del algoritmo de Turnbull. Considere una grilla de tiempos <span class="math inline">\(0=\tau_0&lt;\tau_1&lt;\cdots&lt;\tau_m\)</span> que incluyen a <span class="math inline">\(L_i,R_i\)</span> para todo <span class="math inline">\(i=1,\ldots,n\)</span>.</p>
 <p>Para la observación <span class="math inline">\(i\)</span>-ésima, defina:</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
 \alpha_{ij}=
    \begin{cases}
        1 &amp; \text{si } (\tau_{j-1},\tau_j]\subseteq (L_i,R_i] \\
        0 &amp; \text{otro caso}
    \end{cases}
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>y dado un estimador inicial de <span class="math inline">\(S(\tau_j)\)</span>:</p>
 <ul>
 <li>Paso 1: Calcule la probabilidad de que el evento ocurre en tiempo <span class="math inline">\(\tau_j\)</span>:</li>
@@ -398,99 +465,224 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li>Paso 4: Calcule el estimador KM con los datos en los pasos 3 y 4 hasta que haya convergencia de <span class="math inline">\(S\)</span> uniformemente en <span class="math inline">\(\tau_i\)</span>.</li>
 </ul>
-<!-- ## Laboratorio -->
-<!-- ### Ajustes básicos -->
-<!-- Paquete base de análisis de sobrevivencia: *survival*. Junto con el paquete KMsurv que contiene los datos del libro de Klein y M. -->
-<!-- ```{r} -->
-<!-- library(survival) -->
-<!-- library(KMsurv) -->
-<!-- library(survMisc) -->
-<!-- library(tidyverse) -->
-<!-- ``` -->
-<!-- Para ilustrar el cálculo de los estimadores no paramétricos de sobrevivencia con el paquete survival, trabajamos con la base de la sección 1.2 del Klein: Estudio clínico de la droga 6-MP vs un placebo en 42 niños con leucemia aguda. Todos los pacientes presentaban una remisión en el cańcer a nivel de la médula ósea, gracias a un tratamiento con prednisona. A los pacientes se agruparon en pares y se les administró 6-MP o el placebo y se monitoreó hasta que la leucemia regresaba o hasta el fin del estudio (meses). A continuación un vistazo de los datos: -->
-<!-- ```{r} -->
-<!-- data("drug6mp") -->
-<!-- head(drug6mp) -->
-<!-- ``` -->
-<!-- Para una explicación de las variables ver la ayuda de drug6mp o bien la tabla 1.1 en el Klein. Noten que la última columna corresponde al indicador del evento (recaída de los pacientes) para el grupo que se le administró el tratamiento (6-MP). -->
-<!-- Como un primer ejercicio, se calcula el estimador de Kaplan-Meier para el grupo tratamiento (6_MP). Para eso primero calculamos el objeto Surv que contiene los tiempos de ocurrencia junto con las censuras: -->
-<!-- ```{r} -->
-<!-- surv_6MP <- Surv(time = drug6mp$t2,event = drug6mp$relapse) -->
-<!-- surv_6MP -->
-<!-- ``` -->
-<!-- y después calculamos el estimador de Kaplan-Meier: -->
-<!-- ```{r} -->
-<!-- KM_6MP <- survfit(surv_6MP~1) -->
-<!-- summary(KM_6MP) -->
-<!-- ``` -->
-<!-- Comparen esta tabla con Tabla 4.1A del Klein. La quinta columna con el error estándar corresponde a $\sigma_S(t)$. Un gráfico de $\hat S(t)$ es: -->
-<!-- ```{r} -->
-<!-- plot(KM_6MP) -->
-<!-- ``` -->
-<!-- Por default, los intervalos de confianza se calculan sobre el logaritmo de $S(t)$. Para calcular los intervalos con la transformación log-log al 95% de confianza: -->
-<!-- ```{r} -->
-<!-- KM_6MP_loglog <- survfit(surv_6MP~1,conf.type='log-log',) -->
-<!-- summary(KM_6MP_loglog) -->
-<!-- ``` -->
-<!-- Asimismo se puede calcular bandas de confianza a través del paquete km.ci: -->
-<!-- ```{r} -->
-<!-- library(km.ci) -->
-<!-- bandasEP_KM_6MP <- km.ci(KM_6MP,conf.level = 0.95,tl = NA,tu = NA, -->
-<!--                          method = 'epband') -->
-<!-- bandasHall_KM_6MP <- km.ci(KM_6MP,conf.level = 0.95,tl = NA,tu = NA, -->
-<!--                          method = 'hall-wellner') -->
-<!-- plot(bandasEP_KM_6MP,lty = 2,lwd=2) -->
-<!-- lines(bandasHall_KM_6MP,lty = 3,lwd=2) -->
-<!-- lines(KM_6MP_loglog,lty=1,lwd=2) -->
-<!-- lines(KM_6MP_loglog,lty=4,lwd=2,conf.int = T) -->
-<!-- linetype<-c(1, 2, 3, 4) -->
-<!-- legend(0, .4, c("Kaplan-Meier", "EP","Hall-Wellner", "Pointwise"), -->
-<!--        lty=(linetype)) -->
-<!-- ``` -->
-<!-- y también pueden utilizar la función ci del paquete survMisc. -->
-<!-- También se puede estimar $S(t)$ a través del estimador de Nelson-Aalen: -->
-<!-- ```{r} -->
-<!-- NA_6MP <- survfit(coxph(surv_6MP~1), type="aalen") -->
-<!-- summary(NA_6MP) -->
-<!-- ``` -->
-<!-- o bien se puede calcular el riesgo acumulado $H$ y su varianza a través de la función sf de survMisc: -->
-<!-- ```{r} -->
-<!-- t_6MP <- ten(surv_6MP) -->
-<!-- H_6MP <- sf(x = t_6MP$e,n = t_6MP$n,what = 'H') -->
-<!-- Hv_6MP <- sf(x = t_6MP$e,n = t_6MP$n,what = 'Hv') -->
-<!-- Tabla4_2 <- data.frame(tiempo=t_6MP$t,d=t_6MP$e,H_6MP,Hv_6MP) -->
-<!-- Tabla4_2 <- Tabla4_2 %>% filter(d>0) %>% mutate(ErrorS=sqrt(Hv_6MP)) -->
-<!-- round(Tabla4_2,4) -->
-<!-- ``` -->
-<!-- Comparen este resultado con la Tabla 4.2 del Klein. -->
-<!-- Otro aspecto a calcular es el tiempo medio de sobrevivencia de este grupo de pacientes. Para ello usamos la función _print_ del paquete _survival_: -->
-<!-- ```{r} -->
-<!-- print(KM_6MP,print.rmean = T) -->
-<!-- ``` -->
-<!-- y al igual que en el Klein obtenemos un valor estimado de 23.29 días usando corrección de Efron, y un error estándar de 2.83 días. La mediana del tiempo de sobrevivencia usando la transformación log-log se puede obtener también con: -->
-<!-- ```{r} -->
-<!-- quantile(KM_6MP_loglog,probs = c(0.5,0.15)) -->
-<!-- ``` -->
-<!-- en donde también calculamos el cuantil 0.15 de la misma distribución junto con sus intervalos de confianza usando la definición de Klein. Note que para el caso de la mediana, la intersección con el límite superior del intervalo de confianza es nula, por eso nos da un NA. -->
-<!-- Para ilustrar el esquema de truncamiento por la izquierda y censura por la derecha, usaremos los datos de la sección 1.16 del Klein, en donde se tiene la edad de muerte (en meses) o su salida de 462 ancianos en un centro de retiro en California y además la edad cuando entraron al mismo centro. Los datos deben ser truncados para medir la mortalidad dentro del centro de retiro, y no debido a otras causas. Un vistazo de los datos es el siguiente: -->
-<!-- ```{r} -->
-<!-- data("channing") -->
-<!-- head(channing) -->
-<!-- ``` -->
-<!-- Note que la variable _ageentry_ es la edad de entrada en meses a la casa de retiro y _age_ es la edad de muerte o censura por la derecha. De nuevo el truncamiento por la izquierda es la mejor opción cuando se tiene un subconjunto de edades más limitado como el que se tiene en esta muestra. Los estimadores de Kaplan-Meier condicionados en 68 y 80 años para hombres y mujeres se ilustra a continuación (transformando los datos a datos anuales): -->
-<!-- ```{r} -->
-<!-- channing_Years <- channing %>% mutate(ageentry=ageentry/12,age=age/12) -->
-<!-- attach(channing_Years) -->
-<!-- KM_Chan_68 <- survfit(Surv(time = ageentry,time2 = age,event = death, -->
-<!--                            type = 'counting')~gender,start.time=68, -->
-<!--                       data=channing_Years) -->
-<!-- plot(KM_Chan_68,conf.int = F,col = c(1,2)) -->
-<!-- KM_Chan_80 <- survfit(Surv(time = ageentry,time2 = age,event = death, -->
-<!--                            type = 'counting')~gender,start.time=80, -->
-<!--                       data=channing_Years) -->
-<!-- lines(KM_Chan_80,conf.int = F,col = c(3,4)) -->
-<!-- legend(90, 1, c("Male-68", "Female-68","Male-80", "Female-80"), col=1:4,lty=1) -->
-<!-- ``` -->
+</section>
+</section>
+<section id="laboratorio" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="laboratorio"><span class="header-section-number">2.7</span> Laboratorio</h2>
+<section id="ajustes-básicos" class="level3" data-number="2.7.1">
+<h3 data-number="2.7.1" class="anchored" data-anchor-id="ajustes-básicos"><span class="header-section-number">2.7.1</span> Ajustes básicos</h3>
+<p>Paquete base de análisis de sobrevivencia: <em>survival</em>. Junto con el paquete KMsurv que contiene los datos del libro de Klein y M.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(KMsurv)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survMisc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'survMisc'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:ggplot2':
+
+    autoplot</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Para ilustrar el cálculo de los estimadores no paramétricos de sobrevivencia con el paquete survival, trabajamos con la base de la sección 1.2 del Klein: Estudio clínico de la droga 6-MP vs un placebo en 42 niños con leucemia aguda. Todos los pacientes presentaban una remisión en el cańcer a nivel de la médula ósea, gracias a un tratamiento con prednisona. A los pacientes se agruparon en pares y se les administró 6-MP o el placebo y se monitoreó hasta que la leucemia regresaba o hasta el fin del estudio (meses). A continuación un vistazo de los datos:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"drug6mp"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(drug6mp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  pair remstat t1 t2 relapse
+1    1       1  1 10       1
+2    2       2 22  7       1
+3    3       2  3 32       0
+4    4       2 12 23       1
+5    5       2  8 22       1
+6    6       1 17  6       1</code></pre>
+</div>
+</div>
+<p>Para una explicación de las variables ver la ayuda de drug6mp o bien la tabla 1.1 en el Klein. Noten que la última columna corresponde al indicador del evento (recaída de los pacientes) para el grupo que se le administró el tratamiento (6-MP).</p>
+<p>Como un primer ejercicio, se calcula el estimador de Kaplan-Meier para el grupo tratamiento (6_MP). Para eso primero calculamos el objeto Surv que contiene los tiempos de ocurrencia junto con las censuras:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>surv_6MP <span class="ot">&lt;-</span> <span class="fu">Surv</span>(<span class="at">time =</span> drug6mp<span class="sc">$</span>t2,<span class="at">event =</span> drug6mp<span class="sc">$</span>relapse)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>surv_6MP</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 10   7  32+ 23  22   6  16  34+ 32+ 25+ 11+ 20+ 19+  6  17+ 35+  6  13   9+
+[20]  6+ 10+</code></pre>
+</div>
+</div>
+<p>y después calculamos el estimador de Kaplan-Meier:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>KM_6MP <span class="ot">&lt;-</span> <span class="fu">survfit</span>(surv_6MP<span class="sc">~</span><span class="dv">1</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(KM_6MP)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call: survfit(formula = surv_6MP ~ 1)
+
+ time n.risk n.event survival std.err lower 95% CI upper 95% CI
+    6     21       3    0.857  0.0764        0.720        1.000
+    7     17       1    0.807  0.0869        0.653        0.996
+   10     15       1    0.753  0.0963        0.586        0.968
+   13     12       1    0.690  0.1068        0.510        0.935
+   16     11       1    0.627  0.1141        0.439        0.896
+   22      7       1    0.538  0.1282        0.337        0.858
+   23      6       1    0.448  0.1346        0.249        0.807</code></pre>
+</div>
+</div>
+<p>Comparen esta tabla con Tabla 4.1A del Klein. La quinta columna con el error estándar corresponde a <span class="math inline">\(\sigma_S(t)\)</span>. Un gráfico de <span class="math inline">\(\hat S(t)\)</span> es:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(KM_6MP)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="estNP_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Por default, los intervalos de confianza se calculan sobre el logaritmo de <span class="math inline">\(S(t)\)</span>. Para calcular los intervalos con la transformación log-log al 95% de confianza:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>KM_6MP_loglog <span class="ot">&lt;-</span> <span class="fu">survfit</span>(surv_6MP<span class="sc">~</span><span class="dv">1</span>,<span class="at">conf.type=</span><span class="st">'log-log'</span>,)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(KM_6MP_loglog)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call: survfit(formula = surv_6MP ~ 1, conf.type = "log-log")
+
+ time n.risk n.event survival std.err lower 95% CI upper 95% CI
+    6     21       3    0.857  0.0764        0.620        0.952
+    7     17       1    0.807  0.0869        0.563        0.923
+   10     15       1    0.753  0.0963        0.503        0.889
+   13     12       1    0.690  0.1068        0.432        0.849
+   16     11       1    0.627  0.1141        0.368        0.805
+   22      7       1    0.538  0.1282        0.268        0.747
+   23      6       1    0.448  0.1346        0.188        0.680</code></pre>
+</div>
+</div>
+<p>Asimismo se puede calcular bandas de confianza a través del paquete km.ci:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(km.ci)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>bandasEP_KM_6MP <span class="ot">&lt;-</span> <span class="fu">km.ci</span>(KM_6MP,<span class="at">conf.level =</span> <span class="fl">0.95</span>,<span class="at">tl =</span> <span class="cn">NA</span>,<span class="at">tu =</span> <span class="cn">NA</span>,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">method =</span> <span class="st">'epband'</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>bandasHall_KM_6MP <span class="ot">&lt;-</span> <span class="fu">km.ci</span>(KM_6MP,<span class="at">conf.level =</span> <span class="fl">0.95</span>,<span class="at">tl =</span> <span class="cn">NA</span>,<span class="at">tu =</span> <span class="cn">NA</span>,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>                         <span class="at">method =</span> <span class="st">'hall-wellner'</span>)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(bandasEP_KM_6MP,<span class="at">lty =</span> <span class="dv">2</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(bandasHall_KM_6MP,<span class="at">lty =</span> <span class="dv">3</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(KM_6MP_loglog,<span class="at">lty=</span><span class="dv">1</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(KM_6MP_loglog,<span class="at">lty=</span><span class="dv">4</span>,<span class="at">lwd=</span><span class="dv">2</span>,<span class="at">conf.int =</span> T)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>linetype<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="dv">0</span>, .<span class="dv">4</span>, <span class="fu">c</span>(<span class="st">"Kaplan-Meier"</span>, <span class="st">"EP"</span>,<span class="st">"Hall-Wellner"</span>, <span class="st">"Pointwise"</span>),</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">lty=</span>(linetype))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="estNP_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>y también pueden utilizar la función ci del paquete survMisc.</p>
+<p>También se puede estimar <span class="math inline">\(S(t)\)</span> a través del estimador de Nelson-Aalen:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>NA_6MP <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">coxph</span>(surv_6MP<span class="sc">~</span><span class="dv">1</span>), <span class="at">type=</span><span class="st">"aalen"</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(NA_6MP)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call: survfit(formula = coxph(surv_6MP ~ 1), type = "aalen")
+
+ time n.risk n.event survival std.err lower 95% CI upper 95% CI
+    6     21       3    0.867  0.0715        0.737        1.000
+    7     17       1    0.817  0.0828        0.670        0.997
+   10     15       1    0.765  0.0927        0.603        0.970
+   13     12       1    0.704  0.1035        0.527        0.939
+   16     11       1    0.642  0.1111        0.458        0.902
+   22      7       1    0.557  0.1249        0.359        0.864
+   23      6       1    0.471  0.1317        0.273        0.815</code></pre>
+</div>
+</div>
+<p>o bien se puede calcular el riesgo acumulado <span class="math inline">\(H\)</span> y su varianza a través de la función sf de survMisc:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>t_6MP <span class="ot">&lt;-</span> <span class="fu">ten</span>(surv_6MP)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>H_6MP <span class="ot">&lt;-</span> <span class="fu">sf</span>(<span class="at">x =</span> t_6MP<span class="sc">$</span>e,<span class="at">n =</span> t_6MP<span class="sc">$</span>n,<span class="at">what =</span> <span class="st">'H'</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>Hv_6MP <span class="ot">&lt;-</span> <span class="fu">sf</span>(<span class="at">x =</span> t_6MP<span class="sc">$</span>e,<span class="at">n =</span> t_6MP<span class="sc">$</span>n,<span class="at">what =</span> <span class="st">'Hv'</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>Tabla4_2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">tiempo=</span>t_6MP<span class="sc">$</span>t,<span class="at">d=</span>t_6MP<span class="sc">$</span>e,H_6MP,Hv_6MP)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>Tabla4_2 <span class="ot">&lt;-</span> Tabla4_2 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(d<span class="sc">&gt;</span><span class="dv">0</span>) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">ErrorS=</span><span class="fu">sqrt</span>(Hv_6MP))</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(Tabla4_2,<span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  tiempo d  H_6MP Hv_6MP ErrorS
+1      6 3 0.1429 0.0068 0.0825
+2      7 1 0.2017 0.0103 0.1013
+3     10 1 0.2683 0.0147 0.1213
+4     13 1 0.3517 0.0217 0.1471
+5     16 1 0.4426 0.0299 0.1730
+6     22 1 0.5854 0.0503 0.2243
+7     23 1 0.7521 0.0781 0.2795</code></pre>
+</div>
+</div>
+<p>Comparen este resultado con la Tabla 4.2 del Klein.</p>
+<p>Otro aspecto a calcular es el tiempo medio de sobrevivencia de este grupo de pacientes. Para ello usamos la función <em>print</em> del paquete <em>survival</em>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(KM_6MP,<span class="at">print.rmean =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call: survfit(formula = surv_6MP ~ 1)
+
+      n events rmean* se(rmean) median 0.95LCL 0.95UCL
+[1,] 21      9   23.3      2.83     23      16      NA
+    * restricted mean with upper limit =  35 </code></pre>
+</div>
+</div>
+<p>y al igual que en el Klein obtenemos un valor estimado de 23.29 días usando corrección de Efron, y un error estándar de 2.83 días. La mediana del tiempo de sobrevivencia usando la transformación log-log se puede obtener también con:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(KM_6MP_loglog,<span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.5</span>,<span class="fl">0.15</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$quantile
+50 15 
+23  7 
+
+$lower
+50 15 
+13  6 
+
+$upper
+50 15 
+NA 13 </code></pre>
+</div>
+</div>
+<p>en donde también calculamos el cuantil 0.15 de la misma distribución junto con sus intervalos de confianza usando la definición de Klein. Note que para el caso de la mediana, la intersección con el límite superior del intervalo de confianza es nula, por eso nos da un NA.</p>
+<p>Para ilustrar el esquema de truncamiento por la izquierda y censura por la derecha, usaremos los datos de la sección 1.16 del Klein, en donde se tiene la edad de muerte (en meses) o su salida de 462 ancianos en un centro de retiro en California y además la edad cuando entraron al mismo centro. Los datos deben ser truncados para medir la mortalidad dentro del centro de retiro, y no debido a otras causas. Un vistazo de los datos es el siguiente:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"channing"</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(channing)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  obs death ageentry  age time gender
+1   1     1     1042 1172  130      2
+2   2     1      921 1040  119      2
+3   3     1      885 1003  118      2
+4   4     1      901 1018  117      2
+5   5     1      808  932  124      2
+6   6     1      915 1004   89      2</code></pre>
+</div>
+</div>
+<p>Note que la variable <em>ageentry</em> es la edad de entrada en meses a la casa de retiro y <em>age</em> es la edad de muerte o censura por la derecha. De nuevo el truncamiento por la izquierda es la mejor opción cuando se tiene un subconjunto de edades más limitado como el que se tiene en esta muestra. Los estimadores de Kaplan-Meier condicionados en 68 y 80 años para hombres y mujeres se ilustra a continuación (transformando los datos a datos anuales):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>channing_Years <span class="ot">&lt;-</span> channing <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">ageentry=</span>ageentry<span class="sc">/</span><span class="dv">12</span>,<span class="at">age=</span>age<span class="sc">/</span><span class="dv">12</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">attach</span>(channing_Years)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>KM_Chan_68 <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(<span class="at">time =</span> ageentry,<span class="at">time2 =</span> age,<span class="at">event =</span> death,</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">type =</span> <span class="st">'counting'</span>)<span class="sc">~</span>gender,<span class="at">start.time=</span><span class="dv">68</span>,</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">data=</span>channing_Years)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in Surv(time = ageentry, time2 = age, event = death, type =
+"counting"): Stop time must be &gt; start time, NA created</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(KM_Chan_68,<span class="at">conf.int =</span> F,<span class="at">col =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>KM_Chan_80 <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(<span class="at">time =</span> ageentry,<span class="at">time2 =</span> age,<span class="at">event =</span> death,</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">type =</span> <span class="st">'counting'</span>)<span class="sc">~</span>gender,<span class="at">start.time=</span><span class="dv">80</span>,</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">data=</span>channing_Years)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in Surv(time = ageentry, time2 = age, event = death, type =
+"counting"): Stop time must be &gt; start time, NA created</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(KM_Chan_80,<span class="at">conf.int =</span> F,<span class="at">col =</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="dv">90</span>, <span class="dv">1</span>, <span class="fu">c</span>(<span class="st">"Male-68"</span>, <span class="st">"Female-68"</span>,<span class="st">"Male-80"</span>, <span class="st">"Female-80"</span>), </span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>,<span class="at">lty=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="estNP_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 <!-- ### Riesgos en competencia -->
 <!-- 1384 Pacientes con gammapatía monoclonal de significado incierto (MGUS) a los cuales se les hace un seguimiento hasta la aparición de neoplasia de células plasmáticas (PCM) o la muerte (en meses). Por ejemplo, el estimador KM de la sobrevivencia (riesgo de muerte) de los pacientes clasificado por sexo es: -->
 <!-- ```{r} -->
