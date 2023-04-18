@@ -456,7 +456,7 @@ round(Tabla4_2,4)
 
 Comparen este resultado con la Tabla 4.2 del Klein.
 
-Otro aspecto a calcular es el tiempo medio de sobrevivencia de este grupo de pacientes. Para ello usamos la función _print_ del paquete _survival_:
+Otro aspecto a calcular es el tiempo medio de sobrevivencia de este grupo de pacientes. Para ello usamos la función *print* del paquete *survival*:
 
 ```{r}
 
@@ -484,7 +484,7 @@ head(channing)
 
 ```
 
-Note que la variable _ageentry_ es la edad de entrada en meses a la casa de retiro y _age_ es la edad de muerte o censura por la derecha. De nuevo el truncamiento por la izquierda es la mejor opción cuando se tiene un subconjunto de edades más limitado como el que se tiene en esta muestra. Los estimadores de Kaplan-Meier condicionados en 68 y 80 años para hombres y mujeres se ilustra a continuación (transformando los datos a datos anuales):
+Note que la variable *ageentry* es la edad de entrada en meses a la casa de retiro y *age* es la edad de muerte o censura por la derecha. De nuevo el truncamiento por la izquierda es la mejor opción cuando se tiene un subconjunto de edades más limitado como el que se tiene en esta muestra. Los estimadores de Kaplan-Meier condicionados en 68 y 80 años para hombres y mujeres se ilustra a continuación (transformando los datos a datos anuales):
 
 ```{r}
 

@@ -1,0 +1,670 @@
+# Pruebas de Hipótesis {#PH}
+
+```{r include=FALSE}
+library(tidyverse)
+```
+
+## Pruebas de Hipótesis de una muestra
+
+Supongamos una muestra con censura de tamaño $n$. Se quiere probar las
+siguientes hipótesis:
+
+-   $H_0:$ La tasa de riesgo de la población es $h_0(t)$ para todo
+    $t \leq \tau$.
+-   $H_1:$ La tasa de riesgo de la población es distinta a $h_0(t)$ para
+    algún $t \leq \tau$.
+
+Donde $h_0(t)$ es una tasa de riesgo conocida en $[0,\tau]$ y $\tau$:
+máximo de los tiempo de estudio observados.
+
+Considere el estimador de Nelson-Aalen de $H(t)$:
+
+$$\hat H(t)=\sum_{t_i\leq t}\frac{d_i}{Y(t_i)}$$ donde $d_i:$ número de
+eventos en los tiempos observados $t_1<t_2<\cdots < t_D$ y $Y(t_i)$:
+número de individuos en riesgo al tiempo $t_i$. Un estimador (muy crudo)
+de $h(t_i)$ es
+
+$$\frac{d_i}{Y(t_i)}$$
+
+y este estadístico nos permite definir un estadístico de prueba que
+busca comparar las tasas de riesgo observadas y esperadas usado
+diferencias ponderadas. Sea $W(t)$: función de pesos tal que $W(t)=0$ si
+$Y(t)=0$. Defina el siguiente estadístico de prueba:
+
+$$Z(\tau)=O(\tau)-E(\tau)=\sum_{i=1}^DW(t_i)\frac{d_i}{Y(t_i)}-\int_0^\tau W(s)h_0(s)ds$$
+Bajo $H_0$, la varianza de $Z(\tau)$ es:
+
+$$V[Z(\tau)]=\int_0^\tau W^2(s)\frac{h_0(s)}{Y(s)}ds$$ Si $n$ es grande:
+
+$$\frac{Z(\tau)^2}{V[Z(\tau)]}\underset{H_0}{\sim}\chi_1^2$$ Por lo
+tanto se rechaza $H_0$ si
+$\frac{Z(\tau)^2}{V[Z(\tau)]}>\chi_{1,1-\alpha}^2$ bajo un nivel de
+significancia de $\alpha$.
+
+Si se quiere probar $H_0: h(t)>h_0(t)$ entonces se rechaza $H_0$ si:
+
+$$\frac{Z(\tau)}{\sqrt{V[Z(\tau)]}}>z_{1-\alpha}$$ con nivel $\alpha$.
+La función de pesos se puede seleccionar de muchas formas, por ejemplo
+la forma más usual es (*Gehan*):
+
+$$W(t)=Y(t)$$ con lo cual se genera una *prueba de rango* (Prueba de
+bondad de ajuste no-paramétrica). Otros casos: (*Harrington-Fleming*):
+
+$$W(t)=Y(t)S_0(t)^p[1-S_0(t)]^q, \qquad p,q\geq 0$$ y
+$S_0(t)=\exp[-H_0(t)]$.
+
+En el caso de truncamiento por la izquierda, sea:
+
+-   $T_j$: tiempo de ocurrencia del evento en el $j$-ésimo paciente.
+-   $L_j$: tiempo de truncamiento por la izquierda en el $j$-ésimo
+    paciente. Este tiempo se puede interpretar como el momento de
+    entrada en el estudio.
+
+Si se usa la opción $W(t)=Y(t)$, entonces:
+
+$$O(\tau)=\sum_{i=1}^D d_i$$
+
+y
+
+$$E(\tau)=\int_0^\tau Y(s)h_0(s)ds = V[Z(\tau)]=\sum_{j=1}^n H_0(T_j)-H_0(L_j)$$
+
+## Pruebas de Hipótesis para más de una muestra
+
+Queremos probar las siguientes alternativas:
+
+-   $H_0: h_1(t)=h_2(t)=\cdots=h_k(t)$ para todo $t\leq \tau$
+-   $H_1$: al menos uno de los $h_j(t)$ es diferente para algún
+    $t\leq \tau$.
+
+Sea $\tau$: tiempo máximo en donde todos los grupos tienen al menos un
+individuo en riesgo. Normalmente
+$\tau=\min_k \{\max \{ \text{tiempos de estudio}\}\}$.
+
+Los datos en este caso constituyen muestras independientes de datos
+censurados, truncados por la izquierda para cada una de las $k$
+poblaciones. Sea $t_1<t_2<\cdots <t_D$ los distintos tiempos de
+ocurrencia del evento de interés en la muestra combinada.
+
+En tiempo $t_i$ se observa $d_{ij}$ eventos en la $j$-ésima muestra con
+$Y_{ij}$: individuos en riesgo de la población $j$-ésima
+($j=1,\ldots,k$, $i=1,\ldots,D$).
+
+Además:
+
+$$d_i=\sum_{j=1}^k d_{ij}\qquad \text{y} \qquad Y_i=\sum_{j=1}^k Y_{ij}$$
+Si $H_0$ es cierto, un estimador de la tasa de riesgo para la población
+$j$-ésima es el estimador combinado:
+
+$$\frac{d_i}{Y_i}$$
+
+Si $W_j(t_i)$ denota una función de pesos tal que es cero si $Y_{ij}=0$,
+entonces defina el estadístico:
+
+$$Z_j(\tau)=\sum_{j=1}^D W_j(t_i)\left[\frac{d_{ij}}{Y_{ij}}-\frac{d_i}{Y_i}\right]$$
+Interpretación del estadístico $Z_j(\tau)$: valores altos dan evidencia
+de que $H_0$ no es cierto.
+
+En general, se simplifica la ponderación de $Z_j$ al escoger:
+
+$$W_j(t_i)=Y_{ij}W(t_i)$$ en donde $W(t_i)$ es un peso en común para
+toda la muestra combinada. En este caso la diferencia ponderada
+quedaría:
+
+$$Z_j(\tau)=\sum_{i=1}^D W(t_i)\left[d_{ij}-\underbrace{Y_{ij}\left(\frac{d_i}{Y_i}\right)}_{**}\right]$$
+donde $**$ es el número de eventos esperados bajo $H_0$. La varianza de
+$Z_j(\tau)$ es:
+
+$$\hat \sigma_{jj}=\sum_{i=1}^D W(t_i)^2\frac{Y_{ij}}{Y_i}\left(1-\frac{Y_{ij}}{Y_i}\right)\left(\frac{Y_i-d_i}{Y_i-1}\right)d_i$$
+para $j=1,\ldots,k$. La covarianza entre $Z_j(\tau)$ y $Z_g(\tau)$ es:
+
+$$\hat \sigma_{jg}=-\sum_{i=1}^D W(t_i)^2\frac{Y_{ij}}{Y_i}\frac{Y_{ig}}{Y_i}\left(\frac{Y_i-d_i}{Y_i-1}\right)d_i$$
+El término $\frac{Y_i-d_i}{Y_i-1}$ es igual a 1 si no hay individuos que
+tengan un tiempo en común de ocurrencia del evento, por lo tanto se
+puede considerar este término como un factor de correción a la
+estructura de varianza ante la presencia de múltiples ocurrencias en un
+mismo tiempo (*ties*).
+
+Note que $(Z_1(\tau),\ldots,Z_k(\tau))$ cumple que:
+
+$$\sum_{j=1}^k Z_j(\tau)=0$$
+
+Seleccionamos entonces $k-1$ de las poblaciones y sea $\Sigma$ la matriz
+de varianza-covarianza con elementos $\hat \sigma_{jg}$. Se define el
+estadístico:
+
+$$\chi^2=(Z_1(\tau),\ldots,Z_{k-1}(\tau))\Sigma^{-1}(Z_1(\tau),\ldots,Z_{k-1}(\tau))^T$$
+
+Bajo $H_0$ se tiene que $\chi^2\sim \chi_{k-1}^2$. En el caso en que
+$k=2$:
+
+```{=tex}
+\begin{align*}
+    Z&=\frac{\sum_{i=1}^D W(t_i)\left[d_{i1}-Y_{i1}\left(\frac{d_i}{Y_i}\right)\right]}{\sqrt{\sum_{i=1}^D W(t_i)^2\frac{Y_{i1}}{Y_i}\left(1-\frac{Y_{i1}}{Y_i}\right)\left(\frac{Y_i-d_i}{Y_i-1}\right)}}\\
+    &\underset{H_0}{\sim} N(0,1)
+\end{align*}
+```
+Por lo tanto se rechaza $H_0: h_1(t)=h_2(t)$ si $|Z|>z_{1-\alpha/2}$ o
+se rechaza $H_0: h_1(t)>h_2(t)$ si $Z>z_{1-\alpha}$.
+
+Escogencias de $W(t)$:
+
+1- $W(t)=1$: Prueba de log-rango.
+
+2- $W(t_i)=Y_i$: similar a la prueba de Wilcoxon-Mann-Whitney.
+
+3- $W(t_i)=Y_i^{1/2}$ (otorga más peso donde hay más datos).
+
+4- Considere
+
+$$\tilde S(t)=\prod_{t_i\leq t}\left(1-\frac{d_i}{Y_i+1}\right)$$ tome
+$W(t_i)=\tilde S(t_i)$ (*Peto-Peto, (1972)*).
+
+5- Modificación de Andersen (1982) (*Peto-Peto Modificada*)
+
+$$W(t_i)=\frac{\tilde S(t_i)Y_i}{Y_i+1}$$ 6- *Fleming and Harrington*
+
+Sea $\hat S(t)$ el estimador de Kaplan-Meier usando la muestra
+combinada. Defina:
+
+$$W_{p,q}(t_i)=\hat S(t_{i-1})^p[1-\hat S(t_{i-1})]^q, \qquad p\geq 0, q\geq 0$$
+
+2 casos: $p=q=0$ (log-rango) y $p=1, q=0$ (Mann-Whitney-Wilcoxon)
+
+## Pruebas de tendencia
+
+Principal objetivo: detectar alternativas ordenadas a la hipótesis nula:
+
+-   $H_0:h_1(t)=h_2(t)=\cdots=h_k(t)$ para todo $t\leq \tau$
+-   $H_1: h_1(t)\leq h_2(t)\leq \cdots\leq h_k(t)$ para $t\leq \tau$ con
+    al menos una desigualdad estricta.
+
+Note que
+
+$$h_1(t)\leq \cdots \leq h_k(t) \Leftrightarrow S_1(t)\geq \cdots \geq S_k(t)$$
+Usando la notación anterior, sea $a_1<a_2<\cdots <a_k$ una secuencia de
+scores (usualmente $a_j=j$ o algún estadístico representativo para la
+población $j$-ésima):
+
+$$Z=\frac{\sum_{j=1}^k a_jZ_j(\tau)}{\sqrt{\sum_{j=1}^k \sum_{g=1}^k a_ja_g\hat \sigma_{jg}}}\underset{H_0}{\sim} N(0,1)$$
+
+<!-- ## Pruebas estratificadas -->
+
+<!-- Suponga que se tiene un conjunto de covariables que definen $M$ estados -->
+<!-- o configuraciones sobre el conjunto de $k$ poblaciones. Se quiere -->
+<!-- probar: -->
+
+<!-- $$H_0: h_{1s}(t)=h_{2s}(t)=\cdots=h_{ks}(t), \qquad s=1,\ldots,M\qquad t<\tau$$ -->
+<!-- Para un estrato $s$ fijo, sea $Z_{js}(\tau)$: -->
+
+<!-- $$Z_{js}(\tau)=\sum_{i=1}^DW(t_i)\left[\underbrace{d_{ij}-Y_{ij}\left(\frac{d_i}{Y_i}\right)}_{\text{solamente estrato s}}\right]$$ -->
+
+<!-- y $\hat \Sigma_s$ es la matriz de varianza-covarianza de $Z_{js}$. La -->
+<!-- prueba estratificada se construye definiendo: -->
+
+<!-- $$Z_{j.}(\tau)=\sum_{s=1}^MZ_{js}(\tau)  \qquad \text{y} \qquad \hat \sigma_{jg.}=\sum_{s=1}^M \hat \sigma_{jgs}$$\ -->
+<!-- y $\hat \sigma_{jgs}$ es la entrada $jg$ del $\hat \Sigma_s$. El -->
+<!-- estadístico de prueba estaría dado por: -->
+
+<!-- $$X_.=(Z_{1.}(\tau),\ldots,Z_{k-1,.}(\tau))\Sigma_.^{-1}(Z_{1.}(\tau),\ldots,Z_{k-1,.}(\tau))^T$$ -->
+
+<!-- donde $\Sigma_.$ es la matriz con entradas $\hat \sigma_{jg.}$. Bajo -->
+<!-- $H_0$: -->
+
+<!-- $$X_.\sim \chi_{k-1}^2$$ -->
+
+<!-- En el caso de dos muestras el estadístico se puede escribir: -->
+
+<!-- $$\frac{\sum_{s=1}^M Z_{1s}(\tau)}{\sqrt{\sum_{s=1}^M \hat \sigma_{11s}}}\underset{H_0}{\sim}N(0,1)$$ -->
+<!-- y este estadístico también permite probar hipótesis de una cola en el -->
+<!-- caso de dos muestras. -->
+
+<!-- Otro tipo de prueba basada en pruebas estratificadas es una *prueba -->
+<!-- pareada*. Si $(T_{1i},T_{2i})$ son pares de eventos de interés con -->
+<!-- indicadores de eventos $(\delta_{1i},\delta_{2i})$ para $i=1,\ldots,M$. -->
+<!-- Queremos probar las hipótesis: -->
+
+<!-- $$H_0: h_{1i}(t)=h_{2i}(t), \qquad i=1,\ldots,M$$ (misma interpretación -->
+<!-- en términos de estratos). En este caso el estadístico $Z_{js}$ es: -->
+<!-- ($j=1,2$) -->
+
+<!-- ```{=tex} -->
+<!-- \begin{align*} -->
+<!-- Z_{1i}(\tau)= -->
+<!--     \begin{cases} -->
+<!--         W(T_{1i})\left(1-\frac 1 2\right)=\frac{W(T_{1i})}{2} & \text{bajo Escenario A}\\ -->
+<!--         W(T_{2i})\left(0-\frac 1 2\right)=-\frac{W(T_{2i})}{2} & \text{bajo Escenario B}\\ -->
+<!--         0 & \text{otro caso} -->
+<!--     \end{cases} -->
+<!-- \end{align*} -->
+<!-- ``` -->
+<!-- -   Escenario A: si $T_{1i}<T_{2i}$, $\delta_{1i}=1$ o $T_{1i}=T_{2i}$, -->
+<!--     $\delta_{1i}=1$, $\delta_{2i}=0$. -->
+<!-- -   Escenario B: $T_{2i}<T_{1i}$, $\delta_{2i}=1$ o $T_{1i}=T_{2i}$, -->
+<!--     $\delta_{2i}=1$, $\delta_{1i}=0$. -->
+
+<!-- y -->
+
+<!-- ```{=tex} -->
+<!-- \begin{align*} -->
+<!-- \hat \sigma_{11i}= -->
+<!--     \begin{cases} -->
+<!--         W(T_{1i})^2/4 & \text{bajo Escenario A}\\ -->
+<!--         W(T_{2i})^2/4 & \text{bajo Escenario B}\\ -->
+<!--         0 & \text{otro caso} -->
+<!--     \end{cases} -->
+<!-- \end{align*} -->
+<!-- ``` -->
+<!-- Sumando sobre los estratos ($i=1,\ldots,M$): -->
+
+<!-- $$Z_{1.}(\tau)=w \cdot \frac{D_1-D_2}{2}$$ y -->
+
+<!-- $$\hat \sigma_{11.}=w^2\cdot \frac{D_1+D_2}{4}$$ donde: -->
+
+<!-- -   $D_1$: número de parejas en donde el evento aparece en el sujeto de -->
+<!--     la primera muestra. -->
+<!-- -   $D_2$: número de parejas en donde el evento aparece en el sujeto de -->
+<!--     la segunda muestra. -->
+<!-- -   $w$: peso evaluado en el tiempo más pequeño de ocurrencia del -->
+<!--     evento. -->
+
+<!-- Entonces: -->
+
+<!-- $$\frac{Z_{1.}(\tau)}{\sqrt{\hat \sigma_{11.}}}=\frac{D_1-D_2}{\sqrt{D_1+D_2}}\underset{H_0}{\sim}N(0,1)$$ -->
+
+<!-- ## Pruebas de Renyi -->
+
+<!-- *Inconveniente de las pruebas anteriores*: algunas veces las diferencias -->
+<!-- en las tasas de riesgo son simétricas (un primer grupo sobrepasa al otro -->
+<!-- en riesgo un número similar de veces al que el primer grupo es -->
+<!-- sobrepasado por el otro grupo). Esto provoca problemas de potencia en la -->
+<!-- prueba. *Solución*: utilizar otras medidas de comparación. -->
+
+<!-- Suponga que se tiene dos muestras independientes de tamaño $n_1$ y $n_2$ -->
+<!-- respectivamente. -->
+
+<!-- Sea $n=n_1+n_2$ y $t_1<t_2<\cdots<t_D$ los distintos tiempo de -->
+<!-- ocurrencia en la muestra combinada y $Y_{ij}$: número de individuos en -->
+<!-- riesgo en tiempo $t_i$ ($j=1,2$). Al igual que antes -->
+<!-- $Y_i=Y_{i1}+Y_{i2}$, $d_i=d_{i1}+d_{i2}$ (eventos ocurridos). Sea $W(t)$ -->
+<!-- la función de pesos (como las consideradas anteriormente). En este caso -->
+<!-- se calcula: -->
+
+<!-- $$Z(t_i)=\sum_{t_k\leq t_i}W(t_k)\left[d_{k1}-Y_{k1}\left(\frac{d_k}{Y_k}\right)\right]\qquad i=1,\ldots,D$$ -->
+<!-- y  -->
+
+<!-- $$\sigma(\tau)=\sum_{t_k\leq \tau}W(t_k)^2\left(\frac{Y_{k1}}{Y_k}\right)\left(\frac{Y_{k2}}{Y_k}\right)\left(\frac{Y_{k}-d_k}{Y_k-1}\right)d_k$$ -->
+<!-- donde $\tau$ es el $t_k$ máximo tal que $Y_{k1}, Y_{k2}>0$.  -->
+
+<!-- Bajo la hipótesis:  -->
+
+<!-- - $H_0: h_1(t)=h_2(t),\qquad t<\tau$ -->
+<!-- - $H_1: h_1(t)\neq h_2(t)$ -->
+
+<!-- el estadístico de prueba es: -->
+
+<!-- $$Q=\sup_{t\leq \tau}\frac{|Z(t)|}{\sigma(\tau)}$$ -->
+<!-- cuya distribución bajo $H_0$ se aproxima con la distribución de $\sup_{0\leq x\leq 1}|B(x)|$ donde $B$ es un proceso Browniano estándar. -->
+
+<!-- ## Pruebas en un punto fijo en el tiempo -->
+
+<!-- *Objetivo*: hacer comparaciones de funciones de sobrevivencia o curvas de incidencia de $k$ poblaciones en un punto fijo en el tiempo $t_0$. -->
+
+<!-- Sea $\Theta^T=(\theta_1,\ldots,\theta_p)$ un vector de parámetros de dimensión $p$. Definimos un contraste como con conjunto de coeficientes $c=(c_1,\ldots,c_p)$ que definen una combinación lineal de parámetros $\theta^c=c\Theta=c_1\theta_1+\cdots+c_p\theta_p$.  -->
+
+<!-- **Ejemplo**: si $p=3$ y $c=(1,-1,0)$, entonces $\theta^c=\theta_1-\theta_2$. Decir que $H_0: \theta^c=0$ es equivalente a decir que $H_0:\theta_1=\theta_2$. -->
+
+<!-- Suponga que se tiene $q$ contrastes $c_k=(c_{k1},\ldots,c_{kp})$ para $k=1,\ldots,q$ y se tiene que probar las hipótesis: -->
+
+<!-- $$H_0: c_k\Theta=0\qquad \forall k$$ -->
+<!-- Defina la matriz de contrastes:  -->
+
+<!-- \begin{align*} -->
+<!-- C= -->
+<!-- 	\begin{pmatrix} -->
+<!-- 	c_1\\ -->
+<!-- 	\vdots \\ -->
+<!-- 	c_q -->
+<!-- 	\end{pmatrix} -->
+<!-- \end{align*} -->
+
+<!-- Si $\hat \theta_j$ es el estimador de $\theta_j$ con matriz de varianza $V$ (con entradas $\hat V(\hat \theta_j,\hat \theta_k)$) ($V$: varianza). Entonces si se quiere probar: -->
+
+<!-- $$H_0: C\Theta^T=0$$ -->
+
+<!-- El estadístico de prueba es: -->
+
+<!-- $$X^2=[C\Theta]^T[CVC^T]^{-1}[C\Theta]\underset{H_0}{\sim}\chi_q^2$$ -->
+<!-- Caso particular: -->
+
+<!-- - $H_0: S_1(t_0)=S_2(t_0)=\cdots S_k(t_0)$ vs $H_1$: al menos uno de los $S_j(t_0)$ es distinto. -->
+<!-- - $H_0: CI_1(t_0)=CI_2(t_0)=\cdots =CI_k(t_0)$ vs $H_1$: al menos uno de los $CI_j(t_0)$ es distinto. -->
+
+<!-- Sea $\hat \theta_j$ el estimador de Kaplan-Meier de $S_j(t_0)$ o la curva de incidencia estimada en $t_0$. Sea  -->
+
+<!-- \begin{align*} -->
+<!-- C= -->
+<!-- 	\begin{pmatrix} -->
+<!-- 	  1 & 0 & 0 & \cdots & 0 & -1 \\ -->
+<!-- 	  0 & 1 & 0 & \cdots & 0 & -1 \\ -->
+<!-- 	  \vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\ -->
+<!-- 	  0 & 0 & 0 & \cdots & 1 & -1 -->
+<!-- 	\end{pmatrix} -->
+<!-- \end{align*} -->
+
+<!-- y $V=\text{diag}(\hat V(\hat \theta_k(t_0)))$. Entonces: -->
+
+<!-- \begin{align*} -->
+<!-- X^2&= -->
+<!-- 	\begin{pmatrix} -->
+<!-- 		\hat \theta_1-\hat \theta_p\\ -->
+<!-- 		\vdots\\ -->
+<!-- 		\hat \theta_{p-1}-\hat \theta_p -->
+<!-- 	\end{pmatrix}^T -->
+<!-- 	\begin{pmatrix} -->
+<!-- 		V_1+V_p & V_p & \cdots & V_p \\ -->
+<!-- 		V_p & V_2+V_p & \cdots & V_p \\ -->
+<!-- 		\vdots & \vdots & \vdots & \vdots \\ -->
+<!-- 		V_p & V_p & \cdots & V_{p-1}+V_p -->
+<!-- 	\end{pmatrix}^{-1} -->
+<!-- 	\begin{pmatrix} -->
+<!-- 		\hat \theta_1-\hat \theta_p\\ -->
+<!-- 		\vdots\\ -->
+<!-- 		\hat \theta_{p-1}-\hat \theta_p -->
+<!-- 	\end{pmatrix}\\ -->
+<!-- 	& \underset{H_0}{\sim} \chi_{p-1}^2 -->
+<!-- \end{align*} -->
+
+<!-- Caso particular (p=2): -->
+
+<!-- Con la hipótesis nula $H_0: S_1(t_0)=S_2(t_0)$: -->
+
+<!-- $$Z=\frac{\hat S_1(t_0)-\hat S_2(t_0)}{\sqrt{\hat V(\hat S_1(t_0))+\hat V(\hat S_2(t_0))}}\underset{H_0}{\sim}N(0,1)$$ -->
+<!-- **Nota**: Si se quiere hacer comparaciones simultáneas ($k$ en total, 2 a 2) se puede usar un factor de corrección de *Bonferroni* (Ejercicio). -->
+
+
+<!-- ## Laboratorio -->
+
+<!-- ### Prueba de una muestra -->
+
+<!-- Carga de paquetes básicos: -->
+
+<!-- ```{r message=FALSE, warning=FALSE} -->
+<!-- library(survival) -->
+<!-- library(KMsurv) -->
+<!-- library(survMisc) -->
+<!-- library(tidyverse) -->
+<!-- ``` -->
+
+<!-- Este cálculo busca replicar el ejemplo 7.1 en donde se compara la -->
+<!-- mortalidad en una muestra de 26 pacientes psiquiátricos en Iowa con -->
+<!-- respecto a la mortalidad general de la población del mismo estado en el -->
+<!-- año 1960. Primero cargamos los datos: -->
+
+<!-- ```{r} -->
+<!-- data("psych") -->
+<!-- head(psych) -->
+<!-- ``` -->
+
+<!-- y cargamos la información de la mortalidad de todo Iowa (1:Hombres, -->
+<!-- 2:Mujeres): -->
+
+<!-- ```{r} -->
+<!-- Iowa_mort <- read_csv('./data/Iowa_1960.csv')     -->
+<!-- colnames(Iowa_mort) <- c('age','1','2') -->
+<!-- head(Iowa_mort) -->
+<!-- ``` -->
+
+<!-- Después de algunos cambios, unimos las dos fuentes de información: -->
+
+<!-- ```{r} -->
+<!-- Iowa_mort <- Iowa_mort %>%  -->
+<!--   pivot_longer(-age,names_to = 'sex',values_to = 'Survival') %>% -->
+<!--   mutate(sex=as.numeric(sex)) -->
+
+<!-- psych <- psych %>% left_join(Iowa_mort) %>% mutate(age2=age+time) -->
+<!-- head(psych) -->
+<!-- ``` -->
+
+<!-- Se maneja dos distintas situaciones bajo estos datos censurados por la -->
+<!-- derecha: (1) truncamiento por la izquierda o (2) ningún truncamiento: -->
+
+<!-- ```{r} -->
+<!-- attach(psych) -->
+<!-- surv_7_1 <- Surv(time = age,time2 = age2,event = death,type = 'counting') -->
+<!-- surv_7_1_b <- Surv(time = age2,event = death) -->
+<!-- ``` -->
+
+<!-- Si queremos comparar las dos distribuciones sin asumir truncamiento por -->
+<!-- la izquierda se puede ejecutar: -->
+
+<!-- ```{r} -->
+<!-- S_7_1_b <- survdiff(surv_7_1_b~offset(Survival)) -->
+<!-- S_7_1_b -->
+<!-- ``` -->
+
+<!-- En donde concluimos que la mortalidad de los pacientes es distinta a la -->
+<!-- resto del estado bajo los niveles de significancia usuales. En el caso -->
+<!-- de truncamiento por la izquierda, hacemos el cálculo de manera directa: -->
+
+<!-- ```{r} -->
+<!-- psych <- psych %>% mutate(H=-log(Survival)) -->
+
+<!-- Iowa_mort <- Iowa_mort %>% select(age2=age,sex,Survival2=Survival) -->
+
+<!-- psych <- psych %>% left_join(Iowa_mort) %>%  -->
+<!--   mutate(H2=-log(Survival2)) %>% -->
+<!--   mutate(dif=H2-H) -->
+
+<!-- Otau <- sum(psych$death) -->
+
+<!-- Etau <- sum(psych$dif) -->
+
+<!-- X2 <- (Otau-Etau)^2/Etau -->
+
+<!-- valor_p <- pchisq(q = X2,df = 1,lower.tail = F) -->
+<!-- show(valor_p) -->
+<!-- detach(psych) -->
+<!-- ``` -->
+
+<!-- Por lo que llegamos a la misma conclusión. -->
+
+<!-- ### Prueba de dos muestras -->
+
+<!-- El primer conjunto de datos mide la efectividad de dos técnicas -->
+<!-- distintas de colocación de catéteres en procedimientos de diálisis en -->
+<!-- riñones. -->
+
+<!-- ```{r} -->
+<!-- data("kidney")   -->
+<!-- head(kidney) -->
+<!-- ``` -->
+
+<!-- Primero estimamos las funciones de sobrevivencia según Kaplan-Meier: -->
+
+<!-- ```{r} -->
+<!-- attach(kidney) -->
+<!-- library(survminer) -->
+<!-- surv_7_2 <- Surv(time,event = delta) -->
+<!-- S_7_2 <- survfit(surv_7_2~type,data = kidney) -->
+<!-- ggsurvplot(S_7_2) -->
+<!-- ``` -->
+
+<!-- Y comparamos las tasas de riesgo bajo los dos procedimientos bajo -->
+<!-- distintas escogencias de funciones de pesos $W(t)$ (log-rank, Peto-Peto -->
+<!-- y tres posibilidades de escogencia de Fleming-Harrington): -->
+
+<!-- ```{r} -->
+<!-- X_7_2_logrank <- survdiff(surv_7_2~type,data = kidney,rho = 0) -->
+<!-- X_7_2_logrank -->
+<!-- X_7_2_PetoPeto <- survdiff(surv_7_2~type,data = kidney,rho = 1) -->
+<!-- X_7_2_PetoPeto -->
+<!-- library(FHtest) # http://www.bioconductor.org/packages/release/bioc/html/Icens.html -->
+<!-- X_7_2_FH1 <- FHtestrcc(surv_7_2~type,data = kidney,rho = 0,lambda=1) -->
+<!-- X_7_2_FH1 -->
+<!-- X_7_2_FH2 <- FHtestrcc(surv_7_2~type,data = kidney,rho = 1,lambda=0) -->
+<!-- X_7_2_FH2 -->
+<!-- X_7_2_FH3 <- FHtestrcc(surv_7_2~type,data = kidney,rho = 1,lambda=1) -->
+<!-- X_7_2_FH3 -->
+<!-- detach(kidney) -->
+<!-- ``` -->
+
+<!-- Noten que bajo algunas escogencias de pesos no hay evidencia suficiente -->
+<!-- para rechazar la igualdad entre tasas de riesgos. -->
+
+<!-- El ejemplo 7.3 del Klein busca comparar dos tasas de riesgo bajo un -->
+<!-- esquema de truncamiento por la izquierda. En este caso se usa los datos -->
+<!-- de la casa de retiro Channing, que anteriormente habíamos usado para -->
+<!-- comparar entre hombres y mujeres la sobrevivencia de adultos mayores. -->
+<!-- Ahora se busca probar $H_0:h_F(t)=h_M(t)$ contra la alternativa de una -->
+<!-- cola $H_A:h_F(t)\leq h_M(t)$. -->
+
+<!-- ```{r} -->
+<!-- data("channing")   -->
+<!-- head(channing) -->
+<!-- attach(channing) -->
+<!-- surv_7_3 <- Surv(time = ageentry,time2 = age,event = death,type = 'counting') -->
+<!-- S_7_3 <- coxph(surv_7_3~gender) -->
+<!-- summary(S_7_3) -->
+<!-- ``` -->
+
+<!-- En este caso el estadístico de prueba corresponde al de la prueba Score -->
+<!-- (3.36). Como la prueba es de una cola, el valor p se puede calcular -->
+<!-- directamente: -->
+
+<!-- ```{r} -->
+<!-- pnorm(sqrt(3.36),lower.tail = F) -->
+<!-- detach(channing) -->
+<!-- ``` -->
+
+<!-- Lo que da evidencia de que bajo un nivel de confianza en la muestra del -->
+<!-- 95%, podríamos rechazar la hipótesis de que las dos tasas de riesgo son -->
+<!-- idénticas a favor de que de las mujeres es mayor a la de los hombres. -->
+
+<!-- El ejemplo 7.4 usa los datos de 137 pacientes que iban a someterse a un -->
+<!-- transplante de médula ósea bajo tres distintas condiciones de leucemia -->
+<!-- (ALL, AML-low, AML-high). Vamos a comparar la sobrevivencia de los -->
+<!-- pacientes bajo estos tres grupos de riesgo. -->
+
+<!-- ```{r} -->
+<!-- data("bmt") -->
+<!-- head(bmt) -->
+<!-- ``` -->
+
+<!-- Las funciones de sobrevivencia estimadas se grafican: -->
+
+<!-- ```{r} -->
+<!-- S_7_4 <- survfit(Surv(time=t2, event=d3) ~ group, data=bmt) -->
+<!-- ggsurvplot(S_7_4) -->
+<!-- ``` -->
+
+<!-- y probamos la hipótesis de la igualdad de tasas de riesgo entre los tres -->
+<!-- grupos, usando tres posibilidades de escogencia de parámetros de -->
+<!-- Fleming-Harrington, y bajo las opciones de log-rank y Gehan: -->
+
+<!-- ```{r} -->
+<!-- b1 <- ten(Surv(time=t2, event=d3) ~ group, data=bmt) -->
+<!-- pruebas_7_4 <- comp(b1, p=c(1, 0, 1), q=c(0, 1, 1)) -->
+<!-- ``` -->
+
+<!-- Note que en esta versión del paquete *survMisc* los valores p no son -->
+<!-- calculados correctamente. Por ejemplo, para el caso de la prueba con -->
+<!-- pesos de Gehan este se podría calcular como: -->
+
+<!-- ```{r} -->
+<!-- pchisq(16.2407,df = 2,lower.tail = F) -->
+<!-- ``` -->
+
+<!-- Por lo tanto bajo los niveles de confianza usuales se rechaza la -->
+<!-- hipótesis de que las tres tasas de riesgo son iguales para cualquier -->
+<!-- $t$. -->
+
+<!-- ### Pruebas de tendencia -->
+
+<!-- Como ejemplo de la prueba de tendencia se utiliza una base de 40 -->
+<!-- pacientes con cáncer de laringe clasificados según la etapa de la -->
+<!-- enfermedad. Se probará la hipótesis de que no hay una diferencia entre -->
+<!-- las tasas de riesgo entre las 4 etapas vs la hipótesis de que entre más -->
+<!-- alta la etapa, más alta la tasa de riesgo. Graficamos las 4 funciones de -->
+<!-- sobrevivencia estimadas: -->
+
+<!-- ```{r} -->
+<!-- data("larynx") -->
+<!-- S_7_6 <- survfit(Surv(time, delta) ~ stage,data=larynx) -->
+<!-- ggsurvplot(S_7_6) -->
+<!-- ``` -->
+
+<!-- y el estadístico de prueba lo calculamos con la función *comp*, usando -->
+<!-- como scores $a_j=j, \; 1,\ldots,4$ y bajo distintas escogencias de -->
+<!-- funciones de pesos: -->
+
+<!-- ```{r} -->
+<!-- l1 <- ten(Surv(time, delta) ~ stage, data=larynx) -->
+<!-- comp(l1) -->
+<!-- p <- attr(l1, "tft") -->
+<!-- p$tft$pChisq -->
+<!-- ``` -->
+
+<!-- Por ejemplo para el caso de la prueba con pesos de Tarone, el valor p -->
+<!-- es: -->
+
+<!-- ```{r} -->
+<!-- 2*pnorm(4.0580,lower.tail = F) -->
+<!-- ``` -->
+
+<!-- por lo que se rechaza la hipótesis nula inmediatamente, a favor de una -->
+<!-- en donde las tasas son crecientes. -->
+
+<!-- ### Pruebas estratificadas -->
+
+<!-- Como complemento al ejemplo de la sobrevivencia en pacientes con -->
+<!-- leucemia, se incluye la covariable de uso del químico MTX como -->
+<!-- profiláctico en el tratamiento, el cual puede ser una variable confusora -->
+<!-- en la prueba del ejemplo 7.4. -->
+
+<!-- ```{r} -->
+<!-- S_7_4_est <- survfit(Surv(time=t2, event=d3) ~ group+strata(z10), data=bmt) -->
+<!-- ggsurvplot(S_7_4_est) -->
+<!-- ``` -->
+
+<!-- y hacemos una prueba de log-rango con el paquete *survival*: -->
+
+<!-- ```{r} -->
+<!-- Prueba_7_4_est <- survdiff(Surv(time=t2, event=d3) ~ group+strata(z10), data=bmt) -->
+<!-- print(Prueba_7_4_est) -->
+<!-- ``` -->
+
+<!-- por lo tanto se rechaza la hipótesis nula de igualdad de tasas de -->
+<!-- riesgo, independientemente del efecto del uso del químico MTX en la -->
+<!-- población de estudio. -->
+
+<!-- ### Prueba de Renyi -->
+
+<!-- Para ilustrar el uso de la prueba de Renyi usamos los datos de -->
+<!-- sobrevivencia de 45 pacientes con cáncer gástrico a los cuales se les -->
+<!-- aplicó quimioterapia o la combinación de quimioterapia y radiación. Las -->
+<!-- funciones de sobrevivencia estimadas son: -->
+
+<!-- ```{r} -->
+<!-- data("gastric") -->
+<!-- S_7_9_est <- survfit(Surv(time, event) ~ group, data=gastric) -->
+<!-- ggsurvplot(S_7_9_est) -->
+<!-- ``` -->
+
+<!-- donde es muy evidente que las dos funciones de sobrevivencia se cruzan -->
+<!-- en una edad intermedia, por lo que es mejor usar la prueba de Renyi: -->
+
+<!-- ```{r} -->
+<!-- g1 <- ten(Surv(time, event) ~ group, data=gastric) -->
+<!-- pba <- comp(g1) -->
+<!-- attr(g1, "sup") -->
+<!-- p <- attr(g1, "sup") -->
+<!-- ``` -->
+
+<!-- y los valores p correspondientes para cada una de las escogencias de pesos son: -->
+
+<!-- ```{r message=FALSE, warning=FALSE} -->
+<!-- p$pSupBr -->
+<!-- ``` -->
+
+<!-- Por lo que rechazaríamos la hipótesis de igualdad de tasas de riesgo -->
+<!-- para niveles de significacia superiores al 5% aproximadamente para todos los casos excepto la primera y la última ponderación. -->

@@ -10,6 +10,7 @@ book:
     - index.qmd
     - Preliminares.qmd
     - estNP.qmd
+    - PH.qmd
     - references.qmd
 
 bibliography: references.bib
