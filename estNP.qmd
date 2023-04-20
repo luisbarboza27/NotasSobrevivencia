@@ -308,7 +308,7 @@ y defina:
 
     -   Con $S_k(\cdot)$ calcule, para $j\leq i$:
 
-$$p_{ij}=P[t_{j-1}<X\leq t_i|X\leq t_i]=\frac{S_k(t_{j-1})-S_k(t_j)}{1-S_k(t_i)}$$
+$$p_{ij}=P[t_{j-1}<X\leq t_i|X\leq t_i]\approx \frac{S_k(t_{j-1})-S_k(t_j)}{1-S_k(t_i)}$$
 
 -   Estime el número de eventos en tiempo $t_i$ como:
 
