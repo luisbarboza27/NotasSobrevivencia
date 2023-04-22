@@ -503,326 +503,256 @@ legend(90, 1, c("Male-68", "Female-68","Male-80", "Female-80"),
 
 ```
 
-<!-- ### Riesgos en competencia -->
+### Riesgos en competencia
 
-<!-- 1384 Pacientes con gammapatía monoclonal de significado incierto (MGUS) a los cuales se les hace un seguimiento hasta la aparición de neoplasia de células plasmáticas (PCM) o la muerte (en meses). Por ejemplo, el estimador KM de la sobrevivencia (riesgo de muerte) de los pacientes clasificado por sexo es: -->
+1384 Pacientes con gammapatía monoclonal de significado incierto (MGUS) a los cuales se les hace un seguimiento hasta la aparición de neoplasia de células plasmáticas (PCM) o la muerte (en meses). Por ejemplo, el estimador KM de la sobrevivencia (riesgo de muerte) de los pacientes clasificado por sexo es:
 
-<!-- ```{r} -->
+```{r}
 
-<!-- mfit1 <- survfit(Surv(futime, death) ~ sex, data=mgus2) -->
+mfit1 <- survfit(Surv(futime, death) ~ sex, data=mgus2)
+plot(mfit1, col=c(1,2), xscale=12, mark.time=FALSE, lwd=2,
+     xlab="Years post diagnosis", ylab="Survival")
+legend("topright", c("female", "male"), col=1:2, lwd=2, bty='n')
 
-<!-- plot(mfit1, col=c(1,2), xscale=12, mark.time=FALSE, lwd=2, -->
+```
 
-<!--      xlab="Years post diagnosis", ylab="Survival") -->
+Considere dos riesgos en competencia: PCM y muerte no relacionada a PCM.
 
-<!-- legend("topright", c("female", "male"), col=1:2, lwd=2, bty='n') -->
+```{r}
 
-<!-- ``` -->
+mgus3 <- mgus2 %>% mutate(etime=ifelse(pstat==0, futime,ptime),
+                          event = ifelse(pstat==0, 2*death, 1))
+mgus3$event <- factor(mgus3$event, 0:2, 
+                      labels=c("censor", "pcm", "death"))
+table(mgus3$event)
 
-<!-- Considere dos riesgos en competencia: PCM y muerte no relacionada a PCM.  -->
+```
 
-<!-- ```{r} -->
+con el cálculo correspondiente de la incidencia cumulada:
 
-<!-- mgus3 <- mgus2 %>% mutate(etime=ifelse(pstat==0, futime,ptime), -->
+```{r}
 
-<!--                           event = ifelse(pstat==0, 2*death, 1)) -->
+mfit2 <- survfit(Surv(etime, event) ~ sex, data=mgus3)
+print(mfit2, rmean=240, scale=12)
 
-<!-- mgus3$event <- factor(mgus3$event, 0:2, labels=c("censor", "pcm", "death")) -->
+```
 
-<!-- table(mgus3$event) -->
+```{r}
 
-<!-- ``` -->
+plot(mfit2, col=c(1,2,1,2), lty=c(2,2,1,1),
+     mark.time=FALSE, lwd=2, xscale=12,
+xlab="Years post diagnosis", ylab="Probability in State")
+legend(240, .6, c("death:female", "death:male", "pcm:female", "pcm:male"),
+col=c(1,2,1,2), lty=c(1,1,2,2), lwd=2, bty='n')
 
-<!-- con el cálculo correspondiente de la incidencia cumulada: -->
+```
 
-<!-- ```{r} -->
+### Otros esquemas de muestreo
 
-<!-- mfit2 <- survfit(Surv(etime, event) ~ sex, data=mgus3) -->
+En esta segunda clase, se calculará empíricamente la función de sobrevivencia bajo tres distintos esquemas de muestreo.
 
-<!-- print(mfit2, rmean=240, scale=12) -->
+#### Censura doble (Censura por derecha y por izquierda)
 
-<!-- ``` -->
+Vamos a replicar aproximadamente el ejemplo 5.1 del Klein. A continuación la carga de datos:
 
-<!-- ```{r} -->
+```{r}
 
-<!-- plot(mfit2, col=c(1,2,1,2), lty=c(2,2,1,1), -->
+edades <- 10:18
+eventos <- c(4,12,19,24,20,13,3,1,4)
+censuras_izq <- c(0,0,0,1,2,3,2,3,1)
+censuras_der <- c(0,0,2,15,24,18,14,6,0)
+tabla_5_1 <- data.frame(edades,censuras_izq,eventos,censuras_der)
+tabla_5_1
 
-<!-- mark.time=FALSE, lwd=2, xscale=12, -->
+```
 
-<!-- xlab="Years post diagnosis", ylab="Probability in State") -->
+comparen esta tabla con la Tabla 5.1 del Klein. El ajuste de este tipo de datos se hace con el paquete *survival* con el algoritmo de Turnbull ajustado a través de EM (Método de Esperanza-Maximización). Antes, hay que convertir los datos a intervalos individualizados según el tipo de censura:
 
-<!-- legend(240, .6, c("death:female", "death:male", "pcm:female", "pcm:male"), -->
+```{r}
 
-<!-- col=c(1,2,1,2), lty=c(1,1,2,2), lwd=2, bty='n') -->
+censuras_izq_v <- NULL
+for(i in 1:dim(tabla_5_1)[1]){
+  if(tabla_5_1[i,2]>0){
+    censuras_izq_v <- rbind(censuras_izq_v,
+                            matrix(rep(c(-Inf,tabla_5_1[i,1]),
+                                       each=tabla_5_1[i,2]),
+                                   nrow=tabla_5_1[i,2]))
+    }
+}
+eventos_v <- NULL
 
-<!-- ``` -->
+for(i in 1:dim(tabla_5_1)[1]){
+  if(tabla_5_1[i,3]>0){
+    eventos_v <- rbind(eventos_v,
+                       matrix(rep(c(tabla_5_1[i,1],
+                                    tabla_5_1[i,1]),
+                                  each=tabla_5_1[i,3]),
+                              nrow = tabla_5_1[i,3]))
+  }
+}
 
-<!-- ### Otros esquemas de muestreo -->
+censuras_der_v <- NULL
 
-<!-- En esta segunda clase, se calculará empíricamente la función de sobrevivencia bajo tres distintos esquemas de muestreo. -->
+for(i in 1:dim(tabla_5_1)[1]){
+  if(tabla_5_1[i,4]>0){
+    censuras_der_v <- rbind(censuras_der_v,
+                            matrix(rep(c(tabla_5_1[i,1],Inf),
+                          each=tabla_5_1[i,4]),nrow = tabla_5_1[i,4]))
+    }
+}
 
-<!-- #### Censura doble (Censura por derecha y por izquierda) -->
+datos_5_1 <- rbind(censuras_der_v,censuras_izq_v,eventos_v)
+head(datos_5_1)
+tail(datos_5_1)
 
-<!-- Vamos a replicar aproximadamente el ejemplo 5.1 del Klein. A continuación la carga de datos: -->
+```
 
-<!-- ```{r} -->
+y ya con los datos convertidos se puede estimar la función de sobrevivencia:
 
-<!-- library(survival) -->
+```{r}
 
-<!-- library(KMsurv) -->
+surv_obj_5_1 <- Surv(time = datos_5_1[,1],time2 = datos_5_1[,2],
+                     type = 'interval2')
+S_5_1 <- survfit(surv_obj_5_1~1)
+summary(S_5_1)
+plot(S_5_1)
 
-<!-- library(survMisc) -->
+```
 
-<!-- edades <- 10:18 -->
+#### Censura por intervalo
 
-<!-- eventos <- c(4,12,19,24,20,13,3,1,4) -->
+En el caso de censura por intervalo, se ilustrará el algoritmo de Turnbull-EM con los datos del ejemplo 5.2. Estos datos consisten en la comparación de dos tratamientos de cáncer de mama a nivel de 95 mujeres (Variable *treat*: 1-Radioterapia, 2-Radioterapia+quimioterapia). Durante visitas periodicas, los médicos midieron el deterioro cosmético en el seno de cada mujer bajo los dos tratamientos. Lo único que se guarda en cada caso en el periodo de tiempo en donde el deterioro fue severo o moderado entre dos visitas sucesivas. El tiempo se mide en meses.
 
-<!-- censuras_izq <- c(0,0,0,1,2,3,2,3,1) -->
+```{r}
 
-<!-- censuras_der <- c(0,0,2,15,24,18,14,6,0) -->
+data("bcdeter")
+head(bcdeter)
 
-<!-- tabla_5_1 <- data.frame(edades,censuras_izq,eventos,censuras_der) -->
+```
 
-<!-- tabla_5_1 -->
+La estimación de la función de sobrevivencia para el riesgo de deterioro se estima por tipo de tratamiento:
 
-<!-- ``` -->
+```{r}
 
-<!-- comparen esta tabla con la Tabla 5.1 del Klein. El ajuste de este tipo de datos se hace con el paquete *survival* con el algoritmo de Turnbull ajustado a través de EM (Método de Esperanza-Maximización). Antes, hay que convertir los datos a intervalos individualizados según el tipo de censura: -->
+surv_obj_5_2 <- Surv(time = bcdeter$lower,time2 = bcdeter$upper,
+                     type = 'interval2')
+S_5_2 <- survfit(surv_obj_5_2~treat,data = bcdeter)
+summary(S_5_2)
 
-<!-- ```{r} -->
+```
 
-<!-- censuras_izq_v <- NULL -->
+ y gráficamente:
 
-<!-- for(i in 1:dim(tabla_5_1)[1]){ -->
+```{r}
 
-<!--   if(tabla_5_1[i,2]>0){ -->
+plot(S_5_2,col = c(1,2))
+legend(0,0.4,legend = c('T-1','T-2'),col=c(1,2),lty=1)
 
-<!--     censuras_izq_v <- rbind(censuras_izq_v,matrix(rep(c(-Inf,tabla_5_1[i,1]), -->
+```
 
-<!--                                                       each=tabla_5_1[i,2]), -->
+#### Estimación de $S(x)$ con una tabla de vida de un cohorte .
 
-<!--                                                   nrow = tabla_5_1[i,2])) -->
+A manera de resumen (les recomiendo que estudien esta sección por su propia cuenta, ya que no presenta diferencias sustanciales con respecto al resto del curso), estos son los principales indicadores que se calculan en una tabla de vida de forma no-paramétrica:
 
-<!--     } -->
+- Cohorte: grupo de individuos con un origen en común en cuanto al tiempo en el cual un evento es calculado (por ejemplo, la misma edad al momento de inicial el estudio)
 
-<!-- } -->
+- Se considera intervalos disjuntos $I_j=(a_{j-1},a_j]$, $j=1,\ldots,k+1$ con $a_0=0$ y $a_{k+1}=\infty$, en donde cada individuo del cohorte tendrá el evento de interés.
 
-<!-- eventos_v <- NULL -->
+- Sea $Y_j'$: número de individuos que no han experimentado el evento en el $j$-ésimo intervalo.
 
-<!-- for(i in 1:dim(tabla_5_1)[1]){ -->
+- $W_j$: número de individuos del cohorte que no presentan el evento en el intervalo $j$-ésimo (censuras).
 
-<!--   if(tabla_5_1[i,3]>0){ -->
+- $d_j$: número de individuos del cohorte que presentan el evento en el intervalo $j$-ésimo (eventos).
 
-<!--     eventos_v <- rbind(eventos_v,matrix(rep(c(tabla_5_1[i,1],tabla_5_1[i,1]), -->
+- La población en riesgo del intervalo $j$-ésimo se estima asumiendo una distribución uniforme de las censuras:
 
-<!--                                             each=tabla_5_1[i,3]), -->
+\begin{align*}
 
-<!--                                         nrow = tabla_5_1[i,3])) -->
+Y_j=Y_j'-W_j/2
 
-<!--     } -->
+\end{align*}
 
-<!-- } -->
+- La función de sobrevivencia estimada es análoga al estimador de Kaplan-Meier:
 
-<!-- censuras_der_v <- NULL -->
+\begin{align*}
 
-<!-- for(i in 1:dim(tabla_5_1)[1]){ -->
+\hat S(a_j)=\prod_{i=1}^j\left(1-d_i/Y_i\right)
 
-<!--   if(tabla_5_1[i,4]>0){ -->
+\end{align*}
 
-<!--     censuras_der_v <- rbind(censuras_der_v,matrix(rep(c(tabla_5_1[i,1],Inf), -->
+- La densidad estimada en el punto medio del intervalo $j$-ésimo ($a_{mj}=(a_j+a_{j-1})/2$) es:
 
-<!--                                                       each=tabla_5_1[i,4]), -->
+\begin{align*}
 
-<!--                                                   nrow = tabla_5_1[i,4])) -->
+\hat f(a_{mj})=\frac{\hat S(a_{j-1})-\hat S(a_j)}{a_{j-1}-a_j}
 
-<!--     } -->
+\end{align*}
 
-<!-- } -->
+- La tasa de riesgo estimada en el punto medio del intervalo $j$-ésimo:
 
-<!-- datos_5_1 <- rbind(censuras_der_v,censuras_izq_v,eventos_v) -->
+\begin{align*}
 
-<!-- head(datos_5_1) -->
+\hat h(a_{mj})&=\frac{\hat f(a_{mj})}{\hat S(a_{mj})}\\
 
-<!-- tail(datos_5_1) -->
+&=\frac{2\hat f(a_{mj})}{\hat S(a_{j})+\hat S(a_{j-1})}
 
-<!-- ``` -->
+\end{align*}
 
-<!-- y ya con los datos convertidos se puede estimar la función de sobrevivencia: -->
+usando interpolación lineal para calcular $\hat S(a_{mj})$.
 
-<!-- ```{r} -->
+- Las probabilidad condicionales de sobrevivencia en el $j$-ésimo intervalo es:
 
-<!-- surv_obj_5_1 <- Surv(time = datos_5_1[,1],time2 = datos_5_1[,2], -->
+\begin{align*}
 
-<!--                      type = 'interval2') -->
+\hat p_j=1-\hat q_j=1-d_j/Y_j
 
-<!-- S_5_1 <- survfit(surv_obj_5_1~1) -->
+\end{align*}
 
-<!-- summary(S_5_1) -->
+donde $\hat q_j$ es la probabilidad condicional de ocurrencia del evento en el mismo intervalo.
 
-<!-- plot(S_5_1) -->
+Vamos a replicar el ejemplo 5.4 en donde se tiene datos de 927 recién nacidos cuyas madres los alimentaron con lactancia materna. La duración de lactancia materna se midió en semanas, y el evento de interés es la interrupción de la lactancia materna. En cada intervalo también hubo salidas del estudio.
 
-<!-- ``` -->
+Extraemos los datos y hacemos el cálculo de la tabla de sobreviencia del cohorte:
 
-<!-- #### Censura por intervalo -->
+```{r}
 
-<!-- En el caso de censura por intervalo, se ilustrará el algoritmo de Turnbull-EM con los datos del ejemplo 5.2. Estos datos consisten en  -->
+data("bfeed")
+library(tidyverse)
+head(bfeed)
+ninit <- dim(bfeed)[1]
+tis <- c(0,2,3,5,7,11,17,25,37,53,NA)
+tis_2 <- c(0,2,3,5,7,11,17,25,37,53,Inf)
+pretablas <- bfeed %>% dplyr::select(duration,delta) %>%
+  mutate(intervalo=cut(duration,breaks = tis_2))%>%
+  group_by(delta,intervalo)%>%
+  summarise(conteo=n())
 
-<!-- la comparación de dos tratamientos de cáncer de mama a nivel de 95 mujeres (Variable *treat*: 1-Radioterapia, 2-Radioterapia+quimioterapia). Durante visitas periodicas, los médicos midieron el deterioro cosmético en el seno de cada mujer bajo los dos tratamientos. Lo único que se guarda en cada caso en el periodo de tiempo en donde el deterioro fue severo o moderado entre dos visitas sucesivas. El tiempo se mide en meses.  -->
+tabla_resumen <- data.frame(intervalos=unique(pretablas$intervalo),
+                            eventos=pretablas$conteo[pretablas$delta==1],
+                            censuras=c(pretablas$conteo[pretablas$delta==0],
+                                       rep(0,3)))
 
-<!-- ```{r} -->
+tabla_resumen$Yprima <- 0
+tabla_resumen$Yprima[1] <-ninit
 
-<!-- data("bcdeter") -->
+for(i in 2:dim(tabla_resumen)[1]){
+  tabla_resumen$Yprima[i]<-tabla_resumen$Yprima[i-1]-
+    tabla_resumen$eventos[i]-
+    tabla_resumen$censuras[i]
+}
 
-<!-- head(bcdeter) -->
+```
 
-<!-- ``` -->
+La tabla resultante y el cálculo de la función de sobrevivencia:
 
-<!-- La estimación de la función de sobrevivencia para el riesgo de deterioro se estima por tipo de tratamiento: -->
+```{r}
 
-<!-- ```{r} -->
+show(tabla_resumen)
+tabla_vida <- lifetab(tis,ninit,
+                      nlost = tabla_resumen$censuras,
+                      nevent = tabla_resumen$eventos)
+show(tabla_vida)
 
-<!-- surv_obj_5_2 <- Surv(time = bcdeter$lower,time2 = bcdeter$upper, -->
+```
 
-<!--                      type = 'interval2') -->
-
-<!-- S_5_2 <- survfit(surv_obj_5_2~treat,data = bcdeter) -->
-
-<!-- summary(S_5_2) -->
-
-<!-- ``` -->
-
-<!--  y gráficamente: -->
-
-<!-- ```{r} -->
-
-<!-- plot(S_5_2,col = c(1,2)) -->
-
-<!-- legend(0,0.4,legend = c('T-1','T-2'),col=c(1,2),lty=1) -->
-
-<!-- ``` -->
-
-<!-- #### Estimación de $S(x)$ con un tabla de vida de un cohorte . -->
-
-<!-- A manera de resumen (les recomiendo que estudien esta sección por su propia cuenta, ya que no presenta diferencias sustanciales con respecto al resto del curso), estos son los principales indicadores que se calculan en una tabla de vida de forma no-paramétrica: -->
-
-<!-- - Cohorte: grupo de individuos con un origen en común en cuanto al tiempo en el cual un evento es calculado (por ejemplo, la misma edad al momento de inicial el estudio) -->
-
-<!-- - Se considera intervalos disjuntos $I_j=(a_{j-1},a_j]$, $j=1,\ldots,k+1$ con $a_0=0$ y $a_{k+1}=\infty$, en donde cada individuo del cohorte tendrá el evento de interés. -->
-
-<!-- - Sea $Y_j'$: número de individuos que no han experimentado el evento en el $j$-ésimo intervalo. -->
-
-<!-- - $W_j$: número de individuos del cohorte que no presentan el evento en el intervalo $j$-ésimo (censuras). -->
-
-<!-- - $d_j$: número de individuos del cohorte que presentan el evento en el intervalo $j$-ésimo (eventos). -->
-
-<!-- - La población en riesgo del intervalo $j$-ésimo se estima asumiendo una distribución uniforme de las censuras: -->
-
-<!-- \begin{align*} -->
-
-<!-- Y_j=Y_j'-W_j/2 -->
-
-<!-- \end{align*} -->
-
-<!-- - La función de sobrevivencia estimada es análoga al estimador de Kaplan-Meier: -->
-
-<!-- \begin{align*} -->
-
-<!-- \hat S(a_j)=\prod_{i=1}^j\left(1-d_i/Y_i\right) -->
-
-<!-- \end{align*} -->
-
-<!-- - La densidad estimada en el punto medio del intervalo $j$-ésimo ($a_{mj}=(a_j+a_{j-1})/2$) es: -->
-
-<!-- \begin{align*} -->
-
-<!-- \hat f(a_{mj})=\frac{\hat S(a_{j-1})-\hat S(a_j)}{a_{j-1}-a_j} -->
-
-<!-- \end{align*} -->
-
-<!-- - La tasa de riesgo estimada en el punto medio del intervalo $j$-ésimo: -->
-
-<!-- \begin{align*} -->
-
-<!-- \hat h(a_{mj})&=\frac{\hat f(a_{mj})}{\hat S(a_{mj})}\\ -->
-
-<!-- &=\frac{2\hat f(a_{mj})}{\hat S(a_{j})+\hat S(a_{j-1})} -->
-
-<!-- \end{align*} -->
-
-<!-- usando interpolación lineal para calcular $\hat S(a_{mj})$. -->
-
-<!-- - Las probabilidad condicionales de sobrevivencia en el $j$-ésimo intervalo es: -->
-
-<!-- \begin{align*} -->
-
-<!-- \hat p_j=1-\hat q_j=1-d_j/Y_j -->
-
-<!-- \end{align*} -->
-
-<!-- donde $\hat q_j$ es la probabilidad condicional de ocurrencia del evento en el mismo intervalo. -->
-
-<!-- Vamos a replicar el ejemplo 5.4 en donde se tiene datos de 927 recién nacidos cuyas madres los alimentaron con lactancia materna. La duración de lactancia materna se midió en semanas, y el evento de interés es la interrupción de la lactancia materna. En cada intervalo también hubo salidas del estudio. -->
-
-<!-- Extraemos los datos y hacemos el cálculo de la tabla de sobreviencia del cohorte: -->
-
-<!-- ```{r} -->
-
-<!-- data("bfeed") -->
-
-<!-- library(tidyverse) -->
-
-<!-- head(bfeed) -->
-
-<!-- ninit <- dim(bfeed)[1] -->
-
-<!-- tis <- c(0,2,3,5,7,11,17,25,37,53,NA) -->
-
-<!-- tis_2 <- c(0,2,3,5,7,11,17,25,37,53,Inf) -->
-
-<!-- pretablas <- bfeed %>% dplyr::select(duration,delta) %>% -->
-
-<!--   mutate(intervalo=cut(duration,breaks = tis_2))%>% -->
-
-<!--   group_by(delta,intervalo)%>% -->
-
-<!--   summarise(conteo=n()) -->
-
-<!-- tabla_resumen <- data.frame(intervalos=unique(pretablas$intervalo), -->
-
-<!--                             eventos=pretablas$conteo[pretablas$delta==1], -->
-
-<!--                             censuras=c(pretablas$conteo[pretablas$delta==0], -->
-
-<!--                                        rep(0,3))) -->
-
-<!-- tabla_resumen$Yprima <- 0 -->
-
-<!-- tabla_resumen$Yprima[1] <-ninit -->
-
-<!-- for(i in 2:dim(tabla_resumen)[1]){ -->
-
-<!--   tabla_resumen$Yprima[i] <-tabla_resumen$Yprima[i-1]-tabla_resumen$eventos[i]- -->
-
-<!--     tabla_resumen$censuras[i] -->
-
-<!-- } -->
-
-<!-- ``` -->
-
-<!-- La tabla resultante y el cálculo de la función de sobrevivencia: -->
-
-<!-- ```{r} -->
-
-<!-- show(tabla_resumen) -->
-
-<!-- tabla_vida <- lifetab(tis,ninit, -->
-
-<!--                       nlost = tabla_resumen$censuras, -->
-
-<!--                       nevent = tabla_resumen$eventos) -->
-
-<!-- show(tabla_vida) -->
-
-<!-- ``` -->
-
-<!-- Las columnas de desviaciones estándar de las función de sobrevivencia, tasa de riesgo y función de densidad se calculan según las fórmulas 5.4.5, 5.4.6 y 5.4.7 del Klein. -->
+Las columnas de desviaciones estándar de las función de sobrevivencia, tasa de riesgo y función de densidad se calculan según las fórmulas 5.4.5, 5.4.6 y 5.4.7 del Klein.
