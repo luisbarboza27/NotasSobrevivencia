@@ -83,6 +83,25 @@ code span.st { color: #4070a0; } /* String */
 code span.va { color: #19177c; } /* Variable */
 code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
 </style>
 
 
@@ -362,9 +381,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Con el fin de considerar esquemas de censura/truncamiento más amplios, se tienen las siguientes dos definiciones para la población en riesgo:</p>
 <ul>
 <li><p><span class="math inline">\(Y_i\)</span>: número de individuos en el estudio en tiempo <span class="math inline">\(0\)</span> y que están en riesgo al momento <span class="math inline">\(t_i\)</span> (esquema sin truncamiento )</p></li>
-<li><p><span class="math inline">\(Y_i\)</span>: número de individuos en riesgo al momento <span class="math inline">\(t_i\)</span> tales que (Truncamiento por la izquierda):</p></li>
+<li><p><span class="math inline">\(Y_i\)</span>: número de individuos en riesgo al momento <span class="math inline">\(t_i\)</span> tales que (Truncamiento por la izquierda) <span class="citation" data-cites="tsai1987note">(<a href="references.html#ref-tsai1987note" role="doc-biblioref">Tsai, Jewell, and Wang 1987</a>)</span>:</p></li>
 </ul>
-<p><span class="math display">\[L_j&lt;t_i \leq T_j\]</span></p>
+<p><span class="math display">\[L_j\leq t_i \leq T_j\]</span></p>
 <p>Todos los estimadores de <span class="math inline">\(S(t)\)</span> vistos hasta ahora aplican, pero la interpretación debe hacerse con cuidado. Por ejemplo, el estimador de KM se debe interpretar como el estimador de la función de sobrevivencia en tiempo <span class="math inline">\(t\)</span>, pero condicional en <span class="math inline">\(L=\min_j\{L_j\}\)</span>:</p>
 <p><span class="math display">\[P[X&gt;t|X\geq L]=\frac{S(t)}{S(L)}\]</span></p>
 <p>Por lo tanto el estimador de KM sería:</p>
@@ -935,46 +954,35 @@ sex=M, death 753    490 10.260294
 <li><p><span class="math inline">\(d_j\)</span>: número de individuos del cohorte que presentan el evento en el intervalo <span class="math inline">\(j\)</span>-ésimo (eventos).</p></li>
 <li><p>La población en riesgo del intervalo <span class="math inline">\(j\)</span>-ésimo se estima asumiendo una distribución uniforme de las censuras:</p></li>
 </ul>
-<p><span class="math display">\[\begin{align*}
-
+<span class="math display">\[\begin{align*}
 Y_j=Y_j'-W_j/2
-
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <ul>
 <li>La función de sobrevivencia estimada es análoga al estimador de Kaplan-Meier:</li>
 </ul>
-<p><span class="math display">\[\begin{align*}
-
+<span class="math display">\[\begin{align*}
 \hat S(a_j)=\prod_{i=1}^j\left(1-d_i/Y_i\right)
-
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <ul>
 <li>La densidad estimada en el punto medio del intervalo <span class="math inline">\(j\)</span>-ésimo (<span class="math inline">\(a_{mj}=(a_j+a_{j-1})/2\)</span>) es:</li>
 </ul>
-<p><span class="math display">\[\begin{align*}
-
+<span class="math display">\[\begin{align*}
 \hat f(a_{mj})=\frac{\hat S(a_{j-1})-\hat S(a_j)}{a_{j-1}-a_j}
-
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <ul>
 <li>La tasa de riesgo estimada en el punto medio del intervalo <span class="math inline">\(j\)</span>-ésimo:</li>
 </ul>
-<p><span class="math display">\[\begin{align*}
-
+<span class="math display">\[\begin{align*}
 \hat h(a_{mj})&amp;=\frac{\hat f(a_{mj})}{\hat S(a_{mj})}\\
-
 &amp;=\frac{2\hat f(a_{mj})}{\hat S(a_{j})+\hat S(a_{j-1})}
-
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>usando interpolación lineal para calcular <span class="math inline">\(\hat S(a_{mj})\)</span>.</p>
 <ul>
 <li>Las probabilidad condicionales de sobrevivencia en el <span class="math inline">\(j\)</span>-ésimo intervalo es:</li>
 </ul>
-<p><span class="math display">\[\begin{align*}
-
+<span class="math display">\[\begin{align*}
 \hat p_j=1-\hat q_j=1-d_j/Y_j
-
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>donde <span class="math inline">\(\hat q_j\)</span> es la probabilidad condicional de ocurrencia del evento en el mismo intervalo.</p>
 <p>Vamos a replicar el ejemplo 5.4 en donde se tiene datos de 927 recién nacidos cuyas madres los alimentaron con lactancia materna. La duración de lactancia materna se midió en semanas, y el evento de interés es la interrupción de la lactancia materna. En cada intervalo también hubo salidas del estudio.</p>
 <p>Extraemos los datos y hacemos el cálculo de la tabla de sobreviencia del cohorte:</p>
@@ -1064,6 +1072,11 @@ Y_j=Y_j'-W_j/2
 <p>Las columnas de desviaciones estándar de las función de sobrevivencia, tasa de riesgo y función de densidad se calculan según las fórmulas 5.4.5, 5.4.6 y 5.4.7 del Klein.</p>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography" style="display: none">
+<div id="ref-tsai1987note" class="csl-entry" role="doc-biblioentry">
+Tsai, Wei-Yann, Nicholas P Jewell, and Mei-Cheng Wang. 1987. <span>“A Note on the Product-Limit Estimator Under Right Censoring and Left Truncation.”</span> <em>Biometrika</em> 74 (4): 883–86.
+</div>
+</div>
 </section>
 </section>
 </section>

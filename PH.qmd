@@ -187,199 +187,199 @@ población $j$-ésima):
 
 $$Z=\frac{\sum_{j=1}^k a_jZ_j(\tau)}{\sqrt{\sum_{j=1}^k \sum_{g=1}^k a_ja_g\hat \sigma_{jg}}}\underset{H_0}{\sim} N(0,1)$$
 
-<!-- ## Pruebas estratificadas -->
+## Pruebas estratificadas
 
-<!-- Suponga que se tiene un conjunto de covariables que definen $M$ estados -->
-<!-- o configuraciones sobre el conjunto de $k$ poblaciones. Se quiere -->
-<!-- probar: -->
+Suponga que se tiene un conjunto de covariables que definen $M$ estados
+o configuraciones sobre el conjunto de $k$ poblaciones. Se quiere
+probar:
 
-<!-- $$H_0: h_{1s}(t)=h_{2s}(t)=\cdots=h_{ks}(t), \qquad s=1,\ldots,M\qquad t<\tau$$ -->
-<!-- Para un estrato $s$ fijo, sea $Z_{js}(\tau)$: -->
+$$H_0: h_{1s}(t)=h_{2s}(t)=\cdots=h_{ks}(t), \qquad s=1,\ldots,M\qquad t<\tau$$
+Para un estrato $s$ fijo, sea $Z_{js}(\tau)$:
 
-<!-- $$Z_{js}(\tau)=\sum_{i=1}^DW(t_i)\left[\underbrace{d_{ij}-Y_{ij}\left(\frac{d_i}{Y_i}\right)}_{\text{solamente estrato s}}\right]$$ -->
+$$Z_{js}(\tau)=\sum_{i=1}^DW(t_i)\left[\underbrace{d_{ij}-Y_{ij}\left(\frac{d_i}{Y_i}\right)}_{\text{solamente estrato s}}\right]$$
 
-<!-- y $\hat \Sigma_s$ es la matriz de varianza-covarianza de $Z_{js}$. La -->
-<!-- prueba estratificada se construye definiendo: -->
+y $\hat \Sigma_s$ es la matriz de varianza-covarianza de $Z_{js}$. La
+prueba estratificada se construye definiendo:
 
-<!-- $$Z_{j.}(\tau)=\sum_{s=1}^MZ_{js}(\tau)  \qquad \text{y} \qquad \hat \sigma_{jg.}=\sum_{s=1}^M \hat \sigma_{jgs}$$\ -->
-<!-- y $\hat \sigma_{jgs}$ es la entrada $jg$ del $\hat \Sigma_s$. El -->
-<!-- estadístico de prueba estaría dado por: -->
+$$Z_{j.}(\tau)=\sum_{s=1}^MZ_{js}(\tau)  \qquad \text{y} \qquad \hat \sigma_{jg.}=\sum_{s=1}^M \hat \sigma_{jgs}$$\
+y $\hat \sigma_{jgs}$ es la entrada $jg$ del $\hat \Sigma_s$. El
+estadístico de prueba estaría dado por:
 
-<!-- $$X_.=(Z_{1.}(\tau),\ldots,Z_{k-1,.}(\tau))\Sigma_.^{-1}(Z_{1.}(\tau),\ldots,Z_{k-1,.}(\tau))^T$$ -->
+$$X_.=(Z_{1.}(\tau),\ldots,Z_{k-1,.}(\tau))\Sigma_.^{-1}(Z_{1.}(\tau),\ldots,Z_{k-1,.}(\tau))^T$$
 
-<!-- donde $\Sigma_.$ es la matriz con entradas $\hat \sigma_{jg.}$. Bajo -->
-<!-- $H_0$: -->
+donde $\Sigma_.$ es la matriz con entradas $\hat \sigma_{jg.}$. Bajo
+$H_0$:
 
-<!-- $$X_.\sim \chi_{k-1}^2$$ -->
+$$X_.\sim \chi_{k-1}^2$$
 
-<!-- En el caso de dos muestras el estadístico se puede escribir: -->
+En el caso de dos muestras el estadístico se puede escribir:
 
-<!-- $$\frac{\sum_{s=1}^M Z_{1s}(\tau)}{\sqrt{\sum_{s=1}^M \hat \sigma_{11s}}}\underset{H_0}{\sim}N(0,1)$$ -->
-<!-- y este estadístico también permite probar hipótesis de una cola en el -->
-<!-- caso de dos muestras. -->
+$$\frac{\sum_{s=1}^M Z_{1s}(\tau)}{\sqrt{\sum_{s=1}^M \hat \sigma_{11s}}}\underset{H_0}{\sim}N(0,1)$$
+y este estadístico también permite probar hipótesis de una cola en el
+caso de dos muestras.
 
-<!-- Otro tipo de prueba basada en pruebas estratificadas es una *prueba -->
-<!-- pareada*. Si $(T_{1i},T_{2i})$ son pares de eventos de interés con -->
-<!-- indicadores de eventos $(\delta_{1i},\delta_{2i})$ para $i=1,\ldots,M$. -->
-<!-- Queremos probar las hipótesis: -->
+Otro tipo de prueba basada en pruebas estratificadas es una *prueba
+pareada*. Si $(T_{1i},T_{2i})$ son pares de eventos de interés con
+indicadores de eventos $(\delta_{1i},\delta_{2i})$ para $i=1,\ldots,M$.
+Queremos probar las hipótesis:
 
-<!-- $$H_0: h_{1i}(t)=h_{2i}(t), \qquad i=1,\ldots,M$$ (misma interpretación -->
-<!-- en términos de estratos). En este caso el estadístico $Z_{js}$ es: -->
-<!-- ($j=1,2$) -->
+$$H_0: h_{1i}(t)=h_{2i}(t), \qquad i=1,\ldots,M$$ (misma interpretación
+en términos de estratos). En este caso el estadístico $Z_{js}$ es:
+($j=1,2$)
 
-<!-- ```{=tex} -->
-<!-- \begin{align*} -->
-<!-- Z_{1i}(\tau)= -->
-<!--     \begin{cases} -->
-<!--         W(T_{1i})\left(1-\frac 1 2\right)=\frac{W(T_{1i})}{2} & \text{bajo Escenario A}\\ -->
-<!--         W(T_{2i})\left(0-\frac 1 2\right)=-\frac{W(T_{2i})}{2} & \text{bajo Escenario B}\\ -->
-<!--         0 & \text{otro caso} -->
-<!--     \end{cases} -->
-<!-- \end{align*} -->
-<!-- ``` -->
-<!-- -   Escenario A: si $T_{1i}<T_{2i}$, $\delta_{1i}=1$ o $T_{1i}=T_{2i}$, -->
-<!--     $\delta_{1i}=1$, $\delta_{2i}=0$. -->
-<!-- -   Escenario B: $T_{2i}<T_{1i}$, $\delta_{2i}=1$ o $T_{1i}=T_{2i}$, -->
-<!--     $\delta_{2i}=1$, $\delta_{1i}=0$. -->
+```{=tex}
+\begin{align*}
+Z_{1i}(\tau)=
+    \begin{cases}
+        W(T_{1i})\left(1-\frac 1 2\right)=\frac{W(T_{1i})}{2} & \text{bajo Escenario A}\\
+        W(T_{2i})\left(0-\frac 1 2\right)=-\frac{W(T_{2i})}{2} & \text{bajo Escenario B}\\
+        0 & \text{otro caso}
+    \end{cases}
+\end{align*}
+```
+-   Escenario A: si $T_{1i}<T_{2i}$, $\delta_{1i}=1$ o $T_{1i}=T_{2i}$,
+    $\delta_{1i}=1$, $\delta_{2i}=0$.
+-   Escenario B: $T_{2i}<T_{1i}$, $\delta_{2i}=1$ o $T_{1i}=T_{2i}$,
+    $\delta_{2i}=1$, $\delta_{1i}=0$.
 
-<!-- y -->
+y
 
-<!-- ```{=tex} -->
-<!-- \begin{align*} -->
-<!-- \hat \sigma_{11i}= -->
-<!--     \begin{cases} -->
-<!--         W(T_{1i})^2/4 & \text{bajo Escenario A}\\ -->
-<!--         W(T_{2i})^2/4 & \text{bajo Escenario B}\\ -->
-<!--         0 & \text{otro caso} -->
-<!--     \end{cases} -->
-<!-- \end{align*} -->
-<!-- ``` -->
-<!-- Sumando sobre los estratos ($i=1,\ldots,M$): -->
+```{=tex}
+\begin{align*}
+\hat \sigma_{11i}=
+    \begin{cases}
+        W(T_{1i})^2/4 & \text{bajo Escenario A}\\
+        W(T_{2i})^2/4 & \text{bajo Escenario B}\\
+        0 & \text{otro caso}
+    \end{cases}
+\end{align*}
+```
+Sumando sobre los estratos ($i=1,\ldots,M$):
 
-<!-- $$Z_{1.}(\tau)=w \cdot \frac{D_1-D_2}{2}$$ y -->
+$$Z_{1.}(\tau)=w \cdot \frac{D_1-D_2}{2}$$ y
 
-<!-- $$\hat \sigma_{11.}=w^2\cdot \frac{D_1+D_2}{4}$$ donde: -->
+$$\hat \sigma_{11.}=w^2\cdot \frac{D_1+D_2}{4}$$ donde:
 
-<!-- -   $D_1$: número de parejas en donde el evento aparece en el sujeto de -->
-<!--     la primera muestra. -->
-<!-- -   $D_2$: número de parejas en donde el evento aparece en el sujeto de -->
-<!--     la segunda muestra. -->
-<!-- -   $w$: peso evaluado en el tiempo más pequeño de ocurrencia del -->
-<!--     evento. -->
+-   $D_1$: número de parejas en donde el evento aparece en el sujeto de
+    la primera muestra.
+-   $D_2$: número de parejas en donde el evento aparece en el sujeto de
+    la segunda muestra.
+-   $w$: peso evaluado en el tiempo más pequeño de ocurrencia del
+    evento.
 
-<!-- Entonces: -->
+Entonces:
 
-<!-- $$\frac{Z_{1.}(\tau)}{\sqrt{\hat \sigma_{11.}}}=\frac{D_1-D_2}{\sqrt{D_1+D_2}}\underset{H_0}{\sim}N(0,1)$$ -->
+$$\frac{Z_{1.}(\tau)}{\sqrt{\hat \sigma_{11.}}}=\frac{D_1-D_2}{\sqrt{D_1+D_2}}\underset{H_0}{\sim}N(0,1)$$
 
-<!-- ## Pruebas de Renyi -->
+## Pruebas de Renyi
 
-<!-- *Inconveniente de las pruebas anteriores*: algunas veces las diferencias -->
-<!-- en las tasas de riesgo son simétricas (un primer grupo sobrepasa al otro -->
-<!-- en riesgo un número similar de veces al que el primer grupo es -->
-<!-- sobrepasado por el otro grupo). Esto provoca problemas de potencia en la -->
-<!-- prueba. *Solución*: utilizar otras medidas de comparación. -->
+*Inconveniente de las pruebas anteriores*: algunas veces las diferencias
+en las tasas de riesgo son simétricas (un primer grupo sobrepasa al otro
+en riesgo un número similar de veces al que el primer grupo es
+sobrepasado por el otro grupo). Esto provoca problemas de potencia en la
+prueba. *Solución*: utilizar otras medidas de comparación.
 
-<!-- Suponga que se tiene dos muestras independientes de tamaño $n_1$ y $n_2$ -->
-<!-- respectivamente. -->
+Suponga que se tiene dos muestras independientes de tamaño $n_1$ y $n_2$
+respectivamente.
 
-<!-- Sea $n=n_1+n_2$ y $t_1<t_2<\cdots<t_D$ los distintos tiempo de -->
-<!-- ocurrencia en la muestra combinada y $Y_{ij}$: número de individuos en -->
-<!-- riesgo en tiempo $t_i$ ($j=1,2$). Al igual que antes -->
-<!-- $Y_i=Y_{i1}+Y_{i2}$, $d_i=d_{i1}+d_{i2}$ (eventos ocurridos). Sea $W(t)$ -->
-<!-- la función de pesos (como las consideradas anteriormente). En este caso -->
-<!-- se calcula: -->
+Sea $n=n_1+n_2$ y $t_1<t_2<\cdots<t_D$ los distintos tiempo de
+ocurrencia en la muestra combinada y $Y_{ij}$: número de individuos en
+riesgo en tiempo $t_i$ ($j=1,2$). Al igual que antes
+$Y_i=Y_{i1}+Y_{i2}$, $d_i=d_{i1}+d_{i2}$ (eventos ocurridos). Sea $W(t)$
+la función de pesos (como las consideradas anteriormente). En este caso
+se calcula:
 
-<!-- $$Z(t_i)=\sum_{t_k\leq t_i}W(t_k)\left[d_{k1}-Y_{k1}\left(\frac{d_k}{Y_k}\right)\right]\qquad i=1,\ldots,D$$ -->
-<!-- y  -->
+$$Z(t_i)=\sum_{t_k\leq t_i}W(t_k)\left[d_{k1}-Y_{k1}\left(\frac{d_k}{Y_k}\right)\right]\qquad i=1,\ldots,D$$
+y
 
-<!-- $$\sigma(\tau)=\sum_{t_k\leq \tau}W(t_k)^2\left(\frac{Y_{k1}}{Y_k}\right)\left(\frac{Y_{k2}}{Y_k}\right)\left(\frac{Y_{k}-d_k}{Y_k-1}\right)d_k$$ -->
-<!-- donde $\tau$ es el $t_k$ máximo tal que $Y_{k1}, Y_{k2}>0$.  -->
+$$\sigma(\tau)=\sum_{t_k\leq \tau}W(t_k)^2\left(\frac{Y_{k1}}{Y_k}\right)\left(\frac{Y_{k2}}{Y_k}\right)\left(\frac{Y_{k}-d_k}{Y_k-1}\right)d_k$$
+donde $\tau$ es el $t_k$ máximo tal que $Y_{k1}, Y_{k2}>0$.
 
-<!-- Bajo la hipótesis:  -->
+Bajo la hipótesis:
 
-<!-- - $H_0: h_1(t)=h_2(t),\qquad t<\tau$ -->
-<!-- - $H_1: h_1(t)\neq h_2(t)$ -->
+- $H_0: h_1(t)=h_2(t),\qquad t<\tau$
+- $H_1: h_1(t)\neq h_2(t)$
 
-<!-- el estadístico de prueba es: -->
+el estadístico de prueba es:
 
-<!-- $$Q=\sup_{t\leq \tau}\frac{|Z(t)|}{\sigma(\tau)}$$ -->
-<!-- cuya distribución bajo $H_0$ se aproxima con la distribución de $\sup_{0\leq x\leq 1}|B(x)|$ donde $B$ es un proceso Browniano estándar. -->
+$$Q=\sup_{t\leq \tau}\frac{|Z(t)|}{\sigma(\tau)}$$
+cuya distribución bajo $H_0$ se aproxima con la distribución de $\sup_{0\leq x\leq 1}|B(x)|$ donde $B$ es un proceso Browniano estándar.
 
-<!-- ## Pruebas en un punto fijo en el tiempo -->
+## Pruebas en un punto fijo en el tiempo
 
-<!-- *Objetivo*: hacer comparaciones de funciones de sobrevivencia o curvas de incidencia de $k$ poblaciones en un punto fijo en el tiempo $t_0$. -->
+*Objetivo*: hacer comparaciones de funciones de sobrevivencia o curvas de incidencia de $k$ poblaciones en un punto fijo en el tiempo $t_0$.
 
-<!-- Sea $\Theta^T=(\theta_1,\ldots,\theta_p)$ un vector de parámetros de dimensión $p$. Definimos un contraste como con conjunto de coeficientes $c=(c_1,\ldots,c_p)$ que definen una combinación lineal de parámetros $\theta^c=c\Theta=c_1\theta_1+\cdots+c_p\theta_p$.  -->
+Sea $\Theta^T=(\theta_1,\ldots,\theta_p)$ un vector de parámetros de dimensión $p$. Definimos un contraste como con conjunto de coeficientes $c=(c_1,\ldots,c_p)$ que definen una combinación lineal de parámetros $\theta^c=c\Theta=c_1\theta_1+\cdots+c_p\theta_p$.
 
-<!-- **Ejemplo**: si $p=3$ y $c=(1,-1,0)$, entonces $\theta^c=\theta_1-\theta_2$. Decir que $H_0: \theta^c=0$ es equivalente a decir que $H_0:\theta_1=\theta_2$. -->
+**Ejemplo**: si $p=3$ y $c=(1,-1,0)$, entonces $\theta^c=\theta_1-\theta_2$. Decir que $H_0: \theta^c=0$ es equivalente a decir que $H_0:\theta_1=\theta_2$.
 
-<!-- Suponga que se tiene $q$ contrastes $c_k=(c_{k1},\ldots,c_{kp})$ para $k=1,\ldots,q$ y se tiene que probar las hipótesis: -->
+Suponga que se tiene $q$ contrastes $c_k=(c_{k1},\ldots,c_{kp})$ para $k=1,\ldots,q$ y se tiene que probar las hipótesis:
 
-<!-- $$H_0: c_k\Theta=0\qquad \forall k$$ -->
-<!-- Defina la matriz de contrastes:  -->
+$$H_0: c_k\Theta=0\qquad \forall k$$
+Defina la matriz de contrastes:
 
-<!-- \begin{align*} -->
-<!-- C= -->
-<!-- 	\begin{pmatrix} -->
-<!-- 	c_1\\ -->
-<!-- 	\vdots \\ -->
-<!-- 	c_q -->
-<!-- 	\end{pmatrix} -->
-<!-- \end{align*} -->
+\begin{align*}
+C=
+	\begin{pmatrix}
+	c_1\\
+	\vdots \\
+	c_q
+	\end{pmatrix}
+\end{align*}
 
-<!-- Si $\hat \theta_j$ es el estimador de $\theta_j$ con matriz de varianza $V$ (con entradas $\hat V(\hat \theta_j,\hat \theta_k)$) ($V$: varianza). Entonces si se quiere probar: -->
+Si $\hat \theta_j$ es el estimador de $\theta_j$ con matriz de varianza $V$ (con entradas $\hat V(\hat \theta_j,\hat \theta_k)$) ($V$: varianza). Entonces si se quiere probar:
 
-<!-- $$H_0: C\Theta^T=0$$ -->
+$$H_0: C\Theta^T=0$$
 
-<!-- El estadístico de prueba es: -->
+El estadístico de prueba es:
 
-<!-- $$X^2=[C\Theta]^T[CVC^T]^{-1}[C\Theta]\underset{H_0}{\sim}\chi_q^2$$ -->
-<!-- Caso particular: -->
+$$X^2=[C\Theta]^T[CVC^T]^{-1}[C\Theta]\underset{H_0}{\sim}\chi_q^2$$
+Caso particular:
 
-<!-- - $H_0: S_1(t_0)=S_2(t_0)=\cdots S_k(t_0)$ vs $H_1$: al menos uno de los $S_j(t_0)$ es distinto. -->
-<!-- - $H_0: CI_1(t_0)=CI_2(t_0)=\cdots =CI_k(t_0)$ vs $H_1$: al menos uno de los $CI_j(t_0)$ es distinto. -->
+- $H_0: S_1(t_0)=S_2(t_0)=\cdots S_k(t_0)$ vs $H_1$: al menos uno de los $S_j(t_0)$ es distinto.
+- $H_0: CI_1(t_0)=CI_2(t_0)=\cdots =CI_k(t_0)$ vs $H_1$: al menos uno de los $CI_j(t_0)$ es distinto.
 
-<!-- Sea $\hat \theta_j$ el estimador de Kaplan-Meier de $S_j(t_0)$ o la curva de incidencia estimada en $t_0$. Sea  -->
+Sea $\hat \theta_j$ el estimador de Kaplan-Meier de $S_j(t_0)$ o la curva de incidencia estimada en $t_0$. Sea
 
-<!-- \begin{align*} -->
-<!-- C= -->
-<!-- 	\begin{pmatrix} -->
-<!-- 	  1 & 0 & 0 & \cdots & 0 & -1 \\ -->
-<!-- 	  0 & 1 & 0 & \cdots & 0 & -1 \\ -->
-<!-- 	  \vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\ -->
-<!-- 	  0 & 0 & 0 & \cdots & 1 & -1 -->
-<!-- 	\end{pmatrix} -->
-<!-- \end{align*} -->
+\begin{align*}
+C=
+	\begin{pmatrix}
+	  1 & 0 & 0 & \cdots & 0 & -1 \\
+	  0 & 1 & 0 & \cdots & 0 & -1 \\
+	  \vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\
+	  0 & 0 & 0 & \cdots & 1 & -1
+	\end{pmatrix}
+\end{align*}
 
-<!-- y $V=\text{diag}(\hat V(\hat \theta_k(t_0)))$. Entonces: -->
+y $V=\text{diag}(\hat V(\hat \theta_k(t_0)))$. Entonces:
 
-<!-- \begin{align*} -->
-<!-- X^2&= -->
-<!-- 	\begin{pmatrix} -->
-<!-- 		\hat \theta_1-\hat \theta_p\\ -->
-<!-- 		\vdots\\ -->
-<!-- 		\hat \theta_{p-1}-\hat \theta_p -->
-<!-- 	\end{pmatrix}^T -->
-<!-- 	\begin{pmatrix} -->
-<!-- 		V_1+V_p & V_p & \cdots & V_p \\ -->
-<!-- 		V_p & V_2+V_p & \cdots & V_p \\ -->
-<!-- 		\vdots & \vdots & \vdots & \vdots \\ -->
-<!-- 		V_p & V_p & \cdots & V_{p-1}+V_p -->
-<!-- 	\end{pmatrix}^{-1} -->
-<!-- 	\begin{pmatrix} -->
-<!-- 		\hat \theta_1-\hat \theta_p\\ -->
-<!-- 		\vdots\\ -->
-<!-- 		\hat \theta_{p-1}-\hat \theta_p -->
-<!-- 	\end{pmatrix}\\ -->
-<!-- 	& \underset{H_0}{\sim} \chi_{p-1}^2 -->
-<!-- \end{align*} -->
+\begin{align*}
+X^2&=
+	\begin{pmatrix}
+		\hat \theta_1-\hat \theta_p\\
+		\vdots\\
+		\hat \theta_{p-1}-\hat \theta_p
+	\end{pmatrix}^T
+	\begin{pmatrix}
+		V_1+V_p & V_p & \cdots & V_p \\
+		V_p & V_2+V_p & \cdots & V_p \\
+		\vdots & \vdots & \vdots & \vdots \\
+		V_p & V_p & \cdots & V_{p-1}+V_p
+	\end{pmatrix}^{-1}
+	\begin{pmatrix}
+		\hat \theta_1-\hat \theta_p\\
+		\vdots\\
+		\hat \theta_{p-1}-\hat \theta_p
+	\end{pmatrix}\\
+	& \underset{H_0}{\sim} \chi_{p-1}^2
+\end{align*}
 
-<!-- Caso particular (p=2): -->
+Caso particular (p=2):
 
-<!-- Con la hipótesis nula $H_0: S_1(t_0)=S_2(t_0)$: -->
+Con la hipótesis nula $H_0: S_1(t_0)=S_2(t_0)$:
 
-<!-- $$Z=\frac{\hat S_1(t_0)-\hat S_2(t_0)}{\sqrt{\hat V(\hat S_1(t_0))+\hat V(\hat S_2(t_0))}}\underset{H_0}{\sim}N(0,1)$$ -->
-<!-- **Nota**: Si se quiere hacer comparaciones simultáneas ($k$ en total, 2 a 2) se puede usar un factor de corrección de *Bonferroni* (Ejercicio). -->
+$$Z=\frac{\hat S_1(t_0)-\hat S_2(t_0)}{\sqrt{\hat V(\hat S_1(t_0))+\hat V(\hat S_2(t_0))}}\underset{H_0}{\sim}N(0,1)$$
+**Nota**: Si se quiere hacer comparaciones simultáneas ($k$ en total, 2 a 2) se puede usar un factor de corrección de *Bonferroni* (Ejercicio).
 
 
 <!-- ## Laboratorio -->

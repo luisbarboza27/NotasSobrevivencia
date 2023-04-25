@@ -799,16 +799,16 @@ Ejemplo: Ejemplo de Censura
 <p><span class="math display">\[L\propto \prod_{i \in D}f_i(x_i)\prod_{i \in R}S_i(C_r)\prod_{i \in L}\left(1-S_i(C_\ell)\right) \prod_{i \in I}[S_i(L_i)-S_i(R_i)]\]</span></p>
 <p><strong>Caso particular</strong>: censura tipo I (por la derecha)</p>
 <p>Si <span class="math inline">\(\delta=0\)</span> (censura):</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
    P[T,\delta=0]&amp;=P[T=C_r|\delta=0]P[\delta=0]=P[\delta=0]\\
    &amp;=P[X&gt;C_r]=S(C_r).
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>Si <span class="math inline">\(\delta = 1\)</span>:</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
    P[T,\delta=1]&amp;=P[T=X|\delta=1]P[\delta=1]\\
    &amp;=P[T=X|X\leq C_r]P[X\leq C_r]\\
    &amp;=\frac{f(t)}{1-S(C_r)}[1-S(C_r)]=f(t).
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>Entonces el aporte de <span class="math inline">\(T=t\)</span> a la verosimilitud es:</p>
 <p><span class="math display">\[[f(t)]^\delta[S(t)]^{1-\delta}\]</span></p>
 <p>Si se tiene una muestra aleatoria de pares <span class="math inline">\((T_i,\delta_i)\)</span>, para <span class="math inline">\(i=1,\ldots,n\)</span>:</p>
@@ -826,10 +826,10 @@ Ejemplo: Caso Exponencial
 </div>
 <div class="callout-body-container callout-body">
 <p>Asuma que <span class="math inline">\(X\sim \text{Exponencial}(\lambda)\)</span> con <span class="math inline">\(f(x)=\lambda \exp(-\lambda x)\)</span>, entonces:</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
    L&amp;=\prod_{i=1}^n [\lambda \exp(-\lambda t_i)]^{\delta_i}[\exp(-\lambda t_i)]^{(1-\delta_i)}\\
    &amp;=\lambda^r\exp(-\lambda S_T)
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>donde <span class="math inline">\(r=\sum \delta_i\)</span> (total de eventos observados) y <span class="math inline">\(S_T=\sum_{i=1}^n t_i\)</span> (total de tiempo en el estudio).</p>
 </div>
 </div>

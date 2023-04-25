@@ -200,9 +200,9 @@ Con el fin de considerar esquemas de censura/truncamiento más amplios, se tiene
 
 -   $Y_i$: número de individuos en el estudio en tiempo $0$ y que están en riesgo al momento $t_i$ (esquema sin truncamiento )
 
--   $Y_i$: número de individuos en riesgo al momento $t_i$ tales que (Truncamiento por la izquierda):
+-   $Y_i$: número de individuos en riesgo al momento $t_i$ tales que (Truncamiento por la izquierda) [@tsai1987note]:
 
-$$L_j<t_i \leq T_j$$
+$$L_j\leq t_i \leq T_j$$
 
 Todos los estimadores de $S(t)$ vistos hasta ahora aplican, pero la interpretación debe hacerse con cuidado. Por ejemplo, el estimador de KM se debe interpretar como el estimador de la función de sobrevivencia en tiempo $t$, pero condicional en $L=\min_j\{L_j\}$:
 
@@ -641,7 +641,7 @@ summary(S_5_2)
 
 ```
 
- y gráficamente:
+y gráficamente:
 
 ```{r}
 
@@ -654,60 +654,54 @@ legend(0,0.4,legend = c('T-1','T-2'),col=c(1,2),lty=1)
 
 A manera de resumen (les recomiendo que estudien esta sección por su propia cuenta, ya que no presenta diferencias sustanciales con respecto al resto del curso), estos son los principales indicadores que se calculan en una tabla de vida de forma no-paramétrica:
 
-- Cohorte: grupo de individuos con un origen en común en cuanto al tiempo en el cual un evento es calculado (por ejemplo, la misma edad al momento de inicial el estudio)
+-   Cohorte: grupo de individuos con un origen en común en cuanto al tiempo en el cual un evento es calculado (por ejemplo, la misma edad al momento de inicial el estudio)
 
-- Se considera intervalos disjuntos $I_j=(a_{j-1},a_j]$, $j=1,\ldots,k+1$ con $a_0=0$ y $a_{k+1}=\infty$, en donde cada individuo del cohorte tendrá el evento de interés.
+-   Se considera intervalos disjuntos $I_j=(a_{j-1},a_j]$, $j=1,\ldots,k+1$ con $a_0=0$ y $a_{k+1}=\infty$, en donde cada individuo del cohorte tendrá el evento de interés.
 
-- Sea $Y_j'$: número de individuos que no han experimentado el evento en el $j$-ésimo intervalo.
+-   Sea $Y_j'$: número de individuos que no han experimentado el evento en el $j$-ésimo intervalo.
 
-- $W_j$: número de individuos del cohorte que no presentan el evento en el intervalo $j$-ésimo (censuras).
+-   $W_j$: número de individuos del cohorte que no presentan el evento en el intervalo $j$-ésimo (censuras).
 
-- $d_j$: número de individuos del cohorte que presentan el evento en el intervalo $j$-ésimo (eventos).
+-   $d_j$: número de individuos del cohorte que presentan el evento en el intervalo $j$-ésimo (eventos).
 
-- La población en riesgo del intervalo $j$-ésimo se estima asumiendo una distribución uniforme de las censuras:
+-   La población en riesgo del intervalo $j$-ésimo se estima asumiendo una distribución uniforme de las censuras:
 
+```{=tex}
 \begin{align*}
-
 Y_j=Y_j'-W_j/2
-
 \end{align*}
+```
+-   La función de sobrevivencia estimada es análoga al estimador de Kaplan-Meier:
 
-- La función de sobrevivencia estimada es análoga al estimador de Kaplan-Meier:
-
+```{=tex}
 \begin{align*}
-
 \hat S(a_j)=\prod_{i=1}^j\left(1-d_i/Y_i\right)
-
 \end{align*}
+```
+-   La densidad estimada en el punto medio del intervalo $j$-ésimo ($a_{mj}=(a_j+a_{j-1})/2$) es:
 
-- La densidad estimada en el punto medio del intervalo $j$-ésimo ($a_{mj}=(a_j+a_{j-1})/2$) es:
-
+```{=tex}
 \begin{align*}
-
 \hat f(a_{mj})=\frac{\hat S(a_{j-1})-\hat S(a_j)}{a_{j-1}-a_j}
-
 \end{align*}
+```
+-   La tasa de riesgo estimada en el punto medio del intervalo $j$-ésimo:
 
-- La tasa de riesgo estimada en el punto medio del intervalo $j$-ésimo:
-
+```{=tex}
 \begin{align*}
-
 \hat h(a_{mj})&=\frac{\hat f(a_{mj})}{\hat S(a_{mj})}\\
-
 &=\frac{2\hat f(a_{mj})}{\hat S(a_{j})+\hat S(a_{j-1})}
-
 \end{align*}
-
+```
 usando interpolación lineal para calcular $\hat S(a_{mj})$.
 
-- Las probabilidad condicionales de sobrevivencia en el $j$-ésimo intervalo es:
+-   Las probabilidad condicionales de sobrevivencia en el $j$-ésimo intervalo es:
 
+```{=tex}
 \begin{align*}
-
 \hat p_j=1-\hat q_j=1-d_j/Y_j
-
 \end{align*}
-
+```
 donde $\hat q_j$ es la probabilidad condicional de ocurrencia del evento en el mismo intervalo.
 
 Vamos a replicar el ejemplo 5.4 en donde se tiene datos de 927 recién nacidos cuyas madres los alimentaron con lactancia materna. La duración de lactancia materna se midió en semanas, y el evento de interés es la interrupción de la lactancia materna. En cada intervalo también hubo salidas del estudio.

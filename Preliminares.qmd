@@ -629,19 +629,21 @@ $$L\propto \prod_{i \in D}f_i(x_i)\prod_{i \in R}S_i(C_r)\prod_{i \in L}\left(1-
 
 Si $\delta=0$ (censura):
 
+```{=tex}
 \begin{align*}
    P[T,\delta=0]&=P[T=C_r|\delta=0]P[\delta=0]=P[\delta=0]\\
    &=P[X>C_r]=S(C_r).
 \end{align*}
-
+```
 Si $\delta = 1$:
 
+```{=tex}
 \begin{align*}
    P[T,\delta=1]&=P[T=X|\delta=1]P[\delta=1]\\
    &=P[T=X|X\leq C_r]P[X\leq C_r]\\
    &=\frac{f(t)}{1-S(C_r)}[1-S(C_r)]=f(t).
 \end{align*}
-
+```
 Entonces el aporte de $T=t$ a la verosimilitud es:
 
 $$[f(t)]^\delta[S(t)]^{1-\delta}$$
@@ -657,22 +659,20 @@ $$L=\prod_{i=1}^nh(t_i)^{\delta_i}S(t_i)^{\delta_i}[S(t_i)]^{1-\delta_i}=\prod_{
 ::: callout-tip
 ## Ejemplo: Caso Exponencial
 
-
 Asuma que $X\sim \text{Exponencial}(\lambda)$ con $f(x)=\lambda \exp(-\lambda x)$, entonces:
 
+```{=tex}
 \begin{align*}
    L&=\prod_{i=1}^n [\lambda \exp(-\lambda t_i)]^{\delta_i}[\exp(-\lambda t_i)]^{(1-\delta_i)}\\
    &=\lambda^r\exp(-\lambda S_T)
 \end{align*}
-
+```
 donde $r=\sum \delta_i$ (total de eventos observados) y $S_T=\sum_{i=1}^n t_i$ (total de tiempo en el estudio).
 :::
-
 
 ## Laboratorio
 
 ### Ejemplos de datos de análisis de sobrevivencia
-
 
 ```{r}
 library(tidyverse)
@@ -760,8 +760,6 @@ ggplot()+geom_histogram(data = alloauto,aes(x = time),bins = 7,fill='white',col 
   theme_bw()
 ```
 
-
-
 ```{r}
 library(asaur)
 head(gastricXelox)
@@ -770,30 +768,28 @@ dim(gastricXelox)
 
 #### Ejemplo 5
 
-Este es un ensayo clínico de Fase II (muestra única) de quimioterapia Xeloda y oxaliplatino (XELOX) administrado antes de la cirugía a 48 pacientes con cáncer gástrico avanzado con metástasis en los ganglios linfáticos paraaórticos (Wang et al.). 
+Este es un ensayo clínico de Fase II (muestra única) de quimioterapia Xeloda y oxaliplatino (XELOX) administrado antes de la cirugía a 48 pacientes con cáncer gástrico avanzado con metástasis en los ganglios linfáticos paraaórticos (Wang et al.).
 
-- *timeWeeks*: tiempo de sobrevivencia en semanas.
+-   *timeWeeks*: tiempo de sobrevivencia en semanas.
 
-- *delta*: variable de censura: (1) muerte, (2) censura.
+-   *delta*: variable de censura: (1) muerte, (2) censura.
 
 ```{r}
 head(prostateSurvival)
 dim(prostateSurvival)
 ```
 
-
 #### Ejemplo 6
 
 Datos simulados de 14,294 pacientes con cáncer de próstata basados en análisis detallados de riesgos competitivos publicados por Lu-Yao et al. Para cada paciente, tenemos la clasificación histológica (poco o moderadamente diferenciado), la edad del diagnóstico (66-70, 71-75, 76-80 y 80+), el estadio del cáncer (T1c si se diagnosticó mediante una prueba de detección de antígeno específico de próstata, T1ab si se diagnosticó clínicamente sin cribado, o T2 si fue palpable en el momento del diagnóstico), el tiempo de supervivencia (días desde el diagnóstico hasta la muerte o la última fecha de seguimiento) y un indicador ("estado") que indica si el paciente murió de cáncer de próstata (estado = 1), murió de otra causa (estado = 2) o seguía vivo en la última fecha de seguimiento (estado = 0).
 
+-   *ageGroup*: edad de diagnóstico.
 
-- *ageGroup*: edad de diagnóstico.
+-   *stage*: etapa del cáncer.
 
-- *stage*: etapa del cáncer.
+-   *survTime*: tiempo de sobrevivencia.
 
-- *survTime*: tiempo de sobrevivencia.
-
-- *status*: Muerte por cáncer de próstata (1), muerte por otra causa (2), sobrevivencia al final del estudio (0).
+-   *status*: Muerte por cáncer de próstata (1), muerte por otra causa (2), sobrevivencia al final del estudio (0).
 
 ```{r}
 head(pharmacoSmoking)
@@ -802,17 +798,16 @@ dim(pharmacoSmoking)
 
 #### Ejemplo 7
 
+El propósito de este estudio (Steinberg et al. \[63\]) fue evaluar la duración prolongada de una combinación de tres medicamentos versus la terapia con parche de nicotina sola en fumadores con enfermedades médicas. Los pacientes con antecedentes de tabaquismo fueron asignados al azar a la combinación de tres medicamentos o a la terapia con parche, y se siguieron durante un máximo de seis meses. La variable de resultado primaria fue el tiempo desde la asignación aleatoria hasta la recaída (vuelta al tabaquismo); las personas que permanecieron sin fumar durante seis meses fueron censuradas.
 
-El propósito de este estudio (Steinberg et al. [63]) fue evaluar la duración prolongada de una combinación de tres medicamentos versus la terapia con parche de nicotina sola en fumadores con enfermedades médicas. Los pacientes con antecedentes de tabaquismo fueron asignados al azar a la combinación de tres medicamentos o a la terapia con parche, y se siguieron durante un máximo de seis meses. La variable de resultado primaria fue el tiempo desde la asignación aleatoria hasta la recaída (vuelta al tabaquismo); las personas que permanecieron sin fumar durante seis meses fueron censuradas.
+-   *ttr*: tiempo en dias hasta una recaída (volver a fumar).
 
+-   *relapse*: (1): volvió a fumar vs (0): censura.
 
-- *ttr*: tiempo en dias hasta una recaída (volver a fumar).
-
-- *relapse*: (1): volvió a fumar vs (0): censura.
-
-- *employment*: jornada laboral.
+-   *employment*: jornada laboral.
 
 #### Ejemplo 8
+
 Tasas de riesgo (Tablas de vida en USA) expresadas por día calendario:
 
 ```{r}
