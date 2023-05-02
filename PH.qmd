@@ -225,7 +225,7 @@ $$Q=\sup_{t\leq \tau}\frac{|Z(t)|}{\sigma(\tau)}$$ cuya distribución bajo $H_0$
 
 *Objetivo*: hacer comparaciones de funciones de sobrevivencia o curvas de incidencia de $k$ poblaciones en un punto fijo en el tiempo $t_0$.
 
-Sea $\Theta^T=(\theta_1,\ldots,\theta_p)$ un vector de parámetros de dimensión $p$. Definimos un contraste como con conjunto de coeficientes $c=(c_1,\ldots,c_p)$ que definen una combinación lineal de parámetros $\theta^c=c\Theta=c_1\theta_1+\cdots+c_p\theta_p$.
+Sea $\Theta^T=(\theta_1,\ldots,\theta_p)$ un vector de parámetros de dimensión $p$. Definimos un contraste como un conjunto de coeficientes $c=(c_1,\ldots,c_p)$ que definen una combinación lineal de parámetros $\theta^c=c\Theta=c_1\theta_1+\cdots+c_p\theta_p$.
 
 **Ejemplo**: si $p=3$ y $c=(1,-1,0)$, entonces $\theta^c=\theta_1-\theta_2$. Decir que $H_0: \theta^c=0$ es equivalente a decir que $H_0:\theta_1=\theta_2$.
 

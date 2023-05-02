@@ -93,7 +93,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./references.html" rel="next">
+<link href="./RSP.html" rel="next">
 <link href="./estNP.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -175,6 +175,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./PH.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Pruebas de Hipótesis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./RSP.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Regresión Semiparamétrica con Riesgos Proporcionales</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -372,7 +377,7 @@ Z_{1i}(\tau)=
 <section id="pruebas-en-un-punto-fijo-en-el-tiempo" class="level2" data-number="3.6">
 <h2 data-number="3.6" class="anchored" data-anchor-id="pruebas-en-un-punto-fijo-en-el-tiempo"><span class="header-section-number">3.6</span> Pruebas en un punto fijo en el tiempo</h2>
 <p><em>Objetivo</em>: hacer comparaciones de funciones de sobrevivencia o curvas de incidencia de <span class="math inline">\(k\)</span> poblaciones en un punto fijo en el tiempo <span class="math inline">\(t_0\)</span>.</p>
-<p>Sea <span class="math inline">\(\Theta^T=(\theta_1,\ldots,\theta_p)\)</span> un vector de parámetros de dimensión <span class="math inline">\(p\)</span>. Definimos un contraste como con conjunto de coeficientes <span class="math inline">\(c=(c_1,\ldots,c_p)\)</span> que definen una combinación lineal de parámetros <span class="math inline">\(\theta^c=c\Theta=c_1\theta_1+\cdots+c_p\theta_p\)</span>.</p>
+<p>Sea <span class="math inline">\(\Theta^T=(\theta_1,\ldots,\theta_p)\)</span> un vector de parámetros de dimensión <span class="math inline">\(p\)</span>. Definimos un contraste como un conjunto de coeficientes <span class="math inline">\(c=(c_1,\ldots,c_p)\)</span> que definen una combinación lineal de parámetros <span class="math inline">\(\theta^c=c\Theta=c_1\theta_1+\cdots+c_p\theta_p\)</span>.</p>
 <p><strong>Ejemplo</strong>: si <span class="math inline">\(p=3\)</span> y <span class="math inline">\(c=(1,-1,0)\)</span>, entonces <span class="math inline">\(\theta^c=\theta_1-\theta_2\)</span>. Decir que <span class="math inline">\(H_0: \theta^c=0\)</span> es equivalente a decir que <span class="math inline">\(H_0:\theta_1=\theta_2\)</span>.</p>
 <p>Suponga que se tiene <span class="math inline">\(q\)</span> contrastes <span class="math inline">\(c_k=(c_{k1},\ldots,c_{kp})\)</span> para <span class="math inline">\(k=1,\ldots,q\)</span> y se tiene que probar las hipótesis:</p>
 <p><span class="math display">\[H_0: c_k\Theta=0\qquad \forall k\]</span> Defina la matriz de contrastes:</p>
@@ -1017,8 +1022,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./references.html" class="pagination-link">
-        <span class="nav-page-text">Referencias</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./RSP.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Regresión Semiparamétrica con Riesgos Proporcionales</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
