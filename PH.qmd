@@ -462,140 +462,102 @@ pchisq(16.2407,df = 2,lower.tail = F)
 
 Por lo tanto bajo los niveles de confianza usuales se rechaza la hipótesis de que las tres tasas de riesgo son iguales para cualquier $t$.
 
-<!-- ### Pruebas de tendencia -->
+### Pruebas de tendencia
 
-<!-- Como ejemplo de la prueba de tendencia se utiliza una base de 40 -->
+Como ejemplo de la prueba de tendencia se utiliza una base de 40 pacientes con cáncer de laringe clasificados según la etapa de la enfermedad. Se probará la hipótesis de que no hay una diferencia entre las tasas de riesgo entre las 4 etapas vs la hipótesis de que entre más alta la etapa, más alta la tasa de riesgo. Graficamos las 4 funciones de sobrevivencia estimadas:
 
-<!-- pacientes con cáncer de laringe clasificados según la etapa de la -->
+```{r}
 
-<!-- enfermedad. Se probará la hipótesis de que no hay una diferencia entre -->
+data("larynx")
 
-<!-- las tasas de riesgo entre las 4 etapas vs la hipótesis de que entre más -->
+S_7_6 <- survfit(Surv(time, delta) ~ stage,data=larynx)
 
-<!-- alta la etapa, más alta la tasa de riesgo. Graficamos las 4 funciones de -->
+ggsurvplot(S_7_6)
 
-<!-- sobrevivencia estimadas: -->
+```
 
-<!-- ```{r} -->
+y el estadístico de prueba lo calculamos con la función *comp*, usando como scores $a_j=j, \; 1,\ldots,4$ y bajo distintas escogencias de funciones de pesos:
 
-<!-- data("larynx") -->
+```{r}
 
-<!-- S_7_6 <- survfit(Surv(time, delta) ~ stage,data=larynx) -->
+l1 <- ten(Surv(time, delta) ~ stage, data=larynx)
 
-<!-- ggsurvplot(S_7_6) -->
+comp(l1)
 
-<!-- ``` -->
+p <- attr(l1, "tft")
 
-<!-- y el estadístico de prueba lo calculamos con la función *comp*, usando -->
+p$tft$pChisq
 
-<!-- como scores $a_j=j, \; 1,\ldots,4$ y bajo distintas escogencias de -->
+```
 
-<!-- funciones de pesos: -->
+Por ejemplo para el caso de la prueba con pesos de Tarone, el valor p es:
 
-<!-- ```{r} -->
+```{r}
 
-<!-- l1 <- ten(Surv(time, delta) ~ stage, data=larynx) -->
+2*pnorm(4.0580,lower.tail = F)
 
-<!-- comp(l1) -->
+```
 
-<!-- p <- attr(l1, "tft") -->
+por lo que se rechaza la hipótesis nula inmediatamente, a favor de una en donde las tasas son crecientes.
 
-<!-- p$tft$pChisq -->
+### Pruebas estratificadas
 
-<!-- ``` -->
+Como complemento al ejemplo de la sobrevivencia en pacientes con leucemia, se incluye la covariable de uso del químico MTX como profiláctico en el tratamiento, el cual puede ser una variable confusora en la prueba del ejemplo 7.4.
 
-<!-- Por ejemplo para el caso de la prueba con pesos de Tarone, el valor p -->
+```{r}
 
-<!-- es: -->
+S_7_4_est <- survfit(Surv(time=t2, event=d3) ~ group+strata(z10), data=bmt)
 
-<!-- ```{r} -->
+ggsurvplot(S_7_4_est)
 
-<!-- 2*pnorm(4.0580,lower.tail = F) -->
+```
 
-<!-- ``` -->
+y hacemos una prueba de log-rango con el paquete *survival*:
 
-<!-- por lo que se rechaza la hipótesis nula inmediatamente, a favor de una -->
+```{r}
 
-<!-- en donde las tasas son crecientes. -->
+Prueba_7_4_est <- survdiff(Surv(time=t2, event=d3) ~ group+strata(z10), data=bmt)
 
-<!-- ### Pruebas estratificadas -->
+print(Prueba_7_4_est)
 
-<!-- Como complemento al ejemplo de la sobrevivencia en pacientes con -->
+```
 
-<!-- leucemia, se incluye la covariable de uso del químico MTX como -->
+por lo tanto se rechaza la hipótesis nula de igualdad de tasas de riesgo, independientemente del efecto del uso del químico MTX en la población de estudio.
 
-<!-- profiláctico en el tratamiento, el cual puede ser una variable confusora -->
+### Prueba de Renyi
 
-<!-- en la prueba del ejemplo 7.4. -->
+Para ilustrar el uso de la prueba de Renyi usamos los datos de sobrevivencia de 90 pacientes con cáncer gástrico a los cuales se les aplicó quimioterapia o la combinación de quimioterapia y radiación. Las funciones de sobrevivencia estimadas son:
 
-<!-- ```{r} -->
+```{r}
 
-<!-- S_7_4_est <- survfit(Surv(time=t2, event=d3) ~ group+strata(z10), data=bmt) -->
+data("gastric")
 
-<!-- ggsurvplot(S_7_4_est) -->
+S_7_9_est <- survfit(Surv(time, event) ~ group, data=gastric)
 
-<!-- ``` -->
+ggsurvplot(S_7_9_est)
 
-<!-- y hacemos una prueba de log-rango con el paquete *survival*: -->
+```
 
-<!-- ```{r} -->
+donde es muy evidente que las dos funciones de sobrevivencia se cruzan en una edad intermedia, por lo que es más recomendable usar la prueba de Renyi:
 
-<!-- Prueba_7_4_est <- survdiff(Surv(time=t2, event=d3) ~ group+strata(z10), data=bmt) -->
+```{r}
 
-<!-- print(Prueba_7_4_est) -->
+g1 <- ten(Surv(time, event) ~ group, data=gastric)
 
-<!-- ``` -->
+pba <- comp(g1)
 
-<!-- por lo tanto se rechaza la hipótesis nula de igualdad de tasas de -->
+attr(g1, "sup")
 
-<!-- riesgo, independientemente del efecto del uso del químico MTX en la -->
+p <- attr(g1, "sup")
 
-<!-- población de estudio. -->
+```
 
-<!-- ### Prueba de Renyi -->
+y los valores p correspondientes para cada una de las escogencias de pesos son:
 
-<!-- Para ilustrar el uso de la prueba de Renyi usamos los datos de -->
+```{r message=FALSE, warning=FALSE}
 
-<!-- sobrevivencia de 45 pacientes con cáncer gástrico a los cuales se les -->
+p$pSupBr
 
-<!-- aplicó quimioterapia o la combinación de quimioterapia y radiación. Las -->
+```
 
-<!-- funciones de sobrevivencia estimadas son: -->
-
-<!-- ```{r} -->
-
-<!-- data("gastric") -->
-
-<!-- S_7_9_est <- survfit(Surv(time, event) ~ group, data=gastric) -->
-
-<!-- ggsurvplot(S_7_9_est) -->
-
-<!-- ``` -->
-
-<!-- donde es muy evidente que las dos funciones de sobrevivencia se cruzan -->
-
-<!-- en una edad intermedia, por lo que es mejor usar la prueba de Renyi: -->
-
-<!-- ```{r} -->
-
-<!-- g1 <- ten(Surv(time, event) ~ group, data=gastric) -->
-
-<!-- pba <- comp(g1) -->
-
-<!-- attr(g1, "sup") -->
-
-<!-- p <- attr(g1, "sup") -->
-
-<!-- ``` -->
-
-<!-- y los valores p correspondientes para cada una de las escogencias de pesos son: -->
-
-<!-- ```{r message=FALSE, warning=FALSE} -->
-
-<!-- p$pSupBr -->
-
-<!-- ``` -->
-
-<!-- Por lo que rechazaríamos la hipótesis de igualdad de tasas de riesgo -->
-
-<!-- para niveles de significacia superiores al 5% aproximadamente para todos los casos excepto la primera y la última ponderación. -->
+Por lo que rechazaríamos la hipótesis de igualdad de tasas de riesgo para niveles de significacia superiores al 5% aproximadamente para todos los casos excepto la primera y la última ponderación.

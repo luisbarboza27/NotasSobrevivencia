@@ -206,6 +206,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
   <li><a href="#prueba-de-una-muestra" id="toc-prueba-de-una-muestra" class="nav-link" data-scroll-target="#prueba-de-una-muestra"><span class="toc-section-number">3.7.1</span>  Prueba de una muestra</a></li>
   <li><a href="#prueba-de-dos-muestras" id="toc-prueba-de-dos-muestras" class="nav-link" data-scroll-target="#prueba-de-dos-muestras"><span class="toc-section-number">3.7.2</span>  Prueba de dos muestras</a></li>
+  <li><a href="#pruebas-de-tendencia-1" id="toc-pruebas-de-tendencia-1" class="nav-link" data-scroll-target="#pruebas-de-tendencia-1"><span class="toc-section-number">3.7.3</span>  Pruebas de tendencia</a></li>
+  <li><a href="#pruebas-estratificadas-1" id="toc-pruebas-estratificadas-1" class="nav-link" data-scroll-target="#pruebas-estratificadas-1"><span class="toc-section-number">3.7.4</span>  Pruebas estratificadas</a></li>
+  <li><a href="#prueba-de-renyi" id="toc-prueba-de-renyi" class="nav-link" data-scroll-target="#prueba-de-renyi"><span class="toc-section-number">3.7.5</span>  Prueba de Renyi</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -807,75 +810,147 @@ $scores
 </div>
 </div>
 <p>Por lo tanto bajo los niveles de confianza usuales se rechaza la hipótesis de que las tres tasas de riesgo son iguales para cualquier <span class="math inline">\(t\)</span>.</p>
-<!-- ### Pruebas de tendencia -->
-<!-- Como ejemplo de la prueba de tendencia se utiliza una base de 40 -->
-<!-- pacientes con cáncer de laringe clasificados según la etapa de la -->
-<!-- enfermedad. Se probará la hipótesis de que no hay una diferencia entre -->
-<!-- las tasas de riesgo entre las 4 etapas vs la hipótesis de que entre más -->
-<!-- alta la etapa, más alta la tasa de riesgo. Graficamos las 4 funciones de -->
-<!-- sobrevivencia estimadas: -->
-<!-- ```{r} -->
-<!-- data("larynx") -->
-<!-- S_7_6 <- survfit(Surv(time, delta) ~ stage,data=larynx) -->
-<!-- ggsurvplot(S_7_6) -->
-<!-- ``` -->
-<!-- y el estadístico de prueba lo calculamos con la función *comp*, usando -->
-<!-- como scores $a_j=j, \; 1,\ldots,4$ y bajo distintas escogencias de -->
-<!-- funciones de pesos: -->
-<!-- ```{r} -->
-<!-- l1 <- ten(Surv(time, delta) ~ stage, data=larynx) -->
-<!-- comp(l1) -->
-<!-- p <- attr(l1, "tft") -->
-<!-- p$tft$pChisq -->
-<!-- ``` -->
-<!-- Por ejemplo para el caso de la prueba con pesos de Tarone, el valor p -->
-<!-- es: -->
-<!-- ```{r} -->
-<!-- 2*pnorm(4.0580,lower.tail = F) -->
-<!-- ``` -->
-<!-- por lo que se rechaza la hipótesis nula inmediatamente, a favor de una -->
-<!-- en donde las tasas son crecientes. -->
-<!-- ### Pruebas estratificadas -->
-<!-- Como complemento al ejemplo de la sobrevivencia en pacientes con -->
-<!-- leucemia, se incluye la covariable de uso del químico MTX como -->
-<!-- profiláctico en el tratamiento, el cual puede ser una variable confusora -->
-<!-- en la prueba del ejemplo 7.4. -->
-<!-- ```{r} -->
-<!-- S_7_4_est <- survfit(Surv(time=t2, event=d3) ~ group+strata(z10), data=bmt) -->
-<!-- ggsurvplot(S_7_4_est) -->
-<!-- ``` -->
-<!-- y hacemos una prueba de log-rango con el paquete *survival*: -->
-<!-- ```{r} -->
-<!-- Prueba_7_4_est <- survdiff(Surv(time=t2, event=d3) ~ group+strata(z10), data=bmt) -->
-<!-- print(Prueba_7_4_est) -->
-<!-- ``` -->
-<!-- por lo tanto se rechaza la hipótesis nula de igualdad de tasas de -->
-<!-- riesgo, independientemente del efecto del uso del químico MTX en la -->
-<!-- población de estudio. -->
-<!-- ### Prueba de Renyi -->
-<!-- Para ilustrar el uso de la prueba de Renyi usamos los datos de -->
-<!-- sobrevivencia de 45 pacientes con cáncer gástrico a los cuales se les -->
-<!-- aplicó quimioterapia o la combinación de quimioterapia y radiación. Las -->
-<!-- funciones de sobrevivencia estimadas son: -->
-<!-- ```{r} -->
-<!-- data("gastric") -->
-<!-- S_7_9_est <- survfit(Surv(time, event) ~ group, data=gastric) -->
-<!-- ggsurvplot(S_7_9_est) -->
-<!-- ``` -->
-<!-- donde es muy evidente que las dos funciones de sobrevivencia se cruzan -->
-<!-- en una edad intermedia, por lo que es mejor usar la prueba de Renyi: -->
-<!-- ```{r} -->
-<!-- g1 <- ten(Surv(time, event) ~ group, data=gastric) -->
-<!-- pba <- comp(g1) -->
-<!-- attr(g1, "sup") -->
-<!-- p <- attr(g1, "sup") -->
-<!-- ``` -->
-<!-- y los valores p correspondientes para cada una de las escogencias de pesos son: -->
-<!-- ```{r message=FALSE, warning=FALSE} -->
-<!-- p$pSupBr -->
-<!-- ``` -->
-<!-- Por lo que rechazaríamos la hipótesis de igualdad de tasas de riesgo -->
-<!-- para niveles de significacia superiores al 5% aproximadamente para todos los casos excepto la primera y la última ponderación. -->
+</section>
+<section id="pruebas-de-tendencia-1" class="level3" data-number="3.7.3">
+<h3 data-number="3.7.3" class="anchored" data-anchor-id="pruebas-de-tendencia-1"><span class="header-section-number">3.7.3</span> Pruebas de tendencia</h3>
+<p>Como ejemplo de la prueba de tendencia se utiliza una base de 40 pacientes con cáncer de laringe clasificados según la etapa de la enfermedad. Se probará la hipótesis de que no hay una diferencia entre las tasas de riesgo entre las 4 etapas vs la hipótesis de que entre más alta la etapa, más alta la tasa de riesgo. Graficamos las 4 funciones de sobrevivencia estimadas:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"larynx"</span>)</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>S_7_6 <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(time, delta) <span class="sc">~</span> stage,<span class="at">data=</span>larynx)</span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsurvplot</span>(S_7_6)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="PH_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>y el estadístico de prueba lo calculamos con la función <em>comp</em>, usando como scores <span class="math inline">\(a_j=j, \; 1,\ldots,4\)</span> y bajo distintas escogencias de funciones de pesos:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>l1 <span class="ot">&lt;-</span> <span class="fu">ten</span>(<span class="fu">Surv</span>(time, delta) <span class="sc">~</span> stage, <span class="at">data=</span>larynx)</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a><span class="fu">comp</span>(l1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            chiSq df pChisq
+1          22.763  3      6
+n          23.177  3      2
+sqrtN      23.141  3      5
+S1         23.171  3      3
+S2         23.170  3      4
+FH_p=1_q=1 16.661  3      1
+$tft
+                     Q         Var       Z pNorm
+1             -25.8061     48.1505 -3.7190     1
+n           -1939.0000 210644.6590 -4.2248     3
+sqrtN        -221.9185   2990.6169 -4.0580     6
+S1            -21.3895     26.8311 -4.1293     5
+S2            -21.0942     26.0075 -4.1363     4
+FH_p=1_q=1     -2.9412      1.5056 -2.3970     2
+
+$scores
+[1] 1 2 3 4</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">attr</span>(l1, <span class="st">"tft"</span>)</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>p<span class="sc">$</span>tft<span class="sc">$</span>pChisq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.000459e-04 2.391900e-05 4.949255e-05 3.638010e-05 3.529216e-05
+[6] 1.653027e-02</code></pre>
+</div>
+</div>
+<p>Por ejemplo para el caso de la prueba con pesos de Tarone, el valor p es:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span><span class="sc">*</span><span class="fu">pnorm</span>(<span class="fl">4.0580</span>,<span class="at">lower.tail =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4.949477e-05</code></pre>
+</div>
+</div>
+<p>por lo que se rechaza la hipótesis nula inmediatamente, a favor de una en donde las tasas son crecientes.</p>
+</section>
+<section id="pruebas-estratificadas-1" class="level3" data-number="3.7.4">
+<h3 data-number="3.7.4" class="anchored" data-anchor-id="pruebas-estratificadas-1"><span class="header-section-number">3.7.4</span> Pruebas estratificadas</h3>
+<p>Como complemento al ejemplo de la sobrevivencia en pacientes con leucemia, se incluye la covariable de uso del químico MTX como profiláctico en el tratamiento, el cual puede ser una variable confusora en la prueba del ejemplo 7.4.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>S_7_4_est <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(<span class="at">time=</span>t2, <span class="at">event=</span>d3) <span class="sc">~</span> group<span class="sc">+</span><span class="fu">strata</span>(z10), <span class="at">data=</span>bmt)</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsurvplot</span>(S_7_4_est)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="PH_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>y hacemos una prueba de log-rango con el paquete <em>survival</em>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>Prueba_7_4_est <span class="ot">&lt;-</span> <span class="fu">survdiff</span>(<span class="fu">Surv</span>(<span class="at">time=</span>t2, <span class="at">event=</span>d3) <span class="sc">~</span> group<span class="sc">+</span><span class="fu">strata</span>(z10), <span class="at">data=</span>bmt)</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(Prueba_7_4_est)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+survdiff(formula = Surv(time = t2, event = d3) ~ group + strata(z10), 
+    data = bmt)
+
+         N Observed Expected (O-E)^2/E (O-E)^2/V
+group=1 38       24     23.2    0.0261     0.038
+group=2 54       25     38.7    4.8663     9.621
+group=3 45       34     21.0    7.9673    10.796
+
+ Chisq= 13.2  on 2 degrees of freedom, p= 0.001 </code></pre>
+</div>
+</div>
+<p>por lo tanto se rechaza la hipótesis nula de igualdad de tasas de riesgo, independientemente del efecto del uso del químico MTX en la población de estudio.</p>
+</section>
+<section id="prueba-de-renyi" class="level3" data-number="3.7.5">
+<h3 data-number="3.7.5" class="anchored" data-anchor-id="prueba-de-renyi"><span class="header-section-number">3.7.5</span> Prueba de Renyi</h3>
+<p>Para ilustrar el uso de la prueba de Renyi usamos los datos de sobrevivencia de 90 pacientes con cáncer gástrico a los cuales se les aplicó quimioterapia o la combinación de quimioterapia y radiación. Las funciones de sobrevivencia estimadas son:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"gastric"</span>)</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>S_7_9_est <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(time, event) <span class="sc">~</span> group, <span class="at">data=</span>gastric)</span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsurvplot</span>(S_7_9_est)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="PH_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>donde es muy evidente que las dos funciones de sobrevivencia se cruzan en una edad intermedia, por lo que es más recomendable usar la prueba de Renyi:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> <span class="fu">ten</span>(<span class="fu">Surv</span>(time, event) <span class="sc">~</span> group, <span class="at">data=</span>gastric)</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>pba <span class="ot">&lt;-</span> <span class="fu">comp</span>(g1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                     Q         Var        Z pNorm
+1           2.1463e+00  1.9862e+01  0.48159     5
+n           4.9100e+02  6.0322e+04  1.99913     3
+sqrtN       4.3629e+01  9.8798e+02  1.38803     4
+S1          5.4126e+00  7.2723e+00  2.00710     2
+S2          5.3864e+00  7.0411e+00  2.02993     1
+FH_p=1_q=1 -8.9383e-02  7.1790e-01 -0.10549     6
+              maxAbsZ        Var      Q pSupBr
+1              9.8049    19.8617 2.2001      5
+n            725.0000 60322.4412 2.9519      3
+sqrtN         84.1532   987.9774 2.6773      4
+S1             7.9752     7.2723 2.9574      2
+S2             7.8688     7.0411 2.9654      1
+FH_p=1_q=1     1.3396     0.7179 1.5811      6</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">attr</span>(g1, <span class="st">"sup"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              maxAbsZ        Var      Q pSupBr
+1              9.8049    19.8617 2.2001      5
+n            725.0000 60322.4412 2.9519      3
+sqrtN         84.1532   987.9774 2.6773      4
+S1             7.9752     7.2723 2.9574      2
+S2             7.8688     7.0411 2.9654      1
+FH_p=1_q=1     1.3396     0.7179 1.5811      6</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">attr</span>(g1, <span class="st">"sup"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>y los valores p correspondientes para cada una de las escogencias de pesos son:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>p<span class="sc">$</span>pSupBr</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.055604370 0.006316933 0.014843656 0.006205396 0.006045005 0.227716766</code></pre>
+</div>
+</div>
+<p>Por lo que rechazaríamos la hipótesis de igualdad de tasas de riesgo para niveles de significacia superiores al 5% aproximadamente para todos los casos excepto la primera y la última ponderación.</p>
 
 
 </section>
