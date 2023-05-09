@@ -10,15 +10,15 @@ library(tidyverse)
 
 Utilizamos la misma notación de los capítulos anteriores en donde $X$: tiempo aleatorio hasta la ocurrencia de un riesgo de interés. Los datos consisten en tripletas $(T_j,\delta_j,Z_j(t))$ para $j=1,\ldots,n$ donde
 
-- $T_j$: tiempo de evento o censura para el paciente $j$-ésimo.
-- $\delta_j$: indicador del evento.
-- $Z_j(t)=(Z_{j1}(t),\ldots,Z_{jp}(t))^T$: vector de $p$ covariables para el individuo $j$-ésimo en tiempo $t$. 
+-   $T_j$: tiempo de evento o censura para el paciente $j$-ésimo.
+-   $\delta_j$: indicador del evento.
+-   $Z_j(t)=(Z_{j1}(t),\ldots,Z_{jp}(t))^T$: vector de $p$ covariables para el individuo $j$-ésimo en tiempo $t$.
 
 **Nota**: por ahora asumiremos que $Z_{jp}(t)$ es constante con respecto al tiempo $t$. ($j=1,\dots,n$ y $k=1,\ldots,p$), es decir:
 
 $$Z_j(t)=Z_j=(Z_{j1},\ldots,Z_{jp})^T$$
 
-Sea $h(t|Z)$ la tasa de riesgo en tiempo $t$ para un individuo con covariables $Z$. El modelo de Cox está dado por: 
+Sea $h(t|Z)$ la tasa de riesgo en tiempo $t$ para un individuo con covariables $Z$. El modelo de Cox está dado por:
 
 $$h(t|Z)=h_0(t)c(\beta^TZ)$$
 
@@ -28,13 +28,11 @@ $$c(\beta^TZ)=\exp[\beta^TZ]=e^{\sum_{k=1}^p\beta_kZ_k}$$
 
 lo que permite obtener el siguiente modelo lineal generalizado:
 
-$$\log\left[\frac{h(t|Z)}{h_0(t)}\right]=\sum_{k=1}^p \beta_kZ_k$$
-**Nota**: el tratamiento de las covariables tanto cuantitativas como categóricas es el mismo que el que se trabaja con modelos lineales. 
+$$\log\left[\frac{h(t|Z)}{h_0(t)}\right]=\sum_{k=1}^p \beta_kZ_k$$ **Nota**: el tratamiento de las covariables tanto cuantitativas como categóricas es el mismo que el que se trabaja con modelos lineales.
 
 Al modelo de Cox se le llama usualmente el *modelo de riesgos proporcionales* dado que si dos individuos tienen covariables $Z$ y $Z^*$:
 
-$$\frac{h(t|Z)}{h(t|Z^*)}=\frac{h_0(t)\exp\left[\sum_{k=1}^p\beta_kZ_k\right]}{h_0(t)\exp\left[\sum_{k=1}^p\beta_kZ_k^*\right]}=\exp\left[\sum_{k=1}^p\beta_k(Z_k-Z_k^*)\right]$$
-es decir: $h(t|Z)\propto h(t|Z^*)$. Al cociente $\frac{h(t|Z)}{h(t|Z^*)}$ se le llama riesgo relativo. 
+$$\frac{h(t|Z)}{h(t|Z^*)}=\frac{h_0(t)\exp\left[\sum_{k=1}^p\beta_kZ_k\right]}{h_0(t)\exp\left[\sum_{k=1}^p\beta_kZ_k^*\right]}=\exp\left[\sum_{k=1}^p\beta_k(Z_k-Z_k^*)\right]$$ es decir: $h(t|Z)\propto h(t|Z^*)$. Al cociente $\frac{h(t|Z)}{h(t|Z^*)}$ se le llama riesgo relativo.
 
 Por ejemplo, si $Z_1$: variable tratamiento, es decir:
 
@@ -42,62 +40,58 @@ $$Z_1=\begin{cases}
 1 & \text{tratamiento} (Z)\\
 0 & \text{placebo} (Z^*)
 \end{cases}
-$$
-y se asume que el resto de las covariables son iguales entre los dos individuos, entonces el riesgo relativo es:
+$$ y se asume que el resto de las covariables son iguales entre los dos individuos, entonces el riesgo relativo es:
 
-$$\frac{h(t|Z)}{h(t|Z^*)}=\exp[\beta_1(1-0)+0]=e^{\beta_1}$$
-*Nota*: la codificación de la variable tratamiento cambia la interpretación de $\beta_1$ ya que si:
+$$\frac{h(t|Z)}{h(t|Z^*)}=\exp[\beta_1(1-0)+0]=e^{\beta_1}$$ *Nota*: la codificación de la variable tratamiento cambia la interpretación de $\beta_1$ ya que si:
 
 $$Z_1=\begin{cases}
 1 & \text{placebo} (Z)\\
 0 & \text{tratamiento} (Z^*)
 \end{cases}
-$$
-entonces el riesgo relativo sería $e^{-\beta_1}$. 
+$$ entonces el riesgo relativo sería $e^{-\beta_1}$.
 
 A las variables categóricas se le llaman en este contexto de análisis de sobrevivencia: *grupos de riesgo*. Si el grupo de riesgo está compuesto de tres niveles se puede usar dos covariables como indicadoras, por ejemplo si el grupo de riesgo es etnia con niveles: afroamericano, caucásico e hispánico; se puede definir: $Z_1=1_{\text{Afroamericano}}$, $Z_2=1_{\text{caucasico}}$, entonces:
 
+```{=tex}
 \begin{align*}
-	h(t|\text{Afroamericano})&=h(t|Z_1=1,Z_2=0)=h_0(t)\exp[\beta_1]\\
-	h(t|\text{Caucasico})&=h(t|Z_1=0,Z_2=1)=h_0(t)\exp[\beta_2]\\
-	h(t|\text{Hispanico})&=h(t|Z_1=0,Z_2=0)=h_0(t)
+    h(t|\text{Afroamericano})&=h(t|Z_1=1,Z_2=0)=h_0(t)\exp[\beta_1]\\
+    h(t|\text{Caucasico})&=h(t|Z_1=0,Z_2=1)=h_0(t)\exp[\beta_2]\\
+    h(t|\text{Hispanico})&=h(t|Z_1=0,Z_2=0)=h_0(t)
 \end{align*}
-
+```
 Si las variables son cuantitativas entonces la interpretación de los riesgos relativos se realiza al comparar cambios producto de un aumento en una unidad en la variable de análisis:
 
-$$\frac{h(t|\text{Edad}+1)}{h(t|\text{Edad})}=e^{\beta_{\text{edad}}}$$
-Otro aspecto importante es que la presencia de interacciones entre covariables afecta la interpretación, tal y como se observa en modelos más sencillos como regresión múltiple o logística. (ver final de la sección 8.2 del Klein.)
-
+$$\frac{h(t|\text{Edad}+1)}{h(t|\text{Edad})}=e^{\beta_{\text{edad}}}$$ Otro aspecto importante es que la presencia de interacciones entre covariables afecta la interpretación, tal y como se observa en modelos más sencillos como regresión múltiple o logística. (ver final de la sección 8.2 del Klein.)
 
 ## Verosimilitud Parcial
 
-A nivel de datos, considere las tripletas de la sección anterior, no dependientes del tiempo: $(T_j,\delta_j,Z_j)$, para $j=1,\ldots,n$. 
+A nivel de datos, considere las tripletas de la sección anterior, no dependientes del tiempo: $(T_j,\delta_j,Z_j)$, para $j=1,\ldots,n$.
 
 Supuestos:
 
-- No hay tiempos de ocurrencia del evento repetidos.
-- Dado $Z_j$, los tiempos de ocurrencia y censura son independientes.
+-   No hay tiempos de ocurrencia del evento repetidos.
+-   Dado $Z_j$, los tiempos de ocurrencia y censura son independientes.
 
-Sea $t_1<t_2<\cdots <t_D$ los tiempos de ocurrencia del evento y 
+Sea $t_1<t_2<\cdots <t_D$ los tiempos de ocurrencia del evento y
 
-- $Z_{(i)k}$: $k$-ésima covariable del individuo cuyo tiempo de ocurrencia es $t_i$.
-- $R(t_i)$: individuos en riesgo al tiempo $t_i$.
+-   $Z_{(i)k}$: $k$-ésima covariable del individuo cuyo tiempo de ocurrencia es $t_i$.
+-   $R(t_i)$: individuos en riesgo al tiempo $t_i$.
 
 *Inconveniente*: $h_0(t)$ debe ser estimado junto con los $\beta$'s.
 
 *Solución*: calculamos la probabilidad de que un individuo le ocurra el riesgo en tiempo $t_i$ con covariables $Z_{(i)}$ dado que uno de los individuos en $R(t_i)$ le ocurrió el riesgo en tiempo $t_i$:
 
+```{=tex}
 \begin{align*}
-	&P[\text{individuo muere en $t_i$}|\text{una muerte en $t_i$}]\\
-	&=\frac{P[\text{individuo muere en $t_i$}|\text{sobrevive a $t_i$}]}{P[\text{una muerte en $t_i$}|\text{sobrevive a $t_i$}]}\\
-	&=\frac{\frac{f(t_i|Z_{(i)})}{S(t_i|Z_{(i)})}}{\sum_{j\in R(t_i)}\frac{f(t_i|Z_j)}{S(t_i|Z_j)}}=\frac{h(t_i|Z_{(i)})}{\sum_{j \in R(t_i)} h(t_i|Z_j)}=\frac{h_0(t_i)\exp(\beta^TZ_{(i)})}{h_0(t_i)\sum_{j \in R(t_i)} \exp(\beta^TZ_j)}\\
-	&=\frac{\exp(\beta^TZ_{(i)})}{\sum_{j \in R(t_i)} \exp(\beta^TZ_j)}
+    &P[\text{individuo muere en $t_i$}|\text{una muerte en $t_i$}]\\
+    &=\frac{P[\text{individuo muere en $t_i$}|\text{sobrevive a $t_i$}]}{P[\text{una muerte en $t_i$}|\text{sobrevive a $t_i$}]}\\
+    &=\frac{\frac{f(t_i|Z_{(i)})}{S(t_i|Z_{(i)})}}{\sum_{j\in R(t_i)}\frac{f(t_i|Z_j)}{S(t_i|Z_j)}}=\frac{h(t_i|Z_{(i)})}{\sum_{j \in R(t_i)} h(t_i|Z_j)}=\frac{h_0(t_i)\exp(\beta^TZ_{(i)})}{h_0(t_i)\sum_{j \in R(t_i)} \exp(\beta^TZ_j)}\\
+    &=\frac{\exp(\beta^TZ_{(i)})}{\sum_{j \in R(t_i)} \exp(\beta^TZ_j)}
 \end{align*}
-
+```
 La verosimilitud parcial se obtiene al multiplicar todas las probabilidades condicionales anteriores sobre todos los tiempos en donde ocurre el evento en la muestra:
 
-$$L(\beta)=\prod_{i=1}^D\frac{\exp(\beta^TZ_{(i)})}{\sum_{j \in R(t_i)} \exp(\beta^TZ_j)}$$
-El proceso de inferencia se realiza con $L(\beta)$ (no depende de $h_0(t)$) o bien sobre la log-verosimilitud parcial:
+$$L(\beta)=\prod_{i=1}^D\frac{\exp(\beta^TZ_{(i)})}{\sum_{j \in R(t_i)} \exp(\beta^TZ_j)}$$ El proceso de inferencia se realiza con $L(\beta)$ (no depende de $h_0(t)$) o bien sobre la log-verosimilitud parcial:
 
 $$LL(\beta)=\log L(\beta)=\sum_{i=1}^D\sum_{k=1}^p \beta_kZ_{(i)k}-\sum_{i=1}^D\log\left[\sum_{j \in R(t_i)}\sum_{k=1}^p\beta_kZ_{jk}\right]$$
 
@@ -107,55 +101,53 @@ $$U_h(\beta)=\frac{\partial }{\partial \beta_h}LL(\beta)\qquad h=1,\ldots,p$$
 
 y resolviendo el sistema de $p$ ecuaciones no lineales:
 
-$$U_h(\beta)=0\qquad h=1,\ldots,p$$
-la solución es el estimador de máxima verosimilitud parcial de $\beta$.
+$$U_h(\beta)=0\qquad h=1,\ldots,p$$ la solución es el estimador de máxima verosimilitud parcial de $\beta$.
 
 Como justificación al uso de la verosimilitud parcial como herramienta inferencial, asuma las tripletas $(T_j,\delta_j,Z_j)$ como datos y escribamos la verosimilitud total de los parámetros $(\beta,h_0(t))$:
 
+```{=tex}
 \begin{align*}
-	L(\beta,h_0(t))&=\prod_{j=1}^n f(T_j|Z_j)^{\delta_j}S(T_j|Z_j)^{1-\delta_j}\\
-	&=\prod_{j=1}^n h(T_j|Z_j)^{\delta_j}S(T_j|Z_j)\\
-	&=\prod_{j=1}^n h_0(T_j)^{\delta_j}[\exp(\beta^TZ_j)]^{\delta_j}\exp[-H_0(T_j)\exp(\beta^TZ_j)]\\
-	&=\left[\prod_{i=1}^D h_0(t_i)\exp(\beta^TZ_{(i)})\right]\cdot \exp\left[-\sum_{j=1}^n H_0(T_j)\exp(\beta^TZ_j)\right]
+    L(\beta,h_0(t))&=\prod_{j=1}^n f(T_j|Z_j)^{\delta_j}S(T_j|Z_j)^{1-\delta_j}\\
+    &=\prod_{j=1}^n h(T_j|Z_j)^{\delta_j}S(T_j|Z_j)\\
+    &=\prod_{j=1}^n h_0(T_j)^{\delta_j}[\exp(\beta^TZ_j)]^{\delta_j}\exp[-H_0(T_j)\exp(\beta^TZ_j)]\\
+    &=\left[\prod_{i=1}^D h_0(t_i)\exp(\beta^TZ_{(i)})\right]\cdot \exp\left[-\sum_{j=1}^n H_0(T_j)\exp(\beta^TZ_j)\right]
 \end{align*}
-
+```
 Sea $h_{0i}=h_0(t_i)$, $i=1,\ldots,D$ y $H_0(T_j)=\sum_{t_i\leq T_j}h_{0i}$ entonces:
 
 $$L(\beta,h_0(t))=L_\beta(h_{01},\ldots,h_{0D})\propto \prod_{i=1}^Dh_{0i}\exp\left[-h_{0i}\sum_{j\in R(t_i)}\exp(\beta^TZ_j)\right]$$
 
 y manteniendo $\beta$ fijo y maximizando con respecto a $h_{0i}$:
 
-$$\hat h_{0i}=\frac{1}{\sum_{j \in R(t_i)}\exp(\beta^TZ_j)}$$
-es el estimador por máxima verosimilitud (de perfil) de $h_{0i}$. A partir de esto definimos el *estimador de Breslow* de $H_0(t)$ como:
+$$\hat h_{0i}=\frac{1}{\sum_{j \in R(t_i)}\exp(\beta^TZ_j)}$$ es el estimador por máxima verosimilitud (de perfil) de $h_{0i}$. A partir de esto definimos el *estimador de Breslow* de $H_0(t)$ como:
 
-$$\hat H_0(t)=\sum_{t_i\leq t}\frac{1}{\sum_{j\in R(t_i)}\exp(\beta^TZ_j)}$$
-y sustituyendo en la fórmula de verosimilitud completa:
+$$\hat H_0(t)=\sum_{t_i\leq t}\frac{1}{\sum_{j\in R(t_i)}\exp(\beta^TZ_j)}$$ y sustituyendo en la fórmula de verosimilitud completa:
 
 $$L(\beta,\hat h_{0.})\propto \prod_{i=1}^D\frac{\exp[\beta^TZ_{(i)}]}{\sum_{j\in R(t_i)}\exp[\beta^TZ_j]}$$
 
 ### 3 pruebas de hipótesis para $\beta$
 
-Sea $b=(b_1,\ldots,b_p)^T$ el estimador por máxima verosimilitud parcial de $beta$ y sea $I(\beta)$ la matriz de información $p\times p$ con entradas:
+Sea $b=(b_1,\ldots,b_p)^T$ el estimador por máxima verosimilitud parcial de $\beta$ y sea $I(\beta)$ la matriz de información $p\times p$ con entradas:
 
-$$I_{gh}(\beta)=-\frac{\partial^2LL}{\partial\beta_g\partial\beta_h}(\beta)$$
+$$I_{gh}(\beta)=-\frac{\partial^2LL}{\partial\beta_g\partial\beta_h}(\beta)$$ 
+
 1. Prueba de Wald
 
 Se sabe que $b\sim N_p(\beta,I^{-1}(b))$. Entonces el estadístico de prueba con hipótesis nula: $H_0: \beta=\beta_0$ es:
 
 $$X^2_w=(b-\beta_0)^TI(b)(b-\beta_0)\underset{H_0}{\sim}\chi^2_p$$
 
-2. Prueba de cociente de verosimilitud. 
+2.  Prueba de cociente de verosimilitud.
 
 Bajo $H_0: \beta=\beta_0$:
 
 $$X^2_{LR}=2[LL(b)-LL(\beta_0)]\underset{H_0}{\sim}\chi^2_p$$
 
-3. Prueba Score (o prueba de log-rank si no hay repeticiones)
+3.  Prueba Score (o prueba de log-rank si no hay repeticiones)
 
 Sea $U(\beta)=(U_1(\beta),\ldots,U_p(\beta))^T$. Entonces:
 
-$$U(\beta)\overset{H_0}{\underset{\text{n grande}}{\sim}}N_p(0,I(\beta))$$
-Entonces un estadístico de prueba de $H_0: \beta=\beta_0$ es:
+$$U(\beta)\overset{H_0}{\underset{\text{n grande}}{\sim}}N_p(0,I(\beta))$$ Entonces un estadístico de prueba de $H_0: \beta=\beta_0$ es:
 
 $$X^2_{SC}=U(\beta_0)^TI^{-1}(\beta_0)U(\beta_0)\overset{H_0}{\underset{\text{n grande}}{\sim}}\chi_p^2$$
 
@@ -163,171 +155,202 @@ $$X^2_{SC}=U(\beta_0)^TI^{-1}(\beta_0)U(\beta_0)\overset{H_0}{\underset{\text{n 
 
 Sea $t_1<t_2<\cdots <t_D$ sean $D$ tiempos distintos de ocurrencia del evento, $d_i$: número de eventos ocurridos en $t_i$ y $\mathbb D_i$: conjunto de individuos que les ocurre el evento en $t_i$. Sea
 
-$$S_i=\sum_{j\in \mathbb D_i}Z_j$$
-Las siguientes son formas distintas de construir la verosimilitud parcial cuando hay repeticiones en los tiempos de ocurrencia del riesgo:
+$$S_i=\sum_{j\in \mathbb D_i}Z_j$$ Las siguientes son formas distintas de construir la verosimilitud parcial cuando hay repeticiones en los tiempos de ocurrencia del riesgo:
 
-- Verosimilitud parcial de Breslow (1974)
+-   Verosimilitud parcial de Breslow (1974)
 
 $$L_1(\beta)=\prod_{i=1}^D\frac{\exp(\beta^TS_i)}{\left[\sum_{j \in R_i}\exp(\beta^TZ_j)\right]^{d_i}}$$
 
-- Verosimilitud parcial de Efron (1977)
+-   Verosimilitud parcial de Efron (1977)
 
-$$L_2(\beta)=\prod_{i=1}^D\frac{\exp(\beta^TS_i)}{\prod_{j=1}^{d_i}\left[\sum_{k\in R_i}\exp(\beta^TZ_k)-\frac{j-1}{d_i}\sum_{k\in \mathbb D_i}\exp(\beta^TZ_k)\right]}$$
+$$L_2(\beta)=\prod_{i=1}^D\frac{\exp(\beta^TS_i)}{\prod_{j=1}^{d_i}\left[\sum_{k\in R_i}\exp(\beta^TZ_k)-\frac{j-1}{d_i}\sum_{k\in \mathbb D_i}\exp(\beta^TZ_k)\right]}$$ 
+
 - Verosimilitud parcial de Cox (1972)
 
 Sea $Q_i$: conjunto de todos los subconjuntos de $d_i$ individuos seleccionados de $R_i$. Sea $q=(q_1,\ldots,q_{d_i})$ un elemento de $Q_i$ y defina $s^*_q=\sum_{j=1}^{d_i}Z_{q_j}$, entonces:
 
 $$L_3(\beta)=\prod_{i=1}^D\frac{\exp(\beta^TS_i)}{\sum_{q\in Q_i}\exp(\beta^Ts^*_q)}$$
 
-<!-- ## Pruebas Locales -->
+## Pruebas Locales
 
-<!-- En este caso la hipótesis nula de interés es: -->
+En este caso la hipótesis nula de interés es:
 
-<!-- $$H_0: \beta_1=\beta_{10}\qquad \text{donde} \; \beta=(\beta_1^T,\beta_2^T)^T$$ -->
+$$H_0: \beta_1=\beta_{10}\qquad \text{donde} \; \beta=(\beta_1^T,\beta_2^T)^T$$
 
-<!-- y $\beta_1$ es un vector $q\times 1$ y $\beta_2$ es $(p-q)\times 1$. -->
+y $\beta_1$ es un vector $q\times 1$ y $\beta_2$ es $(p-q)\times 1$.
 
-<!-- - Prueba de Wald -->
+- Prueba de Wald
 
-<!-- Sea $b=(b_1^T,b_2^T)^T$ los estimadores de máxima verosimilitud parcial de $\beta$. Supongamos que particionamos la matriz de información $I$ como: -->
+Sea $b=(b_1^T,b_2^T)^T$ los estimadores de máxima verosimilitud parcial de $\beta$. Supongamos que particionamos la matriz de información $I$ como:
 
-<!-- \begin{align*} -->
-<!-- I= -->
-<!-- 	\begin{pmatrix} -->
-<!-- 	  I_{11} & I_{12} \\ -->
-<!-- 	  I_{21} & I_{22} -->
-<!-- 	\end{pmatrix} -->
-<!-- \end{align*} -->
+\begin{align*}
 
-<!-- donde $I_{11}:q\times q$ y $I_{22}: (p-q)\times (p-q)$ son los bloques correspondientes a $\beta_1$ y $\beta_2$ respectivamente. El estadístico de prueba en este caso es: -->
+I=
 
-<!-- $$X^2_w=(b_1-\beta_{10})^T[I''(b)]^{-1}(b_1-\beta_{10})$$ -->
-<!-- donde $I''(b)$ es la submatriz $q\times q$ (superior) de $I^{-1}(b)$ y: -->
+   \begin{pmatrix}
 
-<!-- $$X_w^2\overset{H_0}{\underset{\text{n grande}}{\sim}}\chi_q^2$$ -->
+     I_{11} & I_{12} \\
 
-<!-- Sea $b_2(\beta_{10})$ los estimadores de máxima verosimilitud parciales de $\beta_2$ basados en la log-verosimilitud parcial de $\beta$ fijando las primeras $q$ entradas con el valor $\beta_{10}$. -->
+     I_{21} & I_{22}
 
-<!-- - Prueba de cociente de verosimilitud -->
+   \end{pmatrix}
 
-<!-- El estadístico correspondiente sería: -->
+\end{align*}
 
-<!-- $$X^2_{LR}=2\left(LL(b)-LL[\beta_{10},b_2(\beta_{10})]\right)\overset{H_0}{\underset{\text{n grande}}{\sim}}\chi_q^2$$ -->
+donde $I_{11}:q\times q$ y $I_{22}: (p-q)\times (p-q)$ son los bloques correspondientes a $\beta_1$ y $\beta_2$ respectivamente. El estadístico de prueba en este caso es:
 
-<!-- - Prueba Score: -->
+$$X^2_w=(b_1-\beta_{10})^T[I''(b)]^{-1}(b_1-\beta_{10})$$
 
-<!-- Sea $U_1[\beta_{10},b_2(\beta_{10})]$ el score con tamaño $q\times 1$ para $\beta_1$ evaluado en $(\beta_{10}^T,b_2(\beta_{10})^T)^T$. Entonces: -->
+donde $I''(b)$ es la submatriz $q\times q$ (superior) de $I^{-1}(b)$ y:
 
-<!-- $$X^2_{SC}=U_1[\beta_{10},b_2(\beta_{10})]^T[I''(\beta_{10},b_2(\beta_{10}))]U_1[\beta_{10},b_2(\beta_{10})]\overset{H_0}{\underset{\text{n grande}}{\sim}}\chi_q^2$$ -->
+$$X_w^2\overset{H_0}{\underset{\text{n grande}}{\sim}}\chi_q^2$$
 
-<!-- Algunas veces se quiere probar una hipótesis sobre un contraste de los parámetros a través de una prueba de Wald. Sea: -->
+Sea $b_2(\beta_{10})$ los estimadores de máxima verosimilitud parciales de $\beta_2$ basados en la log-verosimilitud parcial de $\beta$ fijando las primeras $q$ entradas con el valor $\beta_{10}$.
 
-<!-- \begin{align*} -->
-<!-- C= -->
-<!-- 	\begin{pmatrix} -->
-<!-- 	c_1^T\\ -->
-<!-- 	c_2^T\\ -->
-<!-- 	\vdots \\ -->
-<!-- 	c_q^T -->
-<!-- 	\end{pmatrix}_{q\times p} -->
-<!-- \end{align*} -->
+- Prueba de cociente de verosimilitud
 
-<!-- donde $q\leq p$ y $C$ es de rango completo. Además $c_k^T=(c_{k1},c_{k2},\ldots,c_{kp})$ y se quiere probar la hipótesis: -->
+El estadístico correspondiente sería:
 
-<!-- $$H_0: C\beta=C\beta_0$$ -->
-<!-- a través del estadístico: -->
+$$X^2_{LR}=2\left(LL(b)-LL[\beta_{10},b_2(\beta_{10})]\right)\overset{H_0}{\underset{\text{n grande}}{\sim}}\chi_q^2$$
 
-<!-- $$(Cb-C\beta_0)^T[CI^{-1}(b)C^T]^{-1}(Cb-C\beta_0)\overset{H_0}{\underset{\text{n grande}}{\sim}}\chi_q^2$$ -->
+- Prueba Score:
 
-<!-- ## Discretización de una variable continua -->
+Sea $U_1[\beta_{10},b_2(\beta_{10})]$ el score con tamaño $q\times 1$ para $\beta_1$ evaluado en $(\beta_{10}^T,b_2(\beta_{10})^T)^T$. Entonces:
 
-<!-- Con el fin de facilitar la interpretación de un riesgo relativo de una covariable cuantitativa, se puede convertir en una variable dicotómica. El principal problema de esta conversión es la pérdida de información, pero esta pérdida se puede minimizar usando razonamiento biológico a priori o bien que la decisión en la conversión sea basada en datos. -->
+$$X^2_{SC}=U_1[\beta_{10},b_2(\beta_{10})]^T[I''(\beta_{10},b_2(\beta_{10}))]U_1[\beta_{10},b_2(\beta_{10})]\overset{H_0}{\underset{\text{n grande}}{\sim}}\chi_q^2$$
 
-<!-- Como principal objetivo, si $X$ es una variable aleatoria continua, queremos definir $Z=1_{X\geq c}$ que cause una diferencia máxima entre los resultados de un estadístico calculado cuando $Z=1$ con respecto a $Z=0$ (máximo grado de separación de información entre los dos grupos). -->
+Algunas veces se quiere probar una hipótesis sobre un contraste de los parámetros a través de una prueba de Wald. Sea:
 
-<!-- **Contal y O'Quigley (1999)** -->
+\begin{align*}
 
-<!-- Considere un conjunto de cortes $\{c_k\}$ y para cada $k$ se calcula el estadístico log-rank sobre el grupo en donde $X\leq c_k$ menos el mismo estadístico sobre el grupo donde $X\geq c_k$, es decir: -->
+C=
 
-<!-- $$S_k=\sum_{i=1}^D\left[d_i^+-d_i\frac{r_i^+}{r_i}\right]$$ -->
-<!-- donde      -->
+   \begin{pmatrix}
 
-<!-- - $d_i, r_i$: número total de eventos y grupo en riesgo. -->
-<!-- - $d_i^+, r_i^+$: número total de eventos y grupo en riesgo cuando $X\geq c_k$. -->
-<!-- - $D$: número de tiempos de ocurrencia de eventos (distintos). -->
+   c_1^T\\
 
-<!-- El corte estimado $\hat c=\text{argmax}_{c_k}|S_k|$. Bajo esta escogencia de $\hat c$, el modelo de Cox es: -->
+   c_2^T\\
 
-<!-- $$h(t|X)=h_0(t)\exp[bZ]$$ -->
-<!-- y se quiere probar $H_0:b=0$. En este caso no se puede (ni se debe) usar las pruebas anteriores, sino a través del cálculo de: -->
+   \vdots \\
 
-<!-- $$s^2=\frac{1}{D-1}\sum_{i=1}^D\left[1-\sum_{j=1}^i\frac{1}{D-j+1}\right]$$ -->
+   c_q^T
 
-<!-- y el estadístico de prueba es: -->
+   \end{pmatrix}_{q\times p}
 
-<!-- $$Q=\frac{\max|S_k|}{s\sqrt{D-1}}\overset{H_0}{\underset{\text{n grande}}{\sim}}|\text{Puente Browniano}|$$ -->
-<!-- Note que si $Q>1$, entonces el valor p de la prueba anterior es aproximadamente $2\exp[-2Q^2]$. -->
+\end{align*}
 
-<!-- ## Estimación de la función de sobrevivencia -->
+donde $q\leq p$ y $C$ es de rango completo. Además $c_k^T=(c_{k1},c_{k2},\ldots,c_{kp})$ y se quiere probar la hipótesis:
 
-<!-- *Objetivo*: Estimar la probabilidad de sobrevivencia de un nuevo individuo con covariables $Z_0$. -->
+$$H_0: C\beta=C\beta_0$$
 
-<!-- Después de haber ajustado el modelo de Cox, sea $b$ el estimador de máxima verosimilitud parcial y $\hat V(b)=I^{-1}(b)$. Bajo la notación usual, defina: -->
+a través del estadístico:
 
-<!-- $$W(t_i,b)=\sum_{j \in R(t_i)}\exp\left(\sum_{h=1}^pb_hZ_{jh}\right)$$ -->
+$$(Cb-C\beta_0)^T[CI^{-1}(b)C^T]^{-1}(Cb-C\beta_0)\overset{H_0}{\underset{\text{n grande}}{\sim}}\chi_q^2$$
 
-<!-- y usando el estimador de Breslow, estimamos la tasa de riesgo acumulada base como: -->
+## Discretización de una variable continua
 
-<!-- $$\hat H_0(t)=\sum_{t_i\leq t}\frac{d_i}{W(t_i,b)}$$ -->
-<!-- *Nota*: $\hat H_0(t)$ es el estimador de Nelson-Aalen cuando no hay covariables.  -->
+Con el fin de facilitar la interpretación de un riesgo relativo de una covariable cuantitativa, se puede convertir en una variable dicotómica. El principal problema de esta conversión es la pérdida de información, pero esta pérdida se puede minimizar usando razonamiento biológico a priori o bien que la decisión en la conversión sea basada en datos.
 
-<!-- Usando el estimador anterior: -->
+Como principal objetivo, si $X$ es una variable aleatoria continua, queremos definir $Z=1_{X\geq c}$ que cause una diferencia máxima entre los resultados de un estadístico calculado cuando $Z=1$ con respecto a $Z=0$ (máximo grado de separación de información entre los dos grupos).
 
-<!-- $$\hat S_0(t)=\exp[-\hat H_0(t)]$$ -->
+**Contal y O'Quigley (1999)**
 
-<!-- Para estimar la sobrevivencia de un individuo con vector de covariables $Z=Z_0$ usamos: -->
+Considere un conjunto de cortes $\{c_k\}$ y para cada $k$ se calcula el estadístico log-rank sobre el grupo en donde $X\leq c_k$ menos el mismo estadístico sobre el grupo donde $X\geq c_k$, es decir:
 
-<!-- $$\hat S(t|Z=Z_0)=\hat S_0(t)^{\exp[b^TZ_0]}$$ -->
+$$S_k=\sum_{i=1}^D\left[d_i^+-d_i\frac{r_i^+}{r_i}\right]$$
 
-<!-- Note que bajo ciertas condiciones: -->
+donde
 
-<!-- $$\hat S(t|Z=Z_0)\overset{\text{t fijo}}{\underset{\text{n grande}}{\sim}} N(S(t|Z=Z_0), \hat V[\hat S(t|Z=Z_0)])$$ -->
-<!-- donde  -->
+- $d_i, r_i$: número total de eventos y grupo en riesgo.
 
-<!-- $$\hat V[\hat S(t|Z=Z_0)]=[\hat S(t|Z=Z_0)]^2[Q_1(t)+Q_2(t;Z_0)]$$ -->
-<!-- y  -->
+- $d_i^+, r_i^+$: número total de eventos y grupo en riesgo cuando $X\geq c_k$.
 
-<!-- $$Q_1(t)=\sum_{t_i\leq t}\frac{d_i}{W(t_i,b)^2}$$ -->
-<!-- el cual es el estimador de la varianza de $\hat H_0(t)$ si $\beta=b$, además: -->
+- $D$: número de tiempos de ocurrencia de eventos (distintos).
 
-<!-- $$Q_2(t)=Q_3(t,Z_0)^T\hat V(b)Q_3(t,Z_0)$$ -->
-<!-- con $Q_3$ el vector de tamaño $p\times 1$ con $k$-ésima entrada: ($k=1,\ldots,p$) -->
+El corte estimado $\hat c=\text{argmax}_{c_k}|S_k|$. Bajo esta escogencia de $\hat c$, el modelo de Cox es:
 
-<!-- $$Q_3(t,Z_0)_k=\sum_{t_i\leq t}\left[\frac{W^{(k)}(t_i,b)}{W(t_i,b)}-Z_{0k}\right]\left[\frac{d_i}{W(t_i,b)}\right]$$ -->
-<!-- donde -->
+$$h(t|X)=h_0(t)\exp[bZ]$$
 
-<!-- $$W^{(k)}(t_i,b)=\sum_{j \in R(t_i)}Z_{jk}\exp(b^TZ_j)$$ -->
+y se quiere probar $H_0:b=0$. En este caso no se puede (ni se debe) usar las pruebas anteriores, sino a través del cálculo de:
 
-<!-- Usando $\hat S(t|Z=Z_0)$ y $\hat V[\hat S(t|Z=Z_0)]$ se puede construir intervalos de confianza para $S(t|Z=Z_0)$ usando las mismas técnicas que aprendimos en el caso no-paramétrico. -->
+$$s^2=\frac{1}{D-1}\sum_{i=1}^D\left[1-\sum_{j=1}^i\frac{1}{D-j+1}\right]$$
 
-<!-- *Nota*: Una alternativa para el estimador de Breslow, es el de Kalbfleish y Prentice, que en el caso de no-repeticiones sería: -->
+y el estadístico de prueba es:
 
-<!-- $$\hat H_0(t)=\sum_{t_i\leq t}\left[1-\left(1-\frac{\delta_i\exp(b^TZ_i)}{W(t_i,b)}\right)^{\exp(-b^TZ_i)}\right]$$ -->
+$$Q=\frac{\max|S_k|}{s\sqrt{D-1}}\overset{H_0}{\underset{\text{n grande}}{\sim}}|\text{Puente Browniano}|$$
+
+Note que si $Q>1$, entonces el valor p de la prueba anterior es aproximadamente $2\exp[-2Q^2]$.
+
+## Estimación de la función de sobrevivencia
+
+*Objetivo*: Estimar la probabilidad de sobrevivencia de un nuevo individuo con covariables $Z_0$.
+
+Después de haber ajustado el modelo de Cox, sea $b$ el estimador de máxima verosimilitud parcial y $\hat V(b)=I^{-1}(b)$. Bajo la notación usual, defina:
+
+$$W(t_i,b)=\sum_{j \in R(t_i)}\exp\left(\sum_{h=1}^pb_hZ_{jh}\right)$$
+
+y usando el estimador de Breslow, estimamos la tasa de riesgo acumulada base como:
+
+$$\hat H_0(t)=\sum_{t_i\leq t}\frac{d_i}{W(t_i,b)}$$
+
+*Nota*: $\hat H_0(t)$ es el estimador de Nelson-Aalen cuando no hay covariables.
+
+Usando el estimador anterior:
+
+$$\hat S_0(t)=\exp[-\hat H_0(t)]$$
+
+Para estimar la sobrevivencia de un individuo con vector de covariables $Z=Z_0$ usamos:
+
+$$\hat S(t|Z=Z_0)=\hat S_0(t)^{\exp[b^TZ_0]}$$
+
+Note que bajo ciertas condiciones:
+
+$$\hat S(t|Z=Z_0)\overset{\text{t fijo}}{\underset{\text{n grande}}{\sim}} N(S(t|Z=Z_0), \hat V[\hat S(t|Z=Z_0)])$$
+
+donde
+
+$$\hat V[\hat S(t|Z=Z_0)]=[\hat S(t|Z=Z_0)]^2[Q_1(t)+Q_2(t;Z_0)]$$
+
+y
+
+$$Q_1(t)=\sum_{t_i\leq t}\frac{d_i}{W(t_i,b)^2}$$
+
+el cual es el estimador de la varianza de $\hat H_0(t)$ si $\beta=b$, además:
+
+$$Q_2(t)=Q_3(t,Z_0)^T\hat V(b)Q_3(t,Z_0)$$
+
+con $Q_3$ el vector de tamaño $p\times 1$ con $k$-ésima entrada: ($k=1,\ldots,p$)
+
+$$Q_3(t,Z_0)_k=\sum_{t_i\leq t}\left[\frac{W^{(k)}(t_i,b)}{W(t_i,b)}-Z_{0k}\right]\left[\frac{d_i}{W(t_i,b)}\right]$$
+
+donde
+
+$$W^{(k)}(t_i,b)=\sum_{j \in R(t_i)}Z_{jk}\exp(b^TZ_j)$$
+
+Usando $\hat S(t|Z=Z_0)$ y $\hat V[\hat S(t|Z=Z_0)]$ se puede construir intervalos de confianza para $S(t|Z=Z_0)$ usando las mismas técnicas que aprendimos en el caso no-paramétrico.
+
+*Nota*: Una alternativa para el estimador de Breslow, es el de Kalbfleish y Prentice, que en el caso de no-repeticiones sería:
+
+$$\hat H_0(t)=\sum_{t_i\leq t}\left[1-\left(1-\frac{\delta_i\exp(b^TZ_i)}{W(t_i,b)}\right)^{\exp(-b^TZ_i)}\right]$$
 
 <!-- ## Covariables dependientes del tiempo -->
 
 <!-- Para incluir covariables dependientes del tiempo consideramos la siguiente estructura de datos: -->
 
 <!-- $$[T_j,\delta_j,[Z_j(t), 0\leq t\leq T_j]]$$ -->
+
 <!-- para $j=1,\ldots,n$ donde: -->
 
 <!-- - $T_j$: tiempo de ocurrencia de evento/censura -->
+
 <!-- - $\delta_j$: indicador de evento de riesgo y -->
+
 <!-- - $Z_j(t)=[Z_{j1(t)},\ldots,Z_{jp}(t)]$: covariables del $j$-ésimo paciente en tiempo $t$. -->
 
 <!-- Asumimos que $Z_j(t)$ es observable en el periodo de estudio y además que no hay repeticiones en los tiempos de ocurrencia: -->
 
 <!-- $$t_1<t_2<\cdots<t_D$$ -->
+
 <!-- Sean $Z_{(i)}(t)$ las covariables asociadas al individuo con tiempo de ocurrencia $t_i$ y $R(t_i)$: el grupo expuesto al riesgo al momento $t_i$. En este caso la fórmula de verosimilitud parcial es: -->
 
 <!-- $$L(\beta)=\prod_{i=1}^D\frac{\exp\left[\sum_{b=1}^p\beta_pZ_{(i)p}(t_i)\right]}{\sum_{j \in R(t_i)}\exp\left[\sum_{b=1}^p\beta_pZ_{jp}(t_i)\right]}$$ -->
@@ -339,6 +362,7 @@ $$L_3(\beta)=\prod_{i=1}^D\frac{\exp(\beta^TS_i)}{\sum_{q\in Q_i}\exp(\beta^Ts^*
 <!-- Sea $Z_1$ una covariable fija. Si se quiere probar la hipótesis de riesgos proporcionales para $Z_1$ entonces defina: -->
 
 <!-- $$Z_2=Z_1\cdot g(t)$$ -->
+
 <!-- donde $g(t)$ es una función conocida. (usualmente $g(t)=\log t$) -->
 
 <!-- Considere un modelo de Cox con covariables $Z_1$ y $Z_2$: -->
@@ -348,69 +372,107 @@ $$L_3(\beta)=\prod_{i=1}^D\frac{\exp(\beta^TS_i)}{\sum_{q\in Q_i}\exp(\beta^Ts^*
 <!-- Compare dos individuos con covariables $Z_1$ y $Z_1^*$ a través de su riesgo relativo: -->
 
 <!-- $$\frac{h(t|Z_1)}{h(t|Z_1^*)}=\exp[\beta_1(Z_1-Z_1^*)+\beta_2g(t)(Z_1-Z_1^*)]$$ -->
+
 <!-- Note que bajo la hipótesis $H_0:$: riesgos proporcionales en $Z_1$ la parte derecha de la ecuación anterior no depende de $t$. Por lo tanto $H_0$ es equivalente a la hipótesis $H_0: \beta_2=0$ la cual se puede verificar a través de la prueba de Wald, LRT o Score. -->
 
 <!-- Si el supuesto de riesgos proporcionales no es cierto para $Z_1$ entonces se puede definir una covariable dependiente de tiempo: -->
 
 <!-- \begin{align*} -->
+
 <!-- Z_2(t)= -->
-<!-- 	\begin{cases} -->
-<!-- 	  Z_1\cdot g(t) & \text{si}\quad Z_1=1\\ -->
-<!-- 	  0 & \text{si no} -->
-<!-- 	\end{cases} -->
+
+<!--    \begin{cases} -->
+
+<!--      Z_1\cdot g(t) & \text{si}\quad Z_1=1\\ -->
+
+<!--      0 & \text{si no} -->
+
+<!--    \end{cases} -->
+
 <!-- \end{align*} -->
 
 <!-- en el caso en que $Z_1$ fuera dicotómica. El principal problema a este momento es la estimación de la función $g(t)$. Una posible solución es asumir que $g(t)$ es una variable indicadora. Definiríamos entonces: -->
 
 <!-- \begin{align*} -->
+
 <!-- Z_2(t)= -->
-<!-- 	\begin{cases} -->
-<!-- 	  Z_1 & t>\tau \\ -->
-<!-- 	  0 & t\leq \tau -->
-<!-- 	\end{cases} -->
+
+<!--    \begin{cases} -->
+
+<!--      Z_1 & t>\tau \\ -->
+
+<!--      0 & t\leq \tau -->
+
+<!--    \end{cases} -->
+
 <!-- \end{align*} -->
 
 <!-- en este caso: -->
 
 <!-- \begin{align*} -->
+
 <!-- h(t|Z(t))= -->
-<!-- 	\begin{cases} -->
-<!-- 	  h_0(t)\exp(\beta_1Z_1) & t\leq \tau\\ -->
-<!-- 	  h_0(t)\exp((\beta_1+\beta_2)Z_1) & t>\tau -->
-<!-- 	\end{cases} -->
+
+<!--    \begin{cases} -->
+
+<!--      h_0(t)\exp(\beta_1Z_1) & t\leq \tau\\ -->
+
+<!--      h_0(t)\exp((\beta_1+\beta_2)Z_1) & t>\tau -->
+
+<!--    \end{cases} -->
+
 <!-- \end{align*} -->
 
 <!-- y por lo tanto: -->
 
 <!-- \begin{align*} -->
+
 <!-- &RR(Z_1=1\text{ vs } Z_1=0; t\leq \tau) = \exp(\beta_1)\\ -->
+
 <!-- &RR(Z_1=1\text{ vs } Z_1=0; t> \tau) = \exp(\beta_1+\beta_2) -->
+
 <!-- \end{align*} -->
 
 <!-- por este motivo a $\tau$ se le llama punto de cambio en el riesgo relativo. Otra codificación que se puede utilizar es a través del uso de un modelo con dos covariables: $Z_2(t)$ y  -->
 
 <!-- \begin{align*} -->
+
 <!-- Z_3(t)= -->
-<!-- 	\begin{cases} -->
-<!-- 		Z_1 & t\leq \tau\\ -->
-<!-- 		0 & t>\tau -->
-<!-- 	\end{cases} -->
+
+<!--    \begin{cases} -->
+
+<!--        Z_1 & t\leq \tau\\ -->
+
+<!--        0 & t>\tau -->
+
+<!--    \end{cases} -->
+
 <!-- \end{align*} -->
 
 <!-- Entonces: -->
 
 <!-- \begin{align*} -->
+
 <!-- h(t|Z(t))= -->
-<!-- 	\begin{cases} -->
-<!-- 	  h_0(t)\exp(\theta_3 Z_1) & t\leq \tau\\ -->
-<!-- 	  h_0(t)\exp(\theta_2 Z_1) & t>\tau -->
-<!-- 	\end{cases} -->
+
+<!--    \begin{cases} -->
+
+<!--      h_0(t)\exp(\theta_3 Z_1) & t\leq \tau\\ -->
+
+<!--      h_0(t)\exp(\theta_2 Z_1) & t>\tau -->
+
+<!--    \end{cases} -->
+
 <!-- \end{align*} -->
+
 <!-- y: -->
 
 <!-- \begin{align*} -->
+
 <!-- &RR(Z_1=1\text{ vs } Z_1=0; t\leq \tau) = \exp(\theta_3)\\ -->
+
 <!-- &RR(Z_1=1\text{ vs } Z_1=0; t> \tau) = \exp(\theta_2) -->
+
 <!-- \end{align*} -->
 
 <!-- El siguiente paso es ajustar el modelo (bajo cualquiera de las dos codificaciones) para distintos valores de $\tau$ (tiempos de ocurrencia). El valor $\tau$ con máxima log-verosimilitud se toma como posible umbral. -->
@@ -422,11 +484,13 @@ $$L_3(\beta)=\prod_{i=1}^D\frac{\exp(\beta^TS_i)}{\sum_{q\in Q_i}\exp(\beta^Ts^*
 <!-- Otra solución en caso de que para una covariable el supuesto de riesgos proporcionales no sea cierto es a través del concepto de estratificación. Para el $j$-ésimo estrato: -->
 
 <!-- $$h_j(t|Z(t))=h_{0j}(t)\exp[\beta^TZ(t)]\qquad j=1,\ldots,s$$ -->
+
 <!-- se asume que el supuesto de riesgos proporcionales es cierto y además el efecto de las covariables es el mismo sobre todos los estratos.  -->
 
 <!-- La log-verosimilitud parcial se puede escribir: -->
 
 <!-- $$LL(\beta)=LL_1(\beta)+\cdots+LL_s(\beta)$$ -->
+
 <!-- donde $LL_j(\beta)$: log-verosimilitud parcial usando la muestra del $j$-ésimo estrato. -->
 
 <!-- Para probar la hipótesis de que las covariables tienen el mismo efecto para cualquier estrato, se: -->
@@ -438,6 +502,7 @@ $$L_3(\beta)=\prod_{i=1}^D\frac{\exp(\beta^TS_i)}{\sum_{q\in Q_i}\exp(\beta^Ts^*
 <!-- Para probar $H_0: \beta=\beta_j$, con $j=1,\ldots,s$ se usa un LRT con estadístico: -->
 
 <!-- $$-2[LL(b)-\sum_{j=1}^sLL_j(b_j)]\overset{H_0}{\underset{\text{n grande}}{\sim}}\chi_{(s-1)p}^2$$ -->
+
 <!-- *Nota:* también se puede verificar $H_0$ a través de la prueba de Wald. (ver libro de Klein). -->
 
 <!-- Si la muestra está compuesta por pares de observaciones (muestra pareada) entonces se puede probar la igualdad de los $\beta$'s entre grupos usando dos estratos y el LRT anterior (o prueba de Wald). -->
@@ -449,49 +514,77 @@ $$L_3(\beta)=\prod_{i=1}^D\frac{\exp(\beta^TS_i)}{\sum_{q\in Q_i}\exp(\beta^Ts^*
 <!-- Para facilitar el cálculo, se supone que para cada individuo, el tiempo de evento $X$ y el tiempo de entrada $V$ son condicionalmente independientes dada la covariable $Z$. Es decir: -->
 
 <!-- $$P(X=t|Z,X>V)=\frac{P(X=t,V<t|Z)\cdot P(Z)}{P(Z,V<X)}=\frac{P(X=t|Z)P(V<t|Z)P(Z)}{P(Z,V<X)}$$ -->
+
 <!-- De lo anterior se puede deducir: -->
 
 <!-- $$h(t|Z,X>V)=h(t|Z)$$ -->
+
 <!-- usando el hecho de que: -->
 
 <!-- $$h(t|Z,X>V)\approx \frac{P(X=t|Z,X>V)}{P(X\geq t|Z,X>V)}$$ -->
+
 <!-- Ajustando el conjunto de riesgo a: -->
 
 <!-- $$R(t)=\{j|V_j<t<T_j\}$$ -->
+
 <!-- todos los métodos de inferencia vistos hasta ahora funcionan para ajustar el modelo de Cox. -->
 
 <!-- ## Laboratorio -->
 
 <!-- ### Primer Ejemplo (Ejemplo 8.1) -->
+
 <!-- En este ejemplo tenemos una muestra de 45 mujeres a las que se le aplicó un procedimiento llamado "examinación inmunohistoquímica" con el fin de detectar cáncer. Los datos de sobrevivencia de las pacientes son: -->
 
 <!-- ```{r warning=FALSE} -->
+
 <!-- library(survival) -->
+
 <!-- library(survMisc) -->
+
 <!-- library(KMsurv) -->
+
 <!-- data("btrial") -->
+
 <!-- head(btrial) -->
+
 <!-- summary(btrial) -->
+
 <!-- ``` -->
+
 <!-- en donde podemos notar que la variable *im* debería ser una variable categórica (factor) indicando presencia/ausencia del procedimiento. Esto lo corregimos transformando la variable y tomando como categoría base la ausencia del procedimiento: -->
+
 <!-- ```{r message=FALSE, warning=FALSE} -->
+
 <!-- library(tidyverse) -->
+
 <!-- btrial <- btrial %>% mutate(im=factor(im)) -->
+
 <!-- contrasts(btrial$im) -->
+
 <!-- ``` -->
 
 <!-- Las funciones de sobrevivencia estimadas dependiendo del grupo "procedimiento" son: -->
+
 <!-- ```{r} -->
+
 <!-- library(survminer) -->
+
 <!-- KM_8_1 <- survfit(Surv(time,death)~im,data = btrial) -->
+
 <!-- ggsurvplot(KM_8_1) -->
+
 <!-- ``` -->
 
 <!-- La diferencia evidente entre ambas funciones, sugiere que uno puede correr una regresión tomando la variable *im* como covariable: -->
+
 <!-- ¨ -->
+
 <!-- ```{r} -->
+
 <!-- modelo_8_1 <- coxph(Surv(time,death)~im,data = btrial) -->
+
 <!-- summary(modelo_8_1) -->
+
 <!-- ``` -->
 
 <!-- Note que el riesgo relativo de una paciente con un resultado positivo del procedimiento con respecto a una con un negativo es 2.67, es decir una paciente positiva es 2.67 más probable que fallezca con respecto a una que tuvo un resultado negativo. Un intervalo al 95% para el riesgo relativo de la población es [1.136,6.25]. -->
@@ -499,153 +592,255 @@ $$L_3(\beta)=\prod_{i=1}^D\frac{\exp(\beta^TS_i)}{\sum_{q\in Q_i}\exp(\beta^Ts^*
 <!-- También podemos probar la hipótesis de que el procedimiento no es significativo al 5%. Bajo cualquiera de las tres pruebas (LRT, Wald y Score) se rechaza esta hipótesis nula. -->
 
 <!-- ### Segundo ejemplo (Ejemplo 8.2) -->
+
 <!-- El segundo ejemplo tiene como base los datos de 90 hombres diagnosticados con cáncer de laringe con su edad de diagnóstico (age), tiempo de muerte o censura en meses (time), indicador de censura (delta) y etapa de la enfermedad (stage). -->
+
 <!-- ```{r} -->
+
 <!-- data("larynx") -->
+
 <!-- summary(larynx) -->
+
 <!-- ``` -->
 
 <!-- Transformamos la variable *stage* para que sea factor, y mantenemos la variable discreta con el nombre *stage_n*: -->
+
 <!-- ```{r} -->
+
 <!-- larynx <- larynx %>% mutate(stage_n = stage) %>% -->
+
 <!--   mutate(stage=factor(stage)) -->
+
 <!-- contrasts(larynx$stage) -->
+
 <!-- ``` -->
 
 <!-- Noten que la base según esta codificación es la etapa 1 de la enfermedad. Corremos un modelo de Cox usando como covariable la etapa de la enfermedad, usando un estimador de Breslow en la tasa acumulada de riesgo base: -->
+
 <!-- ```{r} -->
+
 <!-- modelo_8_2 <- coxph(Surv(time,delta)~stage,data=larynx,ties = 'breslow') -->
+
 <!-- summary(modelo_8_2) -->
+
 <!-- ``` -->
 
 <!-- Por ejemplo el riesgo relativo de los pacientes con etapa 3 con respecto a etapa 1 es 1.844. El riesgo relativo de los pacientes etapa 3 con respecto a etapa 2 es: -->
+
 <!-- ```{r} -->
+
 <!-- 1.844/1.068 -->
+
 <!-- ``` -->
+
 <!-- Además, la hipótesis nula de que el riesgo relativo es igual para las etapas de la enfermedad se rechaza facílmente bajo cualquiera de las tres pruebas de hipótesis (Wald, Score y LRT). -->
 
 <!-- Como la prueba score en el modelo de Cox es la prueba logrank, al utilizar como covariable *stage_n* se estaría haciendo una prueba de tendencia: -->
+
 <!-- ```{r} -->
+
 <!-- modelo_8_2_trend <- coxph(Surv(time,delta)~stage_n,data=larynx,ties = 'breslow') -->
+
 <!-- summary(modelo_8_2_trend) -->
+
 <!-- ``` -->
 
 <!-- En este caso se rechaza la hipótesis de igualdad de funciones de sobrevivencia a favor de la hipótesis alternativa de decrecimiento en la sobrevivencia conforme se incrementa la etapa de la enfermedad. -->
 
 <!-- Si introducimos como covariable la edad de diagnóstico: -->
+
 <!-- ```{r} -->
+
 <!-- modelo_8_2_age <- update(modelo_8_2,formula. = .~.+age)  -->
+
 <!-- summary(modelo_8_2_age) -->
+
 <!-- ``` -->
+
 <!-- Por lo tanto el riesgo relativo de un paciente con edad de diagnóstico igual a 50 años con respecto a uno con 40 años cuando la etapa de la enfermedad es la misma es: -->
+
 <!-- ```{r} -->
+
 <!-- exp(10*modelo_8_2_age$coefficients[4]) -->
+
 <!-- ``` -->
 
 <!-- Es decir hay un incremento de un 21% aproximadamente en el riesgo de fallecer entre una persona con 50 años con respecto a una de 40 años si ambos están en la misma etapa de la enfermedad. -->
 
 <!-- Si queremos probar la hipótesis nula de que $H_0:\beta_1=\beta_2=\beta_3=0$ en el modelo anterior podemos comparar a través de un LRT el modelo completo con todas las covariables y uno reducido con solamente la covariable edad: -->
+
 <!-- ```{r} -->
+
 <!-- modelo_8_2_solo_age <- coxph(Surv(time,delta)~age,data=larynx,ties = 'breslow')  -->
+
 <!-- anova(modelo_8_2_age,modelo_8_2_solo_age) -->
+
 <!-- ``` -->
+
 <!-- Es decir rechazamos esta hipótesis bajo los niveles usuales de significancia. Si queremos comprobar la misma hipótesis con la prueba de Wald calculamos: -->
+
 <!-- ```{r} -->
+
 <!-- Ib_inv <- modelo_8_2_age$var -->
+
 <!-- X2w <- t(modelo_8_2_age$coefficients[1:3])%*% -->
+
 <!--   solve(Ib_inv[1:3,1:3])%*% -->
+
 <!--   modelo_8_2_age$coefficients[1:3] -->
+
 <!-- pchisq(X2w,df = 3,lower.tail = F) -->
+
 <!-- ``` -->
+
 <!-- y llegamos a la misma conclusión.  -->
 
 <!-- Las pruebas de Wald individuales en el modelo completo se obtienen directamente del mismo output: -->
+
 <!-- ```{r} -->
+
 <!-- summary(modelo_8_2_age) -->
+
 <!-- ``` -->
 
 <!-- La hipótesis nula $H_0:\beta_1=\beta_2=\beta_3$ puede ser comprobada a través de una matriz de contrastes y usando el estadístico de prueba de la ecuación 8.5.7: -->
+
 <!-- ```{r} -->
+
 <!-- betas <- coefficients(modelo_8_2_age) -->
+
 <!-- Cmat <- matrix(c(1,-1,0,0,0,1,-1,0),nrow = 2,byrow = T) -->
+
 <!-- X_C2 <- t(Cmat%*%betas)%*%solve(Cmat%*%Ib_inv%*%t(Cmat))%*%Cmat%*%betas -->
+
 <!-- pchisq(X_C2,df = 2,lower.tail = F) -->
+
 <!-- ``` -->
+
 <!-- en donde rechazamos $H_0$ bajo los niveles de significancia usuales. -->
 
-
 <!-- Si consideramos la interacción entre la edad de diagnóstico con la etapa de la enfermedad el modelo se puede estimar con: -->
+
 <!-- ```{r} -->
+
 <!-- modelo_8_2_age_stage <- update(modelo_8_2_age,formula. = .~.+stage:age) -->
+
 <!-- summary(modelo_8_2_age_stage) -->
+
 <!-- ``` -->
+
 <!-- y podemos usar una prueba LRT para verificar la significancia de la interacción: -->
+
 <!-- ```{r} -->
+
 <!-- anova(modelo_8_2_age,modelo_8_2_age_stage) -->
+
 <!-- ``` -->
 
 <!-- que con un nivel de significancia del 5% (una muestra de 90 sujetos podría sugerir ese nivel) no se podría rechazar la hipótesis de no significancia de la interacción. -->
 
 <!-- Finalmente vamos a estimar la función de sobrevivencia de un paciente con 60 años bajo los cuatro estados de la enfermedad. Recuerden que estamos usando la aproximación de Breslow: -->
+
 <!-- ```{r} -->
+
 <!-- individuo <- data.frame(age=rep(60,4),stage=factor(1:4)) -->
+
 <!-- S_8_2_age <- survfit(modelo_8_2_age,newdata = individuo) -->
+
 <!-- plot(S_8_2_age,col=1:4) -->
+
 <!-- ``` -->
 
 <!-- ### Tercer ejemplo (Ejemplo 8.3) -->
 
 <!-- Este tercer ejemplo consiste en 863 pacientes de transplante de riñón con covariables etnia (race: $R$) y sexo (gender: $G$). Cargamos los datos y transformamos las dos covariables en variables tipo factor: -->
+
 <!-- ```{r} -->
+
 <!-- data("kidtran") -->
+
 <!-- summary(kidtran) -->
+
 <!-- kidtran <- kidtran %>% mutate(gender=factor(gender),race=factor(race)) -->
+
 <!-- ``` -->
 
 <!-- Primero ajustamos un modelo en donde haya una interacción entre las dos covariables: -->
+
 <!-- ```{r} -->
+
 <!-- modelo_8_3 <- coxph(Surv(time,delta)~gender*race,data = kidtran) -->
+
 <!-- summary(modelo_8_3) -->
+
 <!-- ``` -->
 
 <!-- Note que en este caso los niveles base en ambas covariables son Masculino y etnia blanca. Hay que tener cuidado en este caso al calcular los riesgos relativos, por ejemplo el riesgo relativo de ser hombre negro con respecto a una mujer blanca es: -->
+
 <!-- $$\frac{h(t|G=1,R=2)}{h(t|G=2,R=1)}=\frac{e^{-0.08878}}{e^{-0.24848}}=\frac{0.915}{0.78}=1.17$$ -->
+
 <!-- y el riesgo relativo de una mujer negra con respecto a una blanca: -->
+
 <!-- $$\frac{h(t|G=2,R=2)}{h(t|G=2,R=1)}=\frac{e^{-0.8878-0.24848+0.74549}}{e^{-0.24848}}=0.915\cdot 2.107=1.928$$ -->
+
 <!-- Las pruebas de Wald, score y LRT no rechazan la hipótesis de no-significancia de la interacción y efectos principales del sexo y etnia sobre la sobrevivencia de la población en estudio. -->
 
 <!-- Si ajustamos un modelo reducido con efectos principales solamente tenemos: -->
+
 <!-- ```{r} -->
+
 <!-- modelo_8_3_sInt <- update(modelo_8_3,formula. = .~.-gender:race) -->
+
 <!-- summary(modelo_8_3_sInt) -->
+
 <!-- ``` -->
 
 <!-- y podemos verificar a través de una prueba LRT si la interacción es significativa: -->
+
 <!-- ```{r} -->
+
 <!-- anova(modelo_8_3_sInt,modelo_8_3) -->
+
 <!-- ``` -->
 
 <!-- Dado que la muestra es relativamente grande (863 individuos) uno pensaría que la significancia debería ser menor al menos al 5%. En este caso no podríamos rechazar la hipótesis de no-significancia de la interacción entre las dos covariables. -->
+
 <!-- A pesar de esto el modelo reducido sigue siendo no significativo. -->
 
 <!-- Un último ejercicio es la discretización de la covariable edad, ante distintas combinaciones de las dos covariables sexo y etnia. La discretización de la variable edad en dos grupos la podemos hacer a travéś de la prueba de Contal y O'Quigley, para los hombres de raza negra: -->
+
 <!-- ```{r} -->
+
 <!-- muestraBM <- kidtran %>% filter(gender==1,race==2) -->
+
 <!-- model_c_BM <- coxph(Surv(time,delta)~age,data = muestraBM) -->
+
 <!-- summary(model_c_BM) -->
+
 <!-- Contal_BM <- cutp(model_c_BM) -->
+
 <!-- Contal_BM$age[1,] -->
+
 <!-- ``` -->
+
 <!-- en donde podemos observar que utilizar un umbral de 58 años permite obtener la mayor separabilidad entre los dos grupos a través del estadístico logrank. Usando la variable discreta y usando la variable continua no se rechaza la nula de no-significancia de la edad para este grupo. -->
 
 <!-- El caso de hombres de raza blanca es: -->
+
 <!-- ```{r} -->
+
 <!-- muestraWM <- kidtran %>% filter(gender==1,race==1) -->
+
 <!-- model_c_WM <- coxph(Surv(time,delta)~age,data = muestraWM) -->
+
 <!-- summary(model_c_WM) -->
+
 <!-- Contal_WM <- cutp(model_c_WM) -->
+
 <!-- Contal_WM$age[1,] -->
+
 <!-- ``` -->
+
 <!-- en donde de manera contraria la edad sí es significativa al explicar la sobrevivencia, a través de una edad umbral de 41 años. -->
 
 <!-- ### Selección de variables -->
@@ -653,217 +848,363 @@ $$L_3(\beta)=\prod_{i=1}^D\frac{\exp(\beta^TS_i)}{\sum_{q\in Q_i}\exp(\beta^Ts^*
 <!-- Los datos de este primer ejemplo corresponden a la base de sobrevivencia de 137 pacientes con transplante de médula ósea, los cuales se han dividido en tres grupos de riesgo dependiendo de su condición al momento del trasplante (ALL, AML-Low, AML-high). El riesgo a considerar es la muerte durante el tratamiento o reaparición de la leucemia. A continuación la carga de paquetes y datos: -->
 
 <!-- ```{r warning=FALSE} -->
+
 <!-- library(survival) -->
+
 <!-- library(survMisc) -->
+
 <!-- library(KMsurv) -->
+
 <!-- library(tidyverse) -->
 
 <!-- data(bmt) -->
+
 <!-- ``` -->
 
 <!-- Primero ajustamos un modelo de Cox en donde los grupos de riesgo son una covariable y comprobamos si la covariable aporta de forma significativa al explicar la sobrevivencia de la muestra: -->
+
 <!-- ```{r} -->
+
 <!-- bmt <- bmt %>% mutate(group=factor(group)) -->
+
 <!-- modelo1 <- coxph(Surv(time=t2, event=d3) ~ group, data=bmt) -->
+
 <!-- summary(modelo1) -->
+
 <!-- ``` -->
 
 <!-- en donde notamos que para las tres pruebas LRT, Wald y Score se rechaza la hipótesis de que la variable categórica grupo no es significativa bajo niveles de significancia usuales. Hay otras variables que también se van a considerar como posibles predictores: tiempo de espera del transplante (waiting), clasificador FAB (FAB), indicador de MTX (MTX), Sexo de paciente (SXPa), Sexo de Donante (SXDo), CMV de paciente (CMVPa), CMV de donante (CMVDo), Edad de paciente (AgePa), Edad de donante (AgeDo)  -->
+
 <!-- ```{r} -->
+
 <!-- bmt <- bmt %>% mutate(waiting=z7,FAB=factor(z8), -->
+
 <!--                       MTX=factor(z10),SXPa=factor(z3), -->
+
 <!--                       SXDo=factor(z4),CMVPa=factor(z5),                      CMVDo=factor(z6),AgePa=z1-28,AgeDo=z2-28) -->
+
 <!-- bmt_2 <- bmt %>% select(t2,d3,group,waiting,FAB,MTX,SXPa,SXDo, -->
+
 <!--                        CMVPa,CMVDo,AgePa,AgeDo,ta,tc,tp) -->
+
 <!-- ``` -->
 
 <!-- Definimos los modelos aumentados en una variable o factor a la vez y usamos la técnica de selección para adelante (Forward selection) como método de selección de variables: -->
+
 <!-- ```{r} -->
+
 <!-- modelo1_1 <- update(modelo1,formula. = .~.+waiting) -->
+
 <!-- anova(modelo1,modelo1_1) -->
+
 <!-- modelo1_2 <- update(modelo1,formula. = .~.+FAB) -->
+
 <!-- anova(modelo1,modelo1_2) -->
+
 <!-- modelo1_3 <- update(modelo1,formula. = .~.+MTX) -->
+
 <!-- anova(modelo1,modelo1_3) -->
+
 <!-- modelo1_4 <- update(modelo1,formula. = .~.+SXPa*SXDo) -->
+
 <!-- anova(modelo1,modelo1_4) -->
+
 <!-- modelo1_5 <- update(modelo1,formula. = .~.+CMVPa*CMVDo) -->
+
 <!-- anova(modelo1,modelo1_5) -->
+
 <!-- modelo1_6 <- update(modelo1,formula. = .~.+AgePa*AgeDo) -->
+
 <!-- anova(modelo1,modelo1_6) -->
+
 <!-- ``` -->
 
 <!-- La variable con mayor significancia es FAB, por lo tanto la agregamos al modelo reducido. Repetimos el proceso una vez más con el nuevo modelo completo: -->
 
 <!-- ```{r} -->
+
 <!-- modelo1_2_1 <- update(modelo1_2,formula. = .~.+waiting) -->
+
 <!-- anova(modelo1_2,modelo1_2_1) -->
+
 <!-- modelo1_2_2 <- update(modelo1_2,formula. = .~.+MTX) -->
+
 <!-- anova(modelo1_2,modelo1_2_2) -->
+
 <!-- modelo1_2_3 <- update(modelo1_2,formula. = .~.+SXPa*SXDo) -->
+
 <!-- anova(modelo1_2,modelo1_2_3) -->
+
 <!-- modelo1_2_4 <- update(modelo1_2,formula. = .~.+CMVPa*CMVDo) -->
+
 <!-- anova(modelo1_2,modelo1_2_4) -->
+
 <!-- modelo1_2_5 <- update(modelo1_2,formula. = .~.+AgePa*AgeDo) -->
+
 <!-- anova(modelo1_2,modelo1_2_5) -->
+
 <!-- ``` -->
 
 <!-- La siguiente variable a incluir es la interacción de la edad del donante y paciente y sus efectos principales. Volvemos a hacer el análisis de nuevo: -->
+
 <!-- ```{r} -->
+
 <!-- modelo1_2_5_1 <- update(modelo1_2_5,formula. = .~.+waiting) -->
+
 <!-- anova(modelo1_2_5,modelo1_2_5_1) -->
+
 <!-- modelo1_2_5_2 <- update(modelo1_2_5,formula. = .~.+MTX) -->
+
 <!-- anova(modelo1_2_5,modelo1_2_5_2) -->
+
 <!-- modelo1_2_5_3 <- update(modelo1_2_5,formula. = .~.+SXPa*SXDo) -->
+
 <!-- anova(modelo1_2_5,modelo1_2_5_3) -->
+
 <!-- modelo1_2_5_4 <- update(modelo1_2_5,formula. = .~.+CMVPa*CMVDo) -->
+
 <!-- anova(modelo1_2_5,modelo1_2_5_4) -->
+
 <!-- ``` -->
+
 <!--  y por lo tanto no agregamos variables adicionales. El modelo final tendría el siguiente resumen: -->
+
 <!-- ```{r} -->
+
 <!-- summary(modelo1_2_5) -->
+
 <!-- ``` -->
 
 <!-- ### Covariables dependientes del tiempo -->
 
 <!-- Ahora vamos a considerar una variable dependiente del tiempo definida por:   -->
+
 <!-- \begin{align} -->
+
 <!-- Z_A(t)=\begin{cases} -->
+
 <!-- 0 & \text{si $t<ta$}\\ -->
+
 <!-- 1 & \text{si no.} -->
+
 <!-- \end{cases} -->
+
 <!-- \end{align} -->
 
 <!-- donde *ta* es el tiempo de ocurrencia de la enfermedad aguda de injerto contra huésped. Para incorporar esta covariable ajustamos la tabla de la siguiente forma: -->
+
 <!-- ```{r} -->
+
 <!-- bmt_2 <- bmt_2 %>% mutate(id=1:n()) -->
+
 <!-- newbmt_2 <- tmerge(data1 = bmt_2,data2 = bmt_2,id = id,tstop = t2) -->
+
 <!-- newbmt_2 <- tmerge(data1 = newbmt_2,data2 = bmt_2,id = id,ZA=tdc(ta)) -->
+
 <!-- ``` -->
 
 <!-- También tenemos las siguientes dos variables que dependen del tiempo: -->
 
 <!-- \begin{align} -->
+
 <!-- Z_P(t)=\begin{cases} -->
+
 <!-- 0 & \text{si $t<tp$}\\ -->
+
 <!-- 1 & \text{si no.} -->
+
 <!-- \end{cases} -->
+
 <!-- \end{align} -->
 
 <!-- y  -->
 
 <!-- \begin{align} -->
+
 <!-- Z_C(t)=\begin{cases} -->
+
 <!-- 0 & \text{si $t<tc$}\\ -->
+
 <!-- 1 & \text{si no.} -->
+
 <!-- \end{cases} -->
+
 <!-- \end{align} -->
 
 <!-- son las indicadoras de recuperación de plaquetas y de enfermedad crónica de injerto contra huésped respectivamente. Las incluimos en la base: -->
+
 <!-- ```{r} -->
+
 <!-- newbmt_2 <- tmerge(data1 = newbmt_2,data2 = bmt_2,id = id,ZP=tdc(tp)) -->
+
 <!-- newbmt_2 <- tmerge(data1 = newbmt_2,data2 = bmt_2,id = id,ZC=tdc(tc),muerte=event(t2,d3)) -->
+
 <!-- ``` -->
+
 <!-- y la base queda así: -->
+
 <!-- ```{r} -->
+
 <!-- head(newbmt_2,10) -->
+
 <!-- ``` -->
 
 <!--  Ajustamos un modelo que incluya la primer covariable $Z_A(t)$ sobre el modelo reducido que contiene solamente el grupo de riesgo: -->
+
 <!-- ```{r} -->
+
 <!-- modelo2 <- coxph(Surv(time = tstart,time2 = tstop,event = muerte)~group+ZA,data = newbmt_2)  -->
+
 <!-- modelo1 <- update(modelo2,formula. = .~.-ZA) -->
+
 <!-- anova(modelo1,modelo2) -->
+
 <!-- ``` -->
 
 <!-- y hacemos lo mismo con modelos que incluyan de forma univariada las otras dos variables dependientes del tiempo: -->
+
 <!-- ```{r} -->
+
 <!-- modelo3 <- coxph(Surv(time = tstart,time2 = tstop,event = muerte)~group+ZC,data = newbmt_2)  -->
+
 <!-- anova(modelo1,modelo3) -->
 
 <!-- modelo4 <- coxph(Surv(time = tstart,time2 = tstop,event = muerte)~group+ZP,data = newbmt_2)  -->
+
 <!-- anova(modelo1,modelo4) -->
+
 <!-- ``` -->
 
 <!-- En donde se puede notar que la variable $Z_P(t)$ en significativa sobre un modelo reducido en donde solamente esté el grupo de riesgo de 3 niveles.  -->
 
 <!-- Ahora vamos a comparar el modelo completo que se obtuvo con selección para adelante con respecto al mismo modelo añadiendo la variable que depende del tiempo $Z_P(t)$: -->
+
 <!-- ```{r} -->
+
 <!-- modeloc1 <- coxph(formula = Surv(time = tstart,time2 = tstop,event = muerte) ~ group + FAB + AgePa*AgeDo, data = newbmt_2) -->
+
 <!-- modeloc2 <- update(modeloc1,formula. = .~.+ZP) -->
+
 <!-- anova(modeloc1,modeloc2) -->
+
 <!-- ``` -->
+
 <!-- Por lo tanto la variable $Z_P(t)$ sí es significativa sobre el modelo reducido con covariables fijas, ante los niveles usuales.  -->
 
 <!-- Ahora analizamos la inclusión de las interacciones de las covariables fijas con la variable $Z_P(t)$ usando selección forward: -->
+
 <!-- ```{r} -->
+
 <!-- modeloc2_1 <- update(modeloc2,formula. = .~.+ZP:group) -->
+
 <!-- anova(modeloc2_1,modeloc2) -->
+
 <!-- modeloc2_2 <- update(modeloc2,formula. = .~.+ZP:FAB) -->
+
 <!-- anova(modeloc2_2,modeloc2) -->
+
 <!-- modeloc2_3 <- update(modeloc2,formula. = .~.+ZP*AgePa*AgeDo) -->
+
 <!-- anova(modeloc2_3,modeloc2) -->
+
 <!-- ``` -->
+
 <!-- como el valor p más pequeño se obtiene al incluir la interacción ZP-group, entonces aumentamos el modelo de esa forma. Seguimos con el proceso: -->
+
 <!-- ```{r} -->
+
 <!-- modeloc2_1_1 <- update(modeloc2_1,formula. = .~.+ZP:FAB) -->
+
 <!-- anova(modeloc2_1_1,modeloc2_1) -->
+
 <!-- modeloc2_1_2 <- update(modeloc2_1,formula. = .~.+ZP*AgePa*AgeDo) -->
+
 <!-- anova(modeloc2_1_2,modeloc2_1) -->
+
 <!-- ``` -->
 
 <!-- Agregamos la interacción ZP-Edad, y finalmente vemos si la última interacción es signficativa sobre este modelo completo: -->
+
 <!-- ```{r} -->
+
 <!-- modeloc2_1_2_1 <- update(modeloc2_1_2,formula. = .~.+ZP:FAB) -->
+
 <!-- anova(modeloc2_1_2_1,modeloc2_1_2) -->
+
 <!-- ``` -->
+
 <!-- y también lo incluimos asumiendo un nivel de significancia del 5%. El modelo final queda: -->
+
 <!-- ```{r} -->
+
 <!-- summary(modeloc2_1_2_1) -->
+
 <!-- ``` -->
 
 <!-- ### Prueba alternativa de riesgos proporcionales: -->
+
 <!-- ```{r} -->
+
 <!-- modelou1 <- coxph(Surv(time=t2, event=d3) ~ group+waiting+FAB+MTX+CMVPa+CMVDo+AgePa+AgeDo, data=bmt_2) -->
+
 <!-- resu1 <- cox.zph(modelou1) -->
+
 <!-- resu1$table -->
+
 <!-- ``` -->
 
 <!-- Esta prueba se basa en los residuos estandarizados de Schoenfeld y no en la prueba que aparece en el Klein. En unas semanas estaremos profundizando en este tema de residuos. La implementación de la prueba de riesgos proporcionales se ilustra para dos variables:  -->
 
 <!-- ```{r} -->
-<!-- modelou2_1 <- coxph(Surv(time=t2, event=d3) ~ waiting+tt(waiting), data=bmt_2,tt=function(x,t, ...) x*log(t)) -->
-<!-- summary(modelou2_1) -->
-<!-- bmt_3 <- bmt %>% mutate(MTX2=as.numeric(MTX)-1) -->
-<!-- modelou2_2 <- coxph(Surv(time=t2, event=d3) ~ MTX2+tt(MTX2), data=bmt_3,tt=function(x,t, ...) x*log(t)) -->
-<!-- summary(modelou2_2) -->
-<!-- ``` -->
 
+<!-- modelou2_1 <- coxph(Surv(time=t2, event=d3) ~ waiting+tt(waiting), data=bmt_2,tt=function(x,t, ...) x*log(t)) -->
+
+<!-- summary(modelou2_1) -->
+
+<!-- bmt_3 <- bmt %>% mutate(MTX2=as.numeric(MTX)-1) -->
+
+<!-- modelou2_2 <- coxph(Surv(time=t2, event=d3) ~ MTX2+tt(MTX2), data=bmt_3,tt=function(x,t, ...) x*log(t)) -->
+
+<!-- summary(modelou2_2) -->
+
+<!-- ``` -->
 
 <!-- A partir de los cálculos anteriores y la tabla 9.5 concluimos que la variable que tiene más evidencia de no seguir la hipótesis de riesgos proporcionales es MTX.  -->
 
 <!-- Una posible forma de solucionar la dependencia temporal del riesgo relativo de MTX es a través de la estratificación del modelo anterior de Cox: -->
 
 <!-- ```{r} -->
+
 <!-- modeloc2_est <- update(modeloc2,formula. = .~.+strata(MTX)) -->
+
 <!-- summary(modeloc2_est) -->
+
 <!-- ``` -->
 
 <!-- este resultado se puede comparar con la tabla 9.7. Como ejercicio les recomiendo completar la tabla 9.8 a través de la comparación de los coeficientes de los dos modelos con datos restringidos sobre MTX: -->
+
 <!-- ```{r} -->
+
 <!-- modeloc2_est_1 <- update(modeloc2,data=subset(newbmt_2,subset = MTX==1)) -->
+
 <!-- coefficients(modeloc2_est_1) -->
+
 <!-- modeloc2_est_2 <- update(modeloc2,data=subset(newbmt_2,subset = MTX==0)) -->
+
 <!-- coefficients(modeloc2_est_2) -->
+
 <!-- ``` -->
 
 <!-- ### Datos truncados por la izquierda -->
 
 <!-- Como último cálculo se hará el ajuste del modelo estratificado con MTX pero considerando solamente pacientes que cuyas plaquetas hayan retornado a un nivel normal (variable $Z_P(t)$): -->
+
 <!-- ```{r} -->
+
 <!-- newbmt_2_ZP <- newbmt_2 %>% filter(ZP==1)  -->
+
 <!-- modeloc2_est_trunc <- update(modeloc2_est,formula. = .~.-ZP,data=newbmt_2_ZP) -->
+
 <!-- summary(modeloc2_est_trunc) -->
+
 <!-- ``` -->
-
-

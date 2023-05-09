@@ -139,6 +139,9 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#pruebas-de-hipótesis-para-beta" id="toc-pruebas-de-hipótesis-para-beta" class="nav-link" data-scroll-target="#pruebas-de-hipótesis-para-beta"><span class="toc-section-number">4.2.1</span>  3 pruebas de hipótesis para <span class="math inline">\(\beta\)</span></a></li>
   <li><a href="#verosimilitud-parcial-cuando-hay-repeticiones" id="toc-verosimilitud-parcial-cuando-hay-repeticiones" class="nav-link" data-scroll-target="#verosimilitud-parcial-cuando-hay-repeticiones"><span class="toc-section-number">4.2.2</span>  Verosimilitud parcial cuando hay repeticiones</a></li>
   </ul></li>
+  <li><a href="#pruebas-locales" id="toc-pruebas-locales" class="nav-link" data-scroll-target="#pruebas-locales"><span class="toc-section-number">4.3</span>  Pruebas Locales</a></li>
+  <li><a href="#discretización-de-una-variable-continua" id="toc-discretización-de-una-variable-continua" class="nav-link" data-scroll-target="#discretización-de-una-variable-continua"><span class="toc-section-number">4.4</span>  Discretización de una variable continua</a></li>
+  <li><a href="#estimación-de-la-función-de-sobrevivencia" id="toc-estimación-de-la-función-de-sobrevivencia" class="nav-link" data-scroll-target="#estimación-de-la-función-de-sobrevivencia"><span class="toc-section-number">4.5</span>  Estimación de la función de sobrevivencia</a></li>
   </ul>
 </nav>
     </div>
@@ -194,11 +197,11 @@ ul.task-list li input[type="checkbox"] {
 \end{cases}
 \]</span> entonces el riesgo relativo sería <span class="math inline">\(e^{-\beta_1}\)</span>.</p>
 <p>A las variables categóricas se le llaman en este contexto de análisis de sobrevivencia: <em>grupos de riesgo</em>. Si el grupo de riesgo está compuesto de tres niveles se puede usar dos covariables como indicadoras, por ejemplo si el grupo de riesgo es etnia con niveles: afroamericano, caucásico e hispánico; se puede definir: <span class="math inline">\(Z_1=1_{\text{Afroamericano}}\)</span>, <span class="math inline">\(Z_2=1_{\text{caucasico}}\)</span>, entonces:</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
     h(t|\text{Afroamericano})&amp;=h(t|Z_1=1,Z_2=0)=h_0(t)\exp[\beta_1]\\
     h(t|\text{Caucasico})&amp;=h(t|Z_1=0,Z_2=1)=h_0(t)\exp[\beta_2]\\
     h(t|\text{Hispanico})&amp;=h(t|Z_1=0,Z_2=0)=h_0(t)
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>Si las variables son cuantitativas entonces la interpretación de los riesgos relativos se realiza al comparar cambios producto de un aumento en una unidad en la variable de análisis:</p>
 <p><span class="math display">\[\frac{h(t|\text{Edad}+1)}{h(t|\text{Edad})}=e^{\beta_{\text{edad}}}\]</span> Otro aspecto importante es que la presencia de interacciones entre covariables afecta la interpretación, tal y como se observa en modelos más sencillos como regresión múltiple o logística. (ver final de la sección 8.2 del Klein.)</p>
 </section>
@@ -217,12 +220,12 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <p><em>Inconveniente</em>: <span class="math inline">\(h_0(t)\)</span> debe ser estimado junto con los <span class="math inline">\(\beta\)</span>’s.</p>
 <p><em>Solución</em>: calculamos la probabilidad de que un individuo le ocurra el riesgo en tiempo <span class="math inline">\(t_i\)</span> con covariables <span class="math inline">\(Z_{(i)}\)</span> dado que uno de los individuos en <span class="math inline">\(R(t_i)\)</span> le ocurrió el riesgo en tiempo <span class="math inline">\(t_i\)</span>:</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
     &amp;P[\text{individuo muere en $t_i$}|\text{una muerte en $t_i$}]\\
     &amp;=\frac{P[\text{individuo muere en $t_i$}|\text{sobrevive a $t_i$}]}{P[\text{una muerte en $t_i$}|\text{sobrevive a $t_i$}]}\\
     &amp;=\frac{\frac{f(t_i|Z_{(i)})}{S(t_i|Z_{(i)})}}{\sum_{j\in R(t_i)}\frac{f(t_i|Z_j)}{S(t_i|Z_j)}}=\frac{h(t_i|Z_{(i)})}{\sum_{j \in R(t_i)} h(t_i|Z_j)}=\frac{h_0(t_i)\exp(\beta^TZ_{(i)})}{h_0(t_i)\sum_{j \in R(t_i)} \exp(\beta^TZ_j)}\\
     &amp;=\frac{\exp(\beta^TZ_{(i)})}{\sum_{j \in R(t_i)} \exp(\beta^TZ_j)}
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>La verosimilitud parcial se obtiene al multiplicar todas las probabilidades condicionales anteriores sobre todos los tiempos en donde ocurre el evento en la muestra:</p>
 <p><span class="math display">\[L(\beta)=\prod_{i=1}^D\frac{\exp(\beta^TZ_{(i)})}{\sum_{j \in R(t_i)} \exp(\beta^TZ_j)}\]</span> El proceso de inferencia se realiza con <span class="math inline">\(L(\beta)\)</span> (no depende de <span class="math inline">\(h_0(t)\)</span>) o bien sobre la log-verosimilitud parcial:</p>
 <p><span class="math display">\[LL(\beta)=\log L(\beta)=\sum_{i=1}^D\sum_{k=1}^p \beta_kZ_{(i)k}-\sum_{i=1}^D\log\left[\sum_{j \in R(t_i)}\sum_{k=1}^p\beta_kZ_{jk}\right]\]</span></p>
@@ -231,12 +234,12 @@ ul.task-list li input[type="checkbox"] {
 <p>y resolviendo el sistema de <span class="math inline">\(p\)</span> ecuaciones no lineales:</p>
 <p><span class="math display">\[U_h(\beta)=0\qquad h=1,\ldots,p\]</span> la solución es el estimador de máxima verosimilitud parcial de <span class="math inline">\(\beta\)</span>.</p>
 <p>Como justificación al uso de la verosimilitud parcial como herramienta inferencial, asuma las tripletas <span class="math inline">\((T_j,\delta_j,Z_j)\)</span> como datos y escribamos la verosimilitud total de los parámetros <span class="math inline">\((\beta,h_0(t))\)</span>:</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
     L(\beta,h_0(t))&amp;=\prod_{j=1}^n f(T_j|Z_j)^{\delta_j}S(T_j|Z_j)^{1-\delta_j}\\
     &amp;=\prod_{j=1}^n h(T_j|Z_j)^{\delta_j}S(T_j|Z_j)\\
     &amp;=\prod_{j=1}^n h_0(T_j)^{\delta_j}[\exp(\beta^TZ_j)]^{\delta_j}\exp[-H_0(T_j)\exp(\beta^TZ_j)]\\
     &amp;=\left[\prod_{i=1}^D h_0(t_i)\exp(\beta^TZ_{(i)})\right]\cdot \exp\left[-\sum_{j=1}^n H_0(T_j)\exp(\beta^TZ_j)\right]
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>Sea <span class="math inline">\(h_{0i}=h_0(t_i)\)</span>, <span class="math inline">\(i=1,\ldots,D\)</span> y <span class="math inline">\(H_0(T_j)=\sum_{t_i\leq T_j}h_{0i}\)</span> entonces:</p>
 <p><span class="math display">\[L(\beta,h_0(t))=L_\beta(h_{01},\ldots,h_{0D})\propto \prod_{i=1}^Dh_{0i}\exp\left[-h_{0i}\sum_{j\in R(t_i)}\exp(\beta^TZ_j)\right]\]</span></p>
 <p>y manteniendo <span class="math inline">\(\beta\)</span> fijo y maximizando con respecto a <span class="math inline">\(h_{0i}\)</span>:</p>
@@ -245,8 +248,11 @@ ul.task-list li input[type="checkbox"] {
 <p><span class="math display">\[L(\beta,\hat h_{0.})\propto \prod_{i=1}^D\frac{\exp[\beta^TZ_{(i)}]}{\sum_{j\in R(t_i)}\exp[\beta^TZ_j]}\]</span></p>
 <section id="pruebas-de-hipótesis-para-beta" class="level3" data-number="4.2.1">
 <h3 data-number="4.2.1" class="anchored" data-anchor-id="pruebas-de-hipótesis-para-beta"><span class="header-section-number">4.2.1</span> 3 pruebas de hipótesis para <span class="math inline">\(\beta\)</span></h3>
-<p>Sea <span class="math inline">\(b=(b_1,\ldots,b_p)^T\)</span> el estimador por máxima verosimilitud parcial de <span class="math inline">\(beta\)</span> y sea <span class="math inline">\(I(\beta)\)</span> la matriz de información <span class="math inline">\(p\times p\)</span> con entradas:</p>
-<p><span class="math display">\[I_{gh}(\beta)=-\frac{\partial^2LL}{\partial\beta_g\partial\beta_h}(\beta)\]</span> 1. Prueba de Wald</p>
+<p>Sea <span class="math inline">\(b=(b_1,\ldots,b_p)^T\)</span> el estimador por máxima verosimilitud parcial de <span class="math inline">\(\beta\)</span> y sea <span class="math inline">\(I(\beta)\)</span> la matriz de información <span class="math inline">\(p\times p\)</span> con entradas:</p>
+<p><span class="math display">\[I_{gh}(\beta)=-\frac{\partial^2LL}{\partial\beta_g\partial\beta_h}(\beta)\]</span></p>
+<ol type="1">
+<li>Prueba de Wald</li>
+</ol>
 <p>Se sabe que <span class="math inline">\(b\sim N_p(\beta,I^{-1}(b))\)</span>. Entonces el estadístico de prueba con hipótesis nula: <span class="math inline">\(H_0: \beta=\beta_0\)</span> es:</p>
 <p><span class="math display">\[X^2_w=(b-\beta_0)^TI(b)(b-\beta_0)\underset{H_0}{\sim}\chi^2_p\]</span></p>
 <ol start="2" type="1">
@@ -272,90 +278,122 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li>Verosimilitud parcial de Efron (1977)</li>
 </ul>
-<p><span class="math display">\[L_2(\beta)=\prod_{i=1}^D\frac{\exp(\beta^TS_i)}{\prod_{j=1}^{d_i}\left[\sum_{k\in R_i}\exp(\beta^TZ_k)-\frac{j-1}{d_i}\sum_{k\in \mathbb D_i}\exp(\beta^TZ_k)\right]}\]</span> - Verosimilitud parcial de Cox (1972)</p>
+<p><span class="math display">\[L_2(\beta)=\prod_{i=1}^D\frac{\exp(\beta^TS_i)}{\prod_{j=1}^{d_i}\left[\sum_{k\in R_i}\exp(\beta^TZ_k)-\frac{j-1}{d_i}\sum_{k\in \mathbb D_i}\exp(\beta^TZ_k)\right]}\]</span></p>
+<ul>
+<li>Verosimilitud parcial de Cox (1972)</li>
+</ul>
 <p>Sea <span class="math inline">\(Q_i\)</span>: conjunto de todos los subconjuntos de <span class="math inline">\(d_i\)</span> individuos seleccionados de <span class="math inline">\(R_i\)</span>. Sea <span class="math inline">\(q=(q_1,\ldots,q_{d_i})\)</span> un elemento de <span class="math inline">\(Q_i\)</span> y defina <span class="math inline">\(s^*_q=\sum_{j=1}^{d_i}Z_{q_j}\)</span>, entonces:</p>
 <p><span class="math display">\[L_3(\beta)=\prod_{i=1}^D\frac{\exp(\beta^TS_i)}{\sum_{q\in Q_i}\exp(\beta^Ts^*_q)}\]</span></p>
-<!-- ## Pruebas Locales -->
-<!-- En este caso la hipótesis nula de interés es: -->
-<!-- $$H_0: \beta_1=\beta_{10}\qquad \text{donde} \; \beta=(\beta_1^T,\beta_2^T)^T$$ -->
-<!-- y $\beta_1$ es un vector $q\times 1$ y $\beta_2$ es $(p-q)\times 1$. -->
-<!-- - Prueba de Wald -->
-<!-- Sea $b=(b_1^T,b_2^T)^T$ los estimadores de máxima verosimilitud parcial de $\beta$. Supongamos que particionamos la matriz de información $I$ como: -->
-<!-- \begin{align*} -->
-<!-- I= -->
-<!--    \begin{pmatrix} -->
-<!--      I_{11} & I_{12} \\ -->
-<!--      I_{21} & I_{22} -->
-<!--    \end{pmatrix} -->
-<!-- \end{align*} -->
-<!-- donde $I_{11}:q\times q$ y $I_{22}: (p-q)\times (p-q)$ son los bloques correspondientes a $\beta_1$ y $\beta_2$ respectivamente. El estadístico de prueba en este caso es: -->
-<!-- $$X^2_w=(b_1-\beta_{10})^T[I''(b)]^{-1}(b_1-\beta_{10})$$ -->
-<!-- donde $I''(b)$ es la submatriz $q\times q$ (superior) de $I^{-1}(b)$ y: -->
-<!-- $$X_w^2\overset{H_0}{\underset{\text{n grande}}{\sim}}\chi_q^2$$ -->
-<!-- Sea $b_2(\beta_{10})$ los estimadores de máxima verosimilitud parciales de $\beta_2$ basados en la log-verosimilitud parcial de $\beta$ fijando las primeras $q$ entradas con el valor $\beta_{10}$. -->
-<!-- - Prueba de cociente de verosimilitud -->
-<!-- El estadístico correspondiente sería: -->
-<!-- $$X^2_{LR}=2\left(LL(b)-LL[\beta_{10},b_2(\beta_{10})]\right)\overset{H_0}{\underset{\text{n grande}}{\sim}}\chi_q^2$$ -->
-<!-- - Prueba Score: -->
-<!-- Sea $U_1[\beta_{10},b_2(\beta_{10})]$ el score con tamaño $q\times 1$ para $\beta_1$ evaluado en $(\beta_{10}^T,b_2(\beta_{10})^T)^T$. Entonces: -->
-<!-- $$X^2_{SC}=U_1[\beta_{10},b_2(\beta_{10})]^T[I''(\beta_{10},b_2(\beta_{10}))]U_1[\beta_{10},b_2(\beta_{10})]\overset{H_0}{\underset{\text{n grande}}{\sim}}\chi_q^2$$ -->
-<!-- Algunas veces se quiere probar una hipótesis sobre un contraste de los parámetros a través de una prueba de Wald. Sea: -->
-<!-- \begin{align*} -->
-<!-- C= -->
-<!--    \begin{pmatrix} -->
-<!--    c_1^T\\ -->
-<!--    c_2^T\\ -->
-<!--    \vdots \\ -->
-<!--    c_q^T -->
-<!--    \end{pmatrix}_{q\times p} -->
-<!-- \end{align*} -->
-<!-- donde $q\leq p$ y $C$ es de rango completo. Además $c_k^T=(c_{k1},c_{k2},\ldots,c_{kp})$ y se quiere probar la hipótesis: -->
-<!-- $$H_0: C\beta=C\beta_0$$ -->
-<!-- a través del estadístico: -->
-<!-- $$(Cb-C\beta_0)^T[CI^{-1}(b)C^T]^{-1}(Cb-C\beta_0)\overset{H_0}{\underset{\text{n grande}}{\sim}}\chi_q^2$$ -->
-<!-- ## Discretización de una variable continua -->
-<!-- Con el fin de facilitar la interpretación de un riesgo relativo de una covariable cuantitativa, se puede convertir en una variable dicotómica. El principal problema de esta conversión es la pérdida de información, pero esta pérdida se puede minimizar usando razonamiento biológico a priori o bien que la decisión en la conversión sea basada en datos. -->
-<!-- Como principal objetivo, si $X$ es una variable aleatoria continua, queremos definir $Z=1_{X\geq c}$ que cause una diferencia máxima entre los resultados de un estadístico calculado cuando $Z=1$ con respecto a $Z=0$ (máximo grado de separación de información entre los dos grupos). -->
-<!-- **Contal y O'Quigley (1999)** -->
-<!-- Considere un conjunto de cortes $\{c_k\}$ y para cada $k$ se calcula el estadístico log-rank sobre el grupo en donde $X\leq c_k$ menos el mismo estadístico sobre el grupo donde $X\geq c_k$, es decir: -->
-<!-- $$S_k=\sum_{i=1}^D\left[d_i^+-d_i\frac{r_i^+}{r_i}\right]$$ -->
-<!-- donde      -->
-<!-- - $d_i, r_i$: número total de eventos y grupo en riesgo. -->
-<!-- - $d_i^+, r_i^+$: número total de eventos y grupo en riesgo cuando $X\geq c_k$. -->
-<!-- - $D$: número de tiempos de ocurrencia de eventos (distintos). -->
-<!-- El corte estimado $\hat c=\text{argmax}_{c_k}|S_k|$. Bajo esta escogencia de $\hat c$, el modelo de Cox es: -->
-<!-- $$h(t|X)=h_0(t)\exp[bZ]$$ -->
-<!-- y se quiere probar $H_0:b=0$. En este caso no se puede (ni se debe) usar las pruebas anteriores, sino a través del cálculo de: -->
-<!-- $$s^2=\frac{1}{D-1}\sum_{i=1}^D\left[1-\sum_{j=1}^i\frac{1}{D-j+1}\right]$$ -->
-<!-- y el estadístico de prueba es: -->
-<!-- $$Q=\frac{\max|S_k|}{s\sqrt{D-1}}\overset{H_0}{\underset{\text{n grande}}{\sim}}|\text{Puente Browniano}|$$ -->
-<!-- Note que si $Q>1$, entonces el valor p de la prueba anterior es aproximadamente $2\exp[-2Q^2]$. -->
-<!-- ## Estimación de la función de sobrevivencia -->
-<!-- *Objetivo*: Estimar la probabilidad de sobrevivencia de un nuevo individuo con covariables $Z_0$. -->
-<!-- Después de haber ajustado el modelo de Cox, sea $b$ el estimador de máxima verosimilitud parcial y $\hat V(b)=I^{-1}(b)$. Bajo la notación usual, defina: -->
-<!-- $$W(t_i,b)=\sum_{j \in R(t_i)}\exp\left(\sum_{h=1}^pb_hZ_{jh}\right)$$ -->
-<!-- y usando el estimador de Breslow, estimamos la tasa de riesgo acumulada base como: -->
-<!-- $$\hat H_0(t)=\sum_{t_i\leq t}\frac{d_i}{W(t_i,b)}$$ -->
-<!-- *Nota*: $\hat H_0(t)$ es el estimador de Nelson-Aalen cuando no hay covariables.  -->
-<!-- Usando el estimador anterior: -->
-<!-- $$\hat S_0(t)=\exp[-\hat H_0(t)]$$ -->
-<!-- Para estimar la sobrevivencia de un individuo con vector de covariables $Z=Z_0$ usamos: -->
-<!-- $$\hat S(t|Z=Z_0)=\hat S_0(t)^{\exp[b^TZ_0]}$$ -->
-<!-- Note que bajo ciertas condiciones: -->
-<!-- $$\hat S(t|Z=Z_0)\overset{\text{t fijo}}{\underset{\text{n grande}}{\sim}} N(S(t|Z=Z_0), \hat V[\hat S(t|Z=Z_0)])$$ -->
-<!-- donde  -->
-<!-- $$\hat V[\hat S(t|Z=Z_0)]=[\hat S(t|Z=Z_0)]^2[Q_1(t)+Q_2(t;Z_0)]$$ -->
-<!-- y  -->
-<!-- $$Q_1(t)=\sum_{t_i\leq t}\frac{d_i}{W(t_i,b)^2}$$ -->
-<!-- el cual es el estimador de la varianza de $\hat H_0(t)$ si $\beta=b$, además: -->
-<!-- $$Q_2(t)=Q_3(t,Z_0)^T\hat V(b)Q_3(t,Z_0)$$ -->
-<!-- con $Q_3$ el vector de tamaño $p\times 1$ con $k$-ésima entrada: ($k=1,\ldots,p$) -->
-<!-- $$Q_3(t,Z_0)_k=\sum_{t_i\leq t}\left[\frac{W^{(k)}(t_i,b)}{W(t_i,b)}-Z_{0k}\right]\left[\frac{d_i}{W(t_i,b)}\right]$$ -->
-<!-- donde -->
-<!-- $$W^{(k)}(t_i,b)=\sum_{j \in R(t_i)}Z_{jk}\exp(b^TZ_j)$$ -->
-<!-- Usando $\hat S(t|Z=Z_0)$ y $\hat V[\hat S(t|Z=Z_0)]$ se puede construir intervalos de confianza para $S(t|Z=Z_0)$ usando las mismas técnicas que aprendimos en el caso no-paramétrico. -->
-<!-- *Nota*: Una alternativa para el estimador de Breslow, es el de Kalbfleish y Prentice, que en el caso de no-repeticiones sería: -->
-<!-- $$\hat H_0(t)=\sum_{t_i\leq t}\left[1-\left(1-\frac{\delta_i\exp(b^TZ_i)}{W(t_i,b)}\right)^{\exp(-b^TZ_i)}\right]$$ -->
+</section>
+</section>
+<section id="pruebas-locales" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="pruebas-locales"><span class="header-section-number">4.3</span> Pruebas Locales</h2>
+<p>En este caso la hipótesis nula de interés es:</p>
+<p><span class="math display">\[H_0: \beta_1=\beta_{10}\qquad \text{donde} \; \beta=(\beta_1^T,\beta_2^T)^T\]</span></p>
+<p>y <span class="math inline">\(\beta_1\)</span> es un vector <span class="math inline">\(q\times 1\)</span> y <span class="math inline">\(\beta_2\)</span> es <span class="math inline">\((p-q)\times 1\)</span>.</p>
+<ul>
+<li>Prueba de Wald</li>
+</ul>
+<p>Sea <span class="math inline">\(b=(b_1^T,b_2^T)^T\)</span> los estimadores de máxima verosimilitud parcial de <span class="math inline">\(\beta\)</span>. Supongamos que particionamos la matriz de información <span class="math inline">\(I\)</span> como:</p>
+<p><span class="math display">\[\begin{align*}
+
+I=
+
+   \begin{pmatrix}
+
+     I_{11} &amp; I_{12} \\
+
+     I_{21} &amp; I_{22}
+
+   \end{pmatrix}
+
+\end{align*}\]</span></p>
+<p>donde <span class="math inline">\(I_{11}:q\times q\)</span> y <span class="math inline">\(I_{22}: (p-q)\times (p-q)\)</span> son los bloques correspondientes a <span class="math inline">\(\beta_1\)</span> y <span class="math inline">\(\beta_2\)</span> respectivamente. El estadístico de prueba en este caso es:</p>
+<p><span class="math display">\[X^2_w=(b_1-\beta_{10})^T[I''(b)]^{-1}(b_1-\beta_{10})\]</span></p>
+<p>donde <span class="math inline">\(I''(b)\)</span> es la submatriz <span class="math inline">\(q\times q\)</span> (superior) de <span class="math inline">\(I^{-1}(b)\)</span> y:</p>
+<p><span class="math display">\[X_w^2\overset{H_0}{\underset{\text{n grande}}{\sim}}\chi_q^2\]</span></p>
+<p>Sea <span class="math inline">\(b_2(\beta_{10})\)</span> los estimadores de máxima verosimilitud parciales de <span class="math inline">\(\beta_2\)</span> basados en la log-verosimilitud parcial de <span class="math inline">\(\beta\)</span> fijando las primeras <span class="math inline">\(q\)</span> entradas con el valor <span class="math inline">\(\beta_{10}\)</span>.</p>
+<ul>
+<li>Prueba de cociente de verosimilitud</li>
+</ul>
+<p>El estadístico correspondiente sería:</p>
+<p><span class="math display">\[X^2_{LR}=2\left(LL(b)-LL[\beta_{10},b_2(\beta_{10})]\right)\overset{H_0}{\underset{\text{n grande}}{\sim}}\chi_q^2\]</span></p>
+<ul>
+<li>Prueba Score:</li>
+</ul>
+<p>Sea <span class="math inline">\(U_1[\beta_{10},b_2(\beta_{10})]\)</span> el score con tamaño <span class="math inline">\(q\times 1\)</span> para <span class="math inline">\(\beta_1\)</span> evaluado en <span class="math inline">\((\beta_{10}^T,b_2(\beta_{10})^T)^T\)</span>. Entonces:</p>
+<p><span class="math display">\[X^2_{SC}=U_1[\beta_{10},b_2(\beta_{10})]^T[I''(\beta_{10},b_2(\beta_{10}))]U_1[\beta_{10},b_2(\beta_{10})]\overset{H_0}{\underset{\text{n grande}}{\sim}}\chi_q^2\]</span></p>
+<p>Algunas veces se quiere probar una hipótesis sobre un contraste de los parámetros a través de una prueba de Wald. Sea:</p>
+<p><span class="math display">\[\begin{align*}
+
+C=
+
+   \begin{pmatrix}
+
+   c_1^T\\
+
+   c_2^T\\
+
+   \vdots \\
+
+   c_q^T
+
+   \end{pmatrix}_{q\times p}
+
+\end{align*}\]</span></p>
+<p>donde <span class="math inline">\(q\leq p\)</span> y <span class="math inline">\(C\)</span> es de rango completo. Además <span class="math inline">\(c_k^T=(c_{k1},c_{k2},\ldots,c_{kp})\)</span> y se quiere probar la hipótesis:</p>
+<p><span class="math display">\[H_0: C\beta=C\beta_0\]</span></p>
+<p>a través del estadístico:</p>
+<p><span class="math display">\[(Cb-C\beta_0)^T[CI^{-1}(b)C^T]^{-1}(Cb-C\beta_0)\overset{H_0}{\underset{\text{n grande}}{\sim}}\chi_q^2\]</span></p>
+</section>
+<section id="discretización-de-una-variable-continua" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="discretización-de-una-variable-continua"><span class="header-section-number">4.4</span> Discretización de una variable continua</h2>
+<p>Con el fin de facilitar la interpretación de un riesgo relativo de una covariable cuantitativa, se puede convertir en una variable dicotómica. El principal problema de esta conversión es la pérdida de información, pero esta pérdida se puede minimizar usando razonamiento biológico a priori o bien que la decisión en la conversión sea basada en datos.</p>
+<p>Como principal objetivo, si <span class="math inline">\(X\)</span> es una variable aleatoria continua, queremos definir <span class="math inline">\(Z=1_{X\geq c}\)</span> que cause una diferencia máxima entre los resultados de un estadístico calculado cuando <span class="math inline">\(Z=1\)</span> con respecto a <span class="math inline">\(Z=0\)</span> (máximo grado de separación de información entre los dos grupos).</p>
+<p><strong>Contal y O’Quigley (1999)</strong></p>
+<p>Considere un conjunto de cortes <span class="math inline">\(\{c_k\}\)</span> y para cada <span class="math inline">\(k\)</span> se calcula el estadístico log-rank sobre el grupo en donde <span class="math inline">\(X\leq c_k\)</span> menos el mismo estadístico sobre el grupo donde <span class="math inline">\(X\geq c_k\)</span>, es decir:</p>
+<p><span class="math display">\[S_k=\sum_{i=1}^D\left[d_i^+-d_i\frac{r_i^+}{r_i}\right]\]</span></p>
+<p>donde</p>
+<ul>
+<li><p><span class="math inline">\(d_i, r_i\)</span>: número total de eventos y grupo en riesgo.</p></li>
+<li><p><span class="math inline">\(d_i^+, r_i^+\)</span>: número total de eventos y grupo en riesgo cuando <span class="math inline">\(X\geq c_k\)</span>.</p></li>
+<li><p><span class="math inline">\(D\)</span>: número de tiempos de ocurrencia de eventos (distintos).</p></li>
+</ul>
+<p>El corte estimado <span class="math inline">\(\hat c=\text{argmax}_{c_k}|S_k|\)</span>. Bajo esta escogencia de <span class="math inline">\(\hat c\)</span>, el modelo de Cox es:</p>
+<p><span class="math display">\[h(t|X)=h_0(t)\exp[bZ]\]</span></p>
+<p>y se quiere probar <span class="math inline">\(H_0:b=0\)</span>. En este caso no se puede (ni se debe) usar las pruebas anteriores, sino a través del cálculo de:</p>
+<p><span class="math display">\[s^2=\frac{1}{D-1}\sum_{i=1}^D\left[1-\sum_{j=1}^i\frac{1}{D-j+1}\right]\]</span></p>
+<p>y el estadístico de prueba es:</p>
+<p><span class="math display">\[Q=\frac{\max|S_k|}{s\sqrt{D-1}}\overset{H_0}{\underset{\text{n grande}}{\sim}}|\text{Puente Browniano}|\]</span></p>
+<p>Note que si <span class="math inline">\(Q&gt;1\)</span>, entonces el valor p de la prueba anterior es aproximadamente <span class="math inline">\(2\exp[-2Q^2]\)</span>.</p>
+</section>
+<section id="estimación-de-la-función-de-sobrevivencia" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="estimación-de-la-función-de-sobrevivencia"><span class="header-section-number">4.5</span> Estimación de la función de sobrevivencia</h2>
+<p><em>Objetivo</em>: Estimar la probabilidad de sobrevivencia de un nuevo individuo con covariables <span class="math inline">\(Z_0\)</span>.</p>
+<p>Después de haber ajustado el modelo de Cox, sea <span class="math inline">\(b\)</span> el estimador de máxima verosimilitud parcial y <span class="math inline">\(\hat V(b)=I^{-1}(b)\)</span>. Bajo la notación usual, defina:</p>
+<p><span class="math display">\[W(t_i,b)=\sum_{j \in R(t_i)}\exp\left(\sum_{h=1}^pb_hZ_{jh}\right)\]</span></p>
+<p>y usando el estimador de Breslow, estimamos la tasa de riesgo acumulada base como:</p>
+<p><span class="math display">\[\hat H_0(t)=\sum_{t_i\leq t}\frac{d_i}{W(t_i,b)}\]</span></p>
+<p><em>Nota</em>: <span class="math inline">\(\hat H_0(t)\)</span> es el estimador de Nelson-Aalen cuando no hay covariables.</p>
+<p>Usando el estimador anterior:</p>
+<p><span class="math display">\[\hat S_0(t)=\exp[-\hat H_0(t)]\]</span></p>
+<p>Para estimar la sobrevivencia de un individuo con vector de covariables <span class="math inline">\(Z=Z_0\)</span> usamos:</p>
+<p><span class="math display">\[\hat S(t|Z=Z_0)=\hat S_0(t)^{\exp[b^TZ_0]}\]</span></p>
+<p>Note que bajo ciertas condiciones:</p>
+<p><span class="math display">\[\hat S(t|Z=Z_0)\overset{\text{t fijo}}{\underset{\text{n grande}}{\sim}} N(S(t|Z=Z_0), \hat V[\hat S(t|Z=Z_0)])\]</span></p>
+<p>donde</p>
+<p><span class="math display">\[\hat V[\hat S(t|Z=Z_0)]=[\hat S(t|Z=Z_0)]^2[Q_1(t)+Q_2(t;Z_0)]\]</span></p>
+<p>y</p>
+<p><span class="math display">\[Q_1(t)=\sum_{t_i\leq t}\frac{d_i}{W(t_i,b)^2}\]</span></p>
+<p>el cual es el estimador de la varianza de <span class="math inline">\(\hat H_0(t)\)</span> si <span class="math inline">\(\beta=b\)</span>, además:</p>
+<p><span class="math display">\[Q_2(t)=Q_3(t,Z_0)^T\hat V(b)Q_3(t,Z_0)\]</span></p>
+<p>con <span class="math inline">\(Q_3\)</span> el vector de tamaño <span class="math inline">\(p\times 1\)</span> con <span class="math inline">\(k\)</span>-ésima entrada: (<span class="math inline">\(k=1,\ldots,p\)</span>)</p>
+<p><span class="math display">\[Q_3(t,Z_0)_k=\sum_{t_i\leq t}\left[\frac{W^{(k)}(t_i,b)}{W(t_i,b)}-Z_{0k}\right]\left[\frac{d_i}{W(t_i,b)}\right]\]</span></p>
+<p>donde</p>
+<p><span class="math display">\[W^{(k)}(t_i,b)=\sum_{j \in R(t_i)}Z_{jk}\exp(b^TZ_j)\]</span></p>
+<p>Usando <span class="math inline">\(\hat S(t|Z=Z_0)\)</span> y <span class="math inline">\(\hat V[\hat S(t|Z=Z_0)]\)</span> se puede construir intervalos de confianza para <span class="math inline">\(S(t|Z=Z_0)\)</span> usando las mismas técnicas que aprendimos en el caso no-paramétrico.</p>
+<p><em>Nota</em>: Una alternativa para el estimador de Breslow, es el de Kalbfleish y Prentice, que en el caso de no-repeticiones sería:</p>
+<p><span class="math display">\[\hat H_0(t)=\sum_{t_i\leq t}\left[1-\left(1-\frac{\delta_i\exp(b^TZ_i)}{W(t_i,b)}\right)^{\exp(-b^TZ_i)}\right]\]</span></p>
 <!-- ## Covariables dependientes del tiempo -->
 <!-- Para incluir covariables dependientes del tiempo consideramos la siguiente estructura de datos: -->
 <!-- $$[T_j,\delta_j,[Z_j(t), 0\leq t\leq T_j]]$$ -->
@@ -797,7 +835,6 @@ ul.task-list li input[type="checkbox"] {
 <!-- ``` -->
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
