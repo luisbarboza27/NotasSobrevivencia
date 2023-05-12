@@ -20,6 +20,69 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -142,6 +205,11 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#pruebas-locales" id="toc-pruebas-locales" class="nav-link" data-scroll-target="#pruebas-locales"><span class="toc-section-number">4.3</span>  Pruebas Locales</a></li>
   <li><a href="#discretización-de-una-variable-continua" id="toc-discretización-de-una-variable-continua" class="nav-link" data-scroll-target="#discretización-de-una-variable-continua"><span class="toc-section-number">4.4</span>  Discretización de una variable continua</a></li>
   <li><a href="#estimación-de-la-función-de-sobrevivencia" id="toc-estimación-de-la-función-de-sobrevivencia" class="nav-link" data-scroll-target="#estimación-de-la-función-de-sobrevivencia"><span class="toc-section-number">4.5</span>  Estimación de la función de sobrevivencia</a></li>
+  <li><a href="#laboratorio" id="toc-laboratorio" class="nav-link" data-scroll-target="#laboratorio"><span class="toc-section-number">4.6</span>  Laboratorio</a>
+  <ul class="collapse">
+  <li><a href="#primer-ejemplo-ejemplo-8.1" id="toc-primer-ejemplo-ejemplo-8.1" class="nav-link" data-scroll-target="#primer-ejemplo-ejemplo-8.1"><span class="toc-section-number">4.6.1</span>  Primer Ejemplo (Ejemplo 8.1)</a></li>
+  <li><a href="#segundo-ejemplo-ejemplo-8.2" id="toc-segundo-ejemplo-ejemplo-8.2" class="nav-link" data-scroll-target="#segundo-ejemplo-ejemplo-8.2"><span class="toc-section-number">4.6.2</span>  Segundo ejemplo (Ejemplo 8.2)</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -296,17 +364,11 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <p>Sea <span class="math inline">\(b=(b_1^T,b_2^T)^T\)</span> los estimadores de máxima verosimilitud parcial de <span class="math inline">\(\beta\)</span>. Supongamos que particionamos la matriz de información <span class="math inline">\(I\)</span> como:</p>
 <p><span class="math display">\[\begin{align*}
-
 I=
-
    \begin{pmatrix}
-
      I_{11} &amp; I_{12} \\
-
      I_{21} &amp; I_{22}
-
    \end{pmatrix}
-
 \end{align*}\]</span></p>
 <p>donde <span class="math inline">\(I_{11}:q\times q\)</span> y <span class="math inline">\(I_{22}: (p-q)\times (p-q)\)</span> son los bloques correspondientes a <span class="math inline">\(\beta_1\)</span> y <span class="math inline">\(\beta_2\)</span> respectivamente. El estadístico de prueba en este caso es:</p>
 <p><span class="math display">\[X^2_w=(b_1-\beta_{10})^T[I''(b)]^{-1}(b_1-\beta_{10})\]</span></p>
@@ -325,21 +387,13 @@ I=
 <p><span class="math display">\[X^2_{SC}=U_1[\beta_{10},b_2(\beta_{10})]^T[I''(\beta_{10},b_2(\beta_{10}))]U_1[\beta_{10},b_2(\beta_{10})]\overset{H_0}{\underset{\text{n grande}}{\sim}}\chi_q^2\]</span></p>
 <p>Algunas veces se quiere probar una hipótesis sobre un contraste de los parámetros a través de una prueba de Wald. Sea:</p>
 <p><span class="math display">\[\begin{align*}
-
 C=
-
    \begin{pmatrix}
-
    c_1^T\\
-
    c_2^T\\
-
    \vdots \\
-
    c_q^T
-
    \end{pmatrix}_{q\times p}
-
 \end{align*}\]</span></p>
 <p>donde <span class="math inline">\(q\leq p\)</span> y <span class="math inline">\(C\)</span> es de rango completo. Además <span class="math inline">\(c_k^T=(c_{k1},c_{k2},\ldots,c_{kp})\)</span> y se quiere probar la hipótesis:</p>
 <p><span class="math display">\[H_0: C\beta=C\beta_0\]</span></p>
@@ -492,117 +546,398 @@ C=
 <!-- Ajustando el conjunto de riesgo a: -->
 <!-- $$R(t)=\{j|V_j<t<T_j\}$$ -->
 <!-- todos los métodos de inferencia vistos hasta ahora funcionan para ajustar el modelo de Cox. -->
-<!-- ## Laboratorio -->
-<!-- ### Primer Ejemplo (Ejemplo 8.1) -->
-<!-- En este ejemplo tenemos una muestra de 45 mujeres a las que se le aplicó un procedimiento llamado "examinación inmunohistoquímica" con el fin de detectar cáncer. Los datos de sobrevivencia de las pacientes son: -->
-<!-- ```{r warning=FALSE} -->
-<!-- library(survival) -->
-<!-- library(survMisc) -->
-<!-- library(KMsurv) -->
-<!-- data("btrial") -->
-<!-- head(btrial) -->
-<!-- summary(btrial) -->
-<!-- ``` -->
-<!-- en donde podemos notar que la variable *im* debería ser una variable categórica (factor) indicando presencia/ausencia del procedimiento. Esto lo corregimos transformando la variable y tomando como categoría base la ausencia del procedimiento: -->
-<!-- ```{r message=FALSE, warning=FALSE} -->
-<!-- library(tidyverse) -->
-<!-- btrial <- btrial %>% mutate(im=factor(im)) -->
-<!-- contrasts(btrial$im) -->
-<!-- ``` -->
-<!-- Las funciones de sobrevivencia estimadas dependiendo del grupo "procedimiento" son: -->
-<!-- ```{r} -->
-<!-- library(survminer) -->
-<!-- KM_8_1 <- survfit(Surv(time,death)~im,data = btrial) -->
-<!-- ggsurvplot(KM_8_1) -->
-<!-- ``` -->
-<!-- La diferencia evidente entre ambas funciones, sugiere que uno puede correr una regresión tomando la variable *im* como covariable: -->
-<!-- ¨ -->
-<!-- ```{r} -->
-<!-- modelo_8_1 <- coxph(Surv(time,death)~im,data = btrial) -->
-<!-- summary(modelo_8_1) -->
-<!-- ``` -->
-<!-- Note que el riesgo relativo de una paciente con un resultado positivo del procedimiento con respecto a una con un negativo es 2.67, es decir una paciente positiva es 2.67 más probable que fallezca con respecto a una que tuvo un resultado negativo. Un intervalo al 95% para el riesgo relativo de la población es [1.136,6.25]. -->
-<!-- También podemos probar la hipótesis de que el procedimiento no es significativo al 5%. Bajo cualquiera de las tres pruebas (LRT, Wald y Score) se rechaza esta hipótesis nula. -->
-<!-- ### Segundo ejemplo (Ejemplo 8.2) -->
-<!-- El segundo ejemplo tiene como base los datos de 90 hombres diagnosticados con cáncer de laringe con su edad de diagnóstico (age), tiempo de muerte o censura en meses (time), indicador de censura (delta) y etapa de la enfermedad (stage). -->
-<!-- ```{r} -->
-<!-- data("larynx") -->
-<!-- summary(larynx) -->
-<!-- ``` -->
-<!-- Transformamos la variable *stage* para que sea factor, y mantenemos la variable discreta con el nombre *stage_n*: -->
-<!-- ```{r} -->
-<!-- larynx <- larynx %>% mutate(stage_n = stage) %>% -->
-<!--   mutate(stage=factor(stage)) -->
-<!-- contrasts(larynx$stage) -->
-<!-- ``` -->
-<!-- Noten que la base según esta codificación es la etapa 1 de la enfermedad. Corremos un modelo de Cox usando como covariable la etapa de la enfermedad, usando un estimador de Breslow en la tasa acumulada de riesgo base: -->
-<!-- ```{r} -->
-<!-- modelo_8_2 <- coxph(Surv(time,delta)~stage,data=larynx,ties = 'breslow') -->
-<!-- summary(modelo_8_2) -->
-<!-- ``` -->
-<!-- Por ejemplo el riesgo relativo de los pacientes con etapa 3 con respecto a etapa 1 es 1.844. El riesgo relativo de los pacientes etapa 3 con respecto a etapa 2 es: -->
-<!-- ```{r} -->
-<!-- 1.844/1.068 -->
-<!-- ``` -->
-<!-- Además, la hipótesis nula de que el riesgo relativo es igual para las etapas de la enfermedad se rechaza facílmente bajo cualquiera de las tres pruebas de hipótesis (Wald, Score y LRT). -->
-<!-- Como la prueba score en el modelo de Cox es la prueba logrank, al utilizar como covariable *stage_n* se estaría haciendo una prueba de tendencia: -->
-<!-- ```{r} -->
-<!-- modelo_8_2_trend <- coxph(Surv(time,delta)~stage_n,data=larynx,ties = 'breslow') -->
-<!-- summary(modelo_8_2_trend) -->
-<!-- ``` -->
-<!-- En este caso se rechaza la hipótesis de igualdad de funciones de sobrevivencia a favor de la hipótesis alternativa de decrecimiento en la sobrevivencia conforme se incrementa la etapa de la enfermedad. -->
-<!-- Si introducimos como covariable la edad de diagnóstico: -->
-<!-- ```{r} -->
-<!-- modelo_8_2_age <- update(modelo_8_2,formula. = .~.+age)  -->
-<!-- summary(modelo_8_2_age) -->
-<!-- ``` -->
-<!-- Por lo tanto el riesgo relativo de un paciente con edad de diagnóstico igual a 50 años con respecto a uno con 40 años cuando la etapa de la enfermedad es la misma es: -->
-<!-- ```{r} -->
-<!-- exp(10*modelo_8_2_age$coefficients[4]) -->
-<!-- ``` -->
-<!-- Es decir hay un incremento de un 21% aproximadamente en el riesgo de fallecer entre una persona con 50 años con respecto a una de 40 años si ambos están en la misma etapa de la enfermedad. -->
-<!-- Si queremos probar la hipótesis nula de que $H_0:\beta_1=\beta_2=\beta_3=0$ en el modelo anterior podemos comparar a través de un LRT el modelo completo con todas las covariables y uno reducido con solamente la covariable edad: -->
-<!-- ```{r} -->
-<!-- modelo_8_2_solo_age <- coxph(Surv(time,delta)~age,data=larynx,ties = 'breslow')  -->
-<!-- anova(modelo_8_2_age,modelo_8_2_solo_age) -->
-<!-- ``` -->
-<!-- Es decir rechazamos esta hipótesis bajo los niveles usuales de significancia. Si queremos comprobar la misma hipótesis con la prueba de Wald calculamos: -->
-<!-- ```{r} -->
-<!-- Ib_inv <- modelo_8_2_age$var -->
-<!-- X2w <- t(modelo_8_2_age$coefficients[1:3])%*% -->
-<!--   solve(Ib_inv[1:3,1:3])%*% -->
-<!--   modelo_8_2_age$coefficients[1:3] -->
-<!-- pchisq(X2w,df = 3,lower.tail = F) -->
-<!-- ``` -->
-<!-- y llegamos a la misma conclusión.  -->
-<!-- Las pruebas de Wald individuales en el modelo completo se obtienen directamente del mismo output: -->
-<!-- ```{r} -->
-<!-- summary(modelo_8_2_age) -->
-<!-- ``` -->
-<!-- La hipótesis nula $H_0:\beta_1=\beta_2=\beta_3$ puede ser comprobada a través de una matriz de contrastes y usando el estadístico de prueba de la ecuación 8.5.7: -->
-<!-- ```{r} -->
-<!-- betas <- coefficients(modelo_8_2_age) -->
-<!-- Cmat <- matrix(c(1,-1,0,0,0,1,-1,0),nrow = 2,byrow = T) -->
-<!-- X_C2 <- t(Cmat%*%betas)%*%solve(Cmat%*%Ib_inv%*%t(Cmat))%*%Cmat%*%betas -->
-<!-- pchisq(X_C2,df = 2,lower.tail = F) -->
-<!-- ``` -->
-<!-- en donde rechazamos $H_0$ bajo los niveles de significancia usuales. -->
-<!-- Si consideramos la interacción entre la edad de diagnóstico con la etapa de la enfermedad el modelo se puede estimar con: -->
-<!-- ```{r} -->
-<!-- modelo_8_2_age_stage <- update(modelo_8_2_age,formula. = .~.+stage:age) -->
-<!-- summary(modelo_8_2_age_stage) -->
-<!-- ``` -->
-<!-- y podemos usar una prueba LRT para verificar la significancia de la interacción: -->
-<!-- ```{r} -->
-<!-- anova(modelo_8_2_age,modelo_8_2_age_stage) -->
-<!-- ``` -->
-<!-- que con un nivel de significancia del 5% (una muestra de 90 sujetos podría sugerir ese nivel) no se podría rechazar la hipótesis de no significancia de la interacción. -->
-<!-- Finalmente vamos a estimar la función de sobrevivencia de un paciente con 60 años bajo los cuatro estados de la enfermedad. Recuerden que estamos usando la aproximación de Breslow: -->
-<!-- ```{r} -->
-<!-- individuo <- data.frame(age=rep(60,4),stage=factor(1:4)) -->
-<!-- S_8_2_age <- survfit(modelo_8_2_age,newdata = individuo) -->
-<!-- plot(S_8_2_age,col=1:4) -->
-<!-- ``` -->
+</section>
+<section id="laboratorio" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="laboratorio"><span class="header-section-number">4.6</span> Laboratorio</h2>
+<section id="primer-ejemplo-ejemplo-8.1" class="level3" data-number="4.6.1">
+<h3 data-number="4.6.1" class="anchored" data-anchor-id="primer-ejemplo-ejemplo-8.1"><span class="header-section-number">4.6.1</span> Primer Ejemplo (Ejemplo 8.1)</h3>
+<p>En este ejemplo tenemos una muestra de 45 mujeres a las que se le aplicó un procedimiento llamado “examinación inmunohistoquímica” con el fin de detectar cáncer. Los datos de sobrevivencia de las pacientes son:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survMisc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'survMisc'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:ggplot2':
+
+    autoplot</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(KMsurv)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"btrial"</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(btrial)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  time death im
+1   19     1  1
+2   25     1  1
+3   30     1  1
+4   34     1  1
+5   37     1  1
+6   46     1  1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(btrial)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      time            death              im     
+ Min.   : 19.00   Min.   :0.0000   Min.   :1.0  
+ 1st Qu.: 51.00   1st Qu.:0.0000   1st Qu.:1.0  
+ Median : 89.00   Median :1.0000   Median :1.0  
+ Mean   : 98.33   Mean   :0.5333   Mean   :1.2  
+ 3rd Qu.:144.00   3rd Qu.:1.0000   3rd Qu.:1.0  
+ Max.   :189.00   Max.   :1.0000   Max.   :2.0  </code></pre>
+</div>
+</div>
+<p>en donde podemos notar que la variable <em>im</em> debería ser una variable categórica (factor) indicando presencia/ausencia del procedimiento. Esto lo corregimos transformando la variable y tomando como categoría base la ausencia del procedimiento:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>btrial <span class="ot">&lt;-</span> btrial <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">im=</span><span class="fu">factor</span>(im))</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(btrial<span class="sc">$</span>im)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  2
+1 0
+2 1</code></pre>
+</div>
+</div>
+<p>Las funciones de sobrevivencia estimadas dependiendo del grupo “procedimiento” son:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survminer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: ggpubr</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'survminer'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:survival':
+
+    myeloma</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>KM_8_1 <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(time,death)<span class="sc">~</span>im,<span class="at">data =</span> btrial)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsurvplot</span>(KM_8_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="RSP_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>La diferencia evidente entre ambas funciones, sugiere que uno puede correr una regresión tomando la variable <em>im</em> como covariable:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>modelo_8_1 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(time,death)<span class="sc">~</span>im,<span class="at">data =</span> btrial)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_8_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(time, death) ~ im, data = btrial)
+
+  n= 45, number of events= 24 
+
+      coef exp(coef) se(coef)     z Pr(&gt;|z|)  
+im2 0.9802    2.6650   0.4349 2.254   0.0242 *
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+    exp(coef) exp(-coef) lower .95 upper .95
+im2     2.665     0.3752     1.136      6.25
+
+Concordance= 0.583  (se = 0.042 )
+Likelihood ratio test= 4.45  on 1 df,   p=0.03
+Wald test            = 5.08  on 1 df,   p=0.02
+Score (logrank) test = 5.49  on 1 df,   p=0.02</code></pre>
+</div>
+</div>
+<p>Note que el riesgo relativo de una paciente con un resultado positivo del procedimiento con respecto a una con un negativo es 2.67, es decir una paciente positiva es 2.67 más probable que fallezca con respecto a una que tuvo un resultado negativo. Un intervalo al 95% para el riesgo relativo de la población es [1.136,6.25].</p>
+<p>También podemos probar la hipótesis de que el procedimiento no es significativo al 5%. Bajo cualquiera de las tres pruebas (LRT, Wald y Score) se rechaza esta hipótesis nula.</p>
+</section>
+<section id="segundo-ejemplo-ejemplo-8.2" class="level3" data-number="4.6.2">
+<h3 data-number="4.6.2" class="anchored" data-anchor-id="segundo-ejemplo-ejemplo-8.2"><span class="header-section-number">4.6.2</span> Segundo ejemplo (Ejemplo 8.2)</h3>
+<p>El segundo ejemplo tiene como base los datos de 90 hombres diagnosticados con cáncer de laringe con su edad de diagnóstico (age), tiempo de muerte o censura en meses (time), indicador de censura (delta) y etapa de la enfermedad (stage).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"larynx"</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(larynx)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     stage            time             age            diagyr     
+ Min.   :1.000   Min.   : 0.100   Min.   :41.00   Min.   :70.00  
+ 1st Qu.:1.000   1st Qu.: 2.000   1st Qu.:57.00   1st Qu.:72.25  
+ Median :2.000   Median : 4.000   Median :65.00   Median :74.00  
+ Mean   :2.222   Mean   : 4.198   Mean   :64.61   Mean   :74.24  
+ 3rd Qu.:3.000   3rd Qu.: 6.200   3rd Qu.:72.00   3rd Qu.:76.00  
+ Max.   :4.000   Max.   :10.700   Max.   :86.00   Max.   :78.00  
+     delta       
+ Min.   :0.0000  
+ 1st Qu.:0.0000  
+ Median :1.0000  
+ Mean   :0.5556  
+ 3rd Qu.:1.0000  
+ Max.   :1.0000  </code></pre>
+</div>
+</div>
+<p>Transformamos la variable <em>stage</em> para que sea factor, y mantenemos la variable discreta con el nombre <em>stage_n</em>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>larynx <span class="ot">&lt;-</span> larynx <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">stage_n =</span> stage) <span class="sc">%&gt;%</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">stage=</span><span class="fu">factor</span>(stage))</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(larynx<span class="sc">$</span>stage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  2 3 4
+1 0 0 0
+2 1 0 0
+3 0 1 0
+4 0 0 1</code></pre>
+</div>
+</div>
+<p>Noten que la base según esta codificación es la etapa 1 de la enfermedad. Corremos un modelo de Cox usando como covariable la etapa de la enfermedad, usando un estimador de Breslow en la tasa acumulada de riesgo base:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>modelo_8_2 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(time,delta)<span class="sc">~</span>stage,<span class="at">data=</span>larynx,<span class="at">ties =</span> <span class="st">'breslow'</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_8_2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(time, delta) ~ stage, data = larynx, ties = "breslow")
+
+  n= 90, number of events= 50 
+
+          coef exp(coef) se(coef)     z Pr(&gt;|z|)    
+stage2 0.06576   1.06797  0.45844 0.143   0.8859    
+stage3 0.61206   1.84423  0.35520 1.723   0.0849 .  
+stage4 1.72284   5.60040  0.41966 4.105 4.04e-05 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+       exp(coef) exp(-coef) lower .95 upper .95
+stage2     1.068     0.9364    0.4348     2.623
+stage3     1.844     0.5422    0.9193     3.700
+stage4     5.600     0.1786    2.4604    12.748
+
+Concordance= 0.668  (se = 0.037 )
+Likelihood ratio test= 16.26  on 3 df,   p=0.001
+Wald test            = 18.95  on 3 df,   p=3e-04
+Score (logrank) test = 22.46  on 3 df,   p=5e-05</code></pre>
+</div>
+</div>
+<p>Por ejemplo el riesgo relativo de los pacientes con etapa 3 con respecto a etapa 1 es 1.844. El riesgo relativo de los pacientes etapa 3 con respecto a etapa 2 es:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fl">1.844</span><span class="sc">/</span><span class="fl">1.068</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.726592</code></pre>
+</div>
+</div>
+<p>Además, la hipótesis nula de que el riesgo relativo es igual para las etapas de la enfermedad se rechaza facílmente bajo cualquiera de las tres pruebas de hipótesis (Wald, Score y LRT).</p>
+<p>Como la prueba score en el modelo de Cox es la prueba logrank, al utilizar como covariable <em>stage_n</em> se estaría haciendo una prueba de tendencia:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>modelo_8_2_trend <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(time,delta)<span class="sc">~</span>stage_n,<span class="at">data=</span>larynx,<span class="at">ties =</span> <span class="st">'breslow'</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_8_2_trend)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(time, delta) ~ stage_n, data = larynx, ties = "breslow")
+
+  n= 90, number of events= 50 
+
+          coef exp(coef) se(coef)     z Pr(&gt;|z|)    
+stage_n 0.5054    1.6577   0.1411 3.582  0.00034 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+        exp(coef) exp(-coef) lower .95 upper .95
+stage_n     1.658     0.6032     1.257     2.186
+
+Concordance= 0.668  (se = 0.037 )
+Likelihood ratio test= 13.1  on 1 df,   p=3e-04
+Wald test            = 12.83  on 1 df,   p=3e-04
+Score (logrank) test = 13.64  on 1 df,   p=2e-04</code></pre>
+</div>
+</div>
+<p>En este caso se rechaza la hipótesis de igualdad de funciones de sobrevivencia a favor de la hipótesis alternativa de decrecimiento en la sobrevivencia conforme se incrementa la etapa de la enfermedad.</p>
+<p>Si introducimos como covariable la edad de diagnóstico:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>modelo_8_2_age <span class="ot">&lt;-</span> <span class="fu">update</span>(modelo_8_2,<span class="at">formula. =</span> .<span class="sc">~</span>.<span class="sc">+</span>age)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_8_2_age)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(time, delta) ~ stage + age, data = larynx, 
+    ties = "breslow")
+
+  n= 90, number of events= 50 
+
+          coef exp(coef) se(coef)     z Pr(&gt;|z|)    
+stage2 0.13856   1.14862  0.46231 0.300    0.764    
+stage3 0.63835   1.89335  0.35608 1.793    0.073 .  
+stage4 1.69306   5.43607  0.42221 4.010 6.07e-05 ***
+age    0.01890   1.01908  0.01425 1.326    0.185    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+       exp(coef) exp(-coef) lower .95 upper .95
+stage2     1.149     0.8706    0.4642     2.842
+stage3     1.893     0.5282    0.9422     3.805
+stage4     5.436     0.1840    2.3763    12.436
+age        1.019     0.9813    0.9910     1.048
+
+Concordance= 0.682  (se = 0.039 )
+Likelihood ratio test= 18.07  on 4 df,   p=0.001
+Wald test            = 20.82  on 4 df,   p=3e-04
+Score (logrank) test = 24.33  on 4 df,   p=7e-05</code></pre>
+</div>
+</div>
+<p>Por lo tanto el riesgo relativo de un paciente con edad de diagnóstico igual a 50 años con respecto a uno con 40 años cuando la etapa de la enfermedad es la misma es:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="dv">10</span><span class="sc">*</span>modelo_8_2_age<span class="sc">$</span>coefficients[<span class="dv">4</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     age 
+1.208063 </code></pre>
+</div>
+</div>
+<p>Es decir hay un incremento de un 21% aproximadamente en el riesgo de fallecer entre una persona con 50 años con respecto a una de 40 años si ambos están en la misma etapa de la enfermedad.</p>
+<p>Si queremos probar la hipótesis nula de que <span class="math inline">\(H_0:\beta_1=\beta_2=\beta_3=0\)</span> en el modelo anterior podemos comparar a través de un LRT el modelo completo con todas las covariables y uno reducido con solamente la covariable edad:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>modelo_8_2_solo_age <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(time,delta)<span class="sc">~</span>age,<span class="at">data=</span>larynx,<span class="at">ties =</span> <span class="st">'breslow'</span>)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modelo_8_2_age,modelo_8_2_solo_age)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+ Cox model: response is  Surv(time, delta)
+ Model 1: ~ stage + age
+ Model 2: ~ age
+   loglik  Chisq Df Pr(&gt;|Chi|)   
+1 -188.18                        
+2 -195.91 15.453  3   0.001468 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>Es decir rechazamos esta hipótesis bajo los niveles usuales de significancia. Si queremos comprobar la misma hipótesis con la prueba de Wald calculamos:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>Ib_inv <span class="ot">&lt;-</span> modelo_8_2_age<span class="sc">$</span>var</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>X2w <span class="ot">&lt;-</span> <span class="fu">t</span>(modelo_8_2_age<span class="sc">$</span>coefficients[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>])<span class="sc">%*%</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">solve</span>(Ib_inv[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>])<span class="sc">%*%</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  modelo_8_2_age<span class="sc">$</span>coefficients[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a><span class="fu">pchisq</span>(X2w,<span class="at">df =</span> <span class="dv">3</span>,<span class="at">lower.tail =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             [,1]
+[1,] 0.0005245945</code></pre>
+</div>
+</div>
+<p>y llegamos a la misma conclusión.</p>
+<p>Las pruebas de Wald individuales en el modelo completo se obtienen directamente del mismo output:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_8_2_age)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(time, delta) ~ stage + age, data = larynx, 
+    ties = "breslow")
+
+  n= 90, number of events= 50 
+
+          coef exp(coef) se(coef)     z Pr(&gt;|z|)    
+stage2 0.13856   1.14862  0.46231 0.300    0.764    
+stage3 0.63835   1.89335  0.35608 1.793    0.073 .  
+stage4 1.69306   5.43607  0.42221 4.010 6.07e-05 ***
+age    0.01890   1.01908  0.01425 1.326    0.185    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+       exp(coef) exp(-coef) lower .95 upper .95
+stage2     1.149     0.8706    0.4642     2.842
+stage3     1.893     0.5282    0.9422     3.805
+stage4     5.436     0.1840    2.3763    12.436
+age        1.019     0.9813    0.9910     1.048
+
+Concordance= 0.682  (se = 0.039 )
+Likelihood ratio test= 18.07  on 4 df,   p=0.001
+Wald test            = 20.82  on 4 df,   p=3e-04
+Score (logrank) test = 24.33  on 4 df,   p=7e-05</code></pre>
+</div>
+</div>
+<p>La hipótesis nula <span class="math inline">\(H_0:\beta_1=\beta_2=\beta_3\)</span> puede ser comprobada a través de una matriz de contrastes y usando el estadístico de prueba de la ecuación 8.5.7:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>betas <span class="ot">&lt;-</span> <span class="fu">coefficients</span>(modelo_8_2_age)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>Cmat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="sc">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="sc">-</span><span class="dv">1</span>,<span class="dv">0</span>),<span class="at">nrow =</span> <span class="dv">2</span>,<span class="at">byrow =</span> T)</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>X_C2 <span class="ot">&lt;-</span> <span class="fu">t</span>(Cmat<span class="sc">%*%</span>betas)<span class="sc">%*%</span><span class="fu">solve</span>(Cmat<span class="sc">%*%</span>Ib_inv<span class="sc">%*%</span><span class="fu">t</span>(Cmat))<span class="sc">%*%</span>Cmat<span class="sc">%*%</span>betas</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="fu">pchisq</span>(X_C2,<span class="at">df =</span> <span class="dv">2</span>,<span class="at">lower.tail =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            [,1]
+[1,] 0.004671744</code></pre>
+</div>
+</div>
+<p>en donde rechazamos <span class="math inline">\(H_0\)</span> bajo los niveles de significancia usuales.</p>
+<p>Si consideramos la interacción entre la edad de diagnóstico con la etapa de la enfermedad el modelo se puede estimar con:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>modelo_8_2_age_stage <span class="ot">&lt;-</span> <span class="fu">update</span>(modelo_8_2_age,<span class="at">formula. =</span> .<span class="sc">~</span>.<span class="sc">+</span>stage<span class="sc">:</span>age)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_8_2_age_stage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(time, delta) ~ stage + age + stage:age, 
+    data = larynx, ties = "breslow")
+
+  n= 90, number of events= 50 
+
+                coef exp(coef)  se(coef)      z Pr(&gt;|z|)  
+stage2     -7.946142  0.000354  3.678209 -2.160   0.0307 *
+stage3     -0.122500  0.884706  2.468331 -0.050   0.9604  
+stage4      0.846986  2.332605  2.425717  0.349   0.7270  
+age        -0.002559  0.997444  0.026051 -0.098   0.9218  
+stage2:age  0.120254  1.127783  0.052307  2.299   0.0215 *
+stage3:age  0.011351  1.011416  0.037449  0.303   0.7618  
+stage4:age  0.013673  1.013767  0.035967  0.380   0.7038  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+           exp(coef) exp(-coef) lower .95 upper .95
+stage2      0.000354  2824.6562 2.619e-07    0.4786
+stage3      0.884705     1.1303 7.011e-03  111.6467
+stage4      2.332605     0.4287 2.009e-02  270.7790
+age         0.997444     1.0026 9.478e-01    1.0497
+stage2:age  1.127783     0.8867 1.018e+00    1.2495
+stage3:age  1.011416     0.9887 9.398e-01    1.0884
+stage4:age  1.013767     0.9864 9.448e-01    1.0878
+
+Concordance= 0.694  (se = 0.039 )
+Likelihood ratio test= 24.27  on 7 df,   p=0.001
+Wald test            = 24.11  on 7 df,   p=0.001
+Score (logrank) test = 28.59  on 7 df,   p=2e-04</code></pre>
+</div>
+</div>
+<p>y podemos usar una prueba LRT para verificar la significancia de la interacción:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modelo_8_2_age,modelo_8_2_age_stage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+ Cox model: response is  Surv(time, delta)
+ Model 1: ~ stage + age
+ Model 2: ~ stage + age + stage:age
+   loglik  Chisq Df Pr(&gt;|Chi|)
+1 -188.18                     
+2 -185.08 6.2039  3     0.1021</code></pre>
+</div>
+</div>
+<p>que con un nivel de significancia del 5% (una muestra de 90 sujetos podría sugerir ese nivel) no se podría rechazar la hipótesis de no significancia de la interacción.</p>
+<p>Finalmente vamos a estimar la función de sobrevivencia de un paciente con 60 años bajo los cuatro estados de la enfermedad. Recuerden que estamos usando la aproximación de Breslow:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>individuo <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">age=</span><span class="fu">rep</span>(<span class="dv">60</span>,<span class="dv">4</span>),<span class="at">stage=</span><span class="fu">factor</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>))</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>S_8_2_age <span class="ot">&lt;-</span> <span class="fu">survfit</span>(modelo_8_2_age,<span class="at">newdata =</span> individuo)</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(S_8_2_age,<span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="RSP_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 <!-- ### Tercer ejemplo (Ejemplo 8.3) -->
 <!-- Este tercer ejemplo consiste en 863 pacientes de transplante de riñón con covariables etnia (race: $R$) y sexo (gender: $G$). Cargamos los datos y transformamos las dos covariables en variables tipo factor: -->
 <!-- ```{r} -->
@@ -835,6 +1170,7 @@ C=
 <!-- ``` -->
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

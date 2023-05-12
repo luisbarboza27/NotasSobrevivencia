@@ -184,17 +184,11 @@ y $\beta_1$ es un vector $q\times 1$ y $\beta_2$ es $(p-q)\times 1$.
 Sea $b=(b_1^T,b_2^T)^T$ los estimadores de máxima verosimilitud parcial de $\beta$. Supongamos que particionamos la matriz de información $I$ como:
 
 \begin{align*}
-
 I=
-
    \begin{pmatrix}
-
      I_{11} & I_{12} \\
-
      I_{21} & I_{22}
-
    \end{pmatrix}
-
 \end{align*}
 
 donde $I_{11}:q\times q$ y $I_{22}: (p-q)\times (p-q)$ son los bloques correspondientes a $\beta_1$ y $\beta_2$ respectivamente. El estadístico de prueba en este caso es:
@@ -222,21 +216,13 @@ $$X^2_{SC}=U_1[\beta_{10},b_2(\beta_{10})]^T[I''(\beta_{10},b_2(\beta_{10}))]U_1
 Algunas veces se quiere probar una hipótesis sobre un contraste de los parámetros a través de una prueba de Wald. Sea:
 
 \begin{align*}
-
 C=
-
    \begin{pmatrix}
-
    c_1^T\\
-
    c_2^T\\
-
    \vdots \\
-
    c_q^T
-
    \end{pmatrix}_{q\times p}
-
 \end{align*}
 
 donde $q\leq p$ y $C$ es de rango completo. Además $c_k^T=(c_{k1},c_{k2},\ldots,c_{kp})$ y se quiere probar la hipótesis:
@@ -529,227 +515,225 @@ $$\hat H_0(t)=\sum_{t_i\leq t}\left[1-\left(1-\frac{\delta_i\exp(b^TZ_i)}{W(t_i,
 
 <!-- todos los métodos de inferencia vistos hasta ahora funcionan para ajustar el modelo de Cox. -->
 
-<!-- ## Laboratorio -->
+## Laboratorio
 
-<!-- ### Primer Ejemplo (Ejemplo 8.1) -->
+### Primer Ejemplo (Ejemplo 8.1)
 
-<!-- En este ejemplo tenemos una muestra de 45 mujeres a las que se le aplicó un procedimiento llamado "examinación inmunohistoquímica" con el fin de detectar cáncer. Los datos de sobrevivencia de las pacientes son: -->
+En este ejemplo tenemos una muestra de 45 mujeres a las que se le aplicó un procedimiento llamado "examinación inmunohistoquímica" con el fin de detectar cáncer. Los datos de sobrevivencia de las pacientes son:
 
-<!-- ```{r warning=FALSE} -->
+```{r warning=FALSE}
 
-<!-- library(survival) -->
+library(survival)
 
-<!-- library(survMisc) -->
+library(survMisc)
 
-<!-- library(KMsurv) -->
+library(KMsurv)
 
-<!-- data("btrial") -->
+data("btrial")
 
-<!-- head(btrial) -->
+head(btrial)
 
-<!-- summary(btrial) -->
+summary(btrial)
 
-<!-- ``` -->
+```
 
-<!-- en donde podemos notar que la variable *im* debería ser una variable categórica (factor) indicando presencia/ausencia del procedimiento. Esto lo corregimos transformando la variable y tomando como categoría base la ausencia del procedimiento: -->
+en donde podemos notar que la variable *im* debería ser una variable categórica (factor) indicando presencia/ausencia del procedimiento. Esto lo corregimos transformando la variable y tomando como categoría base la ausencia del procedimiento:
 
-<!-- ```{r message=FALSE, warning=FALSE} -->
+```{r message=FALSE, warning=FALSE}
 
-<!-- library(tidyverse) -->
+library(tidyverse)
 
-<!-- btrial <- btrial %>% mutate(im=factor(im)) -->
+btrial <- btrial %>% mutate(im=factor(im))
 
-<!-- contrasts(btrial$im) -->
+contrasts(btrial$im)
 
-<!-- ``` -->
+```
 
-<!-- Las funciones de sobrevivencia estimadas dependiendo del grupo "procedimiento" son: -->
+Las funciones de sobrevivencia estimadas dependiendo del grupo "procedimiento" son:
 
-<!-- ```{r} -->
+```{r}
 
-<!-- library(survminer) -->
+library(survminer)
 
-<!-- KM_8_1 <- survfit(Surv(time,death)~im,data = btrial) -->
+KM_8_1 <- survfit(Surv(time,death)~im,data = btrial)
 
-<!-- ggsurvplot(KM_8_1) -->
+ggsurvplot(KM_8_1)
 
-<!-- ``` -->
+```
 
-<!-- La diferencia evidente entre ambas funciones, sugiere que uno puede correr una regresión tomando la variable *im* como covariable: -->
+La diferencia evidente entre ambas funciones, sugiere que uno puede correr una regresión tomando la variable *im* como covariable:
 
-<!-- ¨ -->
+```{r}
 
-<!-- ```{r} -->
+modelo_8_1 <- coxph(Surv(time,death)~im,data = btrial)
 
-<!-- modelo_8_1 <- coxph(Surv(time,death)~im,data = btrial) -->
+summary(modelo_8_1)
 
-<!-- summary(modelo_8_1) -->
+```
 
-<!-- ``` -->
+Note que el riesgo relativo de una paciente con un resultado positivo del procedimiento con respecto a una con un negativo es 2.67, es decir una paciente positiva es 2.67 más probable que fallezca con respecto a una que tuvo un resultado negativo. Un intervalo al 95% para el riesgo relativo de la población es [1.136,6.25].
 
-<!-- Note que el riesgo relativo de una paciente con un resultado positivo del procedimiento con respecto a una con un negativo es 2.67, es decir una paciente positiva es 2.67 más probable que fallezca con respecto a una que tuvo un resultado negativo. Un intervalo al 95% para el riesgo relativo de la población es [1.136,6.25]. -->
+También podemos probar la hipótesis de que el procedimiento no es significativo al 5%. Bajo cualquiera de las tres pruebas (LRT, Wald y Score) se rechaza esta hipótesis nula.
 
-<!-- También podemos probar la hipótesis de que el procedimiento no es significativo al 5%. Bajo cualquiera de las tres pruebas (LRT, Wald y Score) se rechaza esta hipótesis nula. -->
+### Segundo ejemplo (Ejemplo 8.2)
 
-<!-- ### Segundo ejemplo (Ejemplo 8.2) -->
+El segundo ejemplo tiene como base los datos de 90 hombres diagnosticados con cáncer de laringe con su edad de diagnóstico (age), tiempo de muerte o censura en meses (time), indicador de censura (delta) y etapa de la enfermedad (stage).
 
-<!-- El segundo ejemplo tiene como base los datos de 90 hombres diagnosticados con cáncer de laringe con su edad de diagnóstico (age), tiempo de muerte o censura en meses (time), indicador de censura (delta) y etapa de la enfermedad (stage). -->
+```{r}
 
-<!-- ```{r} -->
+data("larynx")
 
-<!-- data("larynx") -->
+summary(larynx)
 
-<!-- summary(larynx) -->
+```
 
-<!-- ``` -->
+Transformamos la variable *stage* para que sea factor, y mantenemos la variable discreta con el nombre *stage_n*:
 
-<!-- Transformamos la variable *stage* para que sea factor, y mantenemos la variable discreta con el nombre *stage_n*: -->
+```{r}
 
-<!-- ```{r} -->
+larynx <- larynx %>% mutate(stage_n = stage) %>%
 
-<!-- larynx <- larynx %>% mutate(stage_n = stage) %>% -->
+  mutate(stage=factor(stage))
 
-<!--   mutate(stage=factor(stage)) -->
+contrasts(larynx$stage)
 
-<!-- contrasts(larynx$stage) -->
+```
 
-<!-- ``` -->
+Noten que la base según esta codificación es la etapa 1 de la enfermedad. Corremos un modelo de Cox usando como covariable la etapa de la enfermedad, usando un estimador de Breslow en la tasa acumulada de riesgo base:
 
-<!-- Noten que la base según esta codificación es la etapa 1 de la enfermedad. Corremos un modelo de Cox usando como covariable la etapa de la enfermedad, usando un estimador de Breslow en la tasa acumulada de riesgo base: -->
+```{r}
 
-<!-- ```{r} -->
+modelo_8_2 <- coxph(Surv(time,delta)~stage,data=larynx,ties = 'breslow')
 
-<!-- modelo_8_2 <- coxph(Surv(time,delta)~stage,data=larynx,ties = 'breslow') -->
+summary(modelo_8_2)
 
-<!-- summary(modelo_8_2) -->
+```
 
-<!-- ``` -->
+Por ejemplo el riesgo relativo de los pacientes con etapa 3 con respecto a etapa 1 es 1.844. El riesgo relativo de los pacientes etapa 3 con respecto a etapa 2 es:
 
-<!-- Por ejemplo el riesgo relativo de los pacientes con etapa 3 con respecto a etapa 1 es 1.844. El riesgo relativo de los pacientes etapa 3 con respecto a etapa 2 es: -->
+```{r}
 
-<!-- ```{r} -->
+1.844/1.068
 
-<!-- 1.844/1.068 -->
+```
 
-<!-- ``` -->
+Además, la hipótesis nula de que el riesgo relativo es igual para las etapas de la enfermedad se rechaza facílmente bajo cualquiera de las tres pruebas de hipótesis (Wald, Score y LRT).
 
-<!-- Además, la hipótesis nula de que el riesgo relativo es igual para las etapas de la enfermedad se rechaza facílmente bajo cualquiera de las tres pruebas de hipótesis (Wald, Score y LRT). -->
+Como la prueba score en el modelo de Cox es la prueba logrank, al utilizar como covariable *stage_n* se estaría haciendo una prueba de tendencia:
 
-<!-- Como la prueba score en el modelo de Cox es la prueba logrank, al utilizar como covariable *stage_n* se estaría haciendo una prueba de tendencia: -->
+```{r}
 
-<!-- ```{r} -->
+modelo_8_2_trend <- coxph(Surv(time,delta)~stage_n,data=larynx,ties = 'breslow')
 
-<!-- modelo_8_2_trend <- coxph(Surv(time,delta)~stage_n,data=larynx,ties = 'breslow') -->
+summary(modelo_8_2_trend)
 
-<!-- summary(modelo_8_2_trend) -->
+```
 
-<!-- ``` -->
+En este caso se rechaza la hipótesis de igualdad de funciones de sobrevivencia a favor de la hipótesis alternativa de decrecimiento en la sobrevivencia conforme se incrementa la etapa de la enfermedad.
 
-<!-- En este caso se rechaza la hipótesis de igualdad de funciones de sobrevivencia a favor de la hipótesis alternativa de decrecimiento en la sobrevivencia conforme se incrementa la etapa de la enfermedad. -->
+Si introducimos como covariable la edad de diagnóstico:
 
-<!-- Si introducimos como covariable la edad de diagnóstico: -->
+```{r}
 
-<!-- ```{r} -->
+modelo_8_2_age <- update(modelo_8_2,formula. = .~.+age)
 
-<!-- modelo_8_2_age <- update(modelo_8_2,formula. = .~.+age)  -->
+summary(modelo_8_2_age)
 
-<!-- summary(modelo_8_2_age) -->
+```
 
-<!-- ``` -->
+Por lo tanto el riesgo relativo de un paciente con edad de diagnóstico igual a 50 años con respecto a uno con 40 años cuando la etapa de la enfermedad es la misma es:
 
-<!-- Por lo tanto el riesgo relativo de un paciente con edad de diagnóstico igual a 50 años con respecto a uno con 40 años cuando la etapa de la enfermedad es la misma es: -->
+```{r}
 
-<!-- ```{r} -->
+exp(10*modelo_8_2_age$coefficients[4])
 
-<!-- exp(10*modelo_8_2_age$coefficients[4]) -->
+```
 
-<!-- ``` -->
+Es decir hay un incremento de un 21% aproximadamente en el riesgo de fallecer entre una persona con 50 años con respecto a una de 40 años si ambos están en la misma etapa de la enfermedad.
 
-<!-- Es decir hay un incremento de un 21% aproximadamente en el riesgo de fallecer entre una persona con 50 años con respecto a una de 40 años si ambos están en la misma etapa de la enfermedad. -->
+Si queremos probar la hipótesis nula de que $H_0:\beta_1=\beta_2=\beta_3=0$ en el modelo anterior podemos comparar a través de un LRT el modelo completo con todas las covariables y uno reducido con solamente la covariable edad:
 
-<!-- Si queremos probar la hipótesis nula de que $H_0:\beta_1=\beta_2=\beta_3=0$ en el modelo anterior podemos comparar a través de un LRT el modelo completo con todas las covariables y uno reducido con solamente la covariable edad: -->
+```{r}
 
-<!-- ```{r} -->
+modelo_8_2_solo_age <- coxph(Surv(time,delta)~age,data=larynx,ties = 'breslow')
 
-<!-- modelo_8_2_solo_age <- coxph(Surv(time,delta)~age,data=larynx,ties = 'breslow')  -->
+anova(modelo_8_2_age,modelo_8_2_solo_age)
 
-<!-- anova(modelo_8_2_age,modelo_8_2_solo_age) -->
+```
 
-<!-- ``` -->
+Es decir rechazamos esta hipótesis bajo los niveles usuales de significancia. Si queremos comprobar la misma hipótesis con la prueba de Wald calculamos:
 
-<!-- Es decir rechazamos esta hipótesis bajo los niveles usuales de significancia. Si queremos comprobar la misma hipótesis con la prueba de Wald calculamos: -->
+```{r}
 
-<!-- ```{r} -->
+Ib_inv <- modelo_8_2_age$var
 
-<!-- Ib_inv <- modelo_8_2_age$var -->
+X2w <- t(modelo_8_2_age$coefficients[1:3])%*%
 
-<!-- X2w <- t(modelo_8_2_age$coefficients[1:3])%*% -->
+  solve(Ib_inv[1:3,1:3])%*%
 
-<!--   solve(Ib_inv[1:3,1:3])%*% -->
+  modelo_8_2_age$coefficients[1:3]
 
-<!--   modelo_8_2_age$coefficients[1:3] -->
+pchisq(X2w,df = 3,lower.tail = F)
 
-<!-- pchisq(X2w,df = 3,lower.tail = F) -->
+```
 
-<!-- ``` -->
+y llegamos a la misma conclusión.
 
-<!-- y llegamos a la misma conclusión.  -->
+Las pruebas de Wald individuales en el modelo completo se obtienen directamente del mismo output:
 
-<!-- Las pruebas de Wald individuales en el modelo completo se obtienen directamente del mismo output: -->
+```{r}
 
-<!-- ```{r} -->
+summary(modelo_8_2_age)
 
-<!-- summary(modelo_8_2_age) -->
+```
 
-<!-- ``` -->
+La hipótesis nula $H_0:\beta_1=\beta_2=\beta_3$ puede ser comprobada a través de una matriz de contrastes y usando el estadístico de prueba de la ecuación 8.5.7:
 
-<!-- La hipótesis nula $H_0:\beta_1=\beta_2=\beta_3$ puede ser comprobada a través de una matriz de contrastes y usando el estadístico de prueba de la ecuación 8.5.7: -->
+```{r}
 
-<!-- ```{r} -->
+betas <- coefficients(modelo_8_2_age)
 
-<!-- betas <- coefficients(modelo_8_2_age) -->
+Cmat <- matrix(c(1,-1,0,0,0,1,-1,0),nrow = 2,byrow = T)
 
-<!-- Cmat <- matrix(c(1,-1,0,0,0,1,-1,0),nrow = 2,byrow = T) -->
+X_C2 <- t(Cmat%*%betas)%*%solve(Cmat%*%Ib_inv%*%t(Cmat))%*%Cmat%*%betas
 
-<!-- X_C2 <- t(Cmat%*%betas)%*%solve(Cmat%*%Ib_inv%*%t(Cmat))%*%Cmat%*%betas -->
+pchisq(X_C2,df = 2,lower.tail = F)
 
-<!-- pchisq(X_C2,df = 2,lower.tail = F) -->
+```
 
-<!-- ``` -->
+en donde rechazamos $H_0$ bajo los niveles de significancia usuales.
 
-<!-- en donde rechazamos $H_0$ bajo los niveles de significancia usuales. -->
+Si consideramos la interacción entre la edad de diagnóstico con la etapa de la enfermedad el modelo se puede estimar con:
 
-<!-- Si consideramos la interacción entre la edad de diagnóstico con la etapa de la enfermedad el modelo se puede estimar con: -->
+```{r}
 
-<!-- ```{r} -->
+modelo_8_2_age_stage <- update(modelo_8_2_age,formula. = .~.+stage:age)
 
-<!-- modelo_8_2_age_stage <- update(modelo_8_2_age,formula. = .~.+stage:age) -->
+summary(modelo_8_2_age_stage)
 
-<!-- summary(modelo_8_2_age_stage) -->
+```
 
-<!-- ``` -->
+y podemos usar una prueba LRT para verificar la significancia de la interacción:
 
-<!-- y podemos usar una prueba LRT para verificar la significancia de la interacción: -->
+```{r}
 
-<!-- ```{r} -->
+anova(modelo_8_2_age,modelo_8_2_age_stage)
 
-<!-- anova(modelo_8_2_age,modelo_8_2_age_stage) -->
+```
 
-<!-- ``` -->
+que con un nivel de significancia del 5% (una muestra de 90 sujetos podría sugerir ese nivel) no se podría rechazar la hipótesis de no significancia de la interacción.
 
-<!-- que con un nivel de significancia del 5% (una muestra de 90 sujetos podría sugerir ese nivel) no se podría rechazar la hipótesis de no significancia de la interacción. -->
+Finalmente vamos a estimar la función de sobrevivencia de un paciente con 60 años bajo los cuatro estados de la enfermedad. Recuerden que estamos usando la aproximación de Breslow:
 
-<!-- Finalmente vamos a estimar la función de sobrevivencia de un paciente con 60 años bajo los cuatro estados de la enfermedad. Recuerden que estamos usando la aproximación de Breslow: -->
+```{r}
 
-<!-- ```{r} -->
+individuo <- data.frame(age=rep(60,4),stage=factor(1:4))
 
-<!-- individuo <- data.frame(age=rep(60,4),stage=factor(1:4)) -->
+S_8_2_age <- survfit(modelo_8_2_age,newdata = individuo)
 
-<!-- S_8_2_age <- survfit(modelo_8_2_age,newdata = individuo) -->
+plot(S_8_2_age,col=1:4)
 
-<!-- plot(S_8_2_age,col=1:4) -->
-
-<!-- ``` -->
+```
 
 <!-- ### Tercer ejemplo (Ejemplo 8.3) -->
 
