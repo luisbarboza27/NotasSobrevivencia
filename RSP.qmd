@@ -129,9 +129,9 @@ $$L(\beta,\hat h_{0.})\propto \prod_{i=1}^D\frac{\exp[\beta^TZ_{(i)}]}{\sum_{j\i
 
 Sea $b=(b_1,\ldots,b_p)^T$ el estimador por máxima verosimilitud parcial de $\beta$ y sea $I(\beta)$ la matriz de información $p\times p$ con entradas:
 
-$$I_{gh}(\beta)=-\frac{\partial^2LL}{\partial\beta_g\partial\beta_h}(\beta)$$ 
+$$I_{gh}(\beta)=-\frac{\partial^2LL}{\partial\beta_g\partial\beta_h}(\beta)$$
 
-1. Prueba de Wald
+1.  Prueba de Wald
 
 Se sabe que $b\sim N_p(\beta,I^{-1}(b))$. Entonces el estadístico de prueba con hipótesis nula: $H_0: \beta=\beta_0$ es:
 
@@ -163,9 +163,9 @@ $$L_1(\beta)=\prod_{i=1}^D\frac{\exp(\beta^TS_i)}{\left[\sum_{j \in R_i}\exp(\be
 
 -   Verosimilitud parcial de Efron (1977)
 
-$$L_2(\beta)=\prod_{i=1}^D\frac{\exp(\beta^TS_i)}{\prod_{j=1}^{d_i}\left[\sum_{k\in R_i}\exp(\beta^TZ_k)-\frac{j-1}{d_i}\sum_{k\in \mathbb D_i}\exp(\beta^TZ_k)\right]}$$ 
+$$L_2(\beta)=\prod_{i=1}^D\frac{\exp(\beta^TS_i)}{\prod_{j=1}^{d_i}\left[\sum_{k\in R_i}\exp(\beta^TZ_k)-\frac{j-1}{d_i}\sum_{k\in \mathbb D_i}\exp(\beta^TZ_k)\right]}$$
 
-- Verosimilitud parcial de Cox (1972)
+-   Verosimilitud parcial de Cox (1972)
 
 Sea $Q_i$: conjunto de todos los subconjuntos de $d_i$ individuos seleccionados de $R_i$. Sea $q=(q_1,\ldots,q_{d_i})$ un elemento de $Q_i$ y defina $s^*_q=\sum_{j=1}^{d_i}Z_{q_j}$, entonces:
 
@@ -179,10 +179,11 @@ $$H_0: \beta_1=\beta_{10}\qquad \text{donde} \; \beta=(\beta_1^T,\beta_2^T)^T$$
 
 y $\beta_1$ es un vector $q\times 1$ y $\beta_2$ es $(p-q)\times 1$.
 
-- Prueba de Wald
+-   Prueba de Wald
 
 Sea $b=(b_1^T,b_2^T)^T$ los estimadores de máxima verosimilitud parcial de $\beta$. Supongamos que particionamos la matriz de información $I$ como:
 
+```{=tex}
 \begin{align*}
 I=
    \begin{pmatrix}
@@ -190,7 +191,7 @@ I=
      I_{21} & I_{22}
    \end{pmatrix}
 \end{align*}
-
+```
 donde $I_{11}:q\times q$ y $I_{22}: (p-q)\times (p-q)$ son los bloques correspondientes a $\beta_1$ y $\beta_2$ respectivamente. El estadístico de prueba en este caso es:
 
 $$X^2_w=(b_1-\beta_{10})^T[I''(b)]^{-1}(b_1-\beta_{10})$$
@@ -201,13 +202,13 @@ $$X_w^2\overset{H_0}{\underset{\text{n grande}}{\sim}}\chi_q^2$$
 
 Sea $b_2(\beta_{10})$ los estimadores de máxima verosimilitud parciales de $\beta_2$ basados en la log-verosimilitud parcial de $\beta$ fijando las primeras $q$ entradas con el valor $\beta_{10}$.
 
-- Prueba de cociente de verosimilitud
+-   Prueba de cociente de verosimilitud
 
 El estadístico correspondiente sería:
 
 $$X^2_{LR}=2\left(LL(b)-LL[\beta_{10},b_2(\beta_{10})]\right)\overset{H_0}{\underset{\text{n grande}}{\sim}}\chi_q^2$$
 
-- Prueba Score:
+-   Prueba Score:
 
 Sea $U_1[\beta_{10},b_2(\beta_{10})]$ el score con tamaño $q\times 1$ para $\beta_1$ evaluado en $(\beta_{10}^T,b_2(\beta_{10})^T)^T$. Entonces:
 
@@ -215,6 +216,7 @@ $$X^2_{SC}=U_1[\beta_{10},b_2(\beta_{10})]^T[I''(\beta_{10},b_2(\beta_{10}))]U_1
 
 Algunas veces se quiere probar una hipótesis sobre un contraste de los parámetros a través de una prueba de Wald. Sea:
 
+```{=tex}
 \begin{align*}
 C=
    \begin{pmatrix}
@@ -224,7 +226,7 @@ C=
    c_q^T
    \end{pmatrix}_{q\times p}
 \end{align*}
-
+```
 donde $q\leq p$ y $C$ es de rango completo. Además $c_k^T=(c_{k1},c_{k2},\ldots,c_{kp})$ y se quiere probar la hipótesis:
 
 $$H_0: C\beta=C\beta_0$$
@@ -247,11 +249,11 @@ $$S_k=\sum_{i=1}^D\left[d_i^+-d_i\frac{r_i^+}{r_i}\right]$$
 
 donde
 
-- $d_i, r_i$: número total de eventos y grupo en riesgo.
+-   $d_i, r_i$: número total de eventos y grupo en riesgo.
 
-- $d_i^+, r_i^+$: número total de eventos y grupo en riesgo cuando $X\geq c_k$.
+-   $d_i^+, r_i^+$: número total de eventos y grupo en riesgo cuando $X\geq c_k$.
 
-- $D$: número de tiempos de ocurrencia de eventos (distintos).
+-   $D$: número de tiempos de ocurrencia de eventos (distintos).
 
 El corte estimado $\hat c=\text{argmax}_{c_k}|S_k|$. Bajo esta escogencia de $\hat c$, el modelo de Cox es:
 
@@ -319,201 +321,201 @@ Usando $\hat S(t|Z=Z_0)$ y $\hat V[\hat S(t|Z=Z_0)]$ se puede construir interval
 
 $$\hat H_0(t)=\sum_{t_i\leq t}\left[1-\left(1-\frac{\delta_i\exp(b^TZ_i)}{W(t_i,b)}\right)^{\exp(-b^TZ_i)}\right]$$
 
-<!-- ## Covariables dependientes del tiempo -->
+## Covariables dependientes del tiempo
 
-<!-- Para incluir covariables dependientes del tiempo consideramos la siguiente estructura de datos: -->
+Para incluir covariables dependientes del tiempo consideramos la siguiente estructura de datos:
 
-<!-- $$[T_j,\delta_j,[Z_j(t), 0\leq t\leq T_j]]$$ -->
+$$[T_j,\delta_j,[Z_j(t), 0\leq t\leq T_j]]$$
 
-<!-- para $j=1,\ldots,n$ donde: -->
+para $j=1,\ldots,n$ donde:
 
-<!-- - $T_j$: tiempo de ocurrencia de evento/censura -->
+- $T_j$: tiempo de ocurrencia de evento/censura
 
-<!-- - $\delta_j$: indicador de evento de riesgo y -->
+- $\delta_j$: indicador de evento de riesgo y
 
-<!-- - $Z_j(t)=[Z_{j1(t)},\ldots,Z_{jp}(t)]$: covariables del $j$-ésimo paciente en tiempo $t$. -->
+- $Z_j(t)=[Z_{j1(t)},\ldots,Z_{jp}(t)]$: covariables del $j$-ésimo paciente en tiempo $t$.
 
-<!-- Asumimos que $Z_j(t)$ es observable en el periodo de estudio y además que no hay repeticiones en los tiempos de ocurrencia: -->
+Asumimos que $Z_j(t)$ es observable en el periodo de estudio y además que no hay repeticiones para distintos individuos en los tiempos de ocurrencia:
 
-<!-- $$t_1<t_2<\cdots<t_D$$ -->
+$$t_1<t_2<\cdots<t_D$$
 
-<!-- Sean $Z_{(i)}(t)$ las covariables asociadas al individuo con tiempo de ocurrencia $t_i$ y $R(t_i)$: el grupo expuesto al riesgo al momento $t_i$. En este caso la fórmula de verosimilitud parcial es: -->
+Sean $Z_{(i)}(t)$ las covariables asociadas al individuo con tiempo de ocurrencia $t_i$ y $R(t_i)$: el grupo expuesto al riesgo al momento $t_i$. En este caso la fórmula de verosimilitud parcial es:
 
-<!-- $$L(\beta)=\prod_{i=1}^D\frac{\exp\left[\sum_{b=1}^p\beta_pZ_{(i)p}(t_i)\right]}{\sum_{j \in R(t_i)}\exp\left[\sum_{b=1}^p\beta_pZ_{jp}(t_i)\right]}$$ -->
+$$L(\beta)=\prod_{i=1}^D\frac{\exp\left[\sum_{b=1}^p\beta_pZ_{(i)p}(t_i)\right]}{\sum_{j \in R(t_i)}\exp\left[\sum_{b=1}^p\beta_pZ_{jp}(t_i)\right]}$$
 
-<!-- y los procesos de estimación puntual y pruebas de hipótesis son análogos. Si hay repeticiones en $t_1<\cdots<t_D$ entonces se puede generalizar $L(\beta)$ como en el caso de covariables estáticas. -->
+y los procesos de estimación puntual y pruebas de hipótesis son análogos. Si hay repeticiones en $t_1<\cdots<t_D$ entonces se puede generalizar $L(\beta)$ como en el caso de covariables estáticas.
 
-<!-- ### Aplicación: Prueba de Riesgos Proporcionales -->
+### Aplicación: Prueba de Riesgos Proporcionales
 
-<!-- Sea $Z_1$ una covariable fija. Si se quiere probar la hipótesis de riesgos proporcionales para $Z_1$ entonces defina: -->
+Sea $Z_1$ una covariable fija. Si se quiere probar la hipótesis de riesgos proporcionales para $Z_1$ entonces defina:
 
-<!-- $$Z_2=Z_1\cdot g(t)$$ -->
+$$Z_2=Z_1\cdot g(t)$$
 
-<!-- donde $g(t)$ es una función conocida. (usualmente $g(t)=\log t$) -->
+donde $g(t)$ es una función conocida. (usualmente $g(t)=\log t$)
 
-<!-- Considere un modelo de Cox con covariables $Z_1$ y $Z_2$: -->
+Considere un modelo de Cox con covariables $Z_1$ y $Z_2$:
 
-<!-- $$h(t|Z_1)=h_0(t)\exp[\beta_1Z_1+\beta_2(Z_1g(t))]$$ -->
+$$h(t|Z_1)=h_0(t)\exp[\beta_1Z_1+\beta_2(Z_1g(t))]$$
 
-<!-- Compare dos individuos con covariables $Z_1$ y $Z_1^*$ a través de su riesgo relativo: -->
+Compare dos individuos con covariables $Z_1$ y $Z_1^*$ a través de su riesgo relativo:
 
-<!-- $$\frac{h(t|Z_1)}{h(t|Z_1^*)}=\exp[\beta_1(Z_1-Z_1^*)+\beta_2g(t)(Z_1-Z_1^*)]$$ -->
+$$\frac{h(t|Z_1)}{h(t|Z_1^*)}=\exp[\beta_1(Z_1-Z_1^*)+\beta_2g(t)(Z_1-Z_1^*)]$$
 
-<!-- Note que bajo la hipótesis $H_0:$: riesgos proporcionales en $Z_1$ la parte derecha de la ecuación anterior no depende de $t$. Por lo tanto $H_0$ es equivalente a la hipótesis $H_0: \beta_2=0$ la cual se puede verificar a través de la prueba de Wald, LRT o Score. -->
+Note que bajo la hipótesis $H_0:$ *riesgos proporcionales en $Z_1$*, la parte derecha de la ecuación anterior no depende de $t$. Por lo tanto $H_0$ es equivalente a la hipótesis $H_0: \beta_2=0$ la cual se puede verificar a través de la prueba de Wald, LRT o Score.
 
-<!-- Si el supuesto de riesgos proporcionales no es cierto para $Z_1$ entonces se puede definir una covariable dependiente de tiempo: -->
+Si el supuesto de riesgos proporcionales no es cierto para $Z_1$ entonces se puede definir una covariable dependiente de tiempo:
 
-<!-- \begin{align*} -->
+\begin{align*}
 
-<!-- Z_2(t)= -->
+Z_2(t)=
 
-<!--    \begin{cases} -->
+   \begin{cases}
 
-<!--      Z_1\cdot g(t) & \text{si}\quad Z_1=1\\ -->
+     Z_1\cdot g(t) & \text{si}\quad Z_1=1\\
 
-<!--      0 & \text{si no} -->
+     0 & \text{si no}
 
-<!--    \end{cases} -->
+   \end{cases}
 
-<!-- \end{align*} -->
+\end{align*}
 
-<!-- en el caso en que $Z_1$ fuera dicotómica. El principal problema a este momento es la estimación de la función $g(t)$. Una posible solución es asumir que $g(t)$ es una variable indicadora. Definiríamos entonces: -->
+en el caso en que $Z_1$ fuera dicotómica. El principal problema a este momento es la estimación de la función $g(t)$. Una posible solución es asumir que $g(t)$ es una variable indicadora. Definiríamos entonces:
 
-<!-- \begin{align*} -->
+\begin{align*}
 
-<!-- Z_2(t)= -->
+Z_2(t)=
 
-<!--    \begin{cases} -->
+   \begin{cases}
 
-<!--      Z_1 & t>\tau \\ -->
+     Z_1 & t>\tau \\
 
-<!--      0 & t\leq \tau -->
+     0 & t\leq \tau
 
-<!--    \end{cases} -->
+   \end{cases}
 
-<!-- \end{align*} -->
+\end{align*}
 
-<!-- en este caso: -->
+en este caso:
 
-<!-- \begin{align*} -->
+\begin{align*}
 
-<!-- h(t|Z(t))= -->
+h(t|Z(t))=
 
-<!--    \begin{cases} -->
+   \begin{cases}
 
-<!--      h_0(t)\exp(\beta_1Z_1) & t\leq \tau\\ -->
+     h_0(t)\exp(\beta_1Z_1) & t\leq \tau\\
 
-<!--      h_0(t)\exp((\beta_1+\beta_2)Z_1) & t>\tau -->
+     h_0(t)\exp((\beta_1+\beta_2)Z_1) & t>\tau
 
-<!--    \end{cases} -->
+   \end{cases}
 
-<!-- \end{align*} -->
+\end{align*}
 
-<!-- y por lo tanto: -->
+y por lo tanto:
 
-<!-- \begin{align*} -->
+\begin{align*}
 
-<!-- &RR(Z_1=1\text{ vs } Z_1=0; t\leq \tau) = \exp(\beta_1)\\ -->
+&RR(Z_1=1\text{ vs } Z_1=0; t\leq \tau) = \exp(\beta_1)\\
 
-<!-- &RR(Z_1=1\text{ vs } Z_1=0; t> \tau) = \exp(\beta_1+\beta_2) -->
+&RR(Z_1=1\text{ vs } Z_1=0; t> \tau) = \exp(\beta_1+\beta_2)
 
-<!-- \end{align*} -->
+\end{align*}
 
-<!-- por este motivo a $\tau$ se le llama punto de cambio en el riesgo relativo. Otra codificación que se puede utilizar es a través del uso de un modelo con dos covariables: $Z_2(t)$ y  -->
+por este motivo a $\tau$ se le llama punto de cambio en el riesgo relativo. Otra codificación que se puede utilizar es a través del uso de un modelo con dos covariables: $Z_2(t)$ y
 
-<!-- \begin{align*} -->
+\begin{align*}
 
-<!-- Z_3(t)= -->
+Z_3(t)=
 
-<!--    \begin{cases} -->
+   \begin{cases}
 
-<!--        Z_1 & t\leq \tau\\ -->
+       Z_1 & t\leq \tau\\
 
-<!--        0 & t>\tau -->
+       0 & t>\tau
 
-<!--    \end{cases} -->
+   \end{cases}
 
-<!-- \end{align*} -->
+\end{align*}
 
-<!-- Entonces: -->
+Entonces:
 
-<!-- \begin{align*} -->
+\begin{align*}
 
-<!-- h(t|Z(t))= -->
+h(t|Z(t))=
 
-<!--    \begin{cases} -->
+   \begin{cases}
 
-<!--      h_0(t)\exp(\theta_3 Z_1) & t\leq \tau\\ -->
+     h_0(t)\exp(\theta_3 Z_1) & t\leq \tau\\
 
-<!--      h_0(t)\exp(\theta_2 Z_1) & t>\tau -->
+     h_0(t)\exp(\theta_2 Z_1) & t>\tau
 
-<!--    \end{cases} -->
+   \end{cases}
 
-<!-- \end{align*} -->
+\end{align*}
 
-<!-- y: -->
+y:
 
-<!-- \begin{align*} -->
+\begin{align*}
 
-<!-- &RR(Z_1=1\text{ vs } Z_1=0; t\leq \tau) = \exp(\theta_3)\\ -->
+&RR(Z_1=1\text{ vs } Z_1=0; t\leq \tau) = \exp(\theta_3)\\
 
-<!-- &RR(Z_1=1\text{ vs } Z_1=0; t> \tau) = \exp(\theta_2) -->
+&RR(Z_1=1\text{ vs } Z_1=0; t> \tau) = \exp(\theta_2)
 
-<!-- \end{align*} -->
+\end{align*}
 
-<!-- El siguiente paso es ajustar el modelo (bajo cualquiera de las dos codificaciones) para distintos valores de $\tau$ (tiempos de ocurrencia). El valor $\tau$ con máxima log-verosimilitud se toma como posible umbral. -->
+El siguiente paso es ajustar el modelo (bajo cualquiera de las dos codificaciones) para distintos valores de $\tau$ (tiempos de ocurrencia). El valor $\tau$ con máxima log-verosimilitud se toma como posible umbral.
 
-<!-- Una prueba de riesgos proporcionales se hace en $t\leq \tau$ y $t>\tau$. Si en alguna de las dos regiones la prueba se rechaza, el proceso se repite. -->
+Una prueba de riesgos proporcionales se hace en $t\leq \tau$ y $t>\tau$. Si en alguna de las dos regiones la prueba se rechaza, el proceso se repite.
 
-<!-- ## Modelos de riesgos proporcionales estratificados -->
+## Modelos de riesgos proporcionales estratificados
 
-<!-- Otra solución en caso de que para una covariable el supuesto de riesgos proporcionales no sea cierto es a través del concepto de estratificación. Para el $j$-ésimo estrato: -->
+Otra solución en caso de que para una covariable el supuesto de riesgos proporcionales no sea cierto es a través del concepto de estratificación. Para el $j$-ésimo estrato:
 
-<!-- $$h_j(t|Z(t))=h_{0j}(t)\exp[\beta^TZ(t)]\qquad j=1,\ldots,s$$ -->
+$$h_j(t|Z(t))=h_{0j}(t)\exp[\beta^TZ(t)]\qquad j=1,\ldots,s$$
 
-<!-- se asume que el supuesto de riesgos proporcionales es cierto y además el efecto de las covariables es el mismo sobre todos los estratos.  -->
+se asume que el supuesto de riesgos proporcionales es cierto dentro de cada estrato y además el efecto de las covariables es el mismo sobre todos los estratos.
 
-<!-- La log-verosimilitud parcial se puede escribir: -->
+La log-verosimilitud parcial se puede escribir:
 
-<!-- $$LL(\beta)=LL_1(\beta)+\cdots+LL_s(\beta)$$ -->
+$$LL(\beta)=LL_1(\beta)+\cdots+LL_s(\beta)$$
 
-<!-- donde $LL_j(\beta)$: log-verosimilitud parcial usando la muestra del $j$-ésimo estrato. -->
+donde $LL_j(\beta)$: log-verosimilitud parcial usando la muestra del $j$-ésimo estrato.
 
-<!-- Para probar la hipótesis de que las covariables tienen el mismo efecto para cualquier estrato, se: -->
+Para probar la hipótesis de que las covariables tienen el mismo efecto para cualquier estrato, se:
 
-<!-- - Ajusta el modelo estratificado y se obtiene $LL(b)$. -->
+- Ajusta el modelo estratificado y se obtiene $LL(b)$.
 
-<!-- - Para $j=1,\ldots,s$, se ajusta el modelo con la muestra correspondiente al $j$-ésimo estrato y se obtiene $LL_j(b_j)$ -->
+- Para $j=1,\ldots,s$, se ajusta el modelo con la muestra correspondiente al $j$-ésimo estrato y se obtiene $LL_j(b_j)$
 
-<!-- Para probar $H_0: \beta=\beta_j$, con $j=1,\ldots,s$ se usa un LRT con estadístico: -->
+Para probar $H_0: \beta=\beta_j$, con $j=1,\ldots,s$ se usa un LRT con estadístico:
 
-<!-- $$-2[LL(b)-\sum_{j=1}^sLL_j(b_j)]\overset{H_0}{\underset{\text{n grande}}{\sim}}\chi_{(s-1)p}^2$$ -->
+$$-2[LL(b)-\sum_{j=1}^sLL_j(b_j)]\overset{H_0}{\underset{\text{n grande}}{\sim}}\chi_{(s-1)p}^2$$
 
-<!-- *Nota:* también se puede verificar $H_0$ a través de la prueba de Wald. (ver libro de Klein). -->
+*Nota:* también se puede verificar $H_0$ a través de la prueba de Wald. (ver libro de Klein).
 
-<!-- Si la muestra está compuesta por pares de observaciones (muestra pareada) entonces se puede probar la igualdad de los $\beta$'s entre grupos usando dos estratos y el LRT anterior (o prueba de Wald). -->
+Si la muestra está compuesta por pares de observaciones (muestra pareada) entonces se puede probar la igualdad de los $\beta$'s entre grupos usando dos estratos y el LRT anterior (o prueba de Wald).
 
-<!-- ## Truncamiento por la izquierda -->
+## Truncamiento por la izquierda
 
-<!-- En el caso de datos truncados se denota $V_i$: tiempo de entrada al estudio del individuo $i$-ésimo.  -->
+En el caso de datos truncados se denota $V_i$: tiempo de entrada al estudio del individuo $i$-ésimo.
 
-<!-- Para facilitar el cálculo, se supone que para cada individuo, el tiempo de evento $X$ y el tiempo de entrada $V$ son condicionalmente independientes dada la covariable $Z$. Es decir: -->
+Para facilitar el cálculo, se supone que para cada individuo, el tiempo de evento $X$ y el tiempo de entrada $V$ son condicionalmente independientes dada la covariable $Z$. Es decir:
 
-<!-- $$P(X=t|Z,X>V)=\frac{P(X=t,V<t|Z)\cdot P(Z)}{P(Z,V<X)}=\frac{P(X=t|Z)P(V<t|Z)P(Z)}{P(Z,V<X)}$$ -->
+$$P(X=t|Z,X>V)=\frac{P(X=t,V<t|Z)\cdot P(Z)}{P(Z,V<X)}=\frac{P(X=t|Z)P(V<t|Z)P(Z)}{P(Z,V<X)}$$
 
-<!-- De lo anterior se puede deducir: -->
+De lo anterior se puede deducir:
 
-<!-- $$h(t|Z,X>V)=h(t|Z)$$ -->
+$$h(t|Z,X>V)=h(t|Z)$$
 
-<!-- usando el hecho de que: -->
+usando el hecho de que:
 
-<!-- $$h(t|Z,X>V)\approx \frac{P(X=t|Z,X>V)}{P(X\geq t|Z,X>V)}$$ -->
+$$h(t|Z,X>V)\approx \frac{P(X=t|Z,X>V)}{P(X\geq t|Z,X>V)}$$
 
-<!-- Ajustando el conjunto de riesgo a: -->
+Ajustando el conjunto de riesgo a:
 
-<!-- $$R(t)=\{j|V_j<t<T_j\}$$ -->
+$$R(t)=\{j|V_j<t<T_j\}$$
 
-<!-- todos los métodos de inferencia vistos hasta ahora funcionan para ajustar el modelo de Cox. -->
+todos los métodos de inferencia vistos hasta ahora funcionan para ajustar el modelo de Cox.
 
 ## Laboratorio
 
@@ -571,7 +573,7 @@ summary(modelo_8_1)
 
 ```
 
-Note que el riesgo relativo de una paciente con un resultado positivo del procedimiento con respecto a una con un negativo es 2.67, es decir una paciente positiva es 2.67 más probable que fallezca con respecto a una que tuvo un resultado negativo. Un intervalo al 95% para el riesgo relativo de la población es [1.136,6.25].
+Note que el riesgo relativo de una paciente con un resultado positivo del procedimiento con respecto a una con un negativo es 2.67, es decir una paciente positiva es 2.67 más probable que fallezca con respecto a una que tuvo un resultado negativo. Un intervalo al 95% para el riesgo relativo de la población es \[1.136,6.25\].
 
 También podemos probar la hipótesis de que el procedimiento no es significativo al 5%. Bajo cualquiera de las tres pruebas (LRT, Wald y Score) se rechaza esta hipótesis nula.
 

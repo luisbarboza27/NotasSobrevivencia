@@ -1,0 +1,484 @@
+# Análisis de Diagnósticos en el Modelo de Cox {#DRSP}
+
+```{r include=FALSE}
+library(tidyverse)
+```
+
+## Residuos de Cox-Snell
+
+Suponga que un modelo de Cox se ha ajustado a los datos
+$(T_j,\delta_j,Z_j)$ para $j=1,\ldots,n$. Además asuma que las
+covariables son estáticas (no dependen del tiempo). Debido a que:
+
+$$S(X_j|Z_j)=1-F_T(X_j|Z_j)\sim \text{Unif}(0,1)$$
+
+Entonces:
+
+$$U=H(X_j|Z_j)=-\log S(X_j|Z_j)\sim \text{Exp}(1)$$ donde $X_j$: tiempo
+de ocurrencia del riesgo del individuo $j$-ésimo. Si
+$b=(b_1,\ldots,b_p)^T$ es un estimador de $\beta$ entonces los residuos
+de Cox-Snell se definen como:
+
+$$r_j=\hat H_0(t)\exp\left(\sum_{k=1}^pZ_{jk}b_k\right),\qquad j=1,\ldots,n$$
+donde $\hat H_0(t)$ es el estimador de Breslow de $H_0(t)$.
+
+Si el modelo de Cox es correcto entonces $\{r_j\}_{j=1}^n$ es una
+muestra censurada de $\text{Exp}(1)$.
+
+1.  Calcule el estimador de Nelson-Aalen de $H(t)$ usando la muestra
+    $\{r_t\}$. Bajo la hipótesis de bondad de ajuste:
+
+$$H(t)=t$$ 2. Grafique $r_j$ versus $\hat H(r_j)$ para $j=1,\ldots,n$:
+
+```{r, echo=FALSE, out.width='70%', fig.align='center', fig.cap='Residuos de Cox-Snell'}
+knitr::include_graphics("images/Cox_Snell.png")
+```
+
+**Nota**: el estimador de Cox-Snell se puede definir en casos en donde
+las covariables dependen del tiempo y/o modelos estratificados:
+
+$$r_j=\hat H_0(T_j)\exp\left(\sum_{k=1}^pZ_{jk}(T_j)b_k\right),\qquad j=1,\ldots,n$$
+
+<!-- ## Residuos Martingala -->
+
+<!-- **Objetivo**: definir posibles transformaciones sobre las covariables -->
+<!-- que permitan mejorar la capacidad explicativa de un modelo de Cox. -->
+
+<!-- Suponga que $Z_j(t)$ son covariables del individuo $j$-ésimo en el -->
+<!-- tiempo $t$. Defina: -->
+
+<!-- $$N_j(t)=\begin{cases} -->
+<!-- 1 & \text{individuo j-esimo ha experimentado el riesgo al tiempo t}\\ -->
+<!-- 0 & \text{si no.} -->
+<!-- \end{cases} -->
+<!-- $$ $$Y_j(t)=\begin{cases} -->
+<!-- 1 & \text{individuo j-esimo está bajo estudio inmediatamente antes del tiempo t}\\ -->
+<!-- 0 & \text{si no.} -->
+<!-- \end{cases} -->
+<!-- $$ -->
+
+<!-- El residuo martingala se define como: -->
+
+<!-- $$\hat M_j=N_j(\infty)-\int_0^\infty Y_j(t)\exp[b^TZ_j(t)]d\hat H_0(t)$$ -->
+
+<!-- si los datos son censurados por la derecha y las covariables son fijas -->
+<!-- entonces: -->
+
+<!-- $$\hat M_j=\delta_j-\hat H_0(T_j)\exp\left(\sum_{k=1}^pZ_{jk}b_k\right)=\delta_j-r_j \qquad j=1,\ldots,n$$ -->
+
+<!-- **Propiedades**: -->
+
+<!-- -   $\sum_{j=1}^n \hat M_j=0$ -->
+<!-- -   Para muestras grandes $\{\hat M_j\}$ son variables independientes -->
+<!--     con medias 0. -->
+<!-- -   Si $b=\beta$ y $\hat H=H_0$ (valores reales) entonces $M_j$ es -->
+<!--     martingala ya que: -->
+
+<!-- $$\hat M_j=\text{número observado de eventos}-\text{número esperado de eventos bajo el modelo de Cox}$$ -->
+
+<!-- Entonces: -->
+
+<!-- $$E[\hat M_j|\text{Información hasta tiempo t}]=0$$ -->
+
+<!-- Por otro lado, con el fin de resolver el objetivo, suponga que la -->
+<!-- covariable $Z$ se divide en dos partes: $Z^*$ (covariables con forma -->
+<!-- funcional conocida) y $Z_1$ (covariables sin forma funcional conocida). -->
+<!-- Suponga además que $Z_1$ es independiente de $Z^*$. -->
+
+<!-- Sea $f(Z_1)$ la mejor función de $Z_1$ que explica su efecto en la -->
+<!-- sobrevivencia a través del modelo de Cox: -->
+
+<!-- $$h(t|Z^*,Z_1)=h_0(t)\exp[\beta^*Z^*]\exp[f(Z_1)]$$ -->
+
+<!-- Procedimiento para encontrar $f$: -->
+
+<!-- 1.  Ajuste un modelo de Cox usando $Z^*$ y calcule $\hat M_j$ para -->
+<!--     $j=1,\ldots,n$ -->
+
+<!-- 2.  Grafique -->
+
+<!-- ```{r, echo=FALSE, out.width='70%', fig.align='center', fig.cap='Residuos Martingala'} -->
+<!-- knitr::include_graphics("images/Martingala.png") -->
+<!-- ``` -->
+
+<!-- ## Análisis descriptivo del Supuesto de Riesgos Proporcionales -->
+
+<!-- Asuma que $Z=(Z_1^T,Z_2^T)^T$ donde $Z_1$: covariable a la que se le va -->
+<!-- a analizar el supuesto de riesgos proporcionales y $Z_2$: vector de -->
+<!-- $p-1$ restantes covariables. Asuma que no hay interacción entre $Z_1$ y -->
+<!-- $Z_2$. -->
+
+<!-- **Primer gráfico** -->
+
+<!-- -   Separe $Z_1$ en $k$ estratos disjuntos (llámese $G_1,\ldots,G_k$ a -->
+<!--     los estratos en el caso continuo o bien en el caso discreto los -->
+<!--     valores de $Z_1$ se pueden etiquetar como $1,\ldots,k$). -->
+
+<!-- -   Estime un modelo de Cox estratificado sobre los niveles de $Z_1$. -->
+
+<!-- -   Sea $\hat H_{g0}$ la tasa acumulada base de riesgo en el estrato -->
+<!--     $g$-ésimo. ($\hat H_{g0}(t)$ debe ser proporcional entre distintos -->
+<!--     valores de $g=1,\ldots,k$). -->
+
+<!-- -   Grafique $t$ versus $\log[\hat H_{g0}(t)]$. Bajo el supuesto de -->
+<!--     riesgos proporcionales los gráficos deberían ser lineales. -->
+
+<!-- -   Otro gráfico posible es $\log[\hat H_{g0}(t)]-\log[\hat H_{10}(t)]$ -->
+<!--     versus $t$. En este caso cada gráfico debería ser aproximadamente -->
+<!--     constante bajo el mismo supuesto. -->
+
+<!-- Inconveniente: los gráficos no dan información detallada del tipo de -->
+<!-- desviación que tuvo una covariable con respecto al supuesto de riesgos -->
+<!-- proporcionales. -->
+
+<!-- **Segundo gráfico (Gráfico de Andersen)** -->
+
+<!-- -   Grafique $\hat H_{g0}(t)$ versus $\hat H_{10}(t)$ para -->
+<!--     $g=2,\ldots,k$. Bajo el supuesto de riesgos proporcionales, las -->
+<!--     curvas deben ser líneas rectas a través del origen. -->
+
+<!-- Si $H_{g0}(t)=e^{\gamma_g}H_{10}(t)$ entonces la pendiente de la curva -->
+<!-- es un estimador de $e^{\gamma_g}$. -->
+
+<!-- Inconveniente: la varianza de $\hat H_{g0}(t)$ depende de $t$, por lo -->
+<!-- tanto los tres gráficos deben ser interpretados con cuidado. -->
+
+<!-- **Tercer gráfico (Gráfico de Arjas)** -->
+
+<!-- Suponga que un modelo de Cox ha sido ajustado con un vector $Z^*$ de -->
+<!-- covariables (de tamaño $p$) y se quiere comprobar si una nueva -->
+<!-- covariable $Z$: -->
+
+<!-- -   Debe ser incluida en el modelo. -->
+<!-- -   $Z$ tiene riesgos proporcionales después de incluir $Z^*$. -->
+
+<!-- Sea $\hat H(t|Z_j^*)$ la tasa de riesgo del modelo ajustado para el -->
+<!-- individuo $j$-ésimo. Bajo una agrupación de la covariable $Z$ en $k$ -->
+<!-- estratos se calcula para cada uno de ellos: -->
+
+<!-- $$TOT_g(t_i)=\sum_{Z_{1j}=g}\hat H(\min(t_i,T_j)|Z_j^*)$$ el cual es el -->
+<!-- tiempo total esperado a prueba. El número observado de eventos que han -->
+<!-- ocurrido hasta tiempo $t_i$ es: -->
+
+<!-- $$N_{g}(t_i)=\sum_{Z_{1j}=g}\delta_j1(T_j\leq t_i)$$ -->
+
+<!-- Si la covariable $Z$ no necesita estar en el modelo entonces -->
+<!-- $N_g(t_i)-TOT_g(t_i)$ es una martingala, para cada $g$. -->
+
+<!-- ```{r, echo=FALSE, out.width='70%', fig.align='center', fig.cap='Gráfico de Arjas'} -->
+<!-- knitr::include_graphics("images/Arjas.png") -->
+<!-- ``` -->
+
+<!-- Si la covariable $Z$ debe ser incluida en el modelo entonces: -->
+
+<!-- $$h(t|Z=g,Z^*)=h_0(t)\exp(\gamma_g)\exp(\beta^TZ^*)$$ y las curvas son -->
+<!-- aproximadamente lineales con pendientes distintas de 1. Si $Z$ no -->
+<!-- satisface el principio de riesgos proporcionales entonces las curvas no -->
+<!-- son lineales y su pendiente difiere de 1. -->
+
+<!-- **Cuarto gráfico (Residuos score)** -->
+
+<!-- Se ajusta un modelo de Cox sobre las $p$ covariables. Sea $b$ el -->
+<!-- estimador de verosimilitud parcial de $\beta$ y $\hat H_0(t)$ la tasa de -->
+<!-- riesgo base estimada. Considere: -->
+
+<!-- -   $N_j(t)$: indicadora de que el $j$-ésimo paciente/sujeto ha -->
+<!--     experimentado el riesgo en tiempo $t$ -->
+
+<!-- -   $Y_j(t)$: indicadora de que el $j$-ésimo sujeto está bajo estudio -->
+<!--     justo antes del tiempo $t$. -->
+
+<!-- Para la $k$-ésima covariable defina: -->
+
+<!-- $$\bar Z_k(t)=\frac{\sum_{j=1}^n Y_j(t)Z_{jk}(t)\exp[b^TZ_j(t)]}{\sum_{j=1}^n Y_j(t)\exp[b^TZ_j(t)]}$$ -->
+<!-- el cual es un promedio ponderado de $Z_{jk}(t)$ y sea $\hat M_j(t)$ el -->
+<!-- residuo martingala al tiempo $t$ para el individuo $j$-ésimo: -->
+
+<!-- $$\hat M_j(t)=N_j(t)-\int_0^tY_j(u)\exp[b^TZ_j(u)]d\hat H_0(u)\qquad j=1,\ldots,n$$ -->
+<!-- El residuo score para la $k$-ésima covariable y el individuo $j$-ésimo -->
+<!-- se define como: -->
+
+<!-- $$S_{jk}(t)=\int_0^t[Z_{jk}(u)-\bar Z_k(u)]d\hat M_j(u)$$ El proceso -->
+<!-- score para la $k$-ésima covariable es: -->
+
+<!-- $$U_k(t)=\sum_{j=1}^n S_{jk}(t)$$ En el caso de que todas las -->
+<!-- covariables son fijas en tiempo 0 entonces: -->
+
+<!-- $$U_k(t)=\sum_{\text{muertes}\leq t}\underbrace{[Z_{jk}-\bar Z_k(T_j)]}_\text{residuos de Schoenfeld}$$ -->
+<!-- Nota: el proceso score $U_k(t)$ es la primera derivada parcial de la -->
+<!-- verosimilitud parcial del modelo de Cox ajustado con información hasta -->
+<!-- tiempo $t$. Además: -->
+
+<!-- $$U_k(0)=0 \qquad \text{y} \qquad U_k(\infty)=0$$ dado que $b$ resuelve -->
+<!-- la ecuación score. Además bajo la hipótesis de que el modelo ajusta bien -->
+<!-- entonces: -->
+
+<!-- $$W_k(t)=U_k(t)\cdot \text{Error estándar}(b_k)$$ y la expresión -->
+<!-- anterior converge a un puente browniano que se anula en 0 y en $\infty$, -->
+<!-- siempre y cuando $\text{Cov}(b_k,b_{k'})=0$ para $k\neq k'$. -->
+
+<!-- ```{r, echo=FALSE, out.width='70%', fig.align='center', fig.cap='Residuos de Schoenfeld'} -->
+<!-- knitr::include_graphics("images/Schoenfeld.png") -->
+<!-- ``` -->
+
+<!-- En el gráfico anterior, en el cuadrante superior se nota que existe -->
+<!-- evidencia en contra de $H_0$ ya que $W_k(t)$ es superior al cuantil -->
+<!-- superior bajo $H_0$, es decir el supuesto de riesgos proporcionales para -->
+<!-- $Z_k$ no es cierto. -->
+
+<!-- ## Identificación de Outliers -->
+
+<!-- Con el fin de detectar outliers podemos usar un gráfico con los residuos -->
+<!-- martingala ($\hat M_j$) vs $j$. -->
+
+<!-- *Principal problema:* valor máximo del residuo=1 y el valor mínimo del -->
+<!-- residuo=$-\infty$. Por lo tanto los residuos martingala son muy -->
+<!-- asimétricos. -->
+
+<!-- *Solución*: modificar $\hat M_j$ a través del residuo de devianza: -->
+
+<!-- $$D_j=\text{signo}[\hat M_j]\cdot \left\{-2\left[\hat M_j+\delta_j\log(\delta_j-\hat M_j)\right] \right\}^{1/2}$$ -->
+
+<!-- -   Si $\hat M_j=0$ entonces $D_j=0$ -->
+
+<!-- -   Si $\hat M_j\longrightarrow 1$ entonces $D_j\longrightarrow \infty$ -->
+
+<!-- -   Si $\hat M_j\longrightarrow -\infty$ entonces -->
+<!--     $D_j\longrightarrow -\infty$ (a una menor tasa). -->
+
+<!-- Gráfico sugerido (misma interpretación de un gráfico de residuos en -->
+<!-- regresión): -->
+
+<!-- ```{r, echo=FALSE, out.width='70%', fig.align='center', fig.cap='Residuos de devianza'} -->
+<!-- knitr::include_graphics("images/devianza.png") -->
+<!-- ``` -->
+
+<!-- donde el score de riesgo es: -->
+
+<!-- $$\text{Score de riesgo}_j=\sum_{k=1}^p b_kZ_{jk}$$ La identificación de -->
+<!-- outliers se puede realizar bajo el supuesto de normalidad en los -->
+<!-- residuos $N(0,1)$. -->
+
+<!-- ## Gráfico de Influencia -->
+
+<!-- Con el fin de verificar el grado de influencia de cada observación en -->
+<!-- los estimadores de $\beta$, se compara $b$ con $b_{(j)}$: estimador de -->
+<!-- $\beta$ quitando la $j$-ésima observación. Esto se hace simplemente a -->
+<!-- través de la diferencia $b-b_{(j)}$, en el sentido de que si $b-b_{(j)}$ -->
+<!-- es pequeño, entonces la observación tiene poca influencia. -->
+
+<!-- *Problema*: el procedimiento anterior implica realizar $n+1$ regresiones -->
+<!-- de Cox. -->
+
+<!-- *Solución*: usar una aproximación para no tener que calcular todas las -->
+<!-- regresiones. -->
+
+<!-- Sea $S_{jk}=S_{jk}(\infty)$ (residuo score). Si todas las covariables -->
+<!-- son fijas en tiempo 0: -->
+
+<!-- $$S_{jk}=\underbrace{\delta_j[Z_{jk}-\bar Z_k(T_j)]}_{\text{Residuo parcial de Schoenfeld}}-\sum_{t_b\leq T_j}[Z_{jk}-\bar Z_k(T_b)]\exp(b^TZ_j)\cdot [\hat H_0(t_b)-\hat H_0(t_{b-1})]$$ -->
+<!-- para $j=1,\ldots,n$ y $k=1,\ldots,p$. -->
+
+<!-- Se puede comprobar que $b-b_{(j)}\approx \Delta_j$ donde: -->
+
+<!-- $$\Delta_j=I(b)^{-1}(S_{j1},\ldots,S_{jp})^T$$ -->
+
+<!-- donde $I(b)$ es la información de Fisher observada. -->
+
+<!-- Gráficos: -->
+
+<!-- ```{r, echo=FALSE, out.width='70%', fig.align='center', fig.cap='Gráficos de Influencia'} -->
+<!-- knitr::include_graphics("images/influencia.png") -->
+<!-- ``` -->
+
+<!-- en donde el gráfico de la derecha muestra el nivel de influencia de las -->
+<!-- observaciones sobre la $k$-ésima covariable. -->
+
+<!-- ## Laboratorio -->
+
+<!-- ### Ejemplo 1 -->
+
+<!-- En este ejemplo retomamos los datos de pacientes que han tenido un -->
+<!-- transplante de médula ósea y se analiza el riesgo de muerte o -->
+<!-- reaparición de la leucemia. Cargamos datos y paquetes: -->
+
+<!-- ```{r message=FALSE, warning=FALSE} -->
+<!-- library(survival) -->
+<!-- library(survMisc) -->
+<!-- library(KMsurv) -->
+<!-- library(tidyverse) -->
+<!-- library(survminer) -->
+
+<!-- data(bmt) -->
+<!-- ``` -->
+
+<!-- Ajustamos un modelo de Cox con las siguientes covariables: -->
+
+<!-- ```{r} -->
+<!-- bmt <- bmt %>%  -->
+<!--   mutate(waiting=z7/30-9,FAB=factor(z8), -->
+<!--                       MTX=factor(z10),SXPa=factor(z3), -->
+<!--                       SXDo=factor(z4),CMVPa=factor(z5),    -->
+<!--                     CMVDo=factor(z6),AgePa=z1-28,AgeDo=z2-28, -->
+<!--                       group=factor(group)) -->
+<!-- bmt_2 <- bmt %>% select(t2,d3,group,waiting,FAB,MTX,AgePa, -->
+<!--                         AgeDo) -->
+<!-- modelo1 <- coxph(Surv(time=t2, event=d3)~AgePa*AgeDo+group+FAB+waiting+MTX,data = bmt_2) -->
+<!-- summary(modelo1) -->
+<!-- ``` -->
+
+<!-- Antes de calcular los residuos de Cox-Snell calculamos los residuos -->
+<!-- Martingala, y después los obtenemos por diferencia con respecto a los -->
+<!-- eventos observados: -->
+
+<!-- ```{r} -->
+<!-- bmt_2$rMart <- residuals(modelo1,type = 'martingale') -->
+<!-- bmt_2$rCox <- bmt$d3-bmt_2$rMart -->
+<!-- ``` -->
+
+<!-- Ahora calculamos el estimador de Nelson-Aalen usando como tiempos los -->
+<!-- residuos de Cox-Snell: -->
+
+<!-- ```{r} -->
+<!-- modelo1_CoxSnell <- coxph(Surv(rCox,d3)~1,data = bmt_2,ties = 'breslow') -->
+<!-- ``` -->
+
+<!-- y calculamos la tasa acumulada: -->
+
+<!-- ```{r} -->
+<!-- H0_modelo1_CS <- basehaz(modelo1_CoxSnell,centered = FALSE) -->
+<!-- plot(H0_modelo1_CS$time,H0_modelo1_CS$hazard) -->
+<!-- abline(a = 0,b=1) -->
+<!-- ``` -->
+
+<!-- de donde se puede concluir que el ajuste no es malo. Anteriormente -->
+<!-- habíamos puesto en duda el supuesto de riesgos proporcionales en la -->
+<!-- variable MTX. Hacemos el gráfico para los dos niveles de la variable MTX -->
+<!-- y los comparamos: -->
+
+<!-- ```{r} -->
+<!-- modelo1_CoxSnell_MTX1 <- coxph(Surv(rCox,d3)~1,data = subset(bmt_2,MTX==1),ties = 'breslow') -->
+<!-- modelo1_CoxSnell_MTX0 <- coxph(Surv(rCox,d3)~1,data = subset(bmt_2,MTX==0),ties = 'breslow') -->
+<!-- H0_modelo1_CS_MTX1 <- basehaz(modelo1_CoxSnell_MTX1,centered = FALSE) -->
+<!-- H0_modelo1_CS_MTX0 <- basehaz(modelo1_CoxSnell_MTX0,centered = FALSE) -->
+<!-- plot(H0_modelo1_CS_MTX0$time,H0_modelo1_CS_MTX0$hazard,type='l',xlab='Tiempo',ylab='H0') -->
+<!-- lines(H0_modelo1_CS_MTX1$time,H0_modelo1_CS_MTX1$hazard,lty=2) -->
+<!-- abline(a = 0,b=1) -->
+<!-- legend(x = 0,y = 3,legend = c('MTX=0','MTX=1'),lty=c(1,2)) -->
+<!-- ``` -->
+
+<!-- A partir de este gráfico vemos que el supuesto de riesgos proporcionales -->
+<!-- no es tan evidente para la covariable MTX. Una posible forma de -->
+<!-- solucionarlo es a través de un modelo estratificado. Ejercicio: Repetir -->
+<!-- el procedimiento anterior con el modelo estratificado y comparar con la -->
+<!-- figura 11.3 del Klein. -->
+
+<!-- Otra posible forma de verificar gráficamente el supuesto de riesgos -->
+<!-- proporcionales es a través del proceso score, el cual es calculado -->
+<!-- usando los residuos de Schoenfeld sobre los riesgos observados: -->
+
+<!-- ```{r} -->
+<!-- rSchoen <- residuals(modelo1,type = 'schoenfeld') -->
+<!-- muertes <- bmt_2 %>% filter(d3==1) %>% mutate(rSchoen_MTX=rSchoen[,7],rSchoen_wait=rSchoen[,6])%>% -->
+<!--   arrange(t2)%>% mutate(Uk_MTX=cumsum(rSchoen_MTX),Uk_wait=cumsum(rSchoen_wait)) -->
+<!-- resumen_m1 <- summary(modelo1) -->
+
+<!-- plot(muertes$t2,resumen_m1$coefficients[7,3]*muertes$Uk_MTX,type='l',xlab='Tiempo',ylab='Score Estandarizado') -->
+<!-- abline(h=c(-1.3581,1.3581)) -->
+<!-- plot(muertes$t2,resumen_m1$coefficients[6,3]*muertes$Uk_wait,type='l',xlab='Tiempo',ylab='Score Estandarizado') -->
+<!-- abline(h=c(-1.3581,1.3581)) -->
+<!-- ``` -->
+
+<!-- En ambos casos no se sobrepasa los umbrales de confianza de un puente -->
+<!-- Browniano al 95%, pero hay más evidencia (aunque muy poca) de que la -->
+<!-- variable MTX no satisface el supuesto de riesgos proporcionales. -->
+
+<!-- ### Ejemplo 2 -->
+
+<!-- El siguiente ejemplo es de 43 pacientes que recibieron un transplante de -->
+<!-- médula ósea que tenían la enfermedad de Hodgkin (HOD) o el linfoma -->
+<!-- no-Hodgkin (NHL) (dtype) y se le suministró dos tipos distintos de -->
+<!-- transplantes (gtype: Allo, Auto). Dos covariables adicionales son el -->
+<!-- score de Karnofsky (score) y el tiempo de espera desde el diagnóstico -->
+<!-- hasta el transplante (wtime). Carga de datos: -->
+
+<!-- ```{r} -->
+<!-- data(hodg) -->
+<!-- head(hodg) -->
+<!-- ``` -->
+
+<!-- Ahora se determinará la mejor transformación de la variable wtime para -->
+<!-- el análisis a través de los residuos martingala del modelo reducido sin -->
+<!-- la variable wtime: -->
+
+<!-- ```{r} -->
+<!-- hodg <- hodg %>% mutate(gtype=factor(gtype),dtype=factor(dtype)) -->
+<!-- modelo2_ww <- coxph(Surv(time,delta)~gtype*dtype+score,data = hodg) -->
+<!-- residuos_mart_w <- residuals(modelo2_ww,type = 'martingale') -->
+<!-- datos_mart <- hodg %>% select(wtime) %>% mutate(rMart=residuos_mart_w) -->
+<!-- grafico_mart <- ggplot(data = datos_mart,mapping = aes(x=wtime,y = rMart))+geom_point()+geom_smooth() -->
+<!-- grafico_mart -->
+<!-- ``` -->
+
+<!-- En donde se puede observar que hay un comportamiento muy diferente en -->
+<!-- los residuos martingala antes y después de 75 meses. Una posible -->
+<!-- solución es usar una indicadora a los 75 meses. Usando las técnicas de -->
+<!-- discretización de variables que vimos en el capítulo 8 (prueba de -->
+<!-- Contal-O'Quigley): -->
+
+<!-- ```{r} -->
+<!-- modelo2 <- coxph(Surv(time,delta)~gtype*dtype+score+wtime,data = hodg) -->
+<!-- Contal_modelo2 <- cutp(modelo2) -->
+<!-- Contal_modelo2$wtime[1,] -->
+<!-- ``` -->
+
+<!-- Por lo tanto se selecciona un corte de 84 meses para la definición de la -->
+<!-- indicadora. Definimos la variable indicadora: -->
+
+<!-- ```{r} -->
+<!-- hodg <- hodg %>% mutate(i_wtime=ifelse(wtime>=84,1,0)) -->
+<!-- contrasts(hodg$gtype) <- contr.treatment(n = 2,base = 2) -->
+<!-- contrasts(hodg$dtype) -->
+<!-- modelo2_wi <- coxph(Surv(time,delta)~gtype*dtype+score+i_wtime,data = hodg) -->
+<!-- summary(modelo2_wi) -->
+<!-- ``` -->
+
+<!-- En este caso graficamos los residuos de devianza vs los scores de -->
+<!-- riesgo: -->
+
+<!-- ```{r} -->
+<!-- ggcoxdiagnostics(modelo2_wi,type = 'deviance',ggtheme = theme_bw()) -->
+<!-- ``` -->
+
+<!-- donde podemos observar que hay un par de individuos con valores -->
+<!-- relativamente altos en su residuos de devianza: -->
+
+<!-- ```{r} -->
+<!-- hodg <- hodg %>% mutate(rDev=residuals(modelo2_wi,type = 'deviance')) -->
+<!-- mayores_dev <- hodg %>% arrange(desc(rDev)) -->
+<!-- mayores_dev[1:2,] -->
+<!-- ``` -->
+
+<!-- Noten que los dos individuos fallecieron al mes aproximadamente, pero -->
+<!-- sus scores de riesgo eran bajos, es decir se esperaba que los dos -->
+<!-- sobrevivieran más. -->
+
+<!-- Ahora graficamos los estadísticos de influencia de las observaciones: -->
+
+<!-- ```{r} -->
+<!-- ggcoxdiagnostics(modelo2_wi,type = 'dfbetas') -->
+<!-- influence_m <- residuals(modelo2_wi,type = 'dfbetas') -->
+<!-- ``` -->
+
+<!-- Note que el individuo con mayor influencia en la estimación del score es -->
+<!-- el número 1: -->
+
+<!-- ```{r} -->
+<!-- which.max(influence_m[,3]) -->
+<!-- hodg[which.max(abs(influence_m[,3])),] -->
+<!-- ``` -->
+
+<!-- y es un individuo con un score relativamente alto (indicador de buen -->
+<!-- estado físico) pero murió en un momento muy temprano (1 mes -->
+<!-- aproximadamente). Este individuo es el mismo con un residuo de devianza alto. -->
+

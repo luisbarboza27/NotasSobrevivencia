@@ -12,6 +12,7 @@ book:
     - estNP.qmd
     - PH.qmd
     - RSP.qmd
+    - DRSP.qmd
     - references.qmd
 
 bibliography: references.bib
