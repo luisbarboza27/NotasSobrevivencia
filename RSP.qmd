@@ -329,11 +329,11 @@ $$[T_j,\delta_j,[Z_j(t), 0\leq t\leq T_j]]$$
 
 para $j=1,\ldots,n$ donde:
 
-- $T_j$: tiempo de ocurrencia de evento/censura
+-   $T_j$: tiempo de ocurrencia de evento/censura
 
-- $\delta_j$: indicador de evento de riesgo y
+-   $\delta_j$: indicador de evento de riesgo y
 
-- $Z_j(t)=[Z_{j1(t)},\ldots,Z_{jp}(t)]$: covariables del $j$-ésimo paciente en tiempo $t$.
+-   $Z_j(t)=[Z_{j1(t)},\ldots,Z_{jp}(t)]$: covariables del $j$-ésimo paciente en tiempo $t$.
 
 Asumimos que $Z_j(t)$ es observable en el periodo de estudio y además que no hay repeticiones para distintos individuos en los tiempos de ocurrencia:
 
@@ -361,108 +361,79 @@ Compare dos individuos con covariables $Z_1$ y $Z_1^*$ a través de su riesgo re
 
 $$\frac{h(t|Z_1)}{h(t|Z_1^*)}=\exp[\beta_1(Z_1-Z_1^*)+\beta_2g(t)(Z_1-Z_1^*)]$$
 
-Note que bajo la hipótesis $H_0:$ *riesgos proporcionales en $Z_1$*, la parte derecha de la ecuación anterior no depende de $t$. Por lo tanto $H_0$ es equivalente a la hipótesis $H_0: \beta_2=0$ la cual se puede verificar a través de la prueba de Wald, LRT o Score.
+Note que bajo la hipótesis $H_0:$ *riesgos proporcionales en* $Z_1$, la parte derecha de la ecuación anterior no depende de $t$. Por lo tanto $H_0$ es equivalente a la hipótesis $H_0: \beta_2=0$ la cual se puede verificar a través de la prueba de Wald, LRT o Score.
 
 Si el supuesto de riesgos proporcionales no es cierto para $Z_1$ entonces se puede definir una covariable dependiente de tiempo:
 
+```{=tex}
 \begin{align*}
-
 Z_2(t)=
-
    \begin{cases}
-
      Z_1\cdot g(t) & \text{si}\quad Z_1=1\\
-
      0 & \text{si no}
-
    \end{cases}
-
 \end{align*}
-
+```
 en el caso en que $Z_1$ fuera dicotómica. El principal problema a este momento es la estimación de la función $g(t)$. Una posible solución es asumir que $g(t)$ es una variable indicadora. Definiríamos entonces:
 
+```{=tex}
 \begin{align*}
-
 Z_2(t)=
-
    \begin{cases}
-
      Z_1 & t>\tau \\
-
      0 & t\leq \tau
-
    \end{cases}
-
 \end{align*}
-
+```
 en este caso:
 
+```{=tex}
 \begin{align*}
-
 h(t|Z(t))=
-
    \begin{cases}
-
      h_0(t)\exp(\beta_1Z_1) & t\leq \tau\\
-
      h_0(t)\exp((\beta_1+\beta_2)Z_1) & t>\tau
-
    \end{cases}
-
 \end{align*}
-
+```
 y por lo tanto:
 
+```{=tex}
 \begin{align*}
-
 &RR(Z_1=1\text{ vs } Z_1=0; t\leq \tau) = \exp(\beta_1)\\
-
 &RR(Z_1=1\text{ vs } Z_1=0; t> \tau) = \exp(\beta_1+\beta_2)
-
 \end{align*}
-
+```
 por este motivo a $\tau$ se le llama punto de cambio en el riesgo relativo. Otra codificación que se puede utilizar es a través del uso de un modelo con dos covariables: $Z_2(t)$ y
 
+```{=tex}
 \begin{align*}
-
 Z_3(t)=
-
    \begin{cases}
-
        Z_1 & t\leq \tau\\
-
        0 & t>\tau
-
    \end{cases}
-
 \end{align*}
-
+```
 Entonces:
 
+```{=tex}
 \begin{align*}
-
 h(t|Z(t))=
-
    \begin{cases}
-
      h_0(t)\exp(\theta_3 Z_1) & t\leq \tau\\
-
      h_0(t)\exp(\theta_2 Z_1) & t>\tau
-
    \end{cases}
-
 \end{align*}
-
+```
 y:
 
+```{=tex}
 \begin{align*}
-
 &RR(Z_1=1\text{ vs } Z_1=0; t\leq \tau) = \exp(\theta_3)\\
-
 &RR(Z_1=1\text{ vs } Z_1=0; t> \tau) = \exp(\theta_2)
-
 \end{align*}
-
+```
 El siguiente paso es ajustar el modelo (bajo cualquiera de las dos codificaciones) para distintos valores de $\tau$ (tiempos de ocurrencia). El valor $\tau$ con máxima log-verosimilitud se toma como posible umbral.
 
 Una prueba de riesgos proporcionales se hace en $t\leq \tau$ y $t>\tau$. Si en alguna de las dos regiones la prueba se rechaza, el proceso se repite.
@@ -483,9 +454,9 @@ donde $LL_j(\beta)$: log-verosimilitud parcial usando la muestra del $j$-ésimo 
 
 Para probar la hipótesis de que las covariables tienen el mismo efecto para cualquier estrato, se:
 
-- Ajusta el modelo estratificado y se obtiene $LL(b)$.
+-   Ajusta el modelo estratificado y se obtiene $LL(b)$.
 
-- Para $j=1,\ldots,s$, se ajusta el modelo con la muestra correspondiente al $j$-ésimo estrato y se obtiene $LL_j(b_j)$
+-   Para $j=1,\ldots,s$, se ajusta el modelo con la muestra correspondiente al $j$-ésimo estrato y se obtiene $LL_j(b_j)$
 
 Para probar $H_0: \beta=\beta_j$, con $j=1,\ldots,s$ se usa un LRT con estadístico:
 
@@ -737,395 +708,398 @@ plot(S_8_2_age,col=1:4)
 
 ```
 
-<!-- ### Tercer ejemplo (Ejemplo 8.3) -->
+### Tercer ejemplo (Ejemplo 8.3)
 
-<!-- Este tercer ejemplo consiste en 863 pacientes de transplante de riñón con covariables etnia (race: $R$) y sexo (gender: $G$). Cargamos los datos y transformamos las dos covariables en variables tipo factor: -->
+Este tercer ejemplo consiste en 863 pacientes de transplante de riñón con covariables etnia (race: $R$) y sexo (gender: $G$). Cargamos los datos y transformamos las dos covariables en variables tipo factor:
 
-<!-- ```{r} -->
+```{r}
 
-<!-- data("kidtran") -->
+data("kidtran")
 
-<!-- summary(kidtran) -->
+summary(kidtran)
 
-<!-- kidtran <- kidtran %>% mutate(gender=factor(gender),race=factor(race)) -->
+kidtran <- kidtran %>% mutate(gender=factor(gender),race=factor(race))
 
-<!-- ``` -->
+```
 
-<!-- Primero ajustamos un modelo en donde haya una interacción entre las dos covariables: -->
+Primero ajustamos un modelo en donde haya una interacción entre las dos covariables:
 
-<!-- ```{r} -->
+```{r}
 
-<!-- modelo_8_3 <- coxph(Surv(time,delta)~gender*race,data = kidtran) -->
+modelo_8_3 <- coxph(Surv(time,delta)~gender*race,data = kidtran)
 
-<!-- summary(modelo_8_3) -->
+summary(modelo_8_3)
 
-<!-- ``` -->
+```
 
-<!-- Note que en este caso los niveles base en ambas covariables son Masculino y etnia blanca. Hay que tener cuidado en este caso al calcular los riesgos relativos, por ejemplo el riesgo relativo de ser hombre negro con respecto a una mujer blanca es: -->
+Note que en este caso los niveles base en ambas covariables son Masculino y etnia blanca. Hay que tener cuidado en este caso al calcular los riesgos relativos, por ejemplo el riesgo relativo de ser hombre negro con respecto a una mujer blanca es:
 
-<!-- $$\frac{h(t|G=1,R=2)}{h(t|G=2,R=1)}=\frac{e^{-0.08878}}{e^{-0.24848}}=\frac{0.915}{0.78}=1.17$$ -->
+$$\frac{h(t|G=1,R=2)}{h(t|G=2,R=1)}=\frac{e^{-0.08878}}{e^{-0.24848}}=\frac{0.915}{0.78}=1.17$$
 
-<!-- y el riesgo relativo de una mujer negra con respecto a una blanca: -->
+y el riesgo relativo de una mujer negra con respecto a una blanca:
 
-<!-- $$\frac{h(t|G=2,R=2)}{h(t|G=2,R=1)}=\frac{e^{-0.8878-0.24848+0.74549}}{e^{-0.24848}}=0.915\cdot 2.107=1.928$$ -->
+$$\frac{h(t|G=2,R=2)}{h(t|G=2,R=1)}=\frac{e^{-0.8878-0.24848+0.74549}}{e^{-0.24848}}=0.915\cdot 2.107=1.928$$
 
-<!-- Las pruebas de Wald, score y LRT no rechazan la hipótesis de no-significancia de la interacción y efectos principales del sexo y etnia sobre la sobrevivencia de la población en estudio. -->
+Las pruebas de Wald, score y LRT no rechazan la hipótesis de no-significancia de la interacción y efectos principales del sexo y etnia sobre la sobrevivencia de la población en estudio.
 
-<!-- Si ajustamos un modelo reducido con efectos principales solamente tenemos: -->
+Si ajustamos un modelo reducido con efectos principales solamente tenemos:
 
-<!-- ```{r} -->
+```{r}
 
-<!-- modelo_8_3_sInt <- update(modelo_8_3,formula. = .~.-gender:race) -->
+modelo_8_3_sInt <- update(modelo_8_3,formula. = .~.-gender:race)
 
-<!-- summary(modelo_8_3_sInt) -->
+summary(modelo_8_3_sInt)
 
-<!-- ``` -->
+```
 
-<!-- y podemos verificar a través de una prueba LRT si la interacción es significativa: -->
+y podemos verificar a través de una prueba LRT si la interacción es significativa:
 
-<!-- ```{r} -->
+```{r}
 
-<!-- anova(modelo_8_3_sInt,modelo_8_3) -->
+anova(modelo_8_3_sInt,modelo_8_3)
 
-<!-- ``` -->
+```
 
-<!-- Dado que la muestra es relativamente grande (863 individuos) uno pensaría que la significancia debería ser menor al menos al 5%. En este caso no podríamos rechazar la hipótesis de no-significancia de la interacción entre las dos covariables. -->
+Dado que la muestra es relativamente grande (863 individuos) uno pensaría que la significancia debería ser menor al menos al 5%. En este caso no podríamos rechazar la hipótesis de no-significancia de la interacción entre las dos covariables.
 
-<!-- A pesar de esto el modelo reducido sigue siendo no significativo. -->
+A pesar de esto el modelo reducido sigue siendo no significativo.
 
-<!-- Un último ejercicio es la discretización de la covariable edad, ante distintas combinaciones de las dos covariables sexo y etnia. La discretización de la variable edad en dos grupos la podemos hacer a travéś de la prueba de Contal y O'Quigley, para los hombres de raza negra: -->
+Un último ejercicio es la discretización de la covariable edad, ante distintas combinaciones de las dos covariables sexo y etnia. La discretización de la variable edad en dos grupos la podemos hacer a travéś de la prueba de Contal y O'Quigley, para los hombres de raza negra:
 
-<!-- ```{r} -->
+```{r}
 
-<!-- muestraBM <- kidtran %>% filter(gender==1,race==2) -->
+muestraBM <- kidtran %>% filter(gender==1,race==2)
 
-<!-- model_c_BM <- coxph(Surv(time,delta)~age,data = muestraBM) -->
+model_c_BM <- coxph(Surv(time,delta)~age,data = muestraBM)
 
-<!-- summary(model_c_BM) -->
+summary(model_c_BM)
 
-<!-- Contal_BM <- cutp(model_c_BM) -->
+Contal_BM <- cutp(model_c_BM)
 
-<!-- Contal_BM$age[1,] -->
+Contal_BM$age[1,]
 
-<!-- ``` -->
+```
 
-<!-- en donde podemos observar que utilizar un umbral de 58 años permite obtener la mayor separabilidad entre los dos grupos a través del estadístico logrank. Usando la variable discreta y usando la variable continua no se rechaza la nula de no-significancia de la edad para este grupo. -->
+en donde podemos observar que utilizar un umbral de 58 años permite obtener la mayor separabilidad entre los dos grupos a través del estadístico logrank. Usando la variable discreta y usando la variable continua no se rechaza la nula de no-significancia de la edad para este grupo.
 
-<!-- El caso de hombres de raza blanca es: -->
+El caso de hombres de raza blanca es:
 
-<!-- ```{r} -->
+```{r}
 
-<!-- muestraWM <- kidtran %>% filter(gender==1,race==1) -->
+muestraWM <- kidtran %>% filter(gender==1,race==1)
 
-<!-- model_c_WM <- coxph(Surv(time,delta)~age,data = muestraWM) -->
+model_c_WM <- coxph(Surv(time,delta)~age,data = muestraWM)
 
-<!-- summary(model_c_WM) -->
+summary(model_c_WM)
 
-<!-- Contal_WM <- cutp(model_c_WM) -->
+Contal_WM <- cutp(model_c_WM)
 
-<!-- Contal_WM$age[1,] -->
+Contal_WM$age[1,]
 
-<!-- ``` -->
+```
 
-<!-- en donde de manera contraria la edad sí es significativa al explicar la sobrevivencia, a través de una edad umbral de 41 años. -->
+en donde de manera contraria la edad sí es significativa al explicar la sobrevivencia, a través de una edad umbral de 41 años.
 
-<!-- ### Selección de variables -->
+### Selección de variables
 
-<!-- Los datos de este primer ejemplo corresponden a la base de sobrevivencia de 137 pacientes con transplante de médula ósea, los cuales se han dividido en tres grupos de riesgo dependiendo de su condición al momento del trasplante (ALL, AML-Low, AML-high). El riesgo a considerar es la muerte durante el tratamiento o reaparición de la leucemia. A continuación la carga de paquetes y datos: -->
+Los datos de este primer ejemplo corresponden a la base de sobrevivencia de 137 pacientes con transplante de médula ósea, los cuales se han dividido en tres grupos de riesgo dependiendo de su condición al momento del trasplante (ALL, AML-Low, AML-high). El riesgo a considerar es la muerte durante el tratamiento o reaparición de la leucemia. A continuación la carga de paquetes y datos:
 
-<!-- ```{r warning=FALSE} -->
+```{r warning=FALSE}
 
-<!-- library(survival) -->
+library(survival)
 
-<!-- library(survMisc) -->
+library(survMisc)
 
-<!-- library(KMsurv) -->
+library(KMsurv)
 
-<!-- library(tidyverse) -->
+library(tidyverse)
 
-<!-- data(bmt) -->
+data(bmt)
 
-<!-- ``` -->
+```
 
-<!-- Primero ajustamos un modelo de Cox en donde los grupos de riesgo son una covariable y comprobamos si la covariable aporta de forma significativa al explicar la sobrevivencia de la muestra: -->
+Primero ajustamos un modelo de Cox en donde los grupos de riesgo son una covariable y comprobamos si la covariable aporta de forma significativa al explicar la sobrevivencia de la muestra:
 
-<!-- ```{r} -->
+```{r}
 
-<!-- bmt <- bmt %>% mutate(group=factor(group)) -->
+bmt <- bmt %>% mutate(group=factor(group))
 
-<!-- modelo1 <- coxph(Surv(time=t2, event=d3) ~ group, data=bmt) -->
+modelo1 <- coxph(Surv(time=t2, event=d3) ~ group, data=bmt)
 
-<!-- summary(modelo1) -->
+summary(modelo1)
 
-<!-- ``` -->
+```
 
-<!-- en donde notamos que para las tres pruebas LRT, Wald y Score se rechaza la hipótesis de que la variable categórica grupo no es significativa bajo niveles de significancia usuales. Hay otras variables que también se van a considerar como posibles predictores: tiempo de espera del transplante (waiting), clasificador FAB (FAB), indicador de MTX (MTX), Sexo de paciente (SXPa), Sexo de Donante (SXDo), CMV de paciente (CMVPa), CMV de donante (CMVDo), Edad de paciente (AgePa), Edad de donante (AgeDo)  -->
+en donde notamos que para las tres pruebas LRT, Wald y Score se rechaza la hipótesis de que la variable categórica grupo no es significativa bajo niveles de significancia usuales. Hay otras variables que también se van a considerar como posibles predictores: tiempo de espera del transplante (waiting), clasificador FAB (FAB), indicador de MTX (MTX), Sexo de paciente (SXPa), Sexo de Donante (SXDo), CMV de paciente (CMVPa), CMV de donante (CMVDo), Edad de paciente (AgePa), Edad de donante (AgeDo)
 
-<!-- ```{r} -->
+```{r}
 
-<!-- bmt <- bmt %>% mutate(waiting=z7,FAB=factor(z8), -->
+bmt <- bmt %>% mutate(waiting=z7,FAB=factor(z8),
 
-<!--                       MTX=factor(z10),SXPa=factor(z3), -->
+                      MTX=factor(z10),SXPa=factor(z3),
 
-<!--                       SXDo=factor(z4),CMVPa=factor(z5),                      CMVDo=factor(z6),AgePa=z1-28,AgeDo=z2-28) -->
+                      SXDo=factor(z4),CMVPa=factor(z5),                      CMVDo=factor(z6),AgePa=z1-28,AgeDo=z2-28)
 
-<!-- bmt_2 <- bmt %>% select(t2,d3,group,waiting,FAB,MTX,SXPa,SXDo, -->
+bmt_2 <- bmt %>% select(t2,d3,group,waiting,FAB,MTX,SXPa,SXDo,
 
-<!--                        CMVPa,CMVDo,AgePa,AgeDo,ta,tc,tp) -->
+                       CMVPa,CMVDo,AgePa,AgeDo,ta,tc,tp)
 
-<!-- ``` -->
+```
 
-<!-- Definimos los modelos aumentados en una variable o factor a la vez y usamos la técnica de selección para adelante (Forward selection) como método de selección de variables: -->
+Definimos los modelos aumentados en una variable o factor a la vez y usamos la técnica de selección para adelante (Forward selection) como método de selección de variables:
 
-<!-- ```{r} -->
+```{r}
 
-<!-- modelo1_1 <- update(modelo1,formula. = .~.+waiting) -->
+modelo1_1 <- update(modelo1,formula. = .~.+waiting)
 
-<!-- anova(modelo1,modelo1_1) -->
+anova(modelo1,modelo1_1)
 
-<!-- modelo1_2 <- update(modelo1,formula. = .~.+FAB) -->
+modelo1_2 <- update(modelo1,formula. = .~.+FAB)
 
-<!-- anova(modelo1,modelo1_2) -->
+anova(modelo1,modelo1_2)
 
-<!-- modelo1_3 <- update(modelo1,formula. = .~.+MTX) -->
+modelo1_3 <- update(modelo1,formula. = .~.+MTX)
 
-<!-- anova(modelo1,modelo1_3) -->
+anova(modelo1,modelo1_3)
 
-<!-- modelo1_4 <- update(modelo1,formula. = .~.+SXPa*SXDo) -->
+modelo1_4 <- update(modelo1,formula. = .~.+SXPa*SXDo)
 
-<!-- anova(modelo1,modelo1_4) -->
+anova(modelo1,modelo1_4)
 
-<!-- modelo1_5 <- update(modelo1,formula. = .~.+CMVPa*CMVDo) -->
+modelo1_5 <- update(modelo1,formula. = .~.+CMVPa*CMVDo)
 
-<!-- anova(modelo1,modelo1_5) -->
+anova(modelo1,modelo1_5)
 
-<!-- modelo1_6 <- update(modelo1,formula. = .~.+AgePa*AgeDo) -->
+modelo1_6 <- update(modelo1,formula. = .~.+AgePa*AgeDo)
 
-<!-- anova(modelo1,modelo1_6) -->
+anova(modelo1,modelo1_6)
 
-<!-- ``` -->
+```
 
-<!-- La variable con mayor significancia es FAB, por lo tanto la agregamos al modelo reducido. Repetimos el proceso una vez más con el nuevo modelo completo: -->
+La variable con mayor significancia es FAB, por lo tanto la agregamos al modelo reducido. Repetimos el proceso una vez más con el nuevo modelo completo:
 
-<!-- ```{r} -->
+```{r}
 
-<!-- modelo1_2_1 <- update(modelo1_2,formula. = .~.+waiting) -->
+modelo1_2_1 <- update(modelo1_2,formula. = .~.+waiting)
 
-<!-- anova(modelo1_2,modelo1_2_1) -->
+anova(modelo1_2,modelo1_2_1)
 
-<!-- modelo1_2_2 <- update(modelo1_2,formula. = .~.+MTX) -->
+modelo1_2_2 <- update(modelo1_2,formula. = .~.+MTX)
 
-<!-- anova(modelo1_2,modelo1_2_2) -->
+anova(modelo1_2,modelo1_2_2)
 
-<!-- modelo1_2_3 <- update(modelo1_2,formula. = .~.+SXPa*SXDo) -->
+modelo1_2_3 <- update(modelo1_2,formula. = .~.+SXPa*SXDo)
 
-<!-- anova(modelo1_2,modelo1_2_3) -->
+anova(modelo1_2,modelo1_2_3)
 
-<!-- modelo1_2_4 <- update(modelo1_2,formula. = .~.+CMVPa*CMVDo) -->
+modelo1_2_4 <- update(modelo1_2,formula. = .~.+CMVPa*CMVDo)
 
-<!-- anova(modelo1_2,modelo1_2_4) -->
+anova(modelo1_2,modelo1_2_4)
 
-<!-- modelo1_2_5 <- update(modelo1_2,formula. = .~.+AgePa*AgeDo) -->
+modelo1_2_5 <- update(modelo1_2,formula. = .~.+AgePa*AgeDo)
 
-<!-- anova(modelo1_2,modelo1_2_5) -->
+anova(modelo1_2,modelo1_2_5)
 
-<!-- ``` -->
+```
 
-<!-- La siguiente variable a incluir es la interacción de la edad del donante y paciente y sus efectos principales. Volvemos a hacer el análisis de nuevo: -->
+La siguiente variable a incluir es la interacción de la edad del donante y paciente y sus efectos principales. Volvemos a hacer el análisis de nuevo:
 
-<!-- ```{r} -->
+```{r}
 
-<!-- modelo1_2_5_1 <- update(modelo1_2_5,formula. = .~.+waiting) -->
+modelo1_2_5_1 <- update(modelo1_2_5,formula. = .~.+waiting)
 
-<!-- anova(modelo1_2_5,modelo1_2_5_1) -->
+anova(modelo1_2_5,modelo1_2_5_1)
 
-<!-- modelo1_2_5_2 <- update(modelo1_2_5,formula. = .~.+MTX) -->
+modelo1_2_5_2 <- update(modelo1_2_5,formula. = .~.+MTX)
 
-<!-- anova(modelo1_2_5,modelo1_2_5_2) -->
+anova(modelo1_2_5,modelo1_2_5_2)
 
-<!-- modelo1_2_5_3 <- update(modelo1_2_5,formula. = .~.+SXPa*SXDo) -->
+modelo1_2_5_3 <- update(modelo1_2_5,formula. = .~.+SXPa*SXDo)
 
-<!-- anova(modelo1_2_5,modelo1_2_5_3) -->
+anova(modelo1_2_5,modelo1_2_5_3)
 
-<!-- modelo1_2_5_4 <- update(modelo1_2_5,formula. = .~.+CMVPa*CMVDo) -->
+modelo1_2_5_4 <- update(modelo1_2_5,formula. = .~.+CMVPa*CMVDo)
 
-<!-- anova(modelo1_2_5,modelo1_2_5_4) -->
+anova(modelo1_2_5,modelo1_2_5_4)
 
-<!-- ``` -->
+```
 
-<!--  y por lo tanto no agregamos variables adicionales. El modelo final tendría el siguiente resumen: -->
+y por lo tanto no agregamos variables adicionales. El modelo final tendría el siguiente resumen:
 
-<!-- ```{r} -->
+```{r}
 
-<!-- summary(modelo1_2_5) -->
+summary(modelo1_2_5)
 
-<!-- ``` -->
+```
 
-<!-- ### Covariables dependientes del tiempo -->
+### Covariables dependientes del tiempo
 
-<!-- Ahora vamos a considerar una variable dependiente del tiempo definida por:   -->
+Ahora vamos a considerar una variable dependiente del tiempo definida por:
 
-<!-- \begin{align} -->
+```{=tex}
+\begin{align}
 
-<!-- Z_A(t)=\begin{cases} -->
+Z_A(t)=\begin{cases}
 
-<!-- 0 & \text{si $t<ta$}\\ -->
+0 & \text{si $t<ta$}\\
 
-<!-- 1 & \text{si no.} -->
+1 & \text{si no.}
 
-<!-- \end{cases} -->
+\end{cases}
 
-<!-- \end{align} -->
+\end{align}
+```
+donde *ta* es el tiempo de ocurrencia de la enfermedad aguda de injerto contra huésped. Para incorporar esta covariable ajustamos la tabla de la siguiente forma:
 
-<!-- donde *ta* es el tiempo de ocurrencia de la enfermedad aguda de injerto contra huésped. Para incorporar esta covariable ajustamos la tabla de la siguiente forma: -->
+```{r}
 
-<!-- ```{r} -->
+bmt_2 <- bmt_2 %>% mutate(id=1:n())
 
-<!-- bmt_2 <- bmt_2 %>% mutate(id=1:n()) -->
+newbmt_2 <- tmerge(data1 = bmt_2,data2 = bmt_2,id = id,tstop = t2)
 
-<!-- newbmt_2 <- tmerge(data1 = bmt_2,data2 = bmt_2,id = id,tstop = t2) -->
+newbmt_2 <- tmerge(data1 = newbmt_2,data2 = bmt_2,id = id,ZA=tdc(ta))
 
-<!-- newbmt_2 <- tmerge(data1 = newbmt_2,data2 = bmt_2,id = id,ZA=tdc(ta)) -->
+```
 
-<!-- ``` -->
+También tenemos las siguientes dos variables que dependen del tiempo:
 
-<!-- También tenemos las siguientes dos variables que dependen del tiempo: -->
+```{=tex}
+\begin{align}
 
-<!-- \begin{align} -->
+Z_P(t)=\begin{cases}
 
-<!-- Z_P(t)=\begin{cases} -->
+0 & \text{si $t<tp$}\\
 
-<!-- 0 & \text{si $t<tp$}\\ -->
+1 & \text{si no.}
 
-<!-- 1 & \text{si no.} -->
+\end{cases}
 
-<!-- \end{cases} -->
+\end{align}
+```
+y
 
-<!-- \end{align} -->
+```{=tex}
+\begin{align}
 
-<!-- y  -->
+Z_C(t)=\begin{cases}
 
-<!-- \begin{align} -->
+0 & \text{si $t<tc$}\\
 
-<!-- Z_C(t)=\begin{cases} -->
+1 & \text{si no.}
 
-<!-- 0 & \text{si $t<tc$}\\ -->
+\end{cases}
 
-<!-- 1 & \text{si no.} -->
+\end{align}
+```
+son las indicadoras de recuperación de plaquetas y de enfermedad crónica de injerto contra huésped respectivamente. Las incluimos en la base:
 
-<!-- \end{cases} -->
+```{r}
 
-<!-- \end{align} -->
+newbmt_2 <- tmerge(data1 = newbmt_2,data2 = bmt_2,id = id,ZP=tdc(tp))
 
-<!-- son las indicadoras de recuperación de plaquetas y de enfermedad crónica de injerto contra huésped respectivamente. Las incluimos en la base: -->
+newbmt_2 <- tmerge(data1 = newbmt_2,data2 = bmt_2,id = id,ZC=tdc(tc),muerte=event(t2,d3))
 
-<!-- ```{r} -->
+```
 
-<!-- newbmt_2 <- tmerge(data1 = newbmt_2,data2 = bmt_2,id = id,ZP=tdc(tp)) -->
+y la base queda así:
 
-<!-- newbmt_2 <- tmerge(data1 = newbmt_2,data2 = bmt_2,id = id,ZC=tdc(tc),muerte=event(t2,d3)) -->
+```{r}
 
-<!-- ``` -->
+head(newbmt_2,10)
 
-<!-- y la base queda así: -->
+```
 
-<!-- ```{r} -->
+Ajustamos un modelo que incluya la primer covariable $Z_A(t)$ sobre el modelo reducido que contiene solamente el grupo de riesgo:
 
-<!-- head(newbmt_2,10) -->
+```{r}
 
-<!-- ``` -->
+modelo2 <- coxph(Surv(time = tstart,time2 = tstop,event = muerte)~group+ZA,data = newbmt_2)
 
-<!--  Ajustamos un modelo que incluya la primer covariable $Z_A(t)$ sobre el modelo reducido que contiene solamente el grupo de riesgo: -->
+modelo1 <- update(modelo2,formula. = .~.-ZA)
 
-<!-- ```{r} -->
+anova(modelo1,modelo2)
 
-<!-- modelo2 <- coxph(Surv(time = tstart,time2 = tstop,event = muerte)~group+ZA,data = newbmt_2)  -->
+```
 
-<!-- modelo1 <- update(modelo2,formula. = .~.-ZA) -->
+y hacemos lo mismo con modelos que incluyan de forma univariada las otras dos variables dependientes del tiempo:
 
-<!-- anova(modelo1,modelo2) -->
+```{r}
 
-<!-- ``` -->
+modelo3 <- coxph(Surv(time = tstart,time2 = tstop,event = muerte)~group+ZC,data = newbmt_2)
 
-<!-- y hacemos lo mismo con modelos que incluyan de forma univariada las otras dos variables dependientes del tiempo: -->
+anova(modelo1,modelo3)
 
-<!-- ```{r} -->
+modelo4 <- coxph(Surv(time = tstart,time2 = tstop,event = muerte)~group+ZP,data = newbmt_2)
 
-<!-- modelo3 <- coxph(Surv(time = tstart,time2 = tstop,event = muerte)~group+ZC,data = newbmt_2)  -->
+anova(modelo1,modelo4)
 
-<!-- anova(modelo1,modelo3) -->
+```
 
-<!-- modelo4 <- coxph(Surv(time = tstart,time2 = tstop,event = muerte)~group+ZP,data = newbmt_2)  -->
+En donde se puede notar que la variable $Z_P(t)$ en significativa sobre un modelo reducido en donde solamente esté el grupo de riesgo de 3 niveles.
 
-<!-- anova(modelo1,modelo4) -->
+Ahora vamos a comparar el modelo completo que se obtuvo con selección para adelante con respecto al mismo modelo añadiendo la variable que depende del tiempo $Z_P(t)$:
 
-<!-- ``` -->
+```{r}
 
-<!-- En donde se puede notar que la variable $Z_P(t)$ en significativa sobre un modelo reducido en donde solamente esté el grupo de riesgo de 3 niveles.  -->
+modeloc1 <- coxph(formula = Surv(time = tstart,time2 = tstop,event = muerte) ~ group + FAB + AgePa*AgeDo, data = newbmt_2)
 
-<!-- Ahora vamos a comparar el modelo completo que se obtuvo con selección para adelante con respecto al mismo modelo añadiendo la variable que depende del tiempo $Z_P(t)$: -->
+modeloc2 <- update(modeloc1,formula. = .~.+ZP)
 
-<!-- ```{r} -->
+anova(modeloc1,modeloc2)
 
-<!-- modeloc1 <- coxph(formula = Surv(time = tstart,time2 = tstop,event = muerte) ~ group + FAB + AgePa*AgeDo, data = newbmt_2) -->
+```
 
-<!-- modeloc2 <- update(modeloc1,formula. = .~.+ZP) -->
+Por lo tanto la variable $Z_P(t)$ sí es significativa sobre el modelo reducido con covariables fijas, ante los niveles usuales.
 
-<!-- anova(modeloc1,modeloc2) -->
+Ahora analizamos la inclusión de las interacciones de las covariables fijas con la variable $Z_P(t)$ usando selección forward:
 
-<!-- ``` -->
+```{r}
 
-<!-- Por lo tanto la variable $Z_P(t)$ sí es significativa sobre el modelo reducido con covariables fijas, ante los niveles usuales.  -->
+modeloc2_1 <- update(modeloc2,formula. = .~.+ZP:group)
 
-<!-- Ahora analizamos la inclusión de las interacciones de las covariables fijas con la variable $Z_P(t)$ usando selección forward: -->
+anova(modeloc2_1,modeloc2)
 
-<!-- ```{r} -->
+modeloc2_2 <- update(modeloc2,formula. = .~.+ZP:FAB)
 
-<!-- modeloc2_1 <- update(modeloc2,formula. = .~.+ZP:group) -->
+anova(modeloc2_2,modeloc2)
 
-<!-- anova(modeloc2_1,modeloc2) -->
+modeloc2_3 <- update(modeloc2,formula. = .~.+ZP*AgePa*AgeDo)
 
-<!-- modeloc2_2 <- update(modeloc2,formula. = .~.+ZP:FAB) -->
+anova(modeloc2_3,modeloc2)
 
-<!-- anova(modeloc2_2,modeloc2) -->
+```
 
-<!-- modeloc2_3 <- update(modeloc2,formula. = .~.+ZP*AgePa*AgeDo) -->
+como el valor p más pequeño se obtiene al incluir la interacción ZP-group, entonces aumentamos el modelo de esa forma. Seguimos con el proceso:
 
-<!-- anova(modeloc2_3,modeloc2) -->
+```{r}
 
-<!-- ``` -->
+modeloc2_1_1 <- update(modeloc2_1,formula. = .~.+ZP:FAB)
 
-<!-- como el valor p más pequeño se obtiene al incluir la interacción ZP-group, entonces aumentamos el modelo de esa forma. Seguimos con el proceso: -->
+anova(modeloc2_1_1,modeloc2_1)
 
-<!-- ```{r} -->
+modeloc2_1_2 <- update(modeloc2_1,formula. = .~.+ZP*AgePa*AgeDo)
 
-<!-- modeloc2_1_1 <- update(modeloc2_1,formula. = .~.+ZP:FAB) -->
+anova(modeloc2_1_2,modeloc2_1)
 
-<!-- anova(modeloc2_1_1,modeloc2_1) -->
+```
 
-<!-- modeloc2_1_2 <- update(modeloc2_1,formula. = .~.+ZP*AgePa*AgeDo) -->
+Agregamos la interacción ZP-Edad, y finalmente vemos si la última interacción es signficativa sobre este modelo completo:
 
-<!-- anova(modeloc2_1_2,modeloc2_1) -->
+```{r}
 
-<!-- ``` -->
+modeloc2_1_2_1 <- update(modeloc2_1_2,formula. = .~.+ZP:FAB)
 
-<!-- Agregamos la interacción ZP-Edad, y finalmente vemos si la última interacción es signficativa sobre este modelo completo: -->
+anova(modeloc2_1_2_1,modeloc2_1_2)
 
-<!-- ```{r} -->
+```
 
-<!-- modeloc2_1_2_1 <- update(modeloc2_1_2,formula. = .~.+ZP:FAB) -->
+y también lo incluimos asumiendo un nivel de significancia del 5%. El modelo final queda:
 
-<!-- anova(modeloc2_1_2_1,modeloc2_1_2) -->
+```{r}
 
-<!-- ``` -->
+summary(modeloc2_1_2_1)
 
-<!-- y también lo incluimos asumiendo un nivel de significancia del 5%. El modelo final queda: -->
-
-<!-- ```{r} -->
-
-<!-- summary(modeloc2_1_2_1) -->
-
-<!-- ``` -->
+```
 
 <!-- ### Prueba alternativa de riesgos proporcionales: -->
 
@@ -1139,7 +1113,7 @@ plot(S_8_2_age,col=1:4)
 
 <!-- ``` -->
 
-<!-- Esta prueba se basa en los residuos estandarizados de Schoenfeld y no en la prueba que aparece en el Klein. En unas semanas estaremos profundizando en este tema de residuos. La implementación de la prueba de riesgos proporcionales se ilustra para dos variables:  -->
+<!-- Esta prueba se basa en los residuos estandarizados de Schoenfeld y no en la prueba que aparece en el Klein. En unas semanas estaremos profundizando en este tema de residuos. La implementación de la prueba de riesgos proporcionales se ilustra para dos variables: -->
 
 <!-- ```{r} -->
 
@@ -1155,7 +1129,7 @@ plot(S_8_2_age,col=1:4)
 
 <!-- ``` -->
 
-<!-- A partir de los cálculos anteriores y la tabla 9.5 concluimos que la variable que tiene más evidencia de no seguir la hipótesis de riesgos proporcionales es MTX.  -->
+<!-- A partir de los cálculos anteriores y la tabla 9.5 concluimos que la variable que tiene más evidencia de no seguir la hipótesis de riesgos proporcionales es MTX. -->
 
 <!-- Una posible forma de solucionar la dependencia temporal del riesgo relativo de MTX es a través de la estratificación del modelo anterior de Cox: -->
 
@@ -1187,7 +1161,7 @@ plot(S_8_2_age,col=1:4)
 
 <!-- ```{r} -->
 
-<!-- newbmt_2_ZP <- newbmt_2 %>% filter(ZP==1)  -->
+<!-- newbmt_2_ZP <- newbmt_2 %>% filter(ZP==1) -->
 
 <!-- modeloc2_est_trunc <- update(modeloc2_est,formula. = .~.-ZP,data=newbmt_2_ZP) -->
 

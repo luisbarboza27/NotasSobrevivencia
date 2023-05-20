@@ -220,6 +220,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
   <li><a href="#primer-ejemplo-ejemplo-8.1" id="toc-primer-ejemplo-ejemplo-8.1" class="nav-link" data-scroll-target="#primer-ejemplo-ejemplo-8.1"><span class="toc-section-number">4.9.1</span>  Primer Ejemplo (Ejemplo 8.1)</a></li>
   <li><a href="#segundo-ejemplo-ejemplo-8.2" id="toc-segundo-ejemplo-ejemplo-8.2" class="nav-link" data-scroll-target="#segundo-ejemplo-ejemplo-8.2"><span class="toc-section-number">4.9.2</span>  Segundo ejemplo (Ejemplo 8.2)</a></li>
+  <li><a href="#tercer-ejemplo-ejemplo-8.3" id="toc-tercer-ejemplo-ejemplo-8.3" class="nav-link" data-scroll-target="#tercer-ejemplo-ejemplo-8.3"><span class="toc-section-number">4.9.3</span>  Tercer ejemplo (Ejemplo 8.3)</a></li>
+  <li><a href="#selección-de-variables" id="toc-selección-de-variables" class="nav-link" data-scroll-target="#selección-de-variables"><span class="toc-section-number">4.9.4</span>  Selección de variables</a></li>
+  <li><a href="#covariables-dependientes-del-tiempo-1" id="toc-covariables-dependientes-del-tiempo-1" class="nav-link" data-scroll-target="#covariables-dependientes-del-tiempo-1"><span class="toc-section-number">4.9.5</span>  Covariables dependientes del tiempo</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -484,93 +487,57 @@ C=
 <p><span class="math display">\[h(t|Z_1)=h_0(t)\exp[\beta_1Z_1+\beta_2(Z_1g(t))]\]</span></p>
 <p>Compare dos individuos con covariables <span class="math inline">\(Z_1\)</span> y <span class="math inline">\(Z_1^*\)</span> a través de su riesgo relativo:</p>
 <p><span class="math display">\[\frac{h(t|Z_1)}{h(t|Z_1^*)}=\exp[\beta_1(Z_1-Z_1^*)+\beta_2g(t)(Z_1-Z_1^*)]\]</span></p>
-<p>Note que bajo la hipótesis <span class="math inline">\(H_0:\)</span> <em>riesgos proporcionales en <span class="math inline">\(Z_1\)</span></em>, la parte derecha de la ecuación anterior no depende de <span class="math inline">\(t\)</span>. Por lo tanto <span class="math inline">\(H_0\)</span> es equivalente a la hipótesis <span class="math inline">\(H_0: \beta_2=0\)</span> la cual se puede verificar a través de la prueba de Wald, LRT o Score.</p>
+<p>Note que bajo la hipótesis <span class="math inline">\(H_0:\)</span> <em>riesgos proporcionales en</em> <span class="math inline">\(Z_1\)</span>, la parte derecha de la ecuación anterior no depende de <span class="math inline">\(t\)</span>. Por lo tanto <span class="math inline">\(H_0\)</span> es equivalente a la hipótesis <span class="math inline">\(H_0: \beta_2=0\)</span> la cual se puede verificar a través de la prueba de Wald, LRT o Score.</p>
 <p>Si el supuesto de riesgos proporcionales no es cierto para <span class="math inline">\(Z_1\)</span> entonces se puede definir una covariable dependiente de tiempo:</p>
-<p><span class="math display">\[\begin{align*}
-
+<span class="math display">\[\begin{align*}
 Z_2(t)=
-
    \begin{cases}
-
      Z_1\cdot g(t) &amp; \text{si}\quad Z_1=1\\
-
      0 &amp; \text{si no}
-
    \end{cases}
-
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>en el caso en que <span class="math inline">\(Z_1\)</span> fuera dicotómica. El principal problema a este momento es la estimación de la función <span class="math inline">\(g(t)\)</span>. Una posible solución es asumir que <span class="math inline">\(g(t)\)</span> es una variable indicadora. Definiríamos entonces:</p>
-<p><span class="math display">\[\begin{align*}
-
+<span class="math display">\[\begin{align*}
 Z_2(t)=
-
    \begin{cases}
-
      Z_1 &amp; t&gt;\tau \\
-
      0 &amp; t\leq \tau
-
    \end{cases}
-
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>en este caso:</p>
-<p><span class="math display">\[\begin{align*}
-
+<span class="math display">\[\begin{align*}
 h(t|Z(t))=
-
    \begin{cases}
-
      h_0(t)\exp(\beta_1Z_1) &amp; t\leq \tau\\
-
      h_0(t)\exp((\beta_1+\beta_2)Z_1) &amp; t&gt;\tau
-
    \end{cases}
-
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>y por lo tanto:</p>
-<p><span class="math display">\[\begin{align*}
-
+<span class="math display">\[\begin{align*}
 &amp;RR(Z_1=1\text{ vs } Z_1=0; t\leq \tau) = \exp(\beta_1)\\
-
 &amp;RR(Z_1=1\text{ vs } Z_1=0; t&gt; \tau) = \exp(\beta_1+\beta_2)
-
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>por este motivo a <span class="math inline">\(\tau\)</span> se le llama punto de cambio en el riesgo relativo. Otra codificación que se puede utilizar es a través del uso de un modelo con dos covariables: <span class="math inline">\(Z_2(t)\)</span> y</p>
-<p><span class="math display">\[\begin{align*}
-
+<span class="math display">\[\begin{align*}
 Z_3(t)=
-
    \begin{cases}
-
        Z_1 &amp; t\leq \tau\\
-
        0 &amp; t&gt;\tau
-
    \end{cases}
-
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>Entonces:</p>
-<p><span class="math display">\[\begin{align*}
-
+<span class="math display">\[\begin{align*}
 h(t|Z(t))=
-
    \begin{cases}
-
      h_0(t)\exp(\theta_3 Z_1) &amp; t\leq \tau\\
-
      h_0(t)\exp(\theta_2 Z_1) &amp; t&gt;\tau
-
    \end{cases}
-
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>y:</p>
-<p><span class="math display">\[\begin{align*}
-
+<span class="math display">\[\begin{align*}
 &amp;RR(Z_1=1\text{ vs } Z_1=0; t\leq \tau) = \exp(\theta_3)\\
-
 &amp;RR(Z_1=1\text{ vs } Z_1=0; t&gt; \tau) = \exp(\theta_2)
-
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>El siguiente paso es ajustar el modelo (bajo cualquiera de las dos codificaciones) para distintos valores de <span class="math inline">\(\tau\)</span> (tiempos de ocurrencia). El valor <span class="math inline">\(\tau\)</span> con máxima log-verosimilitud se toma como posible umbral.</p>
 <p>Una prueba de riesgos proporcionales se hace en <span class="math inline">\(t\leq \tau\)</span> y <span class="math inline">\(t&gt;\tau\)</span>. Si en alguna de las dos regiones la prueba se rechaza, el proceso se repite.</p>
 </section>
@@ -997,201 +964,751 @@ Score (logrank) test = 28.59  on 7 df,   p=2e-04</code></pre>
 <p><img src="RSP_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<!-- ### Tercer ejemplo (Ejemplo 8.3) -->
-<!-- Este tercer ejemplo consiste en 863 pacientes de transplante de riñón con covariables etnia (race: $R$) y sexo (gender: $G$). Cargamos los datos y transformamos las dos covariables en variables tipo factor: -->
-<!-- ```{r} -->
-<!-- data("kidtran") -->
-<!-- summary(kidtran) -->
-<!-- kidtran <- kidtran %>% mutate(gender=factor(gender),race=factor(race)) -->
-<!-- ``` -->
-<!-- Primero ajustamos un modelo en donde haya una interacción entre las dos covariables: -->
-<!-- ```{r} -->
-<!-- modelo_8_3 <- coxph(Surv(time,delta)~gender*race,data = kidtran) -->
-<!-- summary(modelo_8_3) -->
-<!-- ``` -->
-<!-- Note que en este caso los niveles base en ambas covariables son Masculino y etnia blanca. Hay que tener cuidado en este caso al calcular los riesgos relativos, por ejemplo el riesgo relativo de ser hombre negro con respecto a una mujer blanca es: -->
-<!-- $$\frac{h(t|G=1,R=2)}{h(t|G=2,R=1)}=\frac{e^{-0.08878}}{e^{-0.24848}}=\frac{0.915}{0.78}=1.17$$ -->
-<!-- y el riesgo relativo de una mujer negra con respecto a una blanca: -->
-<!-- $$\frac{h(t|G=2,R=2)}{h(t|G=2,R=1)}=\frac{e^{-0.8878-0.24848+0.74549}}{e^{-0.24848}}=0.915\cdot 2.107=1.928$$ -->
-<!-- Las pruebas de Wald, score y LRT no rechazan la hipótesis de no-significancia de la interacción y efectos principales del sexo y etnia sobre la sobrevivencia de la población en estudio. -->
-<!-- Si ajustamos un modelo reducido con efectos principales solamente tenemos: -->
-<!-- ```{r} -->
-<!-- modelo_8_3_sInt <- update(modelo_8_3,formula. = .~.-gender:race) -->
-<!-- summary(modelo_8_3_sInt) -->
-<!-- ``` -->
-<!-- y podemos verificar a través de una prueba LRT si la interacción es significativa: -->
-<!-- ```{r} -->
-<!-- anova(modelo_8_3_sInt,modelo_8_3) -->
-<!-- ``` -->
-<!-- Dado que la muestra es relativamente grande (863 individuos) uno pensaría que la significancia debería ser menor al menos al 5%. En este caso no podríamos rechazar la hipótesis de no-significancia de la interacción entre las dos covariables. -->
-<!-- A pesar de esto el modelo reducido sigue siendo no significativo. -->
-<!-- Un último ejercicio es la discretización de la covariable edad, ante distintas combinaciones de las dos covariables sexo y etnia. La discretización de la variable edad en dos grupos la podemos hacer a travéś de la prueba de Contal y O'Quigley, para los hombres de raza negra: -->
-<!-- ```{r} -->
-<!-- muestraBM <- kidtran %>% filter(gender==1,race==2) -->
-<!-- model_c_BM <- coxph(Surv(time,delta)~age,data = muestraBM) -->
-<!-- summary(model_c_BM) -->
-<!-- Contal_BM <- cutp(model_c_BM) -->
-<!-- Contal_BM$age[1,] -->
-<!-- ``` -->
-<!-- en donde podemos observar que utilizar un umbral de 58 años permite obtener la mayor separabilidad entre los dos grupos a través del estadístico logrank. Usando la variable discreta y usando la variable continua no se rechaza la nula de no-significancia de la edad para este grupo. -->
-<!-- El caso de hombres de raza blanca es: -->
-<!-- ```{r} -->
-<!-- muestraWM <- kidtran %>% filter(gender==1,race==1) -->
-<!-- model_c_WM <- coxph(Surv(time,delta)~age,data = muestraWM) -->
-<!-- summary(model_c_WM) -->
-<!-- Contal_WM <- cutp(model_c_WM) -->
-<!-- Contal_WM$age[1,] -->
-<!-- ``` -->
-<!-- en donde de manera contraria la edad sí es significativa al explicar la sobrevivencia, a través de una edad umbral de 41 años. -->
-<!-- ### Selección de variables -->
-<!-- Los datos de este primer ejemplo corresponden a la base de sobrevivencia de 137 pacientes con transplante de médula ósea, los cuales se han dividido en tres grupos de riesgo dependiendo de su condición al momento del trasplante (ALL, AML-Low, AML-high). El riesgo a considerar es la muerte durante el tratamiento o reaparición de la leucemia. A continuación la carga de paquetes y datos: -->
-<!-- ```{r warning=FALSE} -->
-<!-- library(survival) -->
-<!-- library(survMisc) -->
-<!-- library(KMsurv) -->
-<!-- library(tidyverse) -->
-<!-- data(bmt) -->
-<!-- ``` -->
-<!-- Primero ajustamos un modelo de Cox en donde los grupos de riesgo son una covariable y comprobamos si la covariable aporta de forma significativa al explicar la sobrevivencia de la muestra: -->
-<!-- ```{r} -->
-<!-- bmt <- bmt %>% mutate(group=factor(group)) -->
-<!-- modelo1 <- coxph(Surv(time=t2, event=d3) ~ group, data=bmt) -->
-<!-- summary(modelo1) -->
-<!-- ``` -->
-<!-- en donde notamos que para las tres pruebas LRT, Wald y Score se rechaza la hipótesis de que la variable categórica grupo no es significativa bajo niveles de significancia usuales. Hay otras variables que también se van a considerar como posibles predictores: tiempo de espera del transplante (waiting), clasificador FAB (FAB), indicador de MTX (MTX), Sexo de paciente (SXPa), Sexo de Donante (SXDo), CMV de paciente (CMVPa), CMV de donante (CMVDo), Edad de paciente (AgePa), Edad de donante (AgeDo)  -->
-<!-- ```{r} -->
-<!-- bmt <- bmt %>% mutate(waiting=z7,FAB=factor(z8), -->
-<!--                       MTX=factor(z10),SXPa=factor(z3), -->
-<!--                       SXDo=factor(z4),CMVPa=factor(z5),                      CMVDo=factor(z6),AgePa=z1-28,AgeDo=z2-28) -->
-<!-- bmt_2 <- bmt %>% select(t2,d3,group,waiting,FAB,MTX,SXPa,SXDo, -->
-<!--                        CMVPa,CMVDo,AgePa,AgeDo,ta,tc,tp) -->
-<!-- ``` -->
-<!-- Definimos los modelos aumentados en una variable o factor a la vez y usamos la técnica de selección para adelante (Forward selection) como método de selección de variables: -->
-<!-- ```{r} -->
-<!-- modelo1_1 <- update(modelo1,formula. = .~.+waiting) -->
-<!-- anova(modelo1,modelo1_1) -->
-<!-- modelo1_2 <- update(modelo1,formula. = .~.+FAB) -->
-<!-- anova(modelo1,modelo1_2) -->
-<!-- modelo1_3 <- update(modelo1,formula. = .~.+MTX) -->
-<!-- anova(modelo1,modelo1_3) -->
-<!-- modelo1_4 <- update(modelo1,formula. = .~.+SXPa*SXDo) -->
-<!-- anova(modelo1,modelo1_4) -->
-<!-- modelo1_5 <- update(modelo1,formula. = .~.+CMVPa*CMVDo) -->
-<!-- anova(modelo1,modelo1_5) -->
-<!-- modelo1_6 <- update(modelo1,formula. = .~.+AgePa*AgeDo) -->
-<!-- anova(modelo1,modelo1_6) -->
-<!-- ``` -->
-<!-- La variable con mayor significancia es FAB, por lo tanto la agregamos al modelo reducido. Repetimos el proceso una vez más con el nuevo modelo completo: -->
-<!-- ```{r} -->
-<!-- modelo1_2_1 <- update(modelo1_2,formula. = .~.+waiting) -->
-<!-- anova(modelo1_2,modelo1_2_1) -->
-<!-- modelo1_2_2 <- update(modelo1_2,formula. = .~.+MTX) -->
-<!-- anova(modelo1_2,modelo1_2_2) -->
-<!-- modelo1_2_3 <- update(modelo1_2,formula. = .~.+SXPa*SXDo) -->
-<!-- anova(modelo1_2,modelo1_2_3) -->
-<!-- modelo1_2_4 <- update(modelo1_2,formula. = .~.+CMVPa*CMVDo) -->
-<!-- anova(modelo1_2,modelo1_2_4) -->
-<!-- modelo1_2_5 <- update(modelo1_2,formula. = .~.+AgePa*AgeDo) -->
-<!-- anova(modelo1_2,modelo1_2_5) -->
-<!-- ``` -->
-<!-- La siguiente variable a incluir es la interacción de la edad del donante y paciente y sus efectos principales. Volvemos a hacer el análisis de nuevo: -->
-<!-- ```{r} -->
-<!-- modelo1_2_5_1 <- update(modelo1_2_5,formula. = .~.+waiting) -->
-<!-- anova(modelo1_2_5,modelo1_2_5_1) -->
-<!-- modelo1_2_5_2 <- update(modelo1_2_5,formula. = .~.+MTX) -->
-<!-- anova(modelo1_2_5,modelo1_2_5_2) -->
-<!-- modelo1_2_5_3 <- update(modelo1_2_5,formula. = .~.+SXPa*SXDo) -->
-<!-- anova(modelo1_2_5,modelo1_2_5_3) -->
-<!-- modelo1_2_5_4 <- update(modelo1_2_5,formula. = .~.+CMVPa*CMVDo) -->
-<!-- anova(modelo1_2_5,modelo1_2_5_4) -->
-<!-- ``` -->
-<!--  y por lo tanto no agregamos variables adicionales. El modelo final tendría el siguiente resumen: -->
-<!-- ```{r} -->
-<!-- summary(modelo1_2_5) -->
-<!-- ``` -->
-<!-- ### Covariables dependientes del tiempo -->
-<!-- Ahora vamos a considerar una variable dependiente del tiempo definida por:   -->
-<!-- \begin{align} -->
-<!-- Z_A(t)=\begin{cases} -->
-<!-- 0 & \text{si $t<ta$}\\ -->
-<!-- 1 & \text{si no.} -->
-<!-- \end{cases} -->
-<!-- \end{align} -->
-<!-- donde *ta* es el tiempo de ocurrencia de la enfermedad aguda de injerto contra huésped. Para incorporar esta covariable ajustamos la tabla de la siguiente forma: -->
-<!-- ```{r} -->
-<!-- bmt_2 <- bmt_2 %>% mutate(id=1:n()) -->
-<!-- newbmt_2 <- tmerge(data1 = bmt_2,data2 = bmt_2,id = id,tstop = t2) -->
-<!-- newbmt_2 <- tmerge(data1 = newbmt_2,data2 = bmt_2,id = id,ZA=tdc(ta)) -->
-<!-- ``` -->
-<!-- También tenemos las siguientes dos variables que dependen del tiempo: -->
-<!-- \begin{align} -->
-<!-- Z_P(t)=\begin{cases} -->
-<!-- 0 & \text{si $t<tp$}\\ -->
-<!-- 1 & \text{si no.} -->
-<!-- \end{cases} -->
-<!-- \end{align} -->
-<!-- y  -->
-<!-- \begin{align} -->
-<!-- Z_C(t)=\begin{cases} -->
-<!-- 0 & \text{si $t<tc$}\\ -->
-<!-- 1 & \text{si no.} -->
-<!-- \end{cases} -->
-<!-- \end{align} -->
-<!-- son las indicadoras de recuperación de plaquetas y de enfermedad crónica de injerto contra huésped respectivamente. Las incluimos en la base: -->
-<!-- ```{r} -->
-<!-- newbmt_2 <- tmerge(data1 = newbmt_2,data2 = bmt_2,id = id,ZP=tdc(tp)) -->
-<!-- newbmt_2 <- tmerge(data1 = newbmt_2,data2 = bmt_2,id = id,ZC=tdc(tc),muerte=event(t2,d3)) -->
-<!-- ``` -->
-<!-- y la base queda así: -->
-<!-- ```{r} -->
-<!-- head(newbmt_2,10) -->
-<!-- ``` -->
-<!--  Ajustamos un modelo que incluya la primer covariable $Z_A(t)$ sobre el modelo reducido que contiene solamente el grupo de riesgo: -->
-<!-- ```{r} -->
-<!-- modelo2 <- coxph(Surv(time = tstart,time2 = tstop,event = muerte)~group+ZA,data = newbmt_2)  -->
-<!-- modelo1 <- update(modelo2,formula. = .~.-ZA) -->
-<!-- anova(modelo1,modelo2) -->
-<!-- ``` -->
-<!-- y hacemos lo mismo con modelos que incluyan de forma univariada las otras dos variables dependientes del tiempo: -->
-<!-- ```{r} -->
-<!-- modelo3 <- coxph(Surv(time = tstart,time2 = tstop,event = muerte)~group+ZC,data = newbmt_2)  -->
-<!-- anova(modelo1,modelo3) -->
-<!-- modelo4 <- coxph(Surv(time = tstart,time2 = tstop,event = muerte)~group+ZP,data = newbmt_2)  -->
-<!-- anova(modelo1,modelo4) -->
-<!-- ``` -->
-<!-- En donde se puede notar que la variable $Z_P(t)$ en significativa sobre un modelo reducido en donde solamente esté el grupo de riesgo de 3 niveles.  -->
-<!-- Ahora vamos a comparar el modelo completo que se obtuvo con selección para adelante con respecto al mismo modelo añadiendo la variable que depende del tiempo $Z_P(t)$: -->
-<!-- ```{r} -->
-<!-- modeloc1 <- coxph(formula = Surv(time = tstart,time2 = tstop,event = muerte) ~ group + FAB + AgePa*AgeDo, data = newbmt_2) -->
-<!-- modeloc2 <- update(modeloc1,formula. = .~.+ZP) -->
-<!-- anova(modeloc1,modeloc2) -->
-<!-- ``` -->
-<!-- Por lo tanto la variable $Z_P(t)$ sí es significativa sobre el modelo reducido con covariables fijas, ante los niveles usuales.  -->
-<!-- Ahora analizamos la inclusión de las interacciones de las covariables fijas con la variable $Z_P(t)$ usando selección forward: -->
-<!-- ```{r} -->
-<!-- modeloc2_1 <- update(modeloc2,formula. = .~.+ZP:group) -->
-<!-- anova(modeloc2_1,modeloc2) -->
-<!-- modeloc2_2 <- update(modeloc2,formula. = .~.+ZP:FAB) -->
-<!-- anova(modeloc2_2,modeloc2) -->
-<!-- modeloc2_3 <- update(modeloc2,formula. = .~.+ZP*AgePa*AgeDo) -->
-<!-- anova(modeloc2_3,modeloc2) -->
-<!-- ``` -->
-<!-- como el valor p más pequeño se obtiene al incluir la interacción ZP-group, entonces aumentamos el modelo de esa forma. Seguimos con el proceso: -->
-<!-- ```{r} -->
-<!-- modeloc2_1_1 <- update(modeloc2_1,formula. = .~.+ZP:FAB) -->
-<!-- anova(modeloc2_1_1,modeloc2_1) -->
-<!-- modeloc2_1_2 <- update(modeloc2_1,formula. = .~.+ZP*AgePa*AgeDo) -->
-<!-- anova(modeloc2_1_2,modeloc2_1) -->
-<!-- ``` -->
-<!-- Agregamos la interacción ZP-Edad, y finalmente vemos si la última interacción es signficativa sobre este modelo completo: -->
-<!-- ```{r} -->
-<!-- modeloc2_1_2_1 <- update(modeloc2_1_2,formula. = .~.+ZP:FAB) -->
-<!-- anova(modeloc2_1_2_1,modeloc2_1_2) -->
-<!-- ``` -->
-<!-- y también lo incluimos asumiendo un nivel de significancia del 5%. El modelo final queda: -->
-<!-- ```{r} -->
-<!-- summary(modeloc2_1_2_1) -->
-<!-- ``` -->
+</section>
+<section id="tercer-ejemplo-ejemplo-8.3" class="level3" data-number="4.9.3">
+<h3 data-number="4.9.3" class="anchored" data-anchor-id="tercer-ejemplo-ejemplo-8.3"><span class="header-section-number">4.9.3</span> Tercer ejemplo (Ejemplo 8.3)</h3>
+<p>Este tercer ejemplo consiste en 863 pacientes de transplante de riñón con covariables etnia (race: <span class="math inline">\(R\)</span>) y sexo (gender: <span class="math inline">\(G\)</span>). Cargamos los datos y transformamos las dos covariables en variables tipo factor:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"kidtran"</span>)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(kidtran)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      obs             time          delta            gender     
+ Min.   :  1.0   Min.   :   1   Min.   :0.0000   Min.   :1.000  
+ 1st Qu.:216.5   1st Qu.: 426   1st Qu.:0.0000   1st Qu.:1.000  
+ Median :432.0   Median :1269   Median :0.0000   Median :1.000  
+ Mean   :432.0   Mean   :1380   Mean   :0.1622   Mean   :1.393  
+ 3rd Qu.:647.5   3rd Qu.:2216   3rd Qu.:0.0000   3rd Qu.:2.000  
+ Max.   :863.0   Max.   :3434   Max.   :1.0000   Max.   :2.000  
+      race            age       
+ Min.   :1.000   Min.   : 1.00  
+ 1st Qu.:1.000   1st Qu.:33.00  
+ Median :1.000   Median :43.00  
+ Mean   :1.175   Mean   :42.84  
+ 3rd Qu.:1.000   3rd Qu.:54.00  
+ Max.   :2.000   Max.   :75.00  </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>kidtran <span class="ot">&lt;-</span> kidtran <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">gender=</span><span class="fu">factor</span>(gender),<span class="at">race=</span><span class="fu">factor</span>(race))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Primero ajustamos un modelo en donde haya una interacción entre las dos covariables:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>modelo_8_3 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(time,delta)<span class="sc">~</span>gender<span class="sc">*</span>race,<span class="at">data =</span> kidtran)</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_8_3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(time, delta) ~ gender * race, data = kidtran)
+
+  n= 863, number of events= 140 
+
+                  coef exp(coef) se(coef)      z Pr(&gt;|z|)  
+gender2       -0.24848   0.77998  0.19854 -1.252   0.2107  
+race2         -0.08878   0.91504  0.29182 -0.304   0.7609  
+gender2:race2  0.74549   2.10747  0.42711  1.745   0.0809 .
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+              exp(coef) exp(-coef) lower .95 upper .95
+gender2           0.780     1.2821    0.5285     1.151
+race2             0.915     1.0928    0.5165     1.621
+gender2:race2     2.107     0.4745    0.9124     4.868
+
+Concordance= 0.54  (se = 0.024 )
+Likelihood ratio test= 4.37  on 3 df,   p=0.2
+Wald test            = 4.64  on 3 df,   p=0.2
+Score (logrank) test = 4.74  on 3 df,   p=0.2</code></pre>
+</div>
+</div>
+<p>Note que en este caso los niveles base en ambas covariables son Masculino y etnia blanca. Hay que tener cuidado en este caso al calcular los riesgos relativos, por ejemplo el riesgo relativo de ser hombre negro con respecto a una mujer blanca es:</p>
+<p><span class="math display">\[\frac{h(t|G=1,R=2)}{h(t|G=2,R=1)}=\frac{e^{-0.08878}}{e^{-0.24848}}=\frac{0.915}{0.78}=1.17\]</span></p>
+<p>y el riesgo relativo de una mujer negra con respecto a una blanca:</p>
+<p><span class="math display">\[\frac{h(t|G=2,R=2)}{h(t|G=2,R=1)}=\frac{e^{-0.8878-0.24848+0.74549}}{e^{-0.24848}}=0.915\cdot 2.107=1.928\]</span></p>
+<p>Las pruebas de Wald, score y LRT no rechazan la hipótesis de no-significancia de la interacción y efectos principales del sexo y etnia sobre la sobrevivencia de la población en estudio.</p>
+<p>Si ajustamos un modelo reducido con efectos principales solamente tenemos:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>modelo_8_3_sInt <span class="ot">&lt;-</span> <span class="fu">update</span>(modelo_8_3,<span class="at">formula. =</span> .<span class="sc">~</span>.<span class="sc">-</span>gender<span class="sc">:</span>race)</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_8_3_sInt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(time, delta) ~ gender + race, data = kidtran)
+
+  n= 863, number of events= 140 
+
+            coef exp(coef) se(coef)      z Pr(&gt;|z|)
+gender2 -0.09347   0.91077  0.17441 -0.536    0.592
+race2    0.21992   1.24597  0.21148  1.040    0.298
+
+        exp(coef) exp(-coef) lower .95 upper .95
+gender2    0.9108     1.0980    0.6471     1.282
+race2      1.2460     0.8026    0.8232     1.886
+
+Concordance= 0.526  (se = 0.023 )
+Likelihood ratio test= 1.35  on 2 df,   p=0.5
+Wald test            = 1.39  on 2 df,   p=0.5
+Score (logrank) test = 1.4  on 2 df,   p=0.5</code></pre>
+</div>
+</div>
+<p>y podemos verificar a través de una prueba LRT si la interacción es significativa:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modelo_8_3_sInt,modelo_8_3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+ Cox model: response is  Surv(time, delta)
+ Model 1: ~ gender + race
+ Model 2: ~ gender * race
+   loglik  Chisq Df Pr(&gt;|Chi|)  
+1 -878.50                       
+2 -876.99 3.0222  1    0.08213 .
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>Dado que la muestra es relativamente grande (863 individuos) uno pensaría que la significancia debería ser menor al menos al 5%. En este caso no podríamos rechazar la hipótesis de no-significancia de la interacción entre las dos covariables.</p>
+<p>A pesar de esto el modelo reducido sigue siendo no significativo.</p>
+<p>Un último ejercicio es la discretización de la covariable edad, ante distintas combinaciones de las dos covariables sexo y etnia. La discretización de la variable edad en dos grupos la podemos hacer a travéś de la prueba de Contal y O’Quigley, para los hombres de raza negra:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>muestraBM <span class="ot">&lt;-</span> kidtran <span class="sc">%&gt;%</span> <span class="fu">filter</span>(gender<span class="sc">==</span><span class="dv">1</span>,race<span class="sc">==</span><span class="dv">2</span>)</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>model_c_BM <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(time,delta)<span class="sc">~</span>age,<span class="at">data =</span> muestraBM)</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_c_BM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(time, delta) ~ age, data = muestraBM)
+
+  n= 92, number of events= 14 
+
+       coef exp(coef) se(coef)     z Pr(&gt;|z|)
+age 0.03613   1.03679  0.02468 1.464    0.143
+
+    exp(coef) exp(-coef) lower .95 upper .95
+age     1.037     0.9645    0.9878     1.088
+
+Concordance= 0.6  (se = 0.084 )
+Likelihood ratio test= 2.43  on 1 df,   p=0.1
+Wald test            = 2.14  on 1 df,   p=0.1
+Score (logrank) test = 2.2  on 1 df,   p=0.1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>Contal_BM <span class="ot">&lt;-</span> <span class="fu">cutp</span>(model_c_BM)</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>Contal_BM<span class="sc">$</span>age[<span class="dv">1</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   age        U        Q         p
+1:  58 2.632404 0.802934 0.5393762</code></pre>
+</div>
+</div>
+<p>en donde podemos observar que utilizar un umbral de 58 años permite obtener la mayor separabilidad entre los dos grupos a través del estadístico logrank. Usando la variable discreta y usando la variable continua no se rechaza la nula de no-significancia de la edad para este grupo.</p>
+<p>El caso de hombres de raza blanca es:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>muestraWM <span class="ot">&lt;-</span> kidtran <span class="sc">%&gt;%</span> <span class="fu">filter</span>(gender<span class="sc">==</span><span class="dv">1</span>,race<span class="sc">==</span><span class="dv">1</span>)</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>model_c_WM <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(time,delta)<span class="sc">~</span>age,<span class="at">data =</span> muestraWM)</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_c_WM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(time, delta) ~ age, data = muestraWM)
+
+  n= 432, number of events= 73 
+
+       coef exp(coef) se(coef)     z Pr(&gt;|z|)    
+age 0.06029   1.06214  0.01021 5.903 3.56e-09 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+    exp(coef) exp(-coef) lower .95 upper .95
+age     1.062     0.9415     1.041     1.084
+
+Concordance= 0.695  (se = 0.027 )
+Likelihood ratio test= 39.16  on 1 df,   p=4e-10
+Wald test            = 34.85  on 1 df,   p=4e-09
+Score (logrank) test = 36.66  on 1 df,   p=1e-09</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>Contal_WM <span class="ot">&lt;-</span> <span class="fu">cutp</span>(model_c_WM)</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>Contal_WM<span class="sc">$</span>age[<span class="dv">1</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   age        U        Q            p
+1:  41 25.21247 3.054644 1.571653e-08</code></pre>
+</div>
+</div>
+<p>en donde de manera contraria la edad sí es significativa al explicar la sobrevivencia, a través de una edad umbral de 41 años.</p>
+</section>
+<section id="selección-de-variables" class="level3" data-number="4.9.4">
+<h3 data-number="4.9.4" class="anchored" data-anchor-id="selección-de-variables"><span class="header-section-number">4.9.4</span> Selección de variables</h3>
+<p>Los datos de este primer ejemplo corresponden a la base de sobrevivencia de 137 pacientes con transplante de médula ósea, los cuales se han dividido en tres grupos de riesgo dependiendo de su condición al momento del trasplante (ALL, AML-Low, AML-high). El riesgo a considerar es la muerte durante el tratamiento o reaparición de la leucemia. A continuación la carga de paquetes y datos:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survMisc)</span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(KMsurv)</span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(bmt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Primero ajustamos un modelo de Cox en donde los grupos de riesgo son una covariable y comprobamos si la covariable aporta de forma significativa al explicar la sobrevivencia de la muestra:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>bmt <span class="ot">&lt;-</span> bmt <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">group=</span><span class="fu">factor</span>(group))</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>modelo1 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(<span class="at">time=</span>t2, <span class="at">event=</span>d3) <span class="sc">~</span> group, <span class="at">data=</span>bmt)</span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(time = t2, event = d3) ~ group, data = bmt)
+
+  n= 137, number of events= 83 
+
+          coef exp(coef) se(coef)      z Pr(&gt;|z|)  
+group2 -0.5742    0.5632   0.2873 -1.999   0.0457 *
+group3  0.3834    1.4673   0.2674  1.434   0.1516  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+       exp(coef) exp(-coef) lower .95 upper .95
+group2    0.5632     1.7757    0.3207     0.989
+group3    1.4673     0.6815    0.8688     2.478
+
+Concordance= 0.625  (se = 0.03 )
+Likelihood ratio test= 13.45  on 2 df,   p=0.001
+Wald test            = 13.03  on 2 df,   p=0.001
+Score (logrank) test = 13.81  on 2 df,   p=0.001</code></pre>
+</div>
+</div>
+<p>en donde notamos que para las tres pruebas LRT, Wald y Score se rechaza la hipótesis de que la variable categórica grupo no es significativa bajo niveles de significancia usuales. Hay otras variables que también se van a considerar como posibles predictores: tiempo de espera del transplante (waiting), clasificador FAB (FAB), indicador de MTX (MTX), Sexo de paciente (SXPa), Sexo de Donante (SXDo), CMV de paciente (CMVPa), CMV de donante (CMVDo), Edad de paciente (AgePa), Edad de donante (AgeDo)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>bmt <span class="ot">&lt;-</span> bmt <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">waiting=</span>z7,<span class="at">FAB=</span><span class="fu">factor</span>(z8),</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">MTX=</span><span class="fu">factor</span>(z10),<span class="at">SXPa=</span><span class="fu">factor</span>(z3),</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">SXDo=</span><span class="fu">factor</span>(z4),<span class="at">CMVPa=</span><span class="fu">factor</span>(z5),                      <span class="at">CMVDo=</span><span class="fu">factor</span>(z6),<span class="at">AgePa=</span>z1<span class="dv">-28</span>,<span class="at">AgeDo=</span>z2<span class="dv">-28</span>)</span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>bmt_2 <span class="ot">&lt;-</span> bmt <span class="sc">%&gt;%</span> <span class="fu">select</span>(t2,d3,group,waiting,FAB,MTX,SXPa,SXDo,</span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a>                       CMVPa,CMVDo,AgePa,AgeDo,ta,tc,tp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Definimos los modelos aumentados en una variable o factor a la vez y usamos la técnica de selección para adelante (Forward selection) como método de selección de variables:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>modelo1_1 <span class="ot">&lt;-</span> <span class="fu">update</span>(modelo1,<span class="at">formula. =</span> .<span class="sc">~</span>.<span class="sc">+</span>waiting)</span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modelo1,modelo1_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+ Cox model: response is  Surv(time = t2, event = d3)
+ Model 1: ~ group
+ Model 2: ~ group + waiting
+   loglik  Chisq Df Pr(&gt;|Chi|)
+1 -366.57                     
+2 -365.90 1.3356  1     0.2478</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>modelo1_2 <span class="ot">&lt;-</span> <span class="fu">update</span>(modelo1,<span class="at">formula. =</span> .<span class="sc">~</span>.<span class="sc">+</span>FAB)</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modelo1,modelo1_2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+ Cox model: response is  Surv(time = t2, event = d3)
+ Model 1: ~ group
+ Model 2: ~ group + FAB
+   loglik  Chisq Df Pr(&gt;|Chi|)   
+1 -366.57                        
+2 -362.42 8.2902  1   0.003986 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>modelo1_3 <span class="ot">&lt;-</span> <span class="fu">update</span>(modelo1,<span class="at">formula. =</span> .<span class="sc">~</span>.<span class="sc">+</span>MTX)</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modelo1,modelo1_3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+ Cox model: response is  Surv(time = t2, event = d3)
+ Model 1: ~ group
+ Model 2: ~ group + MTX
+   loglik Chisq Df Pr(&gt;|Chi|)
+1 -366.57                    
+2 -365.60  1.94  1     0.1637</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>modelo1_4 <span class="ot">&lt;-</span> <span class="fu">update</span>(modelo1,<span class="at">formula. =</span> .<span class="sc">~</span>.<span class="sc">+</span>SXPa<span class="sc">*</span>SXDo)</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modelo1,modelo1_4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+ Cox model: response is  Surv(time = t2, event = d3)
+ Model 1: ~ group
+ Model 2: ~ group + SXPa + SXDo + SXPa:SXDo
+   loglik Chisq Df Pr(&gt;|Chi|)
+1 -366.57                    
+2 -365.65 1.847  3     0.6048</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>modelo1_5 <span class="ot">&lt;-</span> <span class="fu">update</span>(modelo1,<span class="at">formula. =</span> .<span class="sc">~</span>.<span class="sc">+</span>CMVPa<span class="sc">*</span>CMVDo)</span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modelo1,modelo1_5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+ Cox model: response is  Surv(time = t2, event = d3)
+ Model 1: ~ group
+ Model 2: ~ group + CMVPa + CMVDo + CMVPa:CMVDo
+   loglik  Chisq Df Pr(&gt;|Chi|)
+1 -366.57                     
+2 -366.48 0.1827  3     0.9803</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>modelo1_6 <span class="ot">&lt;-</span> <span class="fu">update</span>(modelo1,<span class="at">formula. =</span> .<span class="sc">~</span>.<span class="sc">+</span>AgePa<span class="sc">*</span>AgeDo)</span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modelo1,modelo1_6)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+ Cox model: response is  Surv(time = t2, event = d3)
+ Model 1: ~ group
+ Model 2: ~ group + AgePa + AgeDo + AgePa:AgeDo
+   loglik  Chisq Df Pr(&gt;|Chi|)  
+1 -366.57                       
+2 -361.50 10.135  3    0.01745 *
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>La variable con mayor significancia es FAB, por lo tanto la agregamos al modelo reducido. Repetimos el proceso una vez más con el nuevo modelo completo:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>modelo1_2_1 <span class="ot">&lt;-</span> <span class="fu">update</span>(modelo1_2,<span class="at">formula. =</span> .<span class="sc">~</span>.<span class="sc">+</span>waiting)</span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modelo1_2,modelo1_2_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+ Cox model: response is  Surv(time = t2, event = d3)
+ Model 1: ~ group + FAB
+ Model 2: ~ group + FAB + waiting
+   loglik  Chisq Df Pr(&gt;|Chi|)
+1 -362.42                     
+2 -361.76 1.3375  1     0.2475</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>modelo1_2_2 <span class="ot">&lt;-</span> <span class="fu">update</span>(modelo1_2,<span class="at">formula. =</span> .<span class="sc">~</span>.<span class="sc">+</span>MTX)</span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modelo1_2,modelo1_2_2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+ Cox model: response is  Surv(time = t2, event = d3)
+ Model 1: ~ group + FAB
+ Model 2: ~ group + FAB + MTX
+   loglik Chisq Df Pr(&gt;|Chi|)
+1 -362.42                    
+2 -361.45 1.958  1     0.1617</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>modelo1_2_3 <span class="ot">&lt;-</span> <span class="fu">update</span>(modelo1_2,<span class="at">formula. =</span> .<span class="sc">~</span>.<span class="sc">+</span>SXPa<span class="sc">*</span>SXDo)</span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modelo1_2,modelo1_2_3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+ Cox model: response is  Surv(time = t2, event = d3)
+ Model 1: ~ group + FAB
+ Model 2: ~ group + FAB + SXPa + SXDo + SXPa:SXDo
+   loglik Chisq Df Pr(&gt;|Chi|)
+1 -362.42                    
+2 -361.97 0.901  3     0.8252</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>modelo1_2_4 <span class="ot">&lt;-</span> <span class="fu">update</span>(modelo1_2,<span class="at">formula. =</span> .<span class="sc">~</span>.<span class="sc">+</span>CMVPa<span class="sc">*</span>CMVDo)</span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modelo1_2,modelo1_2_4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+ Cox model: response is  Surv(time = t2, event = d3)
+ Model 1: ~ group + FAB
+ Model 2: ~ group + FAB + CMVPa + CMVDo + CMVPa:CMVDo
+   loglik  Chisq Df Pr(&gt;|Chi|)
+1 -362.42                     
+2 -362.41 0.0208  3     0.9992</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>modelo1_2_5 <span class="ot">&lt;-</span> <span class="fu">update</span>(modelo1_2,<span class="at">formula. =</span> .<span class="sc">~</span>.<span class="sc">+</span>AgePa<span class="sc">*</span>AgeDo)</span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modelo1_2,modelo1_2_5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+ Cox model: response is  Surv(time = t2, event = d3)
+ Model 1: ~ group + FAB
+ Model 2: ~ group + FAB + AgePa + AgeDo + AgePa:AgeDo
+   loglik  Chisq Df Pr(&gt;|Chi|)  
+1 -362.42                       
+2 -356.89 11.061  3     0.0114 *
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>La siguiente variable a incluir es la interacción de la edad del donante y paciente y sus efectos principales. Volvemos a hacer el análisis de nuevo:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>modelo1_2_5_1 <span class="ot">&lt;-</span> <span class="fu">update</span>(modelo1_2_5,<span class="at">formula. =</span> .<span class="sc">~</span>.<span class="sc">+</span>waiting)</span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modelo1_2_5,modelo1_2_5_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+ Cox model: response is  Surv(time = t2, event = d3)
+ Model 1: ~ group + FAB + AgePa + AgeDo + AgePa:AgeDo
+ Model 2: ~ group + FAB + AgePa + AgeDo + waiting + AgePa:AgeDo
+   loglik Chisq Df Pr(&gt;|Chi|)
+1 -356.89                    
+2 -356.64 0.499  1     0.4799</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>modelo1_2_5_2 <span class="ot">&lt;-</span> <span class="fu">update</span>(modelo1_2_5,<span class="at">formula. =</span> .<span class="sc">~</span>.<span class="sc">+</span>MTX)</span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modelo1_2_5,modelo1_2_5_2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+ Cox model: response is  Surv(time = t2, event = d3)
+ Model 1: ~ group + FAB + AgePa + AgeDo + AgePa:AgeDo
+ Model 2: ~ group + FAB + AgePa + AgeDo + MTX + AgePa:AgeDo
+   loglik  Chisq Df Pr(&gt;|Chi|)
+1 -356.89                     
+2 -356.20 1.3976  1     0.2371</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>modelo1_2_5_3 <span class="ot">&lt;-</span> <span class="fu">update</span>(modelo1_2_5,<span class="at">formula. =</span> .<span class="sc">~</span>.<span class="sc">+</span>SXPa<span class="sc">*</span>SXDo)</span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modelo1_2_5,modelo1_2_5_3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+ Cox model: response is  Surv(time = t2, event = d3)
+ Model 1: ~ group + FAB + AgePa + AgeDo + AgePa:AgeDo
+ Model 2: ~ group + FAB + AgePa + AgeDo + SXPa + SXDo + AgePa:AgeDo + SXPa:SXDo
+   loglik  Chisq Df Pr(&gt;|Chi|)
+1 -356.89                     
+2 -356.21 1.3677  3     0.7131</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>modelo1_2_5_4 <span class="ot">&lt;-</span> <span class="fu">update</span>(modelo1_2_5,<span class="at">formula. =</span> .<span class="sc">~</span>.<span class="sc">+</span>CMVPa<span class="sc">*</span>CMVDo)</span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modelo1_2_5,modelo1_2_5_4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+ Cox model: response is  Surv(time = t2, event = d3)
+ Model 1: ~ group + FAB + AgePa + AgeDo + AgePa:AgeDo
+ Model 2: ~ group + FAB + AgePa + AgeDo + CMVPa + CMVDo + AgePa:AgeDo + CMVPa:CMVDo
+   loglik  Chisq Df Pr(&gt;|Chi|)
+1 -356.89                     
+2 -356.61 0.5644  3     0.9045</code></pre>
+</div>
+</div>
+<p>y por lo tanto no agregamos variables adicionales. El modelo final tendría el siguiente resumen:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo1_2_5)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(time = t2, event = d3) ~ group + FAB + AgePa + 
+    AgeDo + AgePa:AgeDo, data = bmt)
+
+  n= 137, number of events= 83 
+
+                  coef  exp(coef)   se(coef)      z Pr(&gt;|z|)    
+group2      -1.0906476  0.3359988  0.3542790 -3.078 0.002080 ** 
+group3      -0.4039052  0.6677074  0.3627767 -1.113 0.265549    
+FAB1         0.8374156  2.3103883  0.2784644  3.007 0.002636 ** 
+AgePa        0.0068204  1.0068437  0.0196830  0.347 0.728959    
+AgeDo        0.0038723  1.0038798  0.0182562  0.212 0.832021    
+AgePa:AgeDo  0.0031593  1.0031643  0.0009508  3.323 0.000891 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+            exp(coef) exp(-coef) lower .95 upper .95
+group2         0.3360     2.9762    0.1678    0.6728
+group3         0.6677     1.4977    0.3279    1.3595
+FAB1           2.3104     0.4328    1.3386    3.9876
+AgePa          1.0068     0.9932    0.9687    1.0464
+AgeDo          1.0039     0.9961    0.9686    1.0405
+AgePa:AgeDo    1.0032     0.9968    1.0013    1.0050
+
+Concordance= 0.665  (se = 0.033 )
+Likelihood ratio test= 32.8  on 6 df,   p=1e-05
+Wald test            = 33.02  on 6 df,   p=1e-05
+Score (logrank) test = 35.75  on 6 df,   p=3e-06</code></pre>
+</div>
+</div>
+</section>
+<section id="covariables-dependientes-del-tiempo-1" class="level3" data-number="4.9.5">
+<h3 data-number="4.9.5" class="anchored" data-anchor-id="covariables-dependientes-del-tiempo-1"><span class="header-section-number">4.9.5</span> Covariables dependientes del tiempo</h3>
+<p>Ahora vamos a considerar una variable dependiente del tiempo definida por:</p>
+<span class="math display">\[\begin{align}
+
+Z_A(t)=\begin{cases}
+
+0 &amp; \text{si $t&lt;ta$}\\
+
+1 &amp; \text{si no.}
+
+\end{cases}
+
+\end{align}\]</span>
+<p>donde <em>ta</em> es el tiempo de ocurrencia de la enfermedad aguda de injerto contra huésped. Para incorporar esta covariable ajustamos la tabla de la siguiente forma:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>bmt_2 <span class="ot">&lt;-</span> bmt_2 <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">id=</span><span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>())</span>
+<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a>newbmt_2 <span class="ot">&lt;-</span> <span class="fu">tmerge</span>(<span class="at">data1 =</span> bmt_2,<span class="at">data2 =</span> bmt_2,<span class="at">id =</span> id,<span class="at">tstop =</span> t2)</span>
+<span id="cb97-4"><a href="#cb97-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb97-5"><a href="#cb97-5" aria-hidden="true" tabindex="-1"></a>newbmt_2 <span class="ot">&lt;-</span> <span class="fu">tmerge</span>(<span class="at">data1 =</span> newbmt_2,<span class="at">data2 =</span> bmt_2,<span class="at">id =</span> id,<span class="at">ZA=</span><span class="fu">tdc</span>(ta))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>También tenemos las siguientes dos variables que dependen del tiempo:</p>
+<span class="math display">\[\begin{align}
+
+Z_P(t)=\begin{cases}
+
+0 &amp; \text{si $t&lt;tp$}\\
+
+1 &amp; \text{si no.}
+
+\end{cases}
+
+\end{align}\]</span>
+<p>y</p>
+<span class="math display">\[\begin{align}
+
+Z_C(t)=\begin{cases}
+
+0 &amp; \text{si $t&lt;tc$}\\
+
+1 &amp; \text{si no.}
+
+\end{cases}
+
+\end{align}\]</span>
+<p>son las indicadoras de recuperación de plaquetas y de enfermedad crónica de injerto contra huésped respectivamente. Las incluimos en la base:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a>newbmt_2 <span class="ot">&lt;-</span> <span class="fu">tmerge</span>(<span class="at">data1 =</span> newbmt_2,<span class="at">data2 =</span> bmt_2,<span class="at">id =</span> id,<span class="at">ZP=</span><span class="fu">tdc</span>(tp))</span>
+<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb98-3"><a href="#cb98-3" aria-hidden="true" tabindex="-1"></a>newbmt_2 <span class="ot">&lt;-</span> <span class="fu">tmerge</span>(<span class="at">data1 =</span> newbmt_2,<span class="at">data2 =</span> bmt_2,<span class="at">id =</span> id,<span class="at">ZC=</span><span class="fu">tdc</span>(tc),<span class="at">muerte=</span><span class="fu">event</span>(t2,d3))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>y la base queda así:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(newbmt_2,<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     t2 d3 group waiting FAB MTX SXPa SXDo CMVPa CMVDo AgePa AgeDo   ta  tc tp
+1  2081  0     1      98   0   0    1    0     1     1    -2     5   67 121 13
+2  2081  0     1      98   0   0    1    0     1     1    -2     5   67 121 13
+3  2081  0     1      98   0   0    1    0     1     1    -2     5   67 121 13
+4  2081  0     1      98   0   0    1    0     1     1    -2     5   67 121 13
+5  1602  0     1    1720   0   0    1    1     0     0    -7     9 1602 139 18
+6  1602  0     1    1720   0   0    1    1     0     0    -7     9 1602 139 18
+7  1602  0     1    1720   0   0    1    1     0     0    -7     9 1602 139 18
+8  1496  0     1     127   0   0    1    1     1     0    -2     7 1496 307 12
+9  1496  0     1     127   0   0    1    1     1     0    -2     7 1496 307 12
+10 1496  0     1     127   0   0    1    1     1     0    -2     7 1496 307 12
+   id tstart tstop ZA ZP ZC muerte
+1   1      0    13  0  0  0      0
+2   1     13    67  0  1  0      0
+3   1     67   121  1  1  0      0
+4   1    121  2081  1  1  1      0
+5   2      0    18  0  0  0      0
+6   2     18   139  0  1  0      0
+7   2    139  1602  0  1  1      0
+8   3      0    12  0  0  0      0
+9   3     12   307  0  1  0      0
+10  3    307  1496  0  1  1      0</code></pre>
+</div>
+</div>
+<p>Ajustamos un modelo que incluya la primer covariable <span class="math inline">\(Z_A(t)\)</span> sobre el modelo reducido que contiene solamente el grupo de riesgo:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a>modelo2 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(<span class="at">time =</span> tstart,<span class="at">time2 =</span> tstop,<span class="at">event =</span> muerte)<span class="sc">~</span>group<span class="sc">+</span>ZA,<span class="at">data =</span> newbmt_2)</span>
+<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a>modelo1 <span class="ot">&lt;-</span> <span class="fu">update</span>(modelo2,<span class="at">formula. =</span> .<span class="sc">~</span>.<span class="sc">-</span>ZA)</span>
+<span id="cb101-4"><a href="#cb101-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb101-5"><a href="#cb101-5" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modelo1,modelo2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+ Cox model: response is  Surv(time = tstart, time2 = tstop, event = muerte)
+ Model 1: ~ group
+ Model 2: ~ group + ZA
+   loglik  Chisq Df Pr(&gt;|Chi|)
+1 -366.57                     
+2 -365.97 1.2034  1     0.2726</code></pre>
+</div>
+</div>
+<p>y hacemos lo mismo con modelos que incluyan de forma univariada las otras dos variables dependientes del tiempo:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a>modelo3 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(<span class="at">time =</span> tstart,<span class="at">time2 =</span> tstop,<span class="at">event =</span> muerte)<span class="sc">~</span>group<span class="sc">+</span>ZC,<span class="at">data =</span> newbmt_2)</span>
+<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb103-3"><a href="#cb103-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modelo1,modelo3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+ Cox model: response is  Surv(time = tstart, time2 = tstop, event = muerte)
+ Model 1: ~ group
+ Model 2: ~ group + ZC
+   loglik  Chisq Df Pr(&gt;|Chi|)
+1 -366.57                     
+2 -366.36 0.4152  1     0.5193</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a>modelo4 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(<span class="at">time =</span> tstart,<span class="at">time2 =</span> tstop,<span class="at">event =</span> muerte)<span class="sc">~</span>group<span class="sc">+</span>ZP,<span class="at">data =</span> newbmt_2)</span>
+<span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb105-3"><a href="#cb105-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modelo1,modelo4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+ Cox model: response is  Surv(time = tstart, time2 = tstop, event = muerte)
+ Model 1: ~ group
+ Model 2: ~ group + ZP
+   loglik Chisq Df Pr(&gt;|Chi|)   
+1 -366.57                       
+2 -361.86 9.421  1   0.002145 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>En donde se puede notar que la variable <span class="math inline">\(Z_P(t)\)</span> en significativa sobre un modelo reducido en donde solamente esté el grupo de riesgo de 3 niveles.</p>
+<p>Ahora vamos a comparar el modelo completo que se obtuvo con selección para adelante con respecto al mismo modelo añadiendo la variable que depende del tiempo <span class="math inline">\(Z_P(t)\)</span>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a>modeloc1 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="at">formula =</span> <span class="fu">Surv</span>(<span class="at">time =</span> tstart,<span class="at">time2 =</span> tstop,<span class="at">event =</span> muerte) <span class="sc">~</span> group <span class="sc">+</span> FAB <span class="sc">+</span> AgePa<span class="sc">*</span>AgeDo, <span class="at">data =</span> newbmt_2)</span>
+<span id="cb107-2"><a href="#cb107-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb107-3"><a href="#cb107-3" aria-hidden="true" tabindex="-1"></a>modeloc2 <span class="ot">&lt;-</span> <span class="fu">update</span>(modeloc1,<span class="at">formula. =</span> .<span class="sc">~</span>.<span class="sc">+</span>ZP)</span>
+<span id="cb107-4"><a href="#cb107-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb107-5"><a href="#cb107-5" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modeloc1,modeloc2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+ Cox model: response is  Surv(time = tstart, time2 = tstop, event = muerte)
+ Model 1: ~ group + FAB + AgePa * AgeDo
+ Model 2: ~ group + FAB + AgePa + AgeDo + ZP + AgePa:AgeDo
+   loglik  Chisq Df Pr(&gt;|Chi|)   
+1 -356.89                        
+2 -353.33 7.1311  1   0.007576 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>Por lo tanto la variable <span class="math inline">\(Z_P(t)\)</span> sí es significativa sobre el modelo reducido con covariables fijas, ante los niveles usuales.</p>
+<p>Ahora analizamos la inclusión de las interacciones de las covariables fijas con la variable <span class="math inline">\(Z_P(t)\)</span> usando selección forward:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a>modeloc2_1 <span class="ot">&lt;-</span> <span class="fu">update</span>(modeloc2,<span class="at">formula. =</span> .<span class="sc">~</span>.<span class="sc">+</span>ZP<span class="sc">:</span>group)</span>
+<span id="cb109-2"><a href="#cb109-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb109-3"><a href="#cb109-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modeloc2_1,modeloc2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+ Cox model: response is  Surv(time = tstart, time2 = tstop, event = muerte)
+ Model 1: ~ group + FAB + AgePa + AgeDo + ZP + AgePa:AgeDo + group:ZP
+ Model 2: ~ group + FAB + AgePa + AgeDo + ZP + AgePa:AgeDo
+   loglik  Chisq Df Pr(&gt;|Chi|)  
+1 -349.89                       
+2 -353.33 6.8765  2    0.03212 *
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a>modeloc2_2 <span class="ot">&lt;-</span> <span class="fu">update</span>(modeloc2,<span class="at">formula. =</span> .<span class="sc">~</span>.<span class="sc">+</span>ZP<span class="sc">:</span>FAB)</span>
+<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb111-3"><a href="#cb111-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modeloc2_2,modeloc2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+ Cox model: response is  Surv(time = tstart, time2 = tstop, event = muerte)
+ Model 1: ~ group + FAB + AgePa + AgeDo + ZP + AgePa:AgeDo + FAB:ZP
+ Model 2: ~ group + FAB + AgePa + AgeDo + ZP + AgePa:AgeDo
+   loglik  Chisq Df Pr(&gt;|Chi|)  
+1 -351.63                       
+2 -353.33 3.4025  1     0.0651 .
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a>modeloc2_3 <span class="ot">&lt;-</span> <span class="fu">update</span>(modeloc2,<span class="at">formula. =</span> .<span class="sc">~</span>.<span class="sc">+</span>ZP<span class="sc">*</span>AgePa<span class="sc">*</span>AgeDo)</span>
+<span id="cb113-2"><a href="#cb113-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb113-3"><a href="#cb113-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modeloc2_3,modeloc2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+ Cox model: response is  Surv(time = tstart, time2 = tstop, event = muerte)
+ Model 1: ~ group + FAB + AgePa + AgeDo + ZP + AgePa:AgeDo + AgePa:ZP + AgeDo:ZP + AgePa:AgeDo:ZP
+ Model 2: ~ group + FAB + AgePa + AgeDo + ZP + AgePa:AgeDo
+   loglik  Chisq Df Pr(&gt;|Chi|)  
+1 -349.44                       
+2 -353.33 7.7836  3     0.0507 .
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>como el valor p más pequeño se obtiene al incluir la interacción ZP-group, entonces aumentamos el modelo de esa forma. Seguimos con el proceso:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a>modeloc2_1_1 <span class="ot">&lt;-</span> <span class="fu">update</span>(modeloc2_1,<span class="at">formula. =</span> .<span class="sc">~</span>.<span class="sc">+</span>ZP<span class="sc">:</span>FAB)</span>
+<span id="cb115-2"><a href="#cb115-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb115-3"><a href="#cb115-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modeloc2_1_1,modeloc2_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+ Cox model: response is  Surv(time = tstart, time2 = tstop, event = muerte)
+ Model 1: ~ group + FAB + AgePa + AgeDo + ZP + AgePa:AgeDo + group:ZP + FAB:ZP
+ Model 2: ~ group + FAB + AgePa + AgeDo + ZP + AgePa:AgeDo + group:ZP
+   loglik  Chisq Df Pr(&gt;|Chi|)  
+1 -347.76                       
+2 -349.89 4.2654  1     0.0389 *
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a>modeloc2_1_2 <span class="ot">&lt;-</span> <span class="fu">update</span>(modeloc2_1,<span class="at">formula. =</span> .<span class="sc">~</span>.<span class="sc">+</span>ZP<span class="sc">*</span>AgePa<span class="sc">*</span>AgeDo)</span>
+<span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb117-3"><a href="#cb117-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modeloc2_1_2,modeloc2_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+ Cox model: response is  Surv(time = tstart, time2 = tstop, event = muerte)
+ Model 1: ~ group + FAB + AgePa + AgeDo + ZP + AgePa:AgeDo + group:ZP + AgePa:ZP + AgeDo:ZP + AgePa:AgeDo:ZP
+ Model 2: ~ group + FAB + AgePa + AgeDo + ZP + AgePa:AgeDo + group:ZP
+   loglik  Chisq Df Pr(&gt;|Chi|)   
+1 -343.81                        
+2 -349.89 12.157  3   0.006863 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>Agregamos la interacción ZP-Edad, y finalmente vemos si la última interacción es signficativa sobre este modelo completo:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a>modeloc2_1_2_1 <span class="ot">&lt;-</span> <span class="fu">update</span>(modeloc2_1_2,<span class="at">formula. =</span> .<span class="sc">~</span>.<span class="sc">+</span>ZP<span class="sc">:</span>FAB)</span>
+<span id="cb119-2"><a href="#cb119-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb119-3"><a href="#cb119-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modeloc2_1_2_1,modeloc2_1_2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+ Cox model: response is  Surv(time = tstart, time2 = tstop, event = muerte)
+ Model 1: ~ group + FAB + AgePa + AgeDo + ZP + AgePa:AgeDo + group:ZP + AgePa:ZP + AgeDo:ZP + FAB:ZP + AgePa:AgeDo:ZP
+ Model 2: ~ group + FAB + AgePa + AgeDo + ZP + AgePa:AgeDo + group:ZP + AgePa:ZP + AgeDo:ZP + AgePa:AgeDo:ZP
+   loglik  Chisq Df Pr(&gt;|Chi|)  
+1 -341.50                       
+2 -343.81 4.6133  1    0.03172 *
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>y también lo incluimos asumiendo un nivel de significancia del 5%. El modelo final queda:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb121"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modeloc2_1_2_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(time = tstart, time2 = tstop, event = muerte) ~ 
+    group + FAB + AgePa + AgeDo + ZP + AgePa:AgeDo + group:ZP + 
+        AgePa:ZP + AgeDo:ZP + FAB:ZP + AgePa:AgeDo:ZP, data = newbmt_2)
+
+  n= 341, number of events= 83 
+
+                     coef  exp(coef)   se(coef)      z Pr(&gt;|z|)    
+group2          1.3259769  3.7658623  0.8195521  1.618 0.105678    
+group3          1.1345132  3.1096595  1.2249850  0.926 0.354371    
+FAB1           -1.2506736  0.2863119  1.1125887 -1.124 0.260966    
+AgePa          -0.1537743  0.8574656  0.0545406 -2.819 0.004811 ** 
+AgeDo           0.1163506  1.1233897  0.0434345  2.679 0.007389 ** 
+ZP             -0.2868383  0.7506331  0.6954226 -0.412 0.679998    
+AgePa:AgeDo     0.0025965  1.0025998  0.0019434  1.336 0.181543    
+group2:ZP      -3.0569781  0.0470296  0.9265028 -3.299 0.000969 ***
+group3:ZP      -1.8945809  0.1503814  1.2914215 -1.467 0.142362    
+AgePa:ZP        0.1932964  1.2132423  0.0587831  3.288 0.001008 ** 
+AgeDo:ZP       -0.1467497  0.8635101  0.0480649 -3.053 0.002264 ** 
+FAB1:ZP         2.4709992 11.8342655  1.1594144  2.131 0.033069 *  
+AgePa:AgeDo:ZP  0.0001393  1.0001393  0.0022979  0.061 0.951673    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+               exp(coef) exp(-coef) lower .95 upper .95
+group2           3.76586     0.2655  0.755545   18.7702
+group3           3.10966     0.3216  0.281841   34.3101
+FAB1             0.28631     3.4927  0.032345    2.5344
+AgePa            0.85747     1.1662  0.770534    0.9542
+AgeDo            1.12339     0.8902  1.031713    1.2232
+ZP               0.75063     1.3322  0.192080    2.9334
+AgePa:AgeDo      1.00260     0.9974  0.998788    1.0064
+group2:ZP        0.04703    21.2632  0.007651    0.2891
+group3:ZP        0.15038     6.6498  0.011966    1.8900
+AgePa:ZP         1.21324     0.8242  1.081213    1.3614
+AgeDo:ZP         0.86351     1.1581  0.785877    0.9488
+FAB1:ZP         11.83427     0.0845  1.219680  114.8250
+AgePa:AgeDo:ZP   1.00014     0.9999  0.995645    1.0047
+
+Concordance= 0.735  (se = 0.027 )
+Likelihood ratio test= 63.58  on 13 df,   p=1e-08
+Wald test            = 60.54  on 13 df,   p=4e-08
+Score (logrank) test = 74.92  on 13 df,   p=1e-10</code></pre>
+</div>
+</div>
 <!-- ### Prueba alternativa de riesgos proporcionales: -->
 <!-- ```{r} -->
 <!-- modelou1 <- coxph(Surv(time=t2, event=d3) ~ group+waiting+FAB+MTX+CMVPa+CMVDo+AgePa+AgeDo, data=bmt_2) -->
@@ -1199,7 +1716,7 @@ Score (logrank) test = 28.59  on 7 df,   p=2e-04</code></pre>
 
 <!-- resu1$table -->
 <!-- ``` -->
-<!-- Esta prueba se basa en los residuos estandarizados de Schoenfeld y no en la prueba que aparece en el Klein. En unas semanas estaremos profundizando en este tema de residuos. La implementación de la prueba de riesgos proporcionales se ilustra para dos variables:  -->
+<!-- Esta prueba se basa en los residuos estandarizados de Schoenfeld y no en la prueba que aparece en el Klein. En unas semanas estaremos profundizando en este tema de residuos. La implementación de la prueba de riesgos proporcionales se ilustra para dos variables: -->
 <!-- ```{r} -->
 <!-- modelou2_1 <- coxph(Surv(time=t2, event=d3) ~ waiting+tt(waiting), data=bmt_2,tt=function(x,t, ...) x*log(t)) -->
 <!-- summary(modelou2_1) -->
@@ -1207,7 +1724,7 @@ Score (logrank) test = 28.59  on 7 df,   p=2e-04</code></pre>
 <!-- modelou2_2 <- coxph(Surv(time=t2, event=d3) ~ MTX2+tt(MTX2), data=bmt_3,tt=function(x,t, ...) x*log(t)) -->
 <!-- summary(modelou2_2) -->
 <!-- ``` -->
-<!-- A partir de los cálculos anteriores y la tabla 9.5 concluimos que la variable que tiene más evidencia de no seguir la hipótesis de riesgos proporcionales es MTX.  -->
+<!-- A partir de los cálculos anteriores y la tabla 9.5 concluimos que la variable que tiene más evidencia de no seguir la hipótesis de riesgos proporcionales es MTX. -->
 <!-- Una posible forma de solucionar la dependencia temporal del riesgo relativo de MTX es a través de la estratificación del modelo anterior de Cox: -->
 <!-- ```{r} -->
 <!-- modeloc2_est <- update(modeloc2,formula. = .~.+strata(MTX)) -->
@@ -1223,7 +1740,7 @@ Score (logrank) test = 28.59  on 7 df,   p=2e-04</code></pre>
 <!-- ### Datos truncados por la izquierda -->
 <!-- Como último cálculo se hará el ajuste del modelo estratificado con MTX pero considerando solamente pacientes que cuyas plaquetas hayan retornado a un nivel normal (variable $Z_P(t)$): -->
 <!-- ```{r} -->
-<!-- newbmt_2_ZP <- newbmt_2 %>% filter(ZP==1)  -->
+<!-- newbmt_2_ZP <- newbmt_2 %>% filter(ZP==1) -->
 <!-- modeloc2_est_trunc <- update(modeloc2_est,formula. = .~.-ZP,data=newbmt_2_ZP) -->
 <!-- summary(modeloc2_est_trunc) -->
 <!-- ``` -->
