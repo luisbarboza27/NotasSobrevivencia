@@ -938,15 +938,10 @@ Ahora vamos a considerar una variable dependiente del tiempo definida por:
 
 ```{=tex}
 \begin{align}
-
 Z_A(t)=\begin{cases}
-
 0 & \text{si $t<ta$}\\
-
 1 & \text{si no.}
-
 \end{cases}
-
 \end{align}
 ```
 donde *ta* es el tiempo de ocurrencia de la enfermedad aguda de injerto contra huésped. Para incorporar esta covariable ajustamos la tabla de la siguiente forma:
@@ -965,30 +960,20 @@ También tenemos las siguientes dos variables que dependen del tiempo:
 
 ```{=tex}
 \begin{align}
-
 Z_P(t)=\begin{cases}
-
 0 & \text{si $t<tp$}\\
-
 1 & \text{si no.}
-
 \end{cases}
-
 \end{align}
 ```
 y
 
 ```{=tex}
 \begin{align}
-
 Z_C(t)=\begin{cases}
-
 0 & \text{si $t<tc$}\\
-
 1 & \text{si no.}
-
 \end{cases}
-
 \end{align}
 ```
 son las indicadoras de recuperación de plaquetas y de enfermedad crónica de injerto contra huésped respectivamente. Las incluimos en la base:
@@ -1101,70 +1086,70 @@ summary(modeloc2_1_2_1)
 
 ```
 
-<!-- ### Prueba alternativa de riesgos proporcionales: -->
+### Prueba alternativa de riesgos proporcionales:
 
-<!-- ```{r} -->
+```{r}
 
-<!-- modelou1 <- coxph(Surv(time=t2, event=d3) ~ group+waiting+FAB+MTX+CMVPa+CMVDo+AgePa+AgeDo, data=bmt_2) -->
+modelou1 <- coxph(Surv(time=t2, event=d3) ~ group+waiting+FAB+MTX+CMVPa+CMVDo+AgePa+AgeDo, data=bmt_2)
 
-<!-- resu1 <- cox.zph(modelou1) -->
+resu1 <- cox.zph(modelou1)
 
-<!-- resu1$table -->
+resu1$table
 
-<!-- ``` -->
+```
 
-<!-- Esta prueba se basa en los residuos estandarizados de Schoenfeld y no en la prueba que aparece en el Klein. En unas semanas estaremos profundizando en este tema de residuos. La implementación de la prueba de riesgos proporcionales se ilustra para dos variables: -->
+Esta prueba se basa en los residuos estandarizados de Schoenfeld y no en la prueba que aparece en el Klein. En unas semanas estaremos profundizando en este tema de residuos. La implementación de la prueba de riesgos proporcionales se ilustra para dos variables:
 
-<!-- ```{r} -->
+```{r}
 
-<!-- modelou2_1 <- coxph(Surv(time=t2, event=d3) ~ waiting+tt(waiting), data=bmt_2,tt=function(x,t, ...) x*log(t)) -->
+modelou2_1 <- coxph(Surv(time=t2, event=d3) ~ waiting+tt(waiting), data=bmt_2,tt=function(x,t, ...) x*log(t))
 
-<!-- summary(modelou2_1) -->
+summary(modelou2_1)
 
-<!-- bmt_3 <- bmt %>% mutate(MTX2=as.numeric(MTX)-1) -->
+bmt_3 <- bmt %>% mutate(MTX2=as.numeric(MTX)-1)
 
-<!-- modelou2_2 <- coxph(Surv(time=t2, event=d3) ~ MTX2+tt(MTX2), data=bmt_3,tt=function(x,t, ...) x*log(t)) -->
+modelou2_2 <- coxph(Surv(time=t2, event=d3) ~ MTX2+tt(MTX2), data=bmt_3,tt=function(x,t, ...) x*log(t))
 
-<!-- summary(modelou2_2) -->
+summary(modelou2_2)
 
-<!-- ``` -->
+```
 
-<!-- A partir de los cálculos anteriores y la tabla 9.5 concluimos que la variable que tiene más evidencia de no seguir la hipótesis de riesgos proporcionales es MTX. -->
+A partir de los cálculos anteriores y la tabla 9.5 concluimos que la variable que tiene más evidencia de no seguir la hipótesis de riesgos proporcionales es MTX.
 
-<!-- Una posible forma de solucionar la dependencia temporal del riesgo relativo de MTX es a través de la estratificación del modelo anterior de Cox: -->
+Una posible forma de solucionar la dependencia temporal del riesgo relativo de MTX es a través de la estratificación del modelo anterior de Cox:
 
-<!-- ```{r} -->
+```{r}
 
-<!-- modeloc2_est <- update(modeloc2,formula. = .~.+strata(MTX)) -->
+modeloc2_est <- update(modeloc2,formula. = .~.+strata(MTX))
 
-<!-- summary(modeloc2_est) -->
+summary(modeloc2_est)
 
-<!-- ``` -->
+```
 
-<!-- este resultado se puede comparar con la tabla 9.7. Como ejercicio les recomiendo completar la tabla 9.8 a través de la comparación de los coeficientes de los dos modelos con datos restringidos sobre MTX: -->
+este resultado se puede comparar con la tabla 9.7. Como ejercicio les recomiendo completar la tabla 9.8 a través de la comparación de los coeficientes de los dos modelos con datos restringidos sobre MTX:
 
-<!-- ```{r} -->
+```{r}
 
-<!-- modeloc2_est_1 <- update(modeloc2,data=subset(newbmt_2,subset = MTX==1)) -->
+modeloc2_est_1 <- update(modeloc2,data=subset(newbmt_2,subset = MTX==1))
 
-<!-- coefficients(modeloc2_est_1) -->
+coefficients(modeloc2_est_1)
 
-<!-- modeloc2_est_2 <- update(modeloc2,data=subset(newbmt_2,subset = MTX==0)) -->
+modeloc2_est_2 <- update(modeloc2,data=subset(newbmt_2,subset = MTX==0))
 
-<!-- coefficients(modeloc2_est_2) -->
+coefficients(modeloc2_est_2)
 
-<!-- ``` -->
+```
 
-<!-- ### Datos truncados por la izquierda -->
+### Datos truncados por la izquierda
 
-<!-- Como último cálculo se hará el ajuste del modelo estratificado con MTX pero considerando solamente pacientes que cuyas plaquetas hayan retornado a un nivel normal (variable $Z_P(t)$): -->
+Como último cálculo se hará el ajuste del modelo estratificado con MTX pero considerando solamente pacientes que cuyas plaquetas hayan retornado a un nivel normal (variable $Z_P(t)$):
 
-<!-- ```{r} -->
+```{r}
 
-<!-- newbmt_2_ZP <- newbmt_2 %>% filter(ZP==1) -->
+newbmt_2_ZP <- newbmt_2 %>% filter(ZP==1)
 
-<!-- modeloc2_est_trunc <- update(modeloc2_est,formula. = .~.-ZP,data=newbmt_2_ZP) -->
+modeloc2_est_trunc <- update(modeloc2_est,formula. = .~.-ZP,data=newbmt_2_ZP)
 
-<!-- summary(modeloc2_est_trunc) -->
+summary(modeloc2_est_trunc)
 
-<!-- ``` -->
+```

@@ -223,6 +223,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#tercer-ejemplo-ejemplo-8.3" id="toc-tercer-ejemplo-ejemplo-8.3" class="nav-link" data-scroll-target="#tercer-ejemplo-ejemplo-8.3"><span class="toc-section-number">4.9.3</span>  Tercer ejemplo (Ejemplo 8.3)</a></li>
   <li><a href="#selección-de-variables" id="toc-selección-de-variables" class="nav-link" data-scroll-target="#selección-de-variables"><span class="toc-section-number">4.9.4</span>  Selección de variables</a></li>
   <li><a href="#covariables-dependientes-del-tiempo-1" id="toc-covariables-dependientes-del-tiempo-1" class="nav-link" data-scroll-target="#covariables-dependientes-del-tiempo-1"><span class="toc-section-number">4.9.5</span>  Covariables dependientes del tiempo</a></li>
+  <li><a href="#prueba-alternativa-de-riesgos-proporcionales" id="toc-prueba-alternativa-de-riesgos-proporcionales" class="nav-link" data-scroll-target="#prueba-alternativa-de-riesgos-proporcionales"><span class="toc-section-number">4.9.6</span>  Prueba alternativa de riesgos proporcionales:</a></li>
+  <li><a href="#datos-truncados-por-la-izquierda" id="toc-datos-truncados-por-la-izquierda" class="nav-link" data-scroll-target="#datos-truncados-por-la-izquierda"><span class="toc-section-number">4.9.7</span>  Datos truncados por la izquierda</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -1424,15 +1426,10 @@ Score (logrank) test = 35.75  on 6 df,   p=3e-06</code></pre>
 <h3 data-number="4.9.5" class="anchored" data-anchor-id="covariables-dependientes-del-tiempo-1"><span class="header-section-number">4.9.5</span> Covariables dependientes del tiempo</h3>
 <p>Ahora vamos a considerar una variable dependiente del tiempo definida por:</p>
 <span class="math display">\[\begin{align}
-
 Z_A(t)=\begin{cases}
-
 0 &amp; \text{si $t&lt;ta$}\\
-
 1 &amp; \text{si no.}
-
 \end{cases}
-
 \end{align}\]</span>
 <p>donde <em>ta</em> es el tiempo de ocurrencia de la enfermedad aguda de injerto contra huésped. Para incorporar esta covariable ajustamos la tabla de la siguiente forma:</p>
 <div class="cell">
@@ -1444,27 +1441,17 @@ Z_A(t)=\begin{cases}
 </div>
 <p>También tenemos las siguientes dos variables que dependen del tiempo:</p>
 <span class="math display">\[\begin{align}
-
 Z_P(t)=\begin{cases}
-
 0 &amp; \text{si $t&lt;tp$}\\
-
 1 &amp; \text{si no.}
-
 \end{cases}
-
 \end{align}\]</span>
 <p>y</p>
 <span class="math display">\[\begin{align}
-
 Z_C(t)=\begin{cases}
-
 0 &amp; \text{si $t&lt;tc$}\\
-
 1 &amp; \text{si no.}
-
 \end{cases}
-
 \end{align}\]</span>
 <p>son las indicadoras de recuperación de plaquetas y de enfermedad crónica de injerto contra huésped respectivamente. Las incluimos en la base:</p>
 <div class="cell">
@@ -1709,41 +1696,184 @@ Wald test            = 60.54  on 13 df,   p=4e-08
 Score (logrank) test = 74.92  on 13 df,   p=1e-10</code></pre>
 </div>
 </div>
-<!-- ### Prueba alternativa de riesgos proporcionales: -->
-<!-- ```{r} -->
-<!-- modelou1 <- coxph(Surv(time=t2, event=d3) ~ group+waiting+FAB+MTX+CMVPa+CMVDo+AgePa+AgeDo, data=bmt_2) -->
-<!-- resu1 <- cox.zph(modelou1) -->
+</section>
+<section id="prueba-alternativa-de-riesgos-proporcionales" class="level3" data-number="4.9.6">
+<h3 data-number="4.9.6" class="anchored" data-anchor-id="prueba-alternativa-de-riesgos-proporcionales"><span class="header-section-number">4.9.6</span> Prueba alternativa de riesgos proporcionales:</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb123"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a>modelou1 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(<span class="at">time=</span>t2, <span class="at">event=</span>d3) <span class="sc">~</span> group<span class="sc">+</span>waiting<span class="sc">+</span>FAB<span class="sc">+</span>MTX<span class="sc">+</span>CMVPa<span class="sc">+</span>CMVDo<span class="sc">+</span>AgePa<span class="sc">+</span>AgeDo, <span class="at">data=</span>bmt_2)</span>
+<span id="cb123-2"><a href="#cb123-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb123-3"><a href="#cb123-3" aria-hidden="true" tabindex="-1"></a>resu1 <span class="ot">&lt;-</span> <span class="fu">cox.zph</span>(modelou1)</span>
+<span id="cb123-4"><a href="#cb123-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb123-5"><a href="#cb123-5" aria-hidden="true" tabindex="-1"></a>resu1<span class="sc">$</span>table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             chisq df           p
+group    2.3343408  2 0.311246401
+waiting  0.2570982  1 0.612120763
+FAB      0.3166363  1 0.573636142
+MTX      8.2423697  1 0.004092367
+CMVPa    0.2360214  1 0.627094548
+CMVDo    0.6284502  1 0.427924365
+AgePa    0.6954160  1 0.404328284
+AgeDo    3.5213560  1 0.060582862
+GLOBAL  18.0494765  9 0.034603845</code></pre>
+</div>
+</div>
+<p>Esta prueba se basa en los residuos estandarizados de Schoenfeld y no en la prueba que aparece en el Klein. En unas semanas estaremos profundizando en este tema de residuos. La implementación de la prueba de riesgos proporcionales se ilustra para dos variables:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb125"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb125-1"><a href="#cb125-1" aria-hidden="true" tabindex="-1"></a>modelou2_1 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(<span class="at">time=</span>t2, <span class="at">event=</span>d3) <span class="sc">~</span> waiting<span class="sc">+</span><span class="fu">tt</span>(waiting), <span class="at">data=</span>bmt_2,<span class="at">tt=</span><span class="cf">function</span>(x,t, ...) x<span class="sc">*</span><span class="fu">log</span>(t))</span>
+<span id="cb125-2"><a href="#cb125-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb125-3"><a href="#cb125-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelou2_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(time = t2, event = d3) ~ waiting + tt(waiting), 
+    data = bmt_2, tt = function(x, t, ...) x * log(t))
 
-<!-- resu1$table -->
-<!-- ``` -->
-<!-- Esta prueba se basa en los residuos estandarizados de Schoenfeld y no en la prueba que aparece en el Klein. En unas semanas estaremos profundizando en este tema de residuos. La implementación de la prueba de riesgos proporcionales se ilustra para dos variables: -->
-<!-- ```{r} -->
-<!-- modelou2_1 <- coxph(Surv(time=t2, event=d3) ~ waiting+tt(waiting), data=bmt_2,tt=function(x,t, ...) x*log(t)) -->
-<!-- summary(modelou2_1) -->
-<!-- bmt_3 <- bmt %>% mutate(MTX2=as.numeric(MTX)-1) -->
-<!-- modelou2_2 <- coxph(Surv(time=t2, event=d3) ~ MTX2+tt(MTX2), data=bmt_3,tt=function(x,t, ...) x*log(t)) -->
-<!-- summary(modelou2_2) -->
-<!-- ``` -->
-<!-- A partir de los cálculos anteriores y la tabla 9.5 concluimos que la variable que tiene más evidencia de no seguir la hipótesis de riesgos proporcionales es MTX. -->
-<!-- Una posible forma de solucionar la dependencia temporal del riesgo relativo de MTX es a través de la estratificación del modelo anterior de Cox: -->
-<!-- ```{r} -->
-<!-- modeloc2_est <- update(modeloc2,formula. = .~.+strata(MTX)) -->
-<!-- summary(modeloc2_est) -->
-<!-- ``` -->
-<!-- este resultado se puede comparar con la tabla 9.7. Como ejercicio les recomiendo completar la tabla 9.8 a través de la comparación de los coeficientes de los dos modelos con datos restringidos sobre MTX: -->
-<!-- ```{r} -->
-<!-- modeloc2_est_1 <- update(modeloc2,data=subset(newbmt_2,subset = MTX==1)) -->
-<!-- coefficients(modeloc2_est_1) -->
-<!-- modeloc2_est_2 <- update(modeloc2,data=subset(newbmt_2,subset = MTX==0)) -->
-<!-- coefficients(modeloc2_est_2) -->
-<!-- ``` -->
-<!-- ### Datos truncados por la izquierda -->
-<!-- Como último cálculo se hará el ajuste del modelo estratificado con MTX pero considerando solamente pacientes que cuyas plaquetas hayan retornado a un nivel normal (variable $Z_P(t)$): -->
-<!-- ```{r} -->
-<!-- newbmt_2_ZP <- newbmt_2 %>% filter(ZP==1) -->
-<!-- modeloc2_est_trunc <- update(modeloc2_est,formula. = .~.-ZP,data=newbmt_2_ZP) -->
-<!-- summary(modeloc2_est_trunc) -->
-<!-- ``` -->
+  n= 137, number of events= 83 
+
+                  coef  exp(coef)   se(coef)      z Pr(&gt;|z|)
+waiting      7.484e-06  1.000e+00  1.297e-03  0.006    0.995
+tt(waiting) -1.759e-05  1.000e+00  2.480e-04 -0.071    0.943
+
+            exp(coef) exp(-coef) lower .95 upper .95
+waiting             1          1    0.9975     1.003
+tt(waiting)         1          1    0.9995     1.000
+
+Concordance= 0.453  (se = 0.031 )
+Likelihood ratio test= 0.08  on 2 df,   p=1
+Wald test            = 0.07  on 2 df,   p=1
+Score (logrank) test = 0.07  on 2 df,   p=1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb127"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a>bmt_3 <span class="ot">&lt;-</span> bmt <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">MTX2=</span><span class="fu">as.numeric</span>(MTX)<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb127-2"><a href="#cb127-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb127-3"><a href="#cb127-3" aria-hidden="true" tabindex="-1"></a>modelou2_2 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(<span class="at">time=</span>t2, <span class="at">event=</span>d3) <span class="sc">~</span> MTX2<span class="sc">+</span><span class="fu">tt</span>(MTX2), <span class="at">data=</span>bmt_3,<span class="at">tt=</span><span class="cf">function</span>(x,t, ...) x<span class="sc">*</span><span class="fu">log</span>(t))</span>
+<span id="cb127-4"><a href="#cb127-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb127-5"><a href="#cb127-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelou2_2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(time = t2, event = d3) ~ MTX2 + tt(MTX2), 
+    data = bmt_3, tt = function(x, t, ...) x * log(t))
+
+  n= 137, number of events= 83 
+
+            coef exp(coef) se(coef)      z Pr(&gt;|z|)  
+MTX2      2.6926   14.7706   1.1258  2.392   0.0168 *
+tt(MTX2) -0.4616    0.6303   0.2219 -2.080   0.0376 *
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+         exp(coef) exp(-coef) lower .95 upper .95
+MTX2       14.7706     0.0677     1.626  134.1903
+tt(MTX2)    0.6303     1.5865     0.408    0.9738
+
+Concordance= 0.58  (se = 0.027 )
+Likelihood ratio test= 7.78  on 2 df,   p=0.02
+Wald test            = 7.02  on 2 df,   p=0.03
+Score (logrank) test = 8.6  on 2 df,   p=0.01</code></pre>
+</div>
+</div>
+<p>A partir de los cálculos anteriores y la tabla 9.5 concluimos que la variable que tiene más evidencia de no seguir la hipótesis de riesgos proporcionales es MTX.</p>
+<p>Una posible forma de solucionar la dependencia temporal del riesgo relativo de MTX es a través de la estratificación del modelo anterior de Cox:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb129"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb129-1"><a href="#cb129-1" aria-hidden="true" tabindex="-1"></a>modeloc2_est <span class="ot">&lt;-</span> <span class="fu">update</span>(modeloc2,<span class="at">formula. =</span> .<span class="sc">~</span>.<span class="sc">+</span><span class="fu">strata</span>(MTX))</span>
+<span id="cb129-2"><a href="#cb129-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb129-3"><a href="#cb129-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modeloc2_est)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(time = tstart, time2 = tstop, event = muerte) ~ 
+    group + FAB + AgePa + AgeDo + ZP + strata(MTX) + AgePa:AgeDo, 
+    data = newbmt_2)
+
+  n= 341, number of events= 83 
+
+                  coef  exp(coef)   se(coef)      z Pr(&gt;|z|)   
+group2      -0.9904320  0.3714162  0.3664891 -2.702  0.00688 **
+group3      -0.3602323  0.6975143  0.3712785 -0.970  0.33192   
+FAB1         0.8918863  2.4397273  0.2833168  3.148  0.00164 **
+AgePa        0.0093842  1.0094283  0.0198368  0.473  0.63616   
+AgeDo       -0.0015376  0.9984636  0.0179129 -0.086  0.93160   
+ZP          -0.9951417  0.3696711  0.3458298 -2.878  0.00401 **
+AgePa:AgeDo  0.0025651  1.0025684  0.0009374  2.736  0.00621 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+            exp(coef) exp(-coef) lower .95 upper .95
+group2         0.3714     2.6924    0.1811    0.7618
+group3         0.6975     1.4337    0.3369    1.4441
+FAB1           2.4397     0.4099    1.4002    4.2511
+AgePa          1.0094     0.9907    0.9709    1.0494
+AgeDo          0.9985     1.0015    0.9640    1.0341
+ZP             0.3697     2.7051    0.1877    0.7281
+AgePa:AgeDo    1.0026     0.9974    1.0007    1.0044
+
+Concordance= 0.712  (se = 0.029 )
+Likelihood ratio test= 38.2  on 7 df,   p=3e-06
+Wald test            = 40.28  on 7 df,   p=1e-06
+Score (logrank) test = 44.49  on 7 df,   p=2e-07</code></pre>
+</div>
+</div>
+<p>este resultado se puede comparar con la tabla 9.7. Como ejercicio les recomiendo completar la tabla 9.8 a través de la comparación de los coeficientes de los dos modelos con datos restringidos sobre MTX:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb131"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb131-1"><a href="#cb131-1" aria-hidden="true" tabindex="-1"></a>modeloc2_est_1 <span class="ot">&lt;-</span> <span class="fu">update</span>(modeloc2,<span class="at">data=</span><span class="fu">subset</span>(newbmt_2,<span class="at">subset =</span> MTX<span class="sc">==</span><span class="dv">1</span>))</span>
+<span id="cb131-2"><a href="#cb131-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb131-3"><a href="#cb131-3" aria-hidden="true" tabindex="-1"></a><span class="fu">coefficients</span>(modeloc2_est_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      group2       group3         FAB1        AgePa        AgeDo           ZP 
+-0.563717043 -0.858281947  0.344075277  0.011525761  0.034240833 -1.006880993 
+ AgePa:AgeDo 
+ 0.001384428 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb133"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb133-1"><a href="#cb133-1" aria-hidden="true" tabindex="-1"></a>modeloc2_est_2 <span class="ot">&lt;-</span> <span class="fu">update</span>(modeloc2,<span class="at">data=</span><span class="fu">subset</span>(newbmt_2,<span class="at">subset =</span> MTX<span class="sc">==</span><span class="dv">0</span>))</span>
+<span id="cb133-2"><a href="#cb133-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb133-3"><a href="#cb133-3" aria-hidden="true" tabindex="-1"></a><span class="fu">coefficients</span>(modeloc2_est_2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      group2       group3         FAB1        AgePa        AgeDo           ZP 
+-1.196548537 -0.290254448  1.088960082  0.027276837 -0.020204863 -0.867470829 
+ AgePa:AgeDo 
+ 0.002270538 </code></pre>
+</div>
+</div>
+</section>
+<section id="datos-truncados-por-la-izquierda" class="level3" data-number="4.9.7">
+<h3 data-number="4.9.7" class="anchored" data-anchor-id="datos-truncados-por-la-izquierda"><span class="header-section-number">4.9.7</span> Datos truncados por la izquierda</h3>
+<p>Como último cálculo se hará el ajuste del modelo estratificado con MTX pero considerando solamente pacientes que cuyas plaquetas hayan retornado a un nivel normal (variable <span class="math inline">\(Z_P(t)\)</span>):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb135"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb135-1"><a href="#cb135-1" aria-hidden="true" tabindex="-1"></a>newbmt_2_ZP <span class="ot">&lt;-</span> newbmt_2 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(ZP<span class="sc">==</span><span class="dv">1</span>)</span>
+<span id="cb135-2"><a href="#cb135-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb135-3"><a href="#cb135-3" aria-hidden="true" tabindex="-1"></a>modeloc2_est_trunc <span class="ot">&lt;-</span> <span class="fu">update</span>(modeloc2_est,<span class="at">formula. =</span> .<span class="sc">~</span>.<span class="sc">-</span>ZP,<span class="at">data=</span>newbmt_2_ZP)</span>
+<span id="cb135-4"><a href="#cb135-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb135-5"><a href="#cb135-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modeloc2_est_trunc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(time = tstart, time2 = tstop, event = muerte) ~ 
+    group + FAB + AgePa + AgeDo + strata(MTX) + AgePa:AgeDo, 
+    data = newbmt_2_ZP)
+
+  n= 195, number of events= 67 
+
+                 coef exp(coef)  se(coef)      z Pr(&gt;|z|)    
+group2      -1.752137  0.173403  0.437522 -4.005 6.21e-05 ***
+group3      -0.747627  0.473489  0.407626 -1.834   0.0666 .  
+FAB1         1.278075  3.589722  0.324847  3.934 8.34e-05 ***
+AgePa        0.041660  1.042540  0.022294  1.869   0.0617 .  
+AgeDo       -0.034750  0.965846  0.020675 -1.681   0.0928 .  
+AgePa:AgeDo  0.002300  1.002302  0.001224  1.878   0.0603 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+            exp(coef) exp(-coef) lower .95 upper .95
+group2         0.1734     5.7669   0.07356    0.4088
+group3         0.4735     2.1120   0.21298    1.0526
+FAB1           3.5897     0.2786   1.89911    6.7853
+AgePa          1.0425     0.9592   0.99797    1.0891
+AgeDo          0.9658     1.0354   0.92749    1.0058
+AgePa:AgeDo    1.0023     0.9977   0.99990    1.0047
+
+Concordance= 0.72  (se = 0.033 )
+Likelihood ratio test= 37.3  on 6 df,   p=2e-06
+Wald test            = 32.27  on 6 df,   p=1e-05
+Score (logrank) test = 36.19  on 6 df,   p=3e-06</code></pre>
+</div>
+</div>
 
 
 </section>
