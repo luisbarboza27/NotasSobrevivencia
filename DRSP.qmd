@@ -40,7 +40,7 @@ $$N_j(t)=\begin{cases}
 1 & \text{individuo j-esimo ha experimentado el riesgo al tiempo t}\\
 0 & \text{si no.}
 \end{cases}
-$$ 
+$$
 
 $$Y_j(t)=\begin{cases}
 1 & \text{individuo j-esimo está bajo estudio inmediatamente antes del tiempo t}\\
@@ -124,23 +124,15 @@ Suponga que un modelo de Cox ha sido ajustado con un vector $Z^*$ de covariables
 
 -   $Z$ tiene riesgos proporcionales después de incluir $Z^*$.
 
-Sea $\hat H(t|Z_j^*)$ la tasa de riesgo del modelo ajustado para el
-
-individuo $j$-ésimo. Bajo una agrupación de la covariable $Z$ en $k$
-
-estratos se calcula para cada uno de ellos:
+Sea $\hat H(t|Z_j^*)$ la tasa de riesgo del modelo ajustado para el individuo $j$-ésimo. Bajo una agrupación de la covariable $Z$ en $k$ estratos se calcula para cada uno de ellos:
 
 $$TOT_g(t_i)=\sum_{Z_{1j}=g}\hat H(\min(t_i,T_j)|Z_j^*)$$ el cual es el
 
-tiempo total esperado a prueba. El número observado de eventos que han
-
-ocurrido hasta tiempo $t_i$ es:
+tiempo total esperado a prueba. El número observado de eventos que han ocurrido hasta tiempo $t_i$ es:
 
 $$N_{g}(t_i)=\sum_{Z_{1j}=g}\delta_j1(T_j\leq t_i)$$
 
-Si la covariable $Z$ no necesita estar en el modelo entonces
-
-$N_g(t_i)-TOT_g(t_i)$ es una martingala, para cada $g$.
+Si la covariable $Z$ no necesita estar en el modelo entonces $N_g(t_i)-TOT_g(t_i)$ es una martingala, para cada $g$.
 
 ```{r, echo=FALSE, out.width='70%', fig.align='center', fig.cap='Gráfico de Arjas'}
 
@@ -150,21 +142,13 @@ knitr::include_graphics("images/Arjas.png")
 
 Si la covariable $Z$ debe ser incluida en el modelo entonces:
 
-$$h(t|Z=g,Z^*)=h_0(t)\exp(\gamma_g)\exp(\beta^TZ^*)$$ y las curvas son
+$$h(t|Z=g,Z^*)=h_0(t)\exp(\gamma_g)\exp(\beta^TZ^*)$$ 
 
-aproximadamente lineales con pendientes distintas de 1. Si $Z$ no
-
-satisface el principio de riesgos proporcionales entonces las curvas no
-
-son lineales y su pendiente difiere de 1.
+y las curvas son aproximadamente lineales con pendientes distintas de 1. Si $Z$ no satisface el principio de riesgos proporcionales entonces las curvas no son lineales y su pendiente difiere de 1.
 
 **Cuarto gráfico (Residuos score)**
 
-Se ajusta un modelo de Cox sobre las $p$ covariables. Sea $b$ el
-
-estimador de verosimilitud parcial de $\beta$ y $\hat H_0(t)$ la tasa de
-
-riesgo base estimada. Considere:
+Se ajusta un modelo de Cox sobre las $p$ covariables. Sea $b$ el estimador de verosimilitud parcial de $\beta$ y $\hat H_0(t)$ la tasa de riesgo base estimada. Considere:
 
 -   $N_j(t)$: indicadora de que el $j$-ésimo paciente/sujeto ha
 
@@ -178,43 +162,30 @@ Para la $k$-ésima covariable defina:
 
 $$\bar Z_k(t)=\frac{\sum_{j=1}^n Y_j(t)Z_{jk}(t)\exp[b^TZ_j(t)]}{\sum_{j=1}^n Y_j(t)\exp[b^TZ_j(t)]}$$
 
-el cual es un promedio ponderado de $Z_{jk}(t)$ y sea $\hat M_j(t)$ el
-
-residuo martingala al tiempo $t$ para el individuo $j$-ésimo:
+el cual es un promedio ponderado de $Z_{jk}(t)$ y sea $\hat M_j(t)$ el residuo martingala al tiempo $t$ para el individuo $j$-ésimo:
 
 $$\hat M_j(t)=N_j(t)-\int_0^tY_j(u)\exp[b^TZ_j(u)]d\hat H_0(u)\qquad j=1,\ldots,n$$
 
-El residuo score para la $k$-ésima covariable y el individuo $j$-ésimo
+El residuo score para la $k$-ésima covariable y el individuo $j$-ésimo se define como:
 
-se define como:
+$$S_{jk}(t)=\int_0^t[Z_{jk}(u)-\bar Z_k(u)]d\hat M_j(u)$$ 
 
-$$S_{jk}(t)=\int_0^t[Z_{jk}(u)-\bar Z_k(u)]d\hat M_j(u)$$ El proceso
+El proceso score para la $k$-ésima covariable es:
 
-score para la $k$-ésima covariable es:
-
-$$U_k(t)=\sum_{j=1}^n S_{jk}(t)$$ En el caso de que todas las
-
-covariables son fijas en tiempo 0 entonces:
+$$U_k(t)=\sum_{j=1}^n S_{jk}(t)$$ 
+En el caso de que todas las covariables son fijas en tiempo 0 entonces:
 
 $$U_k(t)=\sum_{\text{muertes}\leq t}\underbrace{[Z_{jk}-\bar Z_k(T_j)]}_\text{residuos de Schoenfeld}$$
 
-Nota: el proceso score $U_k(t)$ es la primera derivada parcial de la
+Nota: el proceso score $U_k(t)$ es la primera derivada parcial de la verosimilitud parcial del modelo de Cox ajustado con información hasta tiempo $t$. Además:
 
-verosimilitud parcial del modelo de Cox ajustado con información hasta
+$$U_k(0)=0 \qquad \text{y} \qquad U_k(\infty)=0$$ 
 
-tiempo $t$. Además:
+dado que $b$ resuelve la ecuación score. Además bajo la hipótesis de que el modelo ajusta bien entonces:
 
-$$U_k(0)=0 \qquad \text{y} \qquad U_k(\infty)=0$$ dado que $b$ resuelve
+$$W_k(t)=U_k(t)\cdot \text{Error estándar}(b_k)$$ 
 
-la ecuación score. Además bajo la hipótesis de que el modelo ajusta bien
-
-entonces:
-
-$$W_k(t)=U_k(t)\cdot \text{Error estándar}(b_k)$$ y la expresión
-
-anterior converge a un puente browniano que se anula en 0 y en $\infty$,
-
-siempre y cuando $\text{Cov}(b_k,b_{k'})=0$ para $k\neq k'$.
+y la expresión anterior converge a un puente browniano que se anula en 0 y en $\infty$, siempre y cuando $\text{Cov}(b_k,b_{k'})=0$ para $k\neq k'$.
 
 ```{r, echo=FALSE, out.width='70%', fig.align='center', fig.cap='Residuos de Schoenfeld'}
 
@@ -222,13 +193,7 @@ knitr::include_graphics("images/Schoenfeld.png")
 
 ```
 
-En el gráfico anterior, en el cuadrante superior se nota que existe
-
-evidencia en contra de $H_0$ ya que $W_k(t)$ es superior al cuantil
-
-superior bajo $H_0$, es decir el supuesto de riesgos proporcionales para
-
-$Z_k$ no es cierto.
+En el gráfico anterior, en el cuadrante superior se nota que existe evidencia en contra de $H_0$ ya que $W_k(t)$ es superior al cuantil superior bajo $H_0$, es decir el supuesto de riesgos proporcionales para $Z_k$ no es cierto.
 
 ## Identificación de Outliers
 

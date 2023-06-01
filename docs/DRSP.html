@@ -262,15 +262,11 @@ ul.task-list li input[type="checkbox"] {
 <li><p>Debe ser incluida en el modelo.</p></li>
 <li><p><span class="math inline">\(Z\)</span> tiene riesgos proporcionales después de incluir <span class="math inline">\(Z^*\)</span>.</p></li>
 </ul>
-<p>Sea <span class="math inline">\(\hat H(t|Z_j^*)\)</span> la tasa de riesgo del modelo ajustado para el</p>
-<p>individuo <span class="math inline">\(j\)</span>-ésimo. Bajo una agrupación de la covariable <span class="math inline">\(Z\)</span> en <span class="math inline">\(k\)</span></p>
-<p>estratos se calcula para cada uno de ellos:</p>
+<p>Sea <span class="math inline">\(\hat H(t|Z_j^*)\)</span> la tasa de riesgo del modelo ajustado para el individuo <span class="math inline">\(j\)</span>-ésimo. Bajo una agrupación de la covariable <span class="math inline">\(Z\)</span> en <span class="math inline">\(k\)</span> estratos se calcula para cada uno de ellos:</p>
 <p><span class="math display">\[TOT_g(t_i)=\sum_{Z_{1j}=g}\hat H(\min(t_i,T_j)|Z_j^*)\]</span> el cual es el</p>
-<p>tiempo total esperado a prueba. El número observado de eventos que han</p>
-<p>ocurrido hasta tiempo <span class="math inline">\(t_i\)</span> es:</p>
+<p>tiempo total esperado a prueba. El número observado de eventos que han ocurrido hasta tiempo <span class="math inline">\(t_i\)</span> es:</p>
 <p><span class="math display">\[N_{g}(t_i)=\sum_{Z_{1j}=g}\delta_j1(T_j\leq t_i)\]</span></p>
-<p>Si la covariable <span class="math inline">\(Z\)</span> no necesita estar en el modelo entonces</p>
-<p><span class="math inline">\(N_g(t_i)-TOT_g(t_i)\)</span> es una martingala, para cada <span class="math inline">\(g\)</span>.</p>
+<p>Si la covariable <span class="math inline">\(Z\)</span> no necesita estar en el modelo entonces <span class="math inline">\(N_g(t_i)-TOT_g(t_i)\)</span> es una martingala, para cada <span class="math inline">\(g\)</span>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -282,14 +278,10 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <p>Si la covariable <span class="math inline">\(Z\)</span> debe ser incluida en el modelo entonces:</p>
-<p><span class="math display">\[h(t|Z=g,Z^*)=h_0(t)\exp(\gamma_g)\exp(\beta^TZ^*)\]</span> y las curvas son</p>
-<p>aproximadamente lineales con pendientes distintas de 1. Si <span class="math inline">\(Z\)</span> no</p>
-<p>satisface el principio de riesgos proporcionales entonces las curvas no</p>
-<p>son lineales y su pendiente difiere de 1.</p>
+<p><span class="math display">\[h(t|Z=g,Z^*)=h_0(t)\exp(\gamma_g)\exp(\beta^TZ^*)\]</span></p>
+<p>y las curvas son aproximadamente lineales con pendientes distintas de 1. Si <span class="math inline">\(Z\)</span> no satisface el principio de riesgos proporcionales entonces las curvas no son lineales y su pendiente difiere de 1.</p>
 <p><strong>Cuarto gráfico (Residuos score)</strong></p>
-<p>Se ajusta un modelo de Cox sobre las <span class="math inline">\(p\)</span> covariables. Sea <span class="math inline">\(b\)</span> el</p>
-<p>estimador de verosimilitud parcial de <span class="math inline">\(\beta\)</span> y <span class="math inline">\(\hat H_0(t)\)</span> la tasa de</p>
-<p>riesgo base estimada. Considere:</p>
+<p>Se ajusta un modelo de Cox sobre las <span class="math inline">\(p\)</span> covariables. Sea <span class="math inline">\(b\)</span> el estimador de verosimilitud parcial de <span class="math inline">\(\beta\)</span> y <span class="math inline">\(\hat H_0(t)\)</span> la tasa de riesgo base estimada. Considere:</p>
 <ul>
 <li><p><span class="math inline">\(N_j(t)\)</span>: indicadora de que el <span class="math inline">\(j\)</span>-ésimo paciente/sujeto ha</p>
 <p>experimentado el riesgo en tiempo <span class="math inline">\(t\)</span></p></li>
@@ -298,25 +290,18 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <p>Para la <span class="math inline">\(k\)</span>-ésima covariable defina:</p>
 <p><span class="math display">\[\bar Z_k(t)=\frac{\sum_{j=1}^n Y_j(t)Z_{jk}(t)\exp[b^TZ_j(t)]}{\sum_{j=1}^n Y_j(t)\exp[b^TZ_j(t)]}\]</span></p>
-<p>el cual es un promedio ponderado de <span class="math inline">\(Z_{jk}(t)\)</span> y sea <span class="math inline">\(\hat M_j(t)\)</span> el</p>
-<p>residuo martingala al tiempo <span class="math inline">\(t\)</span> para el individuo <span class="math inline">\(j\)</span>-ésimo:</p>
+<p>el cual es un promedio ponderado de <span class="math inline">\(Z_{jk}(t)\)</span> y sea <span class="math inline">\(\hat M_j(t)\)</span> el residuo martingala al tiempo <span class="math inline">\(t\)</span> para el individuo <span class="math inline">\(j\)</span>-ésimo:</p>
 <p><span class="math display">\[\hat M_j(t)=N_j(t)-\int_0^tY_j(u)\exp[b^TZ_j(u)]d\hat H_0(u)\qquad j=1,\ldots,n\]</span></p>
-<p>El residuo score para la <span class="math inline">\(k\)</span>-ésima covariable y el individuo <span class="math inline">\(j\)</span>-ésimo</p>
-<p>se define como:</p>
-<p><span class="math display">\[S_{jk}(t)=\int_0^t[Z_{jk}(u)-\bar Z_k(u)]d\hat M_j(u)\]</span> El proceso</p>
-<p>score para la <span class="math inline">\(k\)</span>-ésima covariable es:</p>
-<p><span class="math display">\[U_k(t)=\sum_{j=1}^n S_{jk}(t)\]</span> En el caso de que todas las</p>
-<p>covariables son fijas en tiempo 0 entonces:</p>
+<p>El residuo score para la <span class="math inline">\(k\)</span>-ésima covariable y el individuo <span class="math inline">\(j\)</span>-ésimo se define como:</p>
+<p><span class="math display">\[S_{jk}(t)=\int_0^t[Z_{jk}(u)-\bar Z_k(u)]d\hat M_j(u)\]</span></p>
+<p>El proceso score para la <span class="math inline">\(k\)</span>-ésima covariable es:</p>
+<p><span class="math display">\[U_k(t)=\sum_{j=1}^n S_{jk}(t)\]</span> En el caso de que todas las covariables son fijas en tiempo 0 entonces:</p>
 <p><span class="math display">\[U_k(t)=\sum_{\text{muertes}\leq t}\underbrace{[Z_{jk}-\bar Z_k(T_j)]}_\text{residuos de Schoenfeld}\]</span></p>
-<p>Nota: el proceso score <span class="math inline">\(U_k(t)\)</span> es la primera derivada parcial de la</p>
-<p>verosimilitud parcial del modelo de Cox ajustado con información hasta</p>
-<p>tiempo <span class="math inline">\(t\)</span>. Además:</p>
-<p><span class="math display">\[U_k(0)=0 \qquad \text{y} \qquad U_k(\infty)=0\]</span> dado que <span class="math inline">\(b\)</span> resuelve</p>
-<p>la ecuación score. Además bajo la hipótesis de que el modelo ajusta bien</p>
-<p>entonces:</p>
-<p><span class="math display">\[W_k(t)=U_k(t)\cdot \text{Error estándar}(b_k)\]</span> y la expresión</p>
-<p>anterior converge a un puente browniano que se anula en 0 y en <span class="math inline">\(\infty\)</span>,</p>
-<p>siempre y cuando <span class="math inline">\(\text{Cov}(b_k,b_{k'})=0\)</span> para <span class="math inline">\(k\neq k'\)</span>.</p>
+<p>Nota: el proceso score <span class="math inline">\(U_k(t)\)</span> es la primera derivada parcial de la verosimilitud parcial del modelo de Cox ajustado con información hasta tiempo <span class="math inline">\(t\)</span>. Además:</p>
+<p><span class="math display">\[U_k(0)=0 \qquad \text{y} \qquad U_k(\infty)=0\]</span></p>
+<p>dado que <span class="math inline">\(b\)</span> resuelve la ecuación score. Además bajo la hipótesis de que el modelo ajusta bien entonces:</p>
+<p><span class="math display">\[W_k(t)=U_k(t)\cdot \text{Error estándar}(b_k)\]</span></p>
+<p>y la expresión anterior converge a un puente browniano que se anula en 0 y en <span class="math inline">\(\infty\)</span>, siempre y cuando <span class="math inline">\(\text{Cov}(b_k,b_{k'})=0\)</span> para <span class="math inline">\(k\neq k'\)</span>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -327,10 +312,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </div>
-<p>En el gráfico anterior, en el cuadrante superior se nota que existe</p>
-<p>evidencia en contra de <span class="math inline">\(H_0\)</span> ya que <span class="math inline">\(W_k(t)\)</span> es superior al cuantil</p>
-<p>superior bajo <span class="math inline">\(H_0\)</span>, es decir el supuesto de riesgos proporcionales para</p>
-<p><span class="math inline">\(Z_k\)</span> no es cierto.</p>
+<p>En el gráfico anterior, en el cuadrante superior se nota que existe evidencia en contra de <span class="math inline">\(H_0\)</span> ya que <span class="math inline">\(W_k(t)\)</span> es superior al cuantil superior bajo <span class="math inline">\(H_0\)</span>, es decir el supuesto de riesgos proporcionales para <span class="math inline">\(Z_k\)</span> no es cierto.</p>
 </section>
 <section id="identificación-de-outliers" class="level2" data-number="5.4">
 <h2 data-number="5.4" class="anchored" data-anchor-id="identificación-de-outliers"><span class="header-section-number">5.4</span> Identificación de Outliers</h2>
