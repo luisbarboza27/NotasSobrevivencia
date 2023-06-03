@@ -283,163 +283,127 @@ en donde el gráfico de la derecha muestra el nivel de influencia de las
 
 observaciones sobre la $k$-ésima covariable.
 
-<!-- ## Laboratorio -->
+## Laboratorio
 
-<!-- ### Ejemplo 1 -->
+### Ejemplo 1
 
-<!-- En este ejemplo retomamos los datos de pacientes que han tenido un -->
+En este ejemplo retomamos los datos de pacientes que han tenido un transplante de médula ósea y se analiza el riesgo de muerte o reaparición de la leucemia. Cargamos datos y paquetes:
 
-<!-- transplante de médula ósea y se analiza el riesgo de muerte o -->
+```{r message=FALSE, warning=FALSE}
 
-<!-- reaparición de la leucemia. Cargamos datos y paquetes: -->
+library(survival)
 
-<!-- ```{r message=FALSE, warning=FALSE} -->
+library(survMisc)
 
-<!-- library(survival) -->
+library(KMsurv)
 
-<!-- library(survMisc) -->
+library(tidyverse)
 
-<!-- library(KMsurv) -->
+library(survminer)
 
-<!-- library(tidyverse) -->
+data(bmt)
 
-<!-- library(survminer) -->
+```
 
-<!-- data(bmt) -->
+Ajustamos un modelo de Cox con las siguientes covariables:
 
-<!-- ``` -->
+```{r}
 
-<!-- Ajustamos un modelo de Cox con las siguientes covariables: -->
+bmt <- bmt %>%
+  mutate(waiting=z7/30-9,FAB=factor(z8),
+                      MTX=factor(z10),SXPa=factor(z3),
+                      SXDo=factor(z4),CMVPa=factor(z5),
+ CMVDo=factor(z6),AgePa=z1-28,AgeDo=z2-28,
+                      group=factor(group))
 
-<!-- ```{r} -->
+bmt_2 <- bmt %>% select(t2,d3,group,waiting,FAB,MTX,AgePa,
+                        AgeDo)
 
-<!-- bmt <- bmt %>%  -->
+modelo1 <- coxph(Surv(time=t2, event=d3)~AgePa*AgeDo+group+FAB+waiting+MTX,data = bmt_2)
 
-<!--   mutate(waiting=z7/30-9,FAB=factor(z8), -->
+summary(modelo1)
 
-<!--                       MTX=factor(z10),SXPa=factor(z3), -->
+```
 
-<!--                       SXDo=factor(z4),CMVPa=factor(z5),    -->
+Antes de calcular los residuos de Cox-Snell calculamos los residuos Martingala, y después los obtenemos por diferencia con respecto a los eventos observados:
 
-<!--                     CMVDo=factor(z6),AgePa=z1-28,AgeDo=z2-28, -->
+```{r}
 
-<!--                       group=factor(group)) -->
+bmt_2$rMart <- residuals(modelo1,type = 'martingale')
 
-<!-- bmt_2 <- bmt %>% select(t2,d3,group,waiting,FAB,MTX,AgePa, -->
+bmt_2$rCox <- bmt$d3-bmt_2$rMart
 
-<!--                         AgeDo) -->
+```
 
-<!-- modelo1 <- coxph(Surv(time=t2, event=d3)~AgePa*AgeDo+group+FAB+waiting+MTX,data = bmt_2) -->
+Ahora calculamos el estimador de Nelson-Aalen usando como tiempos los residuos de Cox-Snell:
 
-<!-- summary(modelo1) -->
+```{r}
 
-<!-- ``` -->
+modelo1_CoxSnell <- coxph(Surv(rCox,d3)~1,data = bmt_2,ties = 'breslow')
 
-<!-- Antes de calcular los residuos de Cox-Snell calculamos los residuos -->
+```
 
-<!-- Martingala, y después los obtenemos por diferencia con respecto a los -->
+y calculamos la tasa acumulada:
 
-<!-- eventos observados: -->
+```{r}
 
-<!-- ```{r} -->
+H0_modelo1_CS <- basehaz(modelo1_CoxSnell,centered = FALSE)
 
-<!-- bmt_2$rMart <- residuals(modelo1,type = 'martingale') -->
+plot(H0_modelo1_CS$time,H0_modelo1_CS$hazard)
 
-<!-- bmt_2$rCox <- bmt$d3-bmt_2$rMart -->
+abline(a = 0,b=1)
 
-<!-- ``` -->
+```
 
-<!-- Ahora calculamos el estimador de Nelson-Aalen usando como tiempos los -->
+de donde se puede concluir que el ajuste no es malo. Anteriormente habíamos puesto en duda el supuesto de riesgos proporcionales en la variable MTX. Hacemos el gráfico para los dos niveles de la variable MTX y los comparamos:
 
-<!-- residuos de Cox-Snell: -->
+```{r}
 
-<!-- ```{r} -->
+modelo1_CoxSnell_MTX1 <- coxph(Surv(rCox,d3)~1,data = subset(bmt_2,MTX==1),ties = 'breslow')
 
-<!-- modelo1_CoxSnell <- coxph(Surv(rCox,d3)~1,data = bmt_2,ties = 'breslow') -->
+modelo1_CoxSnell_MTX0 <- coxph(Surv(rCox,d3)~1,data = subset(bmt_2,MTX==0),ties = 'breslow')
 
-<!-- ``` -->
+H0_modelo1_CS_MTX1 <- basehaz(modelo1_CoxSnell_MTX1,centered = FALSE)
 
-<!-- y calculamos la tasa acumulada: -->
+H0_modelo1_CS_MTX0 <- basehaz(modelo1_CoxSnell_MTX0,centered = FALSE)
 
-<!-- ```{r} -->
+plot(H0_modelo1_CS_MTX0$time,H0_modelo1_CS_MTX0$hazard,type='l',xlab='Tiempo',ylab='H0')
 
-<!-- H0_modelo1_CS <- basehaz(modelo1_CoxSnell,centered = FALSE) -->
+lines(H0_modelo1_CS_MTX1$time,H0_modelo1_CS_MTX1$hazard,lty=2)
 
-<!-- plot(H0_modelo1_CS$time,H0_modelo1_CS$hazard) -->
+abline(a = 0,b=1)
 
-<!-- abline(a = 0,b=1) -->
+legend(x = 0,y = 3,legend = c('MTX=0','MTX=1'),lty=c(1,2))
 
-<!-- ``` -->
+```
 
-<!-- de donde se puede concluir que el ajuste no es malo. Anteriormente -->
+A partir de este gráfico vemos que el supuesto de riesgos proporcionales no es tan evidente para la covariable MTX. Una posible forma de solucionarlo es a través de un modelo estratificado. Ejercicio: Repetir el procedimiento anterior con el modelo estratificado y comparar con la figura 11.3 del Klein.
 
-<!-- habíamos puesto en duda el supuesto de riesgos proporcionales en la -->
+Otra posible forma de verificar gráficamente el supuesto de riesgos proporcionales es a través del proceso score, el cual es calculado usando los residuos de Schoenfeld sobre los riesgos observados:
 
-<!-- variable MTX. Hacemos el gráfico para los dos niveles de la variable MTX -->
+```{r}
 
-<!-- y los comparamos: -->
+rSchoen <- residuals(modelo1,type = 'schoenfeld')
 
-<!-- ```{r} -->
+muertes <- bmt_2 %>% filter(d3==1) %>%
+  mutate(rSchoen_MTX=rSchoen[,7],rSchoen_wait=rSchoen[,6])%>% 
+  arrange(t2)%>% mutate(Uk_MTX=cumsum(rSchoen_MTX),Uk_wait=cumsum(rSchoen_wait))
 
-<!-- modelo1_CoxSnell_MTX1 <- coxph(Surv(rCox,d3)~1,data = subset(bmt_2,MTX==1),ties = 'breslow') -->
+resumen_m1 <- summary(modelo1)
 
-<!-- modelo1_CoxSnell_MTX0 <- coxph(Surv(rCox,d3)~1,data = subset(bmt_2,MTX==0),ties = 'breslow') -->
+plot(muertes$t2,resumen_m1$coefficients[7,3]*muertes$Uk_MTX,
+     type='l',xlab='Tiempo',ylab='Score Estandarizado')
 
-<!-- H0_modelo1_CS_MTX1 <- basehaz(modelo1_CoxSnell_MTX1,centered = FALSE) -->
+abline(h=c(-1.3581,1.3581))
 
-<!-- H0_modelo1_CS_MTX0 <- basehaz(modelo1_CoxSnell_MTX0,centered = FALSE) -->
+plot(muertes$t2,resumen_m1$coefficients[6,3]*muertes$Uk_wait,
+     type='l',xlab='Tiempo',ylab='Score Estandarizado')
 
-<!-- plot(H0_modelo1_CS_MTX0$time,H0_modelo1_CS_MTX0$hazard,type='l',xlab='Tiempo',ylab='H0') -->
+abline(h=c(-1.3581,1.3581))
 
-<!-- lines(H0_modelo1_CS_MTX1$time,H0_modelo1_CS_MTX1$hazard,lty=2) -->
+```
 
-<!-- abline(a = 0,b=1) -->
-
-<!-- legend(x = 0,y = 3,legend = c('MTX=0','MTX=1'),lty=c(1,2)) -->
-
-<!-- ``` -->
-
-<!-- A partir de este gráfico vemos que el supuesto de riesgos proporcionales -->
-
-<!-- no es tan evidente para la covariable MTX. Una posible forma de -->
-
-<!-- solucionarlo es a través de un modelo estratificado. Ejercicio: Repetir -->
-
-<!-- el procedimiento anterior con el modelo estratificado y comparar con la -->
-
-<!-- figura 11.3 del Klein. -->
-
-<!-- Otra posible forma de verificar gráficamente el supuesto de riesgos -->
-
-<!-- proporcionales es a través del proceso score, el cual es calculado -->
-
-<!-- usando los residuos de Schoenfeld sobre los riesgos observados: -->
-
-<!-- ```{r} -->
-
-<!-- rSchoen <- residuals(modelo1,type = 'schoenfeld') -->
-
-<!-- muertes <- bmt_2 %>% filter(d3==1) %>% mutate(rSchoen_MTX=rSchoen[,7],rSchoen_wait=rSchoen[,6])%>% -->
-
-<!--   arrange(t2)%>% mutate(Uk_MTX=cumsum(rSchoen_MTX),Uk_wait=cumsum(rSchoen_wait)) -->
-
-<!-- resumen_m1 <- summary(modelo1) -->
-
-<!-- plot(muertes$t2,resumen_m1$coefficients[7,3]*muertes$Uk_MTX,type='l',xlab='Tiempo',ylab='Score Estandarizado') -->
-
-<!-- abline(h=c(-1.3581,1.3581)) -->
-
-<!-- plot(muertes$t2,resumen_m1$coefficients[6,3]*muertes$Uk_wait,type='l',xlab='Tiempo',ylab='Score Estandarizado') -->
-
-<!-- abline(h=c(-1.3581,1.3581)) -->
-
-<!-- ``` -->
-
-<!-- En ambos casos no se sobrepasa los umbrales de confianza de un puente -->
-
-<!-- Browniano al 95%, pero hay más evidencia (aunque muy poca) de que la -->
-
-<!-- variable MTX no satisface el supuesto de riesgos proporcionales. -->
+En ambos casos no se sobrepasa los umbrales de confianza de un puente Browniano al 95%, pero hay más evidencia (aunque muy poca) de que la variable MTX no satisface el supuesto de riesgos proporcionales.
 
 <!-- ### Ejemplo 2 -->
 

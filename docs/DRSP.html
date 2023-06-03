@@ -20,6 +20,69 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -143,6 +206,10 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#análisis-descriptivo-del-supuesto-de-riesgos-proporcionales" id="toc-análisis-descriptivo-del-supuesto-de-riesgos-proporcionales" class="nav-link" data-scroll-target="#análisis-descriptivo-del-supuesto-de-riesgos-proporcionales"><span class="toc-section-number">5.3</span>  Análisis descriptivo del Supuesto de Riesgos Proporcionales</a></li>
   <li><a href="#identificación-de-outliers" id="toc-identificación-de-outliers" class="nav-link" data-scroll-target="#identificación-de-outliers"><span class="toc-section-number">5.4</span>  Identificación de Outliers</a></li>
   <li><a href="#gráfico-de-influencia" id="toc-gráfico-de-influencia" class="nav-link" data-scroll-target="#gráfico-de-influencia"><span class="toc-section-number">5.5</span>  Gráfico de Influencia</a></li>
+  <li><a href="#laboratorio" id="toc-laboratorio" class="nav-link" data-scroll-target="#laboratorio"><span class="toc-section-number">5.6</span>  Laboratorio</a>
+  <ul class="collapse">
+  <li><a href="#ejemplo-1" id="toc-ejemplo-1" class="nav-link" data-scroll-target="#ejemplo-1"><span class="toc-section-number">5.6.1</span>  Ejemplo 1</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -377,85 +444,144 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <p>en donde el gráfico de la derecha muestra el nivel de influencia de las</p>
 <p>observaciones sobre la <span class="math inline">\(k\)</span>-ésima covariable.</p>
-<!-- ## Laboratorio -->
-<!-- ### Ejemplo 1 -->
-<!-- En este ejemplo retomamos los datos de pacientes que han tenido un -->
-<!-- transplante de médula ósea y se analiza el riesgo de muerte o -->
-<!-- reaparición de la leucemia. Cargamos datos y paquetes: -->
-<!-- ```{r message=FALSE, warning=FALSE} -->
-<!-- library(survival) -->
-<!-- library(survMisc) -->
-<!-- library(KMsurv) -->
-<!-- library(tidyverse) -->
-<!-- library(survminer) -->
-<!-- data(bmt) -->
-<!-- ``` -->
-<!-- Ajustamos un modelo de Cox con las siguientes covariables: -->
-<!-- ```{r} -->
-<!-- bmt <- bmt %>%  -->
-<!--   mutate(waiting=z7/30-9,FAB=factor(z8), -->
-<!--                       MTX=factor(z10),SXPa=factor(z3), -->
-<!--                       SXDo=factor(z4),CMVPa=factor(z5),    -->
-<!--                     CMVDo=factor(z6),AgePa=z1-28,AgeDo=z2-28, -->
-<!--                       group=factor(group)) -->
-<!-- bmt_2 <- bmt %>% select(t2,d3,group,waiting,FAB,MTX,AgePa, -->
-<!--                         AgeDo) -->
-<!-- modelo1 <- coxph(Surv(time=t2, event=d3)~AgePa*AgeDo+group+FAB+waiting+MTX,data = bmt_2) -->
-<!-- summary(modelo1) -->
-<!-- ``` -->
-<!-- Antes de calcular los residuos de Cox-Snell calculamos los residuos -->
-<!-- Martingala, y después los obtenemos por diferencia con respecto a los -->
-<!-- eventos observados: -->
-<!-- ```{r} -->
-<!-- bmt_2$rMart <- residuals(modelo1,type = 'martingale') -->
-<!-- bmt_2$rCox <- bmt$d3-bmt_2$rMart -->
-<!-- ``` -->
-<!-- Ahora calculamos el estimador de Nelson-Aalen usando como tiempos los -->
-<!-- residuos de Cox-Snell: -->
-<!-- ```{r} -->
-<!-- modelo1_CoxSnell <- coxph(Surv(rCox,d3)~1,data = bmt_2,ties = 'breslow') -->
-<!-- ``` -->
-<!-- y calculamos la tasa acumulada: -->
-<!-- ```{r} -->
-<!-- H0_modelo1_CS <- basehaz(modelo1_CoxSnell,centered = FALSE) -->
-<!-- plot(H0_modelo1_CS$time,H0_modelo1_CS$hazard) -->
-<!-- abline(a = 0,b=1) -->
-<!-- ``` -->
-<!-- de donde se puede concluir que el ajuste no es malo. Anteriormente -->
-<!-- habíamos puesto en duda el supuesto de riesgos proporcionales en la -->
-<!-- variable MTX. Hacemos el gráfico para los dos niveles de la variable MTX -->
-<!-- y los comparamos: -->
-<!-- ```{r} -->
-<!-- modelo1_CoxSnell_MTX1 <- coxph(Surv(rCox,d3)~1,data = subset(bmt_2,MTX==1),ties = 'breslow') -->
-<!-- modelo1_CoxSnell_MTX0 <- coxph(Surv(rCox,d3)~1,data = subset(bmt_2,MTX==0),ties = 'breslow') -->
-<!-- H0_modelo1_CS_MTX1 <- basehaz(modelo1_CoxSnell_MTX1,centered = FALSE) -->
-<!-- H0_modelo1_CS_MTX0 <- basehaz(modelo1_CoxSnell_MTX0,centered = FALSE) -->
-<!-- plot(H0_modelo1_CS_MTX0$time,H0_modelo1_CS_MTX0$hazard,type='l',xlab='Tiempo',ylab='H0') -->
-<!-- lines(H0_modelo1_CS_MTX1$time,H0_modelo1_CS_MTX1$hazard,lty=2) -->
-<!-- abline(a = 0,b=1) -->
-<!-- legend(x = 0,y = 3,legend = c('MTX=0','MTX=1'),lty=c(1,2)) -->
-<!-- ``` -->
-<!-- A partir de este gráfico vemos que el supuesto de riesgos proporcionales -->
-<!-- no es tan evidente para la covariable MTX. Una posible forma de -->
-<!-- solucionarlo es a través de un modelo estratificado. Ejercicio: Repetir -->
-<!-- el procedimiento anterior con el modelo estratificado y comparar con la -->
-<!-- figura 11.3 del Klein. -->
-<!-- Otra posible forma de verificar gráficamente el supuesto de riesgos -->
-<!-- proporcionales es a través del proceso score, el cual es calculado -->
-<!-- usando los residuos de Schoenfeld sobre los riesgos observados: -->
-<!-- ```{r} -->
-<!-- rSchoen <- residuals(modelo1,type = 'schoenfeld') -->
-<!-- muertes <- bmt_2 %>% filter(d3==1) %>% mutate(rSchoen_MTX=rSchoen[,7],rSchoen_wait=rSchoen[,6])%>% -->
-<!--   arrange(t2)%>% mutate(Uk_MTX=cumsum(rSchoen_MTX),Uk_wait=cumsum(rSchoen_wait)) -->
-<!-- resumen_m1 <- summary(modelo1) -->
-<!-- plot(muertes$t2,resumen_m1$coefficients[7,3]*muertes$Uk_MTX,type='l',xlab='Tiempo',ylab='Score Estandarizado') -->
-<!-- abline(h=c(-1.3581,1.3581)) -->
-<!-- plot(muertes$t2,resumen_m1$coefficients[6,3]*muertes$Uk_wait,type='l',xlab='Tiempo',ylab='Score Estandarizado') -->
-<!-- abline(h=c(-1.3581,1.3581)) -->
-<!-- ``` -->
-<!-- En ambos casos no se sobrepasa los umbrales de confianza de un puente -->
-<!-- Browniano al 95%, pero hay más evidencia (aunque muy poca) de que la -->
-<!-- variable MTX no satisface el supuesto de riesgos proporcionales. -->
+</section>
+<section id="laboratorio" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="laboratorio"><span class="header-section-number">5.6</span> Laboratorio</h2>
+<section id="ejemplo-1" class="level3" data-number="5.6.1">
+<h3 data-number="5.6.1" class="anchored" data-anchor-id="ejemplo-1"><span class="header-section-number">5.6.1</span> Ejemplo 1</h3>
+<p>En este ejemplo retomamos los datos de pacientes que han tenido un transplante de médula ósea y se analiza el riesgo de muerte o reaparición de la leucemia. Cargamos datos y paquetes:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survMisc)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(KMsurv)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survminer)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(bmt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ajustamos un modelo de Cox con las siguientes covariables:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>bmt <span class="ot">&lt;-</span> bmt <span class="sc">%&gt;%</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">waiting=</span>z7<span class="sc">/</span><span class="dv">30-9</span>,<span class="at">FAB=</span><span class="fu">factor</span>(z8),</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">MTX=</span><span class="fu">factor</span>(z10),<span class="at">SXPa=</span><span class="fu">factor</span>(z3),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">SXDo=</span><span class="fu">factor</span>(z4),<span class="at">CMVPa=</span><span class="fu">factor</span>(z5),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a> <span class="at">CMVDo=</span><span class="fu">factor</span>(z6),<span class="at">AgePa=</span>z1<span class="dv">-28</span>,<span class="at">AgeDo=</span>z2<span class="dv">-28</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                      <span class="at">group=</span><span class="fu">factor</span>(group))</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>bmt_2 <span class="ot">&lt;-</span> bmt <span class="sc">%&gt;%</span> <span class="fu">select</span>(t2,d3,group,waiting,FAB,MTX,AgePa,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>                        AgeDo)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>modelo1 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(<span class="at">time=</span>t2, <span class="at">event=</span>d3)<span class="sc">~</span>AgePa<span class="sc">*</span>AgeDo<span class="sc">+</span>group<span class="sc">+</span>FAB<span class="sc">+</span>waiting<span class="sc">+</span>MTX,<span class="at">data =</span> bmt_2)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(time = t2, event = d3) ~ AgePa * AgeDo + 
+    group + FAB + waiting + MTX, data = bmt_2)
+
+  n= 137, number of events= 83 
+
+                  coef  exp(coef)   se(coef)      z Pr(&gt;|z|)   
+AgePa        0.0027997  1.0028036  0.0200198  0.140  0.88878   
+AgeDo        0.0036966  1.0037034  0.0182119  0.203  0.83915   
+group2      -1.0737773  0.3417153  0.3710846 -2.894  0.00381 **
+group3      -0.3860071  0.6797657  0.3725912 -1.036  0.30020   
+FAB1         0.8369481  2.3093085  0.2796202  2.993  0.00276 **
+waiting     -0.0077053  0.9923243  0.0112797 -0.683  0.49454   
+MTX1         0.3042036  1.3555451  0.2529846  1.202  0.22919   
+AgePa:AgeDo  0.0030658  1.0030705  0.0009537  3.215  0.00131 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+            exp(coef) exp(-coef) lower .95 upper .95
+AgePa          1.0028     0.9972    0.9642    1.0429
+AgeDo          1.0037     0.9963    0.9685    1.0402
+group2         0.3417     2.9264    0.1651    0.7072
+group3         0.6798     1.4711    0.3275    1.4109
+FAB1           2.3093     0.4330    1.3350    3.9948
+waiting        0.9923     1.0077    0.9706    1.0145
+MTX1           1.3555     0.7377    0.8256    2.2256
+AgePa:AgeDo    1.0031     0.9969    1.0012    1.0049
+
+Concordance= 0.681  (se = 0.031 )
+Likelihood ratio test= 34.71  on 8 df,   p=3e-05
+Wald test            = 35.61  on 8 df,   p=2e-05
+Score (logrank) test = 38.69  on 8 df,   p=6e-06</code></pre>
+</div>
+</div>
+<p>Antes de calcular los residuos de Cox-Snell calculamos los residuos Martingala, y después los obtenemos por diferencia con respecto a los eventos observados:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>bmt_2<span class="sc">$</span>rMart <span class="ot">&lt;-</span> <span class="fu">residuals</span>(modelo1,<span class="at">type =</span> <span class="st">'martingale'</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>bmt_2<span class="sc">$</span>rCox <span class="ot">&lt;-</span> bmt<span class="sc">$</span>d3<span class="sc">-</span>bmt_2<span class="sc">$</span>rMart</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ahora calculamos el estimador de Nelson-Aalen usando como tiempos los residuos de Cox-Snell:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>modelo1_CoxSnell <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(rCox,d3)<span class="sc">~</span><span class="dv">1</span>,<span class="at">data =</span> bmt_2,<span class="at">ties =</span> <span class="st">'breslow'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>y calculamos la tasa acumulada:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>H0_modelo1_CS <span class="ot">&lt;-</span> <span class="fu">basehaz</span>(modelo1_CoxSnell,<span class="at">centered =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(H0_modelo1_CS<span class="sc">$</span>time,H0_modelo1_CS<span class="sc">$</span>hazard)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">a =</span> <span class="dv">0</span>,<span class="at">b=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="DRSP_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>de donde se puede concluir que el ajuste no es malo. Anteriormente habíamos puesto en duda el supuesto de riesgos proporcionales en la variable MTX. Hacemos el gráfico para los dos niveles de la variable MTX y los comparamos:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>modelo1_CoxSnell_MTX1 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(rCox,d3)<span class="sc">~</span><span class="dv">1</span>,<span class="at">data =</span> <span class="fu">subset</span>(bmt_2,MTX<span class="sc">==</span><span class="dv">1</span>),<span class="at">ties =</span> <span class="st">'breslow'</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>modelo1_CoxSnell_MTX0 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(rCox,d3)<span class="sc">~</span><span class="dv">1</span>,<span class="at">data =</span> <span class="fu">subset</span>(bmt_2,MTX<span class="sc">==</span><span class="dv">0</span>),<span class="at">ties =</span> <span class="st">'breslow'</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>H0_modelo1_CS_MTX1 <span class="ot">&lt;-</span> <span class="fu">basehaz</span>(modelo1_CoxSnell_MTX1,<span class="at">centered =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>H0_modelo1_CS_MTX0 <span class="ot">&lt;-</span> <span class="fu">basehaz</span>(modelo1_CoxSnell_MTX0,<span class="at">centered =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(H0_modelo1_CS_MTX0<span class="sc">$</span>time,H0_modelo1_CS_MTX0<span class="sc">$</span>hazard,<span class="at">type=</span><span class="st">'l'</span>,<span class="at">xlab=</span><span class="st">'Tiempo'</span>,<span class="at">ylab=</span><span class="st">'H0'</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(H0_modelo1_CS_MTX1<span class="sc">$</span>time,H0_modelo1_CS_MTX1<span class="sc">$</span>hazard,<span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">a =</span> <span class="dv">0</span>,<span class="at">b=</span><span class="dv">1</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="at">x =</span> <span class="dv">0</span>,<span class="at">y =</span> <span class="dv">3</span>,<span class="at">legend =</span> <span class="fu">c</span>(<span class="st">'MTX=0'</span>,<span class="st">'MTX=1'</span>),<span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="DRSP_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>A partir de este gráfico vemos que el supuesto de riesgos proporcionales no es tan evidente para la covariable MTX. Una posible forma de solucionarlo es a través de un modelo estratificado. Ejercicio: Repetir el procedimiento anterior con el modelo estratificado y comparar con la figura 11.3 del Klein.</p>
+<p>Otra posible forma de verificar gráficamente el supuesto de riesgos proporcionales es a través del proceso score, el cual es calculado usando los residuos de Schoenfeld sobre los riesgos observados:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>rSchoen <span class="ot">&lt;-</span> <span class="fu">residuals</span>(modelo1,<span class="at">type =</span> <span class="st">'schoenfeld'</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>muertes <span class="ot">&lt;-</span> bmt_2 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(d3<span class="sc">==</span><span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rSchoen_MTX=</span>rSchoen[,<span class="dv">7</span>],<span class="at">rSchoen_wait=</span>rSchoen[,<span class="dv">6</span>])<span class="sc">%&gt;%</span> </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(t2)<span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Uk_MTX=</span><span class="fu">cumsum</span>(rSchoen_MTX),<span class="at">Uk_wait=</span><span class="fu">cumsum</span>(rSchoen_wait))</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>resumen_m1 <span class="ot">&lt;-</span> <span class="fu">summary</span>(modelo1)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(muertes<span class="sc">$</span>t2,resumen_m1<span class="sc">$</span>coefficients[<span class="dv">7</span>,<span class="dv">3</span>]<span class="sc">*</span>muertes<span class="sc">$</span>Uk_MTX,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">type=</span><span class="st">'l'</span>,<span class="at">xlab=</span><span class="st">'Tiempo'</span>,<span class="at">ylab=</span><span class="st">'Score Estandarizado'</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.3581</span>,<span class="fl">1.3581</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="DRSP_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(muertes<span class="sc">$</span>t2,resumen_m1<span class="sc">$</span>coefficients[<span class="dv">6</span>,<span class="dv">3</span>]<span class="sc">*</span>muertes<span class="sc">$</span>Uk_wait,</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">type=</span><span class="st">'l'</span>,<span class="at">xlab=</span><span class="st">'Tiempo'</span>,<span class="at">ylab=</span><span class="st">'Score Estandarizado'</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.3581</span>,<span class="fl">1.3581</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="DRSP_files/figure-html/unnamed-chunk-14-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>En ambos casos no se sobrepasa los umbrales de confianza de un puente Browniano al 95%, pero hay más evidencia (aunque muy poca) de que la variable MTX no satisface el supuesto de riesgos proporcionales.</p>
 <!-- ### Ejemplo 2 -->
 <!-- El siguiente ejemplo es de 43 pacientes que recibieron un transplante de -->
 <!-- médula ósea que tenían la enfermedad de Hodgkin (HOD) o el linfoma -->
@@ -528,6 +654,7 @@ ul.task-list li input[type="checkbox"] {
 <!-- aproximadamente). Este individuo es el mismo con un residuo de devianza alto. -->
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
