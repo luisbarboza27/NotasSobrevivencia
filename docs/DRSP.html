@@ -93,7 +93,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./references.html" rel="next">
+<link href="./MRP.html" rel="next">
 <link href="./RSP.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -185,6 +185,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./DRSP.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Análisis de Diagnósticos en el Modelo de Cox</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./MRP.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Modelos de Regresión Paramétricos</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -350,10 +355,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><strong>Cuarto gráfico (Residuos score)</strong></p>
 <p>Se ajusta un modelo de Cox sobre las <span class="math inline">\(p\)</span> covariables. Sea <span class="math inline">\(b\)</span> el estimador de verosimilitud parcial de <span class="math inline">\(\beta\)</span> y <span class="math inline">\(\hat H_0(t)\)</span> la tasa de riesgo base estimada. Considere:</p>
 <ul>
-<li><p><span class="math inline">\(N_j(t)\)</span>: indicadora de que el <span class="math inline">\(j\)</span>-ésimo paciente/sujeto ha</p>
-<p>experimentado el riesgo en tiempo <span class="math inline">\(t\)</span></p></li>
-<li><p><span class="math inline">\(Y_j(t)\)</span>: indicadora de que el <span class="math inline">\(j\)</span>-ésimo sujeto está bajo estudio</p>
-<p>justo antes del tiempo <span class="math inline">\(t\)</span>.</p></li>
+<li><p><span class="math inline">\(N_j(t)\)</span>: indicadora de que el <span class="math inline">\(j\)</span>-ésimo paciente/sujeto ha experimentado el riesgo en tiempo <span class="math inline">\(t\)</span></p></li>
+<li><p><span class="math inline">\(Y_j(t)\)</span>: indicadora de que el <span class="math inline">\(j\)</span>-ésimo sujeto está bajo estudio justo antes del tiempo <span class="math inline">\(t\)</span>.</p></li>
 </ul>
 <p>Para la <span class="math inline">\(k\)</span>-ésima covariable defina:</p>
 <p><span class="math display">\[\bar Z_k(t)=\frac{\sum_{j=1}^n Y_j(t)Z_{jk}(t)\exp[b^TZ_j(t)]}{\sum_{j=1}^n Y_j(t)\exp[b^TZ_j(t)]}\]</span></p>
@@ -383,21 +386,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="identificación-de-outliers" class="level2" data-number="5.4">
 <h2 data-number="5.4" class="anchored" data-anchor-id="identificación-de-outliers"><span class="header-section-number">5.4</span> Identificación de Outliers</h2>
-<p>Con el fin de detectar outliers podemos usar un gráfico con los residuos</p>
-<p>martingala (<span class="math inline">\(\hat M_j\)</span>) vs <span class="math inline">\(j\)</span>.</p>
-<p><em>Principal problema:</em> valor máximo del residuo=1 y el valor mínimo del</p>
-<p>residuo=<span class="math inline">\(-\infty\)</span>. Por lo tanto los residuos martingala son muy</p>
-<p>asimétricos.</p>
+<p>Con el fin de detectar outliers podemos usar un gráfico con los residuos martingala (<span class="math inline">\(\hat M_j\)</span>) vs <span class="math inline">\(j\)</span>.</p>
+<p><em>Principal problema:</em> valor máximo del residuo=1 y el valor mínimo del residuo=<span class="math inline">\(-\infty\)</span>. Por lo tanto los residuos martingala son muy asimétricos.</p>
 <p><em>Solución</em>: modificar <span class="math inline">\(\hat M_j\)</span> a través del residuo de devianza:</p>
 <p><span class="math display">\[D_j=\text{signo}[\hat M_j]\cdot \left\{-2\left[\hat M_j+\delta_j\log(\delta_j-\hat M_j)\right] \right\}^{1/2}\]</span></p>
 <ul>
 <li><p>Si <span class="math inline">\(\hat M_j=0\)</span> entonces <span class="math inline">\(D_j=0\)</span></p></li>
 <li><p>Si <span class="math inline">\(\hat M_j\longrightarrow 1\)</span> entonces <span class="math inline">\(D_j\longrightarrow \infty\)</span></p></li>
-<li><p>Si <span class="math inline">\(\hat M_j\longrightarrow -\infty\)</span> entonces</p>
-<p><span class="math inline">\(D_j\longrightarrow -\infty\)</span> (a una menor tasa).</p></li>
+<li><p>Si <span class="math inline">\(\hat M_j\longrightarrow -\infty\)</span> entonces <span class="math inline">\(D_j\longrightarrow -\infty\)</span> (a una menor tasa).</p></li>
 </ul>
-<p>Gráfico sugerido (misma interpretación de un gráfico de residuos en</p>
-<p>regresión):</p>
+<p>Gráfico sugerido (misma interpretación de un gráfico de residuos en regresión):</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -409,23 +407,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <p>donde el score de riesgo es:</p>
-<p><span class="math display">\[\text{Score de riesgo}_j=\sum_{k=1}^p b_kZ_{jk}\]</span> La identificación de</p>
-<p>outliers se puede realizar bajo el supuesto de normalidad en los</p>
-<p>residuos <span class="math inline">\(N(0,1)\)</span>.</p>
+<p><span class="math display">\[\text{Score de riesgo}_j=\sum_{k=1}^p b_kZ_{jk}\]</span> La identificación de outliers se puede realizar bajo el supuesto de normalidad en los residuos <span class="math inline">\(N(0,1)\)</span>.</p>
 </section>
 <section id="gráfico-de-influencia" class="level2" data-number="5.5">
 <h2 data-number="5.5" class="anchored" data-anchor-id="gráfico-de-influencia"><span class="header-section-number">5.5</span> Gráfico de Influencia</h2>
-<p>Con el fin de verificar el grado de influencia de cada observación en</p>
-<p>los estimadores de <span class="math inline">\(\beta\)</span>, se compara <span class="math inline">\(b\)</span> con <span class="math inline">\(b_{(j)}\)</span>: estimador de</p>
-<p><span class="math inline">\(\beta\)</span> quitando la <span class="math inline">\(j\)</span>-ésima observación. Esto se hace simplemente a</p>
-<p>través de la diferencia <span class="math inline">\(b-b_{(j)}\)</span>, en el sentido de que si <span class="math inline">\(b-b_{(j)}\)</span></p>
-<p>es pequeño, entonces la observación tiene poca influencia.</p>
-<p><em>Problema</em>: el procedimiento anterior implica realizar <span class="math inline">\(n+1\)</span> regresiones</p>
-<p>de Cox.</p>
-<p><em>Solución</em>: usar una aproximación para no tener que calcular todas las</p>
-<p>regresiones.</p>
-<p>Sea <span class="math inline">\(S_{jk}=S_{jk}(\infty)\)</span> (residuo score). Si todas las covariables</p>
-<p>son fijas en tiempo 0:</p>
+<p>Con el fin de verificar el grado de influencia de cada observación en los estimadores de <span class="math inline">\(\beta\)</span>, se compara <span class="math inline">\(b\)</span> con <span class="math inline">\(b_{(j)}\)</span>: estimador de <span class="math inline">\(\beta\)</span> quitando la <span class="math inline">\(j\)</span>-ésima observación. Esto se hace simplemente a través de la diferencia <span class="math inline">\(b-b_{(j)}\)</span>, en el sentido de que si <span class="math inline">\(b-b_{(j)}\)</span> es pequeño, entonces la observación tiene poca influencia.</p>
+<p><em>Problema</em>: el procedimiento anterior implica realizar <span class="math inline">\(n+1\)</span> regresiones de Cox.</p>
+<p><em>Solución</em>: usar una aproximación para no tener que calcular todas las regresiones:</p>
+<p>Sea <span class="math inline">\(S_{jk}=S_{jk}(\infty)\)</span> (residuo score). Si todas las covariables son fijas en tiempo 0:</p>
 <p><span class="math display">\[S_{jk}=\underbrace{\delta_j[Z_{jk}-\bar Z_k(T_j)]}_{\text{Residuo parcial de Schoenfeld}}-\sum_{t_b\leq T_j}[Z_{jk}-\bar Z_k(T_b)]\exp(b^TZ_j)\cdot [\hat H_0(t_b)-\hat H_0(t_{b-1})]\]</span></p>
 <p>para <span class="math inline">\(j=1,\ldots,n\)</span> y <span class="math inline">\(k=1,\ldots,p\)</span>.</p>
 <p>Se puede comprobar que <span class="math inline">\(b-b_{(j)}\approx \Delta_j\)</span> donde:</p>
@@ -442,8 +431,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 </div>
-<p>en donde el gráfico de la derecha muestra el nivel de influencia de las</p>
-<p>observaciones sobre la <span class="math inline">\(k\)</span>-ésima covariable.</p>
+<p>en donde el gráfico de la derecha muestra el nivel de influencia de las observaciones sobre la <span class="math inline">\(k\)</span>-ésima covariable.</p>
 </section>
 <section id="laboratorio" class="level2" data-number="5.6">
 <h2 data-number="5.6" class="anchored" data-anchor-id="laboratorio"><span class="header-section-number">5.6</span> Laboratorio</h2>
@@ -798,8 +786,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./references.html" class="pagination-link">
-        <span class="nav-page-text">Referencias</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./MRP.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Modelos de Regresión Paramétricos</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

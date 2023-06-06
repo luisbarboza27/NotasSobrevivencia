@@ -13,6 +13,7 @@ book:
     - PH.qmd
     - RSP.qmd
     - DRSP.qmd
+    - MRP.qmd
     - references.qmd
 
 bibliography: references.bib

@@ -150,13 +150,9 @@ y las curvas son aproximadamente lineales con pendientes distintas de 1. Si $Z$ 
 
 Se ajusta un modelo de Cox sobre las $p$ covariables. Sea $b$ el estimador de verosimilitud parcial de $\beta$ y $\hat H_0(t)$ la tasa de riesgo base estimada. Considere:
 
--   $N_j(t)$: indicadora de que el $j$-ésimo paciente/sujeto ha
+-   $N_j(t)$: indicadora de que el $j$-ésimo paciente/sujeto ha experimentado el riesgo en tiempo $t$
 
-    experimentado el riesgo en tiempo $t$
-
--   $Y_j(t)$: indicadora de que el $j$-ésimo sujeto está bajo estudio
-
-    justo antes del tiempo $t$.
+-   $Y_j(t)$: indicadora de que el $j$-ésimo sujeto está bajo estudio justo antes del tiempo $t$.
 
 Para la $k$-ésima covariable defina:
 
@@ -197,15 +193,9 @@ En el gráfico anterior, en el cuadrante superior se nota que existe evidencia e
 
 ## Identificación de Outliers
 
-Con el fin de detectar outliers podemos usar un gráfico con los residuos
+Con el fin de detectar outliers podemos usar un gráfico con los residuos martingala ($\hat M_j$) vs $j$.
 
-martingala ($\hat M_j$) vs $j$.
-
-*Principal problema:* valor máximo del residuo=1 y el valor mínimo del
-
-residuo=$-\infty$. Por lo tanto los residuos martingala son muy
-
-asimétricos.
+*Principal problema:* valor máximo del residuo=1 y el valor mínimo del residuo=$-\infty$. Por lo tanto los residuos martingala son muy asimétricos.
 
 *Solución*: modificar $\hat M_j$ a través del residuo de devianza:
 
@@ -215,13 +205,9 @@ $$D_j=\text{signo}[\hat M_j]\cdot \left\{-2\left[\hat M_j+\delta_j\log(\delta_j-
 
 -   Si $\hat M_j\longrightarrow 1$ entonces $D_j\longrightarrow \infty$
 
--   Si $\hat M_j\longrightarrow -\infty$ entonces
+-   Si $\hat M_j\longrightarrow -\infty$ entonces     $D_j\longrightarrow -\infty$ (a una menor tasa).
 
-    $D_j\longrightarrow -\infty$ (a una menor tasa).
-
-Gráfico sugerido (misma interpretación de un gráfico de residuos en
-
-regresión):
+Gráfico sugerido (misma interpretación de un gráfico de residuos en regresión):
 
 ```{r, echo=FALSE, out.width='70%', fig.align='center', fig.cap='Residuos de devianza'}
 
@@ -231,35 +217,17 @@ knitr::include_graphics("images/devianza.png")
 
 donde el score de riesgo es:
 
-$$\text{Score de riesgo}_j=\sum_{k=1}^p b_kZ_{jk}$$ La identificación de
-
-outliers se puede realizar bajo el supuesto de normalidad en los
-
-residuos $N(0,1)$.
+$$\text{Score de riesgo}_j=\sum_{k=1}^p b_kZ_{jk}$$ La identificación de outliers se puede realizar bajo el supuesto de normalidad en los residuos $N(0,1)$.
 
 ## Gráfico de Influencia
 
-Con el fin de verificar el grado de influencia de cada observación en
+Con el fin de verificar el grado de influencia de cada observación en los estimadores de $\beta$, se compara $b$ con $b_{(j)}$: estimador de $\beta$ quitando la $j$-ésima observación. Esto se hace simplemente a través de la diferencia $b-b_{(j)}$, en el sentido de que si $b-b_{(j)}$ es pequeño, entonces la observación tiene poca influencia.
 
-los estimadores de $\beta$, se compara $b$ con $b_{(j)}$: estimador de
+*Problema*: el procedimiento anterior implica realizar $n+1$ regresiones de Cox.
 
-$\beta$ quitando la $j$-ésima observación. Esto se hace simplemente a
+*Solución*: usar una aproximación para no tener que calcular todas las regresiones:
 
-través de la diferencia $b-b_{(j)}$, en el sentido de que si $b-b_{(j)}$
-
-es pequeño, entonces la observación tiene poca influencia.
-
-*Problema*: el procedimiento anterior implica realizar $n+1$ regresiones
-
-de Cox.
-
-*Solución*: usar una aproximación para no tener que calcular todas las
-
-regresiones.
-
-Sea $S_{jk}=S_{jk}(\infty)$ (residuo score). Si todas las covariables
-
-son fijas en tiempo 0:
+Sea $S_{jk}=S_{jk}(\infty)$ (residuo score). Si todas las covariables son fijas en tiempo 0:
 
 $$S_{jk}=\underbrace{\delta_j[Z_{jk}-\bar Z_k(T_j)]}_{\text{Residuo parcial de Schoenfeld}}-\sum_{t_b\leq T_j}[Z_{jk}-\bar Z_k(T_b)]\exp(b^TZ_j)\cdot [\hat H_0(t_b)-\hat H_0(t_{b-1})]$$
 
@@ -279,9 +247,7 @@ knitr::include_graphics("images/influencia.png")
 
 ```
 
-en donde el gráfico de la derecha muestra el nivel de influencia de las
-
-observaciones sobre la $k$-ésima covariable.
+en donde el gráfico de la derecha muestra el nivel de influencia de las observaciones sobre la $k$-ésima covariable.
 
 ## Laboratorio
 
