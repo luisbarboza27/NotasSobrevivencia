@@ -145,6 +145,14 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#modelo-de-weibull" id="toc-modelo-de-weibull" class="nav-link active" data-scroll-target="#modelo-de-weibull"><span class="toc-section-number">6.1</span>  Modelo de Weibull</a></li>
   <li><a href="#modelo-log-logístico" id="toc-modelo-log-logístico" class="nav-link" data-scroll-target="#modelo-log-logístico"><span class="toc-section-number">6.2</span>  Modelo Log-logístico</a></li>
+  <li><a href="#otros-modelos-paramétricos" id="toc-otros-modelos-paramétricos" class="nav-link" data-scroll-target="#otros-modelos-paramétricos"><span class="toc-section-number">6.3</span>  Otros modelos paramétricos</a></li>
+  <li><a href="#análisis-de-diagnósticos" id="toc-análisis-de-diagnósticos" class="nav-link" data-scroll-target="#análisis-de-diagnósticos"><span class="toc-section-number">6.4</span>  Análisis de diagnósticos</a>
+  <ul class="collapse">
+  <li><a href="#residuos-de-cox-snell" id="toc-residuos-de-cox-snell" class="nav-link" data-scroll-target="#residuos-de-cox-snell"><span class="toc-section-number">6.4.1</span>  Residuos de Cox-Snell</a></li>
+  </ul></li>
+  <li><a href="#análisis-multivariado-de-sobrevivencia" id="toc-análisis-multivariado-de-sobrevivencia" class="nav-link" data-scroll-target="#análisis-multivariado-de-sobrevivencia"><span class="toc-section-number">6.5</span>  Análisis Multivariado de Sobrevivencia</a></li>
+  <li><a href="#estimación-de-un-modelo-de-fragilidad-gamma" id="toc-estimación-de-un-modelo-de-fragilidad-gamma" class="nav-link" data-scroll-target="#estimación-de-un-modelo-de-fragilidad-gamma"><span class="toc-section-number">6.6</span>  Estimación de un modelo de fragilidad gamma</a></li>
+  <li><a href="#modelo-marginal-de-sobrevivencia-multivariada" id="toc-modelo-marginal-de-sobrevivencia-multivariada" class="nav-link" data-scroll-target="#modelo-marginal-de-sobrevivencia-multivariada"><span class="toc-section-number">6.7</span>  Modelo Marginal de sobrevivencia multivariada</a></li>
   </ul>
 </nav>
     </div>
@@ -235,219 +243,202 @@ ul.task-list li input[type="checkbox"] {
 <p><span class="math display">\[\frac{S_X(x|Z)}{1-S_X(x|Z)}=\frac{1}{\lambda\exp(\beta^TZ)x^\alpha}=\exp(-\beta^TZ)\frac{S_X(x|Z=0)}{1-S_X(x|Z=0)}\]</span> entonces:</p>
 <p><span class="math display">\[\exp(-\beta^TZ)=\frac{\text{Odds}(Z=z)}{\text{Odds}(Z=0)}\]</span> <strong>Modelo de tiempo acelerado de fallo</strong></p>
 <p><span class="math display">\[S(x|Z)=S_0[\exp(\theta^TZ)x]\]</span> donde <span class="math inline">\(S_0(x)=\frac{1}{1+\lambda x^\alpha}\)</span>.</p>
-<!-- ## Otros modelos paramétricos -->
-<!-- **Modelo lognormal** -->
-<!-- Si $Z=(Z_1,\ldots,Z_p)^T$ entonces: -->
-<!-- $$Y=\log X=\mu+\gamma^TZ+\sigma W$$ donde $W\sim N(0,1)$. -->
-<!-- *Nota*: resultados muy parecidos a los del modelo log-logístico. En este -->
-<!-- caso: -->
-<!-- $$S(x)=1-\Phi\left\{\frac{\log x-(\mu+\gamma^TZ)}{\sigma}\right\}$$ -->
-<!-- ($\Phi$: cdf de una $N(0,1)$) -->
-<!-- **Modelo con gamma generalizada** -->
-<!-- Incluye Weibull, exponencial y lognormal: -->
-<!-- $$Y=\log X=\mu+\gamma^TZ+\sigma W$$ donde $W\sim f(w)$ y: -->
-<!-- $$f(w)=\frac{|\theta|[\exp(\theta w)/\theta^2]^{1/\theta^2}\exp[-\exp(\theta w)/\theta^2]}{\Gamma(1/\theta^2)}$$ -->
-<!-- Si $\theta=1$ (Weibull), si $\theta=0$ (log-normal) y $\theta=\sigma=1$ -->
-<!-- (exponencial). -->
-<!-- Métodos de selección de modelos: -->
-<!-- -   AIC -->
-<!-- -   BIC -->
-<!-- -   LRT (caso de modelos anidados). -->
-<!-- ## Análisis de diagnósticos -->
-<!-- Para verificar la bondad de ajuste de un modelo paramétrico se puede -->
-<!-- graficar transformaciones de $\hat H(x)$ (usando el estimador de -->
-<!-- Nelson-Aalen) versus transformaciones de $x$. Por ejemplo para el caso -->
-<!-- log-logístico: -->
-<!-- ```{=tex} -->
-<!-- \begin{align*} -->
-<!--     H(x)&=\log[1+\lambda x^\alpha]\\ -->
-<!--     \Longrightarrow \log[\exp(H(x))-1]&=\log \lambda+\alpha \log x -->
-<!-- \end{align*} -->
-<!-- ``` -->
-<!-- Por lo tanto, asumiendo un modelo log-logístico: -->
-<!-- ```{r, echo=FALSE, out.width='70%', fig.align='center', fig.cap='Bondad de Ajuste'} -->
-<!-- knitr::include_graphics("images/BAjusteparam.png") -->
-<!-- ``` -->
-<!-- En el caso exponencial: -->
-<!-- $$H(x)=\lambda x$$ y por lo tanto el gráfico sugerido es $\hat H$ vs -->
-<!-- $x$. -->
-<!-- En el caso Weibull: -->
-<!-- $$H(x)=\lambda x^\alpha$$ entonces -->
-<!-- $\log \hat H(x)=\log \lambda+\alpha \log x$. El gráfico sugerido sería -->
-<!-- $\log \hat H(x)$ vs $\log x$. -->
-<!-- En el caso log-normal: -->
-<!-- $$H(x)=-\log\left[1-\Phi\left[\frac{\log x-\mu}{\sigma}\right]\right]$$ -->
-<!-- entonces $\frac{1}{\sigma}(\log x-\mu)=\Phi^{-1}(1-\exp(-H(x)))$. El -->
-<!-- gráfico sugerido en este caso es: -->
-<!-- $$\Phi^{-1}(1-\exp(-\hat H(x)))\quad \text{vs} \quad \log x$$ Si -->
-<!-- queremos comparar 2 grupos a través de un modelo de tiempo acelerado de -->
-<!-- fallo, se puede verificar la bondad de ajuste de este modelo usando el -->
-<!-- hecho de que: -->
-<!-- $$S_1(x):=S(x|Z=1)=S_0(x\exp(\beta^T\cdot 1))=S_0(\theta x)$$ donde -->
-<!-- $\theta$ es el factor de aceleración. -->
-<!-- Sea $t_{0p}$ y $t_{1p}$ los p-cuantiles de los grupos 0 y 1 -->
-<!-- respectivamente, es decir: -->
-<!-- $$t_{kp}=S_k^{-1}(1-p),\qquad k=0,1$$ entonces: -->
-<!-- $$S_0(t_{0p})=1-p=S_1(t_{1p})=S_0(\theta t_{1p})$$ Por lo tanto, bajo el -->
-<!-- supuesto de tiempo acelerado: -->
-<!-- $$t_{0p}=\theta t_{1p}$$ **Herramienta gráfica**: -->
-<!-- -   Calcule los estimadores de Kaplan-Meier para cada grupo. -->
-<!-- -   Calcule estimadores de $t_{0p}$ y $t_{1p}$ para varios valores de -->
-<!--     $p$. -->
-<!-- -   Grafique $\hat t_{1p}$ vs $\hat t_{0p}$. La pendiente del gráfico -->
-<!--     estima el factor de aceleración y la linealidad por el origen ocurre -->
-<!--     bajo el supuesto de tiempo acelerado de fallo. -->
-<!-- ### Residuos de Cox-Snell -->
-<!-- Mismo principio que en la regresión de Cox: bajo el supuesto de bondad -->
-<!-- de ajuste $\{r_j\}\sim \text{Exp}(1)$ donde $r_j=\hat H(T_j|Z_j)$. La -->
-<!-- herramienta gráfica es la misma que en el caso de la regresión de Cox: -->
-<!-- estimador de Nelson-Aalen $\hat H(r_j)$ versus $r_j$. Los residuos para -->
-<!-- cada caso son: -->
-<!-- -   Exponencial: -->
-<!-- $$r_i=\hat \lambda t_i\exp\left[\hat \beta^TZ_i\right]$$ - Weibull: -->
-<!-- $$r_i=\hat \lambda t_i^{\alpha}\exp\left[\hat \beta^TZ_i\right]$$ - -->
-<!-- Log-logística: -->
-<!-- $$r_i=\log\left[\frac{1}{1+\hat \lambda t_i^{\alpha}\exp\left[\hat \beta^TZ_i\right]}\right]$$ -->
-<!-- -   Log-normal: -->
-<!-- $$r_i=\log\left[1-\Phi\left(\frac{\log T_i-\hat \mu-\hat \gamma^TZ_i}{\hat \sigma}\right)\right]$$ -->
-<!-- *Nota*: el análisis de residuos de Cox-Snell es equivalente a analizar -->
-<!-- residuos estandarizados: -->
-<!-- $$s_j=\frac{\log T_j-\hat \mu-\hat \gamma^TZ_j}{\hat \sigma}$$ a través -->
-<!-- de la comparación de su distribución empírica con respecto a la -->
-<!-- distribución de $W$. (Usando un qqplot, por ejemplo) -->
-<!-- El uso de residuos martingala o de devianza es análogo al uso que le -->
-<!-- dimos en modelos de Cox. -->
-<!-- ## Análisis Multivariado de Sobrevivencia -->
-<!-- *Problema*: en los modelos anteriores se asume que los tiempos de -->
-<!-- sobrevivencia de distintos individuos son independientes. Este es un -->
-<!-- supuesto poco realista, ya que por ejemplo el riesgo de un grupo no -->
-<!-- necesariamente representa la suma de los riesgos individuales e -->
-<!-- independientes. -->
-<!-- *Solución*: modelar la asociación entre tiempos de sobrevivencia entre -->
-<!-- distintos grupos. -->
-<!-- **Modelo de Fragilidad** -->
-<!-- Definición de fragilidad o debilidad en riesgo: efecto aleatorio no -->
-<!-- observable que es compartido por los sujetos de un subgrupo. -->
-<!-- Los grupos con mayor debilidad experimentan el evento antes que otros -->
-<!-- grupos con menor debilidad. Otra ventaja que presentan los modelos con -->
-<!-- fragilidad es que permiten mejorar el ajuste ante la presencia de -->
-<!-- sobredispersión en los datos, debido a errores no contabilizados en el -->
-<!-- modelo. -->
-<!-- **Modelo de Fragilidad Compartida** -->
-<!-- Se asume que la tasa de riesgo para el $j$-ésimo individuo en el grupo -->
-<!-- $i$-ésimo tiene la forma: -->
-<!-- $$h_{ij}(t)=h_0(t)\exp[\beta^TZ_{ij}+\sigma w_i]$$ donde $i=1,\ldots,G$, -->
-<!-- $j=1,\ldots,n_i$, bajo la notación usual y asumiendo que -->
-<!-- $w_1,\ldots,w_G$ son las fragilidades, es decir $\{w_i\}$ son variables -->
-<!-- aleatorias independientes e identicamente distribuidas con media 0 y -->
-<!-- varianza 1. Algunas veces es más conveniente escribir el modelo: -->
-<!-- $$h_{ij}(t)=h_0(t)u_i\exp[\beta^TZ_{ij}]$$ con $u_i$ variables -->
-<!-- aleatorias independientes, $E[u_i]=1$, $\text{Var}(u_i)<\infty$. -->
-<!-- -   Si $u_i>1$, entonces el grupo $i$-ésimo es de más riesgo que en el -->
-<!--     caso de riesgos proporcionales. -->
-<!-- -   Si $u_i<1$, entonces el grupo $i$-ésimo es de menos riesgo que en el -->
-<!--     caso de riesgos proporcionales. -->
-<!-- Consecuencia: como $w_i$ no son variables observables entonces: -->
-<!-- ```{=tex} -->
-<!-- \begin{align*} -->
-<!-- S(x_{i1},\ldots,x_{in_i})&=P[X_{i1}>1,\ldots,X_{in_i}>x_{in_i}]\\ -->
-<!-- &=E\left[\exp\left(-\sum_{j=1}^{n_i}H_{ij}(X_{ij})\right)\right]\\ -->
-<!-- &=LP\left[\sum_{j=1}^{n_i}H_0(x_{ij})\exp(\beta^TZ_{ij})\right] -->
-<!-- \end{align*} -->
-<!-- ``` -->
-<!-- donde $LP(v)=E_v[\exp(-Uv)]$ (transformada de Laplace de la fragilidad -->
-<!-- U) -->
-<!-- Posibles escogencias para U: -->
-<!-- -   Distribución gamma univariada. -->
-<!-- -   Distribución normal inversa. -->
-<!-- -   Distribución log-normal. -->
-
-<!-- -   Distribución estable positiva. -->
-<!-- -   Distribución Uniforme -->
-<!-- -   ... -->
-<!-- **Prueba Score de Asociación** -->
-<!-- Objetivo: Probar la hipótesis nula de no fragilidad ($\sigma=0$) -->
-<!-- Herramienta metodológica: Prueba de Commenges y Andersen (1995) -->
-<!-- *Caso particular*: ($G=n$, $n_i=1$) se busca probar la existencia de -->
-<!-- sobredispersión en el modelo. -->
-<!-- Se busca probar la hipótesis nula: -->
-<!-- $$H_0: \sigma=0 \qquad \text{vs}\qquad H_1: \sigma\neq 0$$ Usamos la -->
-<!-- notación ya definida, para $i=1,\ldots,G$ y $j=1,\ldots,n_i$: -->
-<!-- -   $T_{ij}$: tiempo -->
-<!-- -   $\delta_{ij}$: indicador de riesgo -->
-<!-- -   $Z_{ij}$: covariable -->
-<!-- -   $Y_{ij}(t)$: indicadora de exposición al riesgo al tiempo $t$. -->
-<!-- Se ajusta el modelo de Cox con riesgos proporcionales: -->
-<!-- $$h(t|Z_{ij})=h_0(t)\exp[\beta^TZ_{ij}]$$ y se obtiene $b$: estimador de -->
-<!-- verosimilitud parcial y $\hat H_0(t)$: estimador de Breslow. -->
-<!-- Sea: -->
-<!-- $$S^{(0)}(t)=\sum_{i=1}^G\sum_{j=1}^{n_i}Y_{ij}(t)\exp[b^TZ_{ij}]$$ y -->
-<!-- $$M_{ij}=\delta_{ij}-\hat H_0(t)\exp[b^TZ_{ij}]$$ es el residuo -->
-<!-- martingala para el individuo $ij$. Calculamos el siguiente estadístico\* -->
-<!-- score: -->
-<!-- ```{=tex} -->
-<!-- \begin{align*} -->
-<!-- T&=\sum_{i=1}^G\left[\sum_{j=1}^{n_i}M_{ij}\right]^2-D+C\\ -->
-<!-- &=\sum_{i=1}^G \sum_{j=1}^{n_i}\sum_{\underset{k\neq j}{k=1}}^{n_j}M_{ij}M_{ik}+\left(\sum_{i=1}^G \sum_{j=1}^{n_i}M_{ij}^2-N\right)+C -->
-<!-- \end{align*} -->
-<!-- ``` -->
-<!-- donde: -->
-<!-- -   $D$: número total de ocurrencias del riesgo. -->
-<!-- -   $N$: tamaño de muestra total. -->
-<!-- -   El primer término en la última expresión corresponde a las -->
-<!--     correlaciones entre individuos para cada grupo. -->
-<!-- -   El segundo término es una medida de sobredispersión. -->
-<!-- -   $C$ es un factor de corrección que tiende a 0 conforme -->
-<!--     $N\longrightarrow 0$: -->
-<!-- $$C=\sum_{i=1}^n\sum_{j=1}^{n_i}\frac{\delta_{ij}}{S^{(0)}(T_{ij})^2}\sum_{b=1}^G\left[\sum_{k=1}^{n_i}Y_{bk}(T_{ij})\exp[b^TZ_{bk}]\right]^2$$ -->
-<!-- La varianza de $T$ se calcula usando la matriz de información de Fisher -->
-<!-- (de $b$) y residuos martingala $M_{ij}$ (ver fórmula 13.2.9 del Klein). -->
-<!-- Bajo la hipótesis nula de no asociación: -->
-<!-- $$\frac{T}{V^{1/2}}\underset{n \text{ grande}}{\longrightarrow}N(0,1)$$ -->
-<!-- ## Estimación de un modelo de fragilidad gamma -->
-<!-- Asuma que la tasa de riesgo para el individuo $i$ del grupo $j$ es: -->
-<!-- $$h_{ij}(t)=h_0(t)u_i\exp[\beta^TZ_{ij}]$$ donde $i=1,\ldots,G$, -->
-<!-- $j=1,\ldots,n_i$ y $u_i\overset{iid}{\sim}\Gamma(1/\theta,\theta)$. Note -->
-<!-- que la función de densidad de $u_i$ es: -->
-<!-- $$g(u)=\frac{u^{1/\theta-1}\exp(-u/\theta)}{\Gamma(1/\theta)\theta^{1/\theta}}$$ -->
-<!-- Note que $E[U]=1$ y $\text{Var}(U)=\theta$ (Valores grandes de $\theta$ -->
-<!-- reflejan mayor heterogeneidad entre grupos y una asociación más alta -->
-<!-- dentro de cada grupo). -->
-<!-- Distribución conjunta de los $n_i$ individuos (para el grupo $i$-ésimo) -->
-<!-- ```{=tex} -->
-<!-- \begin{align*} -->
-<!--     S[x_{i1},\ldots,x_{in_i}]&=P[X_{i1}>x_{i1},\ldots,X_{in_i}>x_{in_i}]\\ -->
-<!--     &=\left[1+\theta \sum_{j=1}^{n_i}H_0(x_{ij})\exp[\beta^TZ_{ij}]\right]^{-1/\theta} -->
-<!-- \end{align*} -->
-<!-- ``` -->
-<!-- Usando los datos $(T_{ij},Z_{ij},\delta_{ij})$ para $i=1,\ldots,G$ y -->
-<!-- $j=1,\ldots,n_i$ se puede calcular la verosimilitud como: -->
-<!-- $$L(\theta,\beta)=L_1(\theta)+L_2(\beta,H_0)$$ donde -->
-<!-- $$L_1(\theta)=-G\left[\frac{\log \theta}{\theta}+\log \Gamma(1/\theta)\right]+\sum_{i=1}^G[1/\theta+D_i-1]\log u_i-\frac{u_i}{\theta}$$ -->
-<!-- y -->
-<!-- $$L_2(\beta,H_0)=\sum_{i=1}^G\sum_{j=1}^{n_i} \delta_{ij}[\beta^TZ_{ij}+\log h_0(T_{ij})]-u_iH_0(T_{ij})\exp[\beta^TZ_{ij}]$$ -->
-<!-- 2 posibles soluciones: -->
-<!-- -   Maximizar $L(\theta,\beta)$ asumiendo una forma paramétrica para -->
-<!--     $h_0(t)$. -->
-<!-- -   Maximizar $L(\theta,\beta)$ asumiendo un modelo semiparamétrico para -->
-<!--     $h(t)$. -->
-<!-- Solución: Algoritmo EM (Esperanza-Maximización) en el segundo caso (ver -->
-<!-- pags. 432-435 del Klein) -->
-<!-- ## Modelo Marginal de sobrevivencia multivariada -->
-<!-- Inconveniente del modelo de fragilidad: las distribuciones marginales no -->
-<!-- siguen la estructura de un modelo de Cox (no se satisface el principio -->
-<!-- de riesgos proporcionales) -->
-<!-- *Modelo de Lee et al (1992):* -->
-<!-- Para cada individuo se asume un modelo de Cox condicional en $Z_{ij}$: -->
-<!-- $$h_{ij}(t|Z_{ij})=h_0(t)\exp[\beta^TZ_{ij}]$$ y se construye la -->
-<!-- verosimilitud parcial asumiendo que todas las observaciones son -->
-<!-- independientes (modelo independiente de trabajo) -->
-<!-- A partir del estimador de $\beta$ obtenido con la verosimilitud anterior -->
-<!-- se ajusta la matriz de covarianza de $b$ con los residuos score (ver -->
-<!-- ecuaciones 13.4.2 y 13.4.3 del Klein) para tomar en cuenta la relación -->
-<!-- de observaciones en cada grupo. -->
-<!-- Además, si $\hat V$ es la matriz de varianza ajustada: -->
-<!-- $$b\underset{n\text{ grande}}{\longrightarrow} N_p(\beta,\hat V)$$ -->
+</section>
+<section id="otros-modelos-paramétricos" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="otros-modelos-paramétricos"><span class="header-section-number">6.3</span> Otros modelos paramétricos</h2>
+<p><strong>Modelo lognormal</strong></p>
+<p>Si <span class="math inline">\(Z=(Z_1,\ldots,Z_p)^T\)</span> entonces:</p>
+<p><span class="math display">\[Y=\log X=\mu+\gamma^TZ+\sigma W\]</span> donde <span class="math inline">\(W\sim N(0,1)\)</span>.</p>
+<p><em>Nota</em>: resultados muy parecidos a los del modelo log-logístico. En este caso:</p>
+<p><span class="math display">\[S(x)=1-\Phi\left\{\frac{\log x-(\mu+\gamma^TZ)}{\sigma}\right\}\]</span></p>
+<p>(<span class="math inline">\(\Phi\)</span>: cdf de una <span class="math inline">\(N(0,1)\)</span>)</p>
+<p><strong>Modelo con gamma generalizada</strong></p>
+<p>Incluye Weibull, exponencial y lognormal:</p>
+<p><span class="math display">\[Y=\log X=\mu+\gamma^TZ+\sigma W\]</span> donde <span class="math inline">\(W\sim f(w)\)</span> y:</p>
+<p><span class="math display">\[f(w)=\frac{|\theta|[\exp(\theta w)/\theta^2]^{1/\theta^2}\exp[-\exp(\theta w)/\theta^2]}{\Gamma(1/\theta^2)}\]</span></p>
+<p>Si <span class="math inline">\(\theta=1\)</span> (Weibull), si <span class="math inline">\(\theta=0\)</span> (log-normal) y <span class="math inline">\(\theta=\sigma=1\)</span> (exponencial).</p>
+<p>Métodos de selección de modelos:</p>
+<ul>
+<li><p>AIC</p></li>
+<li><p>BIC</p></li>
+<li><p>LRT (caso de modelos anidados).</p></li>
+</ul>
+</section>
+<section id="análisis-de-diagnósticos" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="análisis-de-diagnósticos"><span class="header-section-number">6.4</span> Análisis de diagnósticos</h2>
+<p>Para verificar la bondad de ajuste de un modelo paramétrico se puede graficar transformaciones de <span class="math inline">\(\hat H(x)\)</span> (usando el estimador de Nelson-Aalen) versus transformaciones de <span class="math inline">\(x\)</span>. Por ejemplo para el caso</p>
+<p>log-logístico:</p>
+<p><span class="math display">\[\begin{align*}
+    H(x)&amp;=\log[1+\lambda x^\alpha]\\
+    \Longrightarrow \log[\exp(H(x))-1]&amp;=\log \lambda+\alpha \log x
+\end{align*}\]</span></p>
+<p>Por lo tanto, asumiendo un modelo log-logístico:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/BAjusteparam.png" class="img-fluid figure-img" style="width:70.0%"></p>
+<p></p><figcaption class="figure-caption">Bondad de Ajuste</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>En el caso exponencial:</p>
+<p><span class="math display">\[H(x)=\lambda x\]</span> y por lo tanto el gráfico sugerido es <span class="math inline">\(\hat H\)</span> vs <span class="math inline">\(x\)</span>.</p>
+<p>En el caso Weibull:</p>
+<p><span class="math display">\[H(x)=\lambda x^\alpha\]</span> entonces <span class="math inline">\(\log \hat H(x)=\log \lambda+\alpha \log x\)</span>. El gráfico sugerido sería <span class="math inline">\(\log \hat H(x)\)</span> vs <span class="math inline">\(\log x\)</span>.</p>
+<p>En el caso log-normal:</p>
+<p><span class="math display">\[H(x)=-\log\left[1-\Phi\left[\frac{\log x-\mu}{\sigma}\right]\right]\]</span></p>
+<p>entonces <span class="math inline">\(\frac{1}{\sigma}(\log x-\mu)=\Phi^{-1}(1-\exp(-H(x)))\)</span>. El gráfico sugerido en este caso es:</p>
+<p><span class="math display">\[\Phi^{-1}(1-\exp(-\hat H(x)))\quad \text{vs} \quad \log x\]</span></p>
+<p>Si queremos comparar 2 grupos a través de un modelo de tiempo acelerado de fallo, se puede verificar la bondad de ajuste de este modelo usando el hecho de que:</p>
+<p><span class="math display">\[S_1(x):=S(x|Z=1)=S_0(x\exp(\beta^T\cdot 1))=S_0(\theta x)\]</span> donde <span class="math inline">\(\theta\)</span> es el factor de aceleración.</p>
+<p>Sea <span class="math inline">\(t_{0p}\)</span> y <span class="math inline">\(t_{1p}\)</span> los p-cuantiles de los grupos 0 y 1 respectivamente, es decir:</p>
+<p><span class="math display">\[t_{kp}=S_k^{-1}(1-p),\qquad k=0,1\]</span> entonces:</p>
+<p><span class="math display">\[S_0(t_{0p})=1-p=S_1(t_{1p})=S_0(\theta t_{1p})\]</span> Por lo tanto, bajo el supuesto de tiempo acelerado:</p>
+<p><span class="math display">\[t_{0p}=\theta t_{1p}\]</span> <strong>Herramienta gráfica</strong>:</p>
+<ul>
+<li><p>Calcule los estimadores de Kaplan-Meier para cada grupo.</p></li>
+<li><p>Calcule estimadores de <span class="math inline">\(t_{0p}\)</span> y <span class="math inline">\(t_{1p}\)</span> para varios valores de <span class="math inline">\(p\)</span>.</p></li>
+<li><p>Grafique <span class="math inline">\(\hat t_{1p}\)</span> vs <span class="math inline">\(\hat t_{0p}\)</span>. La pendiente del gráfico estima el factor de aceleración y la linealidad por el origen ocurre bajo el supuesto de tiempo acelerado de fallo.</p></li>
+</ul>
+<section id="residuos-de-cox-snell" class="level3" data-number="6.4.1">
+<h3 data-number="6.4.1" class="anchored" data-anchor-id="residuos-de-cox-snell"><span class="header-section-number">6.4.1</span> Residuos de Cox-Snell</h3>
+<p>Mismo principio que en la regresión de Cox: bajo el supuesto de bondad de ajuste <span class="math inline">\(\{r_j\}\sim \text{Exp}(1)\)</span> donde <span class="math inline">\(r_j=\hat H(T_j|Z_j)\)</span>. La herramienta gráfica es la misma que en el caso de la regresión de Cox: estimador de Nelson-Aalen <span class="math inline">\(\hat H(r_j)\)</span> versus <span class="math inline">\(r_j\)</span>. Los residuos para cada caso son:</p>
+<ul>
+<li>Exponencial:</li>
+</ul>
+<p><span class="math display">\[r_i=\hat \lambda t_i\exp\left[\hat \beta^TZ_i\right]\]</span></p>
+<ul>
+<li>Weibull:</li>
+</ul>
+<p><span class="math display">\[r_i=\hat \lambda t_i^{\alpha}\exp\left[\hat \beta^TZ_i\right]\]</span> -</p>
+<ul>
+<li>Log-logística:</li>
+</ul>
+<p><span class="math display">\[r_i=\log\left[\frac{1}{1+\hat \lambda t_i^{\alpha}\exp\left[\hat \beta^TZ_i\right]}\right]\]</span></p>
+<ul>
+<li>Log-normal:</li>
+</ul>
+<p><span class="math display">\[r_i=\log\left[1-\Phi\left(\frac{\log T_i-\hat \mu-\hat \gamma^TZ_i}{\hat \sigma}\right)\right]\]</span></p>
+<p><em>Nota</em>: el análisis de residuos de Cox-Snell es equivalente a analizar residuos estandarizados:</p>
+<p><span class="math display">\[s_j=\frac{\log T_j-\hat \mu-\hat \gamma^TZ_j}{\hat \sigma}\]</span></p>
+<p>a través de la comparación de su distribución empírica con respecto a la distribución de <span class="math inline">\(W\)</span>. (Usando un qqplot, por ejemplo)</p>
+<p>El uso de residuos martingala o de devianza es análogo al uso que le dimos en modelos de Cox.</p>
+</section>
+</section>
+<section id="análisis-multivariado-de-sobrevivencia" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="análisis-multivariado-de-sobrevivencia"><span class="header-section-number">6.5</span> Análisis Multivariado de Sobrevivencia</h2>
+<p><em>Problema</em>: en los modelos anteriores se asume que los tiempos de sobrevivencia de distintos individuos son independientes. Este es un supuesto poco realista, ya que por ejemplo el riesgo de un grupo no necesariamente representa la suma de los riesgos individuales e independientes.</p>
+<p><em>Solución</em>: modelar la asociación entre tiempos de sobrevivencia entre distintos grupos.</p>
+<p><strong>Modelo de Fragilidad</strong></p>
+<p>Definición de fragilidad o debilidad en riesgo: efecto aleatorio no observable que es compartido por los sujetos de un subgrupo.</p>
+<p>Los grupos con mayor debilidad experimentan el evento antes que otros grupos con menor debilidad. Otra ventaja que presentan los modelos con fragilidad es que permiten mejorar el ajuste ante la presencia de sobredispersión en los datos, debido a errores no contabilizados en el modelo.</p>
+<p><strong>Modelo de Fragilidad Compartida</strong></p>
+<p>Se asume que la tasa de riesgo para el <span class="math inline">\(j\)</span>-ésimo individuo en el grupo <span class="math inline">\(i\)</span>-ésimo tiene la forma:</p>
+<p><span class="math display">\[h_{ij}(t)=h_0(t)\exp[\beta^TZ_{ij}+\sigma w_i]\]</span></p>
+<p>donde <span class="math inline">\(i=1,\ldots,G\)</span>, <span class="math inline">\(j=1,\ldots,n_i\)</span>, bajo la notación usual y asumiendo que <span class="math inline">\(w_1,\ldots,w_G\)</span> son las fragilidades, es decir <span class="math inline">\(\{w_i\}\)</span> son variables aleatorias independientes e identicamente distribuidas con media 0 y varianza 1. Algunas veces es más conveniente escribir el modelo:</p>
+<p><span class="math display">\[h_{ij}(t)=h_0(t)u_i\exp[\beta^TZ_{ij}]\]</span></p>
+<p>con <span class="math inline">\(u_i\)</span> variables aleatorias independientes, <span class="math inline">\(E[u_i]=1\)</span>, <span class="math inline">\(\text{Var}(u_i)&lt;\infty\)</span>.</p>
+<ul>
+<li><p>Si <span class="math inline">\(u_i&gt;1\)</span>, entonces el grupo <span class="math inline">\(i\)</span>-ésimo es de más riesgo que en el caso de riesgos proporcionales.</p></li>
+<li><p>Si <span class="math inline">\(u_i&lt;1\)</span>, entonces el grupo <span class="math inline">\(i\)</span>-ésimo es de menos riesgo que en el caso de riesgos proporcionales.</p></li>
+</ul>
+<p>Consecuencia: como <span class="math inline">\(w_i\)</span> no son variables observables entonces:</p>
+<p><span class="math display">\[\begin{align*}
+S(x_{i1},\ldots,x_{in_i})&amp;=P[X_{i1}&gt;1,\ldots,X_{in_i}&gt;x_{in_i}]\\
+&amp;=E\left[\exp\left(-\sum_{j=1}^{n_i}H_{ij}(X_{ij})\right)\right]\\
+&amp;=LP\left[\sum_{j=1}^{n_i}H_0(x_{ij})\exp(\beta^TZ_{ij})\right]
+\end{align*}\]</span></p>
+<p>donde <span class="math inline">\(LP(v)=E_v[\exp(-Uv)]\)</span> (transformada de Laplace de la fragilidad U)</p>
+<p>Posibles escogencias para U:</p>
+<ul>
+<li><p>Distribución gamma univariada.</p></li>
+<li><p>Distribución normal inversa.</p></li>
+<li><p>Distribución log-normal.</p></li>
+<li><p>Distribución estable positiva.</p></li>
+<li><p>Distribución Uniforme</p></li>
+<li><p>…</p></li>
+</ul>
+<p><strong>Prueba Score de Asociación</strong></p>
+<p>Objetivo: Probar la hipótesis nula de no fragilidad (<span class="math inline">\(\sigma=0\)</span>)</p>
+<p>Herramienta metodológica: Prueba de Commenges y Andersen (1995)</p>
+<p><em>Caso particular</em>: (<span class="math inline">\(G=n\)</span>, <span class="math inline">\(n_i=1\)</span>) se busca probar la existencia de sobredispersión en el modelo. Se busca probar la hipótesis nula:</p>
+<p><span class="math display">\[H_0: \sigma=0 \qquad \text{vs}\qquad H_1: \sigma\neq 0\]</span></p>
+<p>Usamos la notación ya definida, para <span class="math inline">\(i=1,\ldots,G\)</span> y <span class="math inline">\(j=1,\ldots,n_i\)</span>:</p>
+<ul>
+<li><p><span class="math inline">\(T_{ij}\)</span>: tiempo</p></li>
+<li><p><span class="math inline">\(\delta_{ij}\)</span>: indicador de riesgo</p></li>
+<li><p><span class="math inline">\(Z_{ij}\)</span>: covariable</p></li>
+<li><p><span class="math inline">\(Y_{ij}(t)\)</span>: indicadora de exposición al riesgo al tiempo <span class="math inline">\(t\)</span>.</p></li>
+</ul>
+<p>Se ajusta el modelo de Cox con riesgos proporcionales:</p>
+<p><span class="math display">\[h(t|Z_{ij})=h_0(t)\exp[\beta^TZ_{ij}]\]</span></p>
+<p>y se obtiene <span class="math inline">\(b\)</span>: estimador de verosimilitud parcial y <span class="math inline">\(\hat H_0(t)\)</span>: estimador de Breslow.</p>
+<p>Sea:</p>
+<p><span class="math display">\[S^{(0)}(t)=\sum_{i=1}^G\sum_{j=1}^{n_i}Y_{ij}(t)\exp[b^TZ_{ij}]\]</span> y</p>
+<p><span class="math display">\[M_{ij}=\delta_{ij}-\hat H_0(t)\exp[b^TZ_{ij}]\]</span></p>
+<p>es el residuo martingala para el individuo <span class="math inline">\(ij\)</span>. Calculamos el siguiente estadístico score:</p>
+<p><span class="math display">\[\begin{align*}
+T&amp;=\sum_{i=1}^G\left[\sum_{j=1}^{n_i}M_{ij}\right]^2-D+C\\
+&amp;=\sum_{i=1}^G \sum_{j=1}^{n_i}\sum_{\underset{k\neq j}{k=1}}^{n_j}M_{ij}M_{ik}+\left(\sum_{i=1}^G \sum_{j=1}^{n_i}M_{ij}^2-N\right)+C
+\end{align*}\]</span></p>
+<p>donde:</p>
+<ul>
+<li><p><span class="math inline">\(D\)</span>: número total de ocurrencias del riesgo.</p></li>
+<li><p><span class="math inline">\(N\)</span>: tamaño de muestra total.</p></li>
+<li><p>El primer término en la última expresión corresponde a las correlaciones entre individuos para cada grupo.</p></li>
+<li><p>El segundo término es una medida de sobredispersión.</p></li>
+<li><p><span class="math inline">\(C\)</span> es un factor de corrección que tiende a 0 conforme <span class="math inline">\(N\longrightarrow 0\)</span>:</p></li>
+</ul>
+<p><span class="math display">\[C=\sum_{i=1}^n\sum_{j=1}^{n_i}\frac{\delta_{ij}}{S^{(0)}(T_{ij})^2}\sum_{b=1}^G\left[\sum_{k=1}^{n_i}Y_{bk}(T_{ij})\exp[b^TZ_{bk}]\right]^2\]</span></p>
+<p>La varianza de <span class="math inline">\(T\)</span> se calcula usando la matriz de información de Fisher (de <span class="math inline">\(b\)</span>) y residuos martingala <span class="math inline">\(M_{ij}\)</span> (ver fórmula 13.2.9 del Klein).</p>
+<p>Bajo la hipótesis nula de no asociación:</p>
+<p><span class="math display">\[\frac{T}{V^{1/2}}\underset{n \text{ grande}}{\longrightarrow}N(0,1)\]</span></p>
+</section>
+<section id="estimación-de-un-modelo-de-fragilidad-gamma" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="estimación-de-un-modelo-de-fragilidad-gamma"><span class="header-section-number">6.6</span> Estimación de un modelo de fragilidad gamma</h2>
+<p>Asuma que la tasa de riesgo para el individuo <span class="math inline">\(i\)</span> del grupo <span class="math inline">\(j\)</span> es:</p>
+<p><span class="math display">\[h_{ij}(t)=h_0(t)u_i\exp[\beta^TZ_{ij}]\]</span> donde <span class="math inline">\(i=1,\ldots,G\)</span>,</p>
+<p><span class="math inline">\(j=1,\ldots,n_i\)</span> y <span class="math inline">\(u_i\overset{iid}{\sim}\Gamma(1/\theta,\theta)\)</span>. Note</p>
+<p>que la función de densidad de <span class="math inline">\(u_i\)</span> es:</p>
+<p><span class="math display">\[g(u)=\frac{u^{1/\theta-1}\exp(-u/\theta)}{\Gamma(1/\theta)\theta^{1/\theta}}\]</span></p>
+<p>Note que <span class="math inline">\(E[U]=1\)</span> y <span class="math inline">\(\text{Var}(U)=\theta\)</span> (Valores grandes de <span class="math inline">\(\theta\)</span></p>
+<p>reflejan mayor heterogeneidad entre grupos y una asociación más alta</p>
+<p>dentro de cada grupo).</p>
+<p>Distribución conjunta de los <span class="math inline">\(n_i\)</span> individuos (para el grupo <span class="math inline">\(i\)</span>-ésimo)</p>
+<p>Usando los datos <span class="math inline">\((T_{ij},Z_{ij},\delta_{ij})\)</span> para <span class="math inline">\(i=1,\ldots,G\)</span> y</p>
+<p><span class="math inline">\(j=1,\ldots,n_i\)</span> se puede calcular la verosimilitud como:</p>
+<p><span class="math display">\[L(\theta,\beta)=L_1(\theta)+L_2(\beta,H_0)\]</span> donde</p>
+<p><span class="math display">\[L_1(\theta)=-G\left[\frac{\log \theta}{\theta}+\log \Gamma(1/\theta)\right]+\sum_{i=1}^G[1/\theta+D_i-1]\log u_i-\frac{u_i}{\theta}\]</span></p>
+<p>y</p>
+<p><span class="math display">\[L_2(\beta,H_0)=\sum_{i=1}^G\sum_{j=1}^{n_i} \delta_{ij}[\beta^TZ_{ij}+\log h_0(T_{ij})]-u_iH_0(T_{ij})\exp[\beta^TZ_{ij}]\]</span></p>
+<p>2 posibles soluciones:</p>
+<ul>
+<li><p>Maximizar <span class="math inline">\(L(\theta,\beta)\)</span> asumiendo una forma paramétrica para</p>
+<p><span class="math inline">\(h_0(t)\)</span>.</p></li>
+<li><p>Maximizar <span class="math inline">\(L(\theta,\beta)\)</span> asumiendo un modelo semiparamétrico para</p>
+<p><span class="math inline">\(h(t)\)</span>.</p></li>
+</ul>
+<p>Solución: Algoritmo EM (Esperanza-Maximización) en el segundo caso (ver</p>
+<p>pags. 432-435 del Klein)</p>
+</section>
+<section id="modelo-marginal-de-sobrevivencia-multivariada" class="level2" data-number="6.7">
+<h2 data-number="6.7" class="anchored" data-anchor-id="modelo-marginal-de-sobrevivencia-multivariada"><span class="header-section-number">6.7</span> Modelo Marginal de sobrevivencia multivariada</h2>
+<p>Inconveniente del modelo de fragilidad: las distribuciones marginales no</p>
+<p>siguen la estructura de un modelo de Cox (no se satisface el principio</p>
+<p>de riesgos proporcionales)</p>
+<p><em>Modelo de Lee et al (1992):</em></p>
+<p>Para cada individuo se asume un modelo de Cox condicional en <span class="math inline">\(Z_{ij}\)</span>:</p>
+<p><span class="math display">\[h_{ij}(t|Z_{ij})=h_0(t)\exp[\beta^TZ_{ij}]\]</span> y se construye la</p>
+<p>verosimilitud parcial asumiendo que todas las observaciones son</p>
+<p>independientes (modelo independiente de trabajo)</p>
+<p>A partir del estimador de <span class="math inline">\(\beta\)</span> obtenido con la verosimilitud anterior</p>
+<p>se ajusta la matriz de covarianza de <span class="math inline">\(b\)</span> con los residuos score (ver</p>
+<p>ecuaciones 13.4.2 y 13.4.3 del Klein) para tomar en cuenta la relación</p>
+<p>de observaciones en cada grupo.</p>
+<p>Además, si <span class="math inline">\(\hat V\)</span> es la matriz de varianza ajustada:</p>
+<p><span class="math display">\[b\underset{n\text{ grande}}{\longrightarrow} N_p(\beta,\hat V)\]</span></p>
 <!-- ## Laboratorio -->
 <!-- ### Modelos Paramétricos -->
 <!-- En este ejemplo usamos como base los datos de 90 hombres diagnosticados -->

@@ -371,142 +371,104 @@ abline(h=c(-1.3581,1.3581))
 
 En ambos casos no se sobrepasa los umbrales de confianza de un puente Browniano al 95%, pero hay más evidencia (aunque muy poca) de que la variable MTX no satisface el supuesto de riesgos proporcionales.
 
-<!-- ### Ejemplo 2 -->
+### Ejemplo 2
 
-<!-- El siguiente ejemplo es de 43 pacientes que recibieron un transplante de -->
+El siguiente ejemplo es de 43 pacientes que recibieron un transplante de médula ósea que tenían la enfermedad de Hodgkin (HOD) o el linfoma no-Hodgkin (NHL) (dtype) y se le suministró dos tipos distintos de transplantes (gtype: Allo, Auto). Dos covariables adicionales son el score de Karnofsky (score) y el tiempo de espera desde el diagnóstico hasta el transplante (wtime). Carga de datos:
 
-<!-- médula ósea que tenían la enfermedad de Hodgkin (HOD) o el linfoma -->
+```{r}
 
-<!-- no-Hodgkin (NHL) (dtype) y se le suministró dos tipos distintos de -->
+data(hodg)
 
-<!-- transplantes (gtype: Allo, Auto). Dos covariables adicionales son el -->
+head(hodg)
 
-<!-- score de Karnofsky (score) y el tiempo de espera desde el diagnóstico -->
+```
 
-<!-- hasta el transplante (wtime). Carga de datos: -->
+Ahora se determinará la mejor transformación de la variable wtime para el análisis a través de los residuos martingala del modelo reducido sin la variable wtime:
 
-<!-- ```{r} -->
+```{r}
 
-<!-- data(hodg) -->
+hodg <- hodg %>% mutate(gtype=factor(gtype),dtype=factor(dtype))
 
-<!-- head(hodg) -->
+modelo2_ww <- coxph(Surv(time,delta)~gtype*dtype+score,data = hodg)
 
-<!-- ``` -->
+residuos_mart_w <- residuals(modelo2_ww,type = 'martingale')
 
-<!-- Ahora se determinará la mejor transformación de la variable wtime para -->
+datos_mart <- hodg %>% select(wtime) %>% mutate(rMart=residuos_mart_w)
 
-<!-- el análisis a través de los residuos martingala del modelo reducido sin -->
+grafico_mart <- ggplot(data = datos_mart,mapping = aes(x=wtime,y = rMart))+geom_point()+geom_smooth()
 
-<!-- la variable wtime: -->
+grafico_mart
 
-<!-- ```{r} -->
+```
 
-<!-- hodg <- hodg %>% mutate(gtype=factor(gtype),dtype=factor(dtype)) -->
+En donde se puede observar que hay un comportamiento muy diferente en los residuos martingala antes y después de 75 meses. Una posible solución es usar una indicadora a los 75 meses. Usando las técnicas de discretización de variables que vimos en el capítulo 8 (prueba de Contal-O'Quigley):
 
-<!-- modelo2_ww <- coxph(Surv(time,delta)~gtype*dtype+score,data = hodg) -->
+```{r}
 
-<!-- residuos_mart_w <- residuals(modelo2_ww,type = 'martingale') -->
+modelo2 <- coxph(Surv(time,delta)~gtype*dtype+score+wtime,data = hodg)
 
-<!-- datos_mart <- hodg %>% select(wtime) %>% mutate(rMart=residuos_mart_w) -->
+Contal_modelo2 <- cutp(modelo2)
 
-<!-- grafico_mart <- ggplot(data = datos_mart,mapping = aes(x=wtime,y = rMart))+geom_point()+geom_smooth() -->
+Contal_modelo2$wtime[1,]
 
-<!-- grafico_mart -->
+```
 
-<!-- ``` -->
+Por lo tanto se selecciona un corte de 84 meses para la definición de la indicadora. Definimos la variable indicadora:
 
-<!-- En donde se puede observar que hay un comportamiento muy diferente en -->
+```{r}
 
-<!-- los residuos martingala antes y después de 75 meses. Una posible -->
+hodg <- hodg %>% mutate(i_wtime=ifelse(wtime>=84,1,0))
 
-<!-- solución es usar una indicadora a los 75 meses. Usando las técnicas de -->
+contrasts(hodg$gtype) <- contr.treatment(n = 2,base = 2)
 
-<!-- discretización de variables que vimos en el capítulo 8 (prueba de -->
+contrasts(hodg$dtype)
 
-<!-- Contal-O'Quigley): -->
+modelo2_wi <- coxph(Surv(time,delta)~gtype*dtype+score+i_wtime,data = hodg)
 
-<!-- ```{r} -->
+summary(modelo2_wi)
 
-<!-- modelo2 <- coxph(Surv(time,delta)~gtype*dtype+score+wtime,data = hodg) -->
+```
 
-<!-- Contal_modelo2 <- cutp(modelo2) -->
+En este caso graficamos los residuos de devianza vs los scores de riesgo:
 
-<!-- Contal_modelo2$wtime[1,] -->
+```{r}
 
-<!-- ``` -->
+ggcoxdiagnostics(modelo2_wi,type = 'deviance',ggtheme = theme_bw())
 
-<!-- Por lo tanto se selecciona un corte de 84 meses para la definición de la -->
+```
 
-<!-- indicadora. Definimos la variable indicadora: -->
+donde podemos observar que hay un par de individuos con valores relativamente altos en su residuos de devianza:
 
-<!-- ```{r} -->
+```{r}
 
-<!-- hodg <- hodg %>% mutate(i_wtime=ifelse(wtime>=84,1,0)) -->
+hodg <- hodg %>% mutate(rDev=residuals(modelo2_wi,type = 'deviance'))
 
-<!-- contrasts(hodg$gtype) <- contr.treatment(n = 2,base = 2) -->
+mayores_dev <- hodg %>% arrange(desc(rDev))
 
-<!-- contrasts(hodg$dtype) -->
+mayores_dev[1:2,]
 
-<!-- modelo2_wi <- coxph(Surv(time,delta)~gtype*dtype+score+i_wtime,data = hodg) -->
+```
 
-<!-- summary(modelo2_wi) -->
+Noten que los dos individuos fallecieron al mes aproximadamente, pero sus scores de riesgo eran bajos, es decir se esperaba que los dos sobrevivieran más.
 
-<!-- ``` -->
+Ahora graficamos los estadísticos de influencia de las observaciones:
 
-<!-- En este caso graficamos los residuos de devianza vs los scores de -->
+```{r}
 
-<!-- riesgo: -->
+ggcoxdiagnostics(modelo2_wi,type = 'dfbetas')
 
-<!-- ```{r} -->
+influence_m <- residuals(modelo2_wi,type = 'dfbetas')
 
-<!-- ggcoxdiagnostics(modelo2_wi,type = 'deviance',ggtheme = theme_bw()) -->
+```
 
-<!-- ``` -->
+Note que el individuo con mayor influencia en la estimación del score es el número 1:
 
-<!-- donde podemos observar que hay un par de individuos con valores -->
+```{r}
 
-<!-- relativamente altos en su residuos de devianza: -->
+which.max(influence_m[,3])
 
-<!-- ```{r} -->
+hodg[which.max(abs(influence_m[,3])),]
 
-<!-- hodg <- hodg %>% mutate(rDev=residuals(modelo2_wi,type = 'deviance')) -->
+```
 
-<!-- mayores_dev <- hodg %>% arrange(desc(rDev)) -->
-
-<!-- mayores_dev[1:2,] -->
-
-<!-- ``` -->
-
-<!-- Noten que los dos individuos fallecieron al mes aproximadamente, pero -->
-
-<!-- sus scores de riesgo eran bajos, es decir se esperaba que los dos -->
-
-<!-- sobrevivieran más. -->
-
-<!-- Ahora graficamos los estadísticos de influencia de las observaciones: -->
-
-<!-- ```{r} -->
-
-<!-- ggcoxdiagnostics(modelo2_wi,type = 'dfbetas') -->
-
-<!-- influence_m <- residuals(modelo2_wi,type = 'dfbetas') -->
-
-<!-- ``` -->
-
-<!-- Note que el individuo con mayor influencia en la estimación del score es -->
-
-<!-- el número 1: -->
-
-<!-- ```{r} -->
-
-<!-- which.max(influence_m[,3]) -->
-
-<!-- hodg[which.max(abs(influence_m[,3])),] -->
-
-<!-- ``` -->
-
-<!-- y es un individuo con un score relativamente alto (indicador de buen -->
-
-<!-- estado físico) pero murió en un momento muy temprano (1 mes -->
-
-<!-- aproximadamente). Este individuo es el mismo con un residuo de devianza alto. -->
+y es un individuo con un score relativamente alto (indicador de buen estado físico) pero murió en un momento muy temprano (1 mes aproximadamente). Este individuo es el mismo con un residuo de devianza alto.

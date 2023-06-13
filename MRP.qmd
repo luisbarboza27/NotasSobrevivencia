@@ -4,17 +4,13 @@
 library(tidyverse)
 ```
 
-Los modelos paramétricos que se van a estudiar admiten dos
-representaciones:
+Los modelos paramétricos que se van a estudiar admiten dos representaciones:
 
 **Modelos de tiempo acelerado de fallo**
 
-Sea $X$: tiempo al evento de riesgo y $Z$: vector de covariables fijas.
-Un modelo de tiempo acelerado se define:
+Sea $X$: tiempo al evento de riesgo y $Z$: vector de covariables fijas. Un modelo de tiempo acelerado se define:
 
-$$S(x|Z)=S_0[x\exp(\theta^TZ)]$$ donde $S_0$ es la función de
-sobrevivencia base y $\theta$ es un vector de parámetros. A
-$\exp(\theta^TZ)$ se le llama factor de aceleración.
+$$S(x|Z)=S_0[x\exp(\theta^TZ)]$$ donde $S_0$ es la función de sobrevivencia base y $\theta$ es un vector de parámetros. A $\exp(\theta^TZ)$ se le llama factor de aceleración.
 
 Implicaciones (ejercicios):
 
@@ -24,35 +20,25 @@ Implicaciones (ejercicios):
 
 **Representación como modelo lineal en log-tiempo**
 
-$$Y=\log X=\mu+\gamma^TZ+\sigma W$$ donde
-$\gamma^T=(\gamma_1,\ldots,\gamma_p)$ y $W$ es una variable aleatoria de
-error. *Nota*: las dos representaciones se relacionan, ya que si
-$S_0(x)$ es la función de sobrevivencia de $\exp(\mu+\sigma W)$ entonces
-las dos representaciones son equivalentes con $\theta=-\gamma$.
+$$Y=\log X=\mu+\gamma^TZ+\sigma W$$ donde $\gamma^T=(\gamma_1,\ldots,\gamma_p)$ y $W$ es una variable aleatoria de error. *Nota*: las dos representaciones se relacionan, ya que si $S_0(x)$ es la función de sobrevivencia de $\exp(\mu+\sigma W)$ entonces las dos representaciones son equivalentes con $\theta=-\gamma$.
 
 ## Modelo de Weibull
 
-Único modelo paramétrico que tiene una representación de riesgos
-proporcionales y de tiempo acelerado de fallo.
+Único modelo paramétrico que tiene una representación de riesgos proporcionales y de tiempo acelerado de fallo.
 
 **Función de sobrevivencia**
 
 $$S_X(x)=\exp(-\lambda x^\alpha)$$ **Tasa de riesgo**
 
-$$h_X(x)=\lambda \alpha x^{\alpha-1}$$ la cual puede ser monótona
-creciente/decreciente o constante dependiendo de $\alpha$.
+$$h_X(x)=\lambda \alpha x^{\alpha-1}$$ la cual puede ser monótona creciente/decreciente o constante dependiendo de $\alpha$.
 
-Si $Y=\log X$ entonces $S_Y(y)=\exp(-\lambda e^{\alpha y})$. Sea
-$\lambda=\exp(-\mu/\sigma)$ y $\sigma=1/\alpha$ entonces $Y$ se puede
-escribir como un modelo log-lineal:
+Si $Y=\log X$ entonces $S_Y(y)=\exp(-\lambda e^{\alpha y})$. Sea $\lambda=\exp(-\mu/\sigma)$ y $\sigma=1/\alpha$ entonces $Y$ se puede escribir como un modelo log-lineal:
 
-$$Y=\log X=\mu+\sigma W$$ donde $W\sim \text{EVD estándar}$
-(Distribución de Valor Extremo):
+$$Y=\log X=\mu+\sigma W$$ donde $W\sim \text{EVD estándar}$ (Distribución de Valor Extremo):
 
 $$f_W(w)=\exp(w-\exp(w))$$ y función de sobrevivencia:
 
-$$S_W(w)=\exp(-\exp(w))$$ *Nota*: si $\alpha=1$ ($\sigma=1$) entonces la
-distribución de Weibull se reduce a una distribución exponencial.
+$$S_W(w)=\exp(-\exp(w))$$ *Nota*: si $\alpha=1$ ($\sigma=1$) entonces la distribución de Weibull se reduce a una distribución exponencial.
 
 Asumiendo datos censurados por la derecha, la verosimilitud es:
 
@@ -62,8 +48,7 @@ Asumiendo datos censurados por la derecha, la verosimilitud es:
     &=\prod_{j=1}^n \left[\frac{1}{\sigma}f_w\left(\frac{y_j-\mu}{\sigma}\right)\right]^{\delta_j}\left[S_W\left(\frac{y_j-\mu}{\sigma}\right)\right]^{1-\delta_j}
 \end{align*}
 ```
-y es función de $\mu$ y de $\sigma$. Una vez que se estiman esos
-parámetros, se puede usar invarianza del MLE para calcular:
+y es función de $\mu$ y de $\sigma$. Una vez que se estiman esos parámetros, se puede usar invarianza del MLE para calcular:
 
 $$\hat \lambda=\exp(-\hat \mu/\hat \sigma)\quad \text{y} \quad \hat \alpha=1/\hat \sigma$$
 
@@ -76,38 +61,25 @@ y usando el método Delta (ver página 401, Klein)
     \text{Cov}(\hat \lambda,\hat \alpha)&=\exp(-\hat \mu/\hat \sigma)[\text{Cov}(\hat \mu,\hat \sigma)/\hat \sigma^3-\hat \mu\text{Var}(\hat \sigma)/\hat \sigma^4]
 \end{align*}
 ```
-Si queremos incorporar covariables al modelo Weibull se modifica el
-modelo log-lineal:
+Si queremos incorporar covariables al modelo Weibull se modifica el modelo log-lineal:
 
-$$Y=\mu+\gamma^TZ+\sigma W$$ donde $W\sim \text{EVD(estándar)}$. La tasa
-de riesgo satisface:
+$$Y=\mu+\gamma^TZ+\sigma W$$ donde $W\sim \text{EVD(estándar)}$. La tasa de riesgo satisface:
 
-$$h(x|Z)=(\alpha\lambda x^{\alpha-1})\exp(\beta^TZ)$$ con
-$\alpha=\frac 1 \sigma$, $\lambda=\exp(-\mu/\sigma)$ y
-$\beta_j=-\frac{\gamma_j}{\sigma}$ para $j=1,\ldots,p$ en donde se ve
-claramente que el supuesto de riesgos proporcionales es verdadero.
+$$h(x|Z)=(\alpha\lambda x^{\alpha-1})\exp(\beta^TZ)$$ con $\alpha=\frac 1 \sigma$, $\lambda=\exp(-\mu/\sigma)$ y $\beta_j=-\frac{\gamma_j}{\sigma}$ para $j=1,\ldots,p$ en donde se ve claramente que el supuesto de riesgos proporcionales es verdadero.
 
-Además, si $\theta=\beta/\alpha$ ($\theta=-\gamma$) la tasa de riesgo
-es:
+Además, si $\theta=\beta/\alpha$ ($\theta=-\gamma$) la tasa de riesgo es:
 
-$$h(x|Z)=\exp(\theta^TZ)h_0[x\exp(\theta^TZ)]$$ donde la tasa de riesgo
-base es:
+$$h(x|Z)=\exp(\theta^TZ)h_0[x\exp(\theta^TZ)]$$ donde la tasa de riesgo base es:
 
-$$h_0(x)=\lambda \alpha x^{\alpha-1}$$ (tasa de una Weibull) y el factor
-$\exp(\theta^TZ)$ es el factor de aceleración. Por lo tanto el modelo
-también satisface el supuesto de tiempo acelerado de fallo:
+$$h_0(x)=\lambda \alpha x^{\alpha-1}$$ (tasa de una Weibull) y el factor $\exp(\theta^TZ)$ es el factor de aceleración. Por lo tanto el modelo también satisface el supuesto de tiempo acelerado de fallo:
 
-$$S(x|Z)=S_0(x\exp(\theta^TZ))$$ Si $x_m^0$ es la mediana para la
-distribución base:
+$$S(x|Z)=S_0(x\exp(\theta^TZ))$$ Si $x_m^0$ es la mediana para la distribución base:
 
 $$S_0(x_m^0)=\frac 1 2$$ y si $x_m^Z$ es la mediana con $Z=z$ entonces:
 
-$$\frac 1 2=S(x_m^Z|z)=S_0(x_m^Z\exp(\theta Z))$$ entonces:
-$x_m^Z=\frac{x_m^0}{\exp(\theta Z)}$
+$$\frac 1 2=S(x_m^Z|z)=S_0(x_m^Z\exp(\theta Z))$$ entonces: $x_m^Z=\frac{x_m^0}{\exp(\theta Z)}$
 
-**Estimación**: a través del MLE y usando invarianza sobre los
-estimadores del modelo log-lineal. El método delta permite calcular la
-covarianza entre los distintos parámetros $(\alpha,\lambda,\vec \beta)$.
+**Estimación**: a través del MLE y usando invarianza sobre los estimadores del modelo log-lineal. El método delta permite calcular la covarianza entre los distintos parámetros $(\alpha,\lambda,\vec \beta)$.
 
 ## Modelo Log-logístico
 
@@ -117,8 +89,7 @@ covarianza entre los distintos parámetros $(\alpha,\lambda,\vec \beta)$.
 
 $$S_X(x)=\frac{1}{1+\lambda x^\alpha}$$ **Tasa de riesgo acumulada**
 
-$$H_X(x)=\log(1+\lambda x^\alpha)$$ Tomando la transformación
-$Y=\log X$:
+$$H_X(x)=\log(1+\lambda x^\alpha)$$ Tomando la transformación $Y=\log X$:
 
 $$S_Y(y)=\frac{1}{1+\lambda \exp(\alpha y)}$$ y se puede probar que:
 
@@ -126,554 +97,668 @@ $$Y=\log X=\mu+\sigma W$$ donde $W\sim \text{logistica(Estándar)}$:
 
 $$f_W(w)=\frac{e^w}{(1+e^w)^2},\qquad S_W(w)=\frac{1}{1+e^w}$$
 
-y $\alpha=\frac 1 \sigma$, $\lambda=\exp(-\mu/\sigma)$, la cual es la
-misma reparametrización del caso Weibull.
+y $\alpha=\frac 1 \sigma$, $\lambda=\exp(-\mu/\sigma)$, la cual es la misma reparametrización del caso Weibull.
 
-Entonces aplican las mismas fórmulas de la
-$\text{Cov}(\hat \lambda,\hat \alpha)$ del caso Weibull (usando el
-método Delta).
+Entonces aplican las mismas fórmulas de la $\text{Cov}(\hat \lambda,\hat \alpha)$ del caso Weibull (usando el método Delta).
 
-Hay tres posibles formas de incorporar covariables en un modelo
-log-logístico:
+Hay tres posibles formas de incorporar covariables en un modelo log-logístico:
 
 **Modelo log-lineal**
 
-$$Y=\log X = \mu+\gamma^TZ+\sigma W$$ donde
-$W\sim \text{logistica(Estándar)}$.
+$$Y=\log X = \mu+\gamma^TZ+\sigma W$$ donde $W\sim \text{logistica(Estándar)}$.
 
 **Sobrevivencia condicional:**
 
 $$S_X(x|Z)=\frac{1}{1+\lambda\exp(\beta^TZ)x^\alpha}$$
 
-que se relaciona con la primera forma de incorporar a través de la
-parametrización:
+que se relaciona con la primera forma de incorporar a través de la parametrización:
 
-$$\beta=-\frac{\gamma}{\sigma},\qquad \lambda=\exp[-\mu/\sigma],\qquad \alpha=\frac 1  \sigma$$
-donde de nuevo, si se tiene MLE's para $\mu$, $\gamma$ y $\sigma$
-entonces usando invarianza y el método Delta se puede hacer inferencia
-sobre $\alpha$, $\beta$ y $\lambda$.
+$$\beta=-\frac{\gamma}{\sigma},\qquad \lambda=\exp[-\mu/\sigma],\qquad \alpha=\frac 1  \sigma$$ donde de nuevo, si se tiene MLE's para $\mu$, $\gamma$ y $\sigma$ entonces usando invarianza y el método Delta se puede hacer inferencia sobre $\alpha$, $\beta$ y $\lambda$.
 
 Interpretación de $\exp(\beta^TZ)$:
 
-$$\frac{S_X(x|Z)}{1-S_X(x|Z)}=\frac{1}{\lambda\exp(\beta^TZ)x^\alpha}=\exp(-\beta^TZ)\frac{S_X(x|Z=0)}{1-S_X(x|Z=0)}$$
-entonces:
+$$\frac{S_X(x|Z)}{1-S_X(x|Z)}=\frac{1}{\lambda\exp(\beta^TZ)x^\alpha}=\exp(-\beta^TZ)\frac{S_X(x|Z=0)}{1-S_X(x|Z=0)}$$ entonces:
 
-$$\exp(-\beta^TZ)=\frac{\text{Odds}(Z=z)}{\text{Odds}(Z=0)}$$ **Modelo
-de tiempo acelerado de fallo**
+$$\exp(-\beta^TZ)=\frac{\text{Odds}(Z=z)}{\text{Odds}(Z=0)}$$ **Modelo de tiempo acelerado de fallo**
 
-$$S(x|Z)=S_0[\exp(\theta^TZ)x]$$ donde
-$S_0(x)=\frac{1}{1+\lambda x^\alpha}$.
+$$S(x|Z)=S_0[\exp(\theta^TZ)x]$$ donde $S_0(x)=\frac{1}{1+\lambda x^\alpha}$.
 
-<!-- ## Otros modelos paramétricos -->
+## Otros modelos paramétricos
 
-<!-- **Modelo lognormal** -->
+**Modelo lognormal**
 
-<!-- Si $Z=(Z_1,\ldots,Z_p)^T$ entonces: -->
+Si $Z=(Z_1,\ldots,Z_p)^T$ entonces:
 
-<!-- $$Y=\log X=\mu+\gamma^TZ+\sigma W$$ donde $W\sim N(0,1)$. -->
+$$Y=\log X=\mu+\gamma^TZ+\sigma W$$ donde $W\sim N(0,1)$.
 
-<!-- *Nota*: resultados muy parecidos a los del modelo log-logístico. En este -->
-<!-- caso: -->
+*Nota*: resultados muy parecidos a los del modelo log-logístico. En este caso:
 
-<!-- $$S(x)=1-\Phi\left\{\frac{\log x-(\mu+\gamma^TZ)}{\sigma}\right\}$$ -->
-<!-- ($\Phi$: cdf de una $N(0,1)$) -->
+$$S(x)=1-\Phi\left\{\frac{\log x-(\mu+\gamma^TZ)}{\sigma}\right\}$$
 
-<!-- **Modelo con gamma generalizada** -->
+($\Phi$: cdf de una $N(0,1)$)
 
-<!-- Incluye Weibull, exponencial y lognormal: -->
+**Modelo con gamma generalizada**
 
-<!-- $$Y=\log X=\mu+\gamma^TZ+\sigma W$$ donde $W\sim f(w)$ y: -->
+Incluye Weibull, exponencial y lognormal:
 
-<!-- $$f(w)=\frac{|\theta|[\exp(\theta w)/\theta^2]^{1/\theta^2}\exp[-\exp(\theta w)/\theta^2]}{\Gamma(1/\theta^2)}$$ -->
-<!-- Si $\theta=1$ (Weibull), si $\theta=0$ (log-normal) y $\theta=\sigma=1$ -->
-<!-- (exponencial). -->
+$$Y=\log X=\mu+\gamma^TZ+\sigma W$$ donde $W\sim f(w)$ y:
 
-<!-- Métodos de selección de modelos: -->
+$$f(w)=\frac{|\theta|[\exp(\theta w)/\theta^2]^{1/\theta^2}\exp[-\exp(\theta w)/\theta^2]}{\Gamma(1/\theta^2)}$$
 
-<!-- -   AIC -->
-<!-- -   BIC -->
-<!-- -   LRT (caso de modelos anidados). -->
+Si $\theta=1$ (Weibull), si $\theta=0$ (log-normal) y $\theta=\sigma=1$ (exponencial).
 
-<!-- ## Análisis de diagnósticos -->
+Métodos de selección de modelos:
 
-<!-- Para verificar la bondad de ajuste de un modelo paramétrico se puede -->
-<!-- graficar transformaciones de $\hat H(x)$ (usando el estimador de -->
-<!-- Nelson-Aalen) versus transformaciones de $x$. Por ejemplo para el caso -->
-<!-- log-logístico: -->
+-   AIC
 
-<!-- ```{=tex} -->
-<!-- \begin{align*} -->
-<!--     H(x)&=\log[1+\lambda x^\alpha]\\ -->
-<!--     \Longrightarrow \log[\exp(H(x))-1]&=\log \lambda+\alpha \log x -->
-<!-- \end{align*} -->
-<!-- ``` -->
-<!-- Por lo tanto, asumiendo un modelo log-logístico: -->
+-   BIC
 
-<!-- ```{r, echo=FALSE, out.width='70%', fig.align='center', fig.cap='Bondad de Ajuste'} -->
-<!-- knitr::include_graphics("images/BAjusteparam.png") -->
-<!-- ``` -->
+-   LRT (caso de modelos anidados).
 
-<!-- En el caso exponencial: -->
+## Análisis de diagnósticos
 
-<!-- $$H(x)=\lambda x$$ y por lo tanto el gráfico sugerido es $\hat H$ vs -->
-<!-- $x$. -->
+Para verificar la bondad de ajuste de un modelo paramétrico se puede graficar transformaciones de $\hat H(x)$ (usando el estimador de Nelson-Aalen) versus transformaciones de $x$. Por ejemplo para el caso
 
-<!-- En el caso Weibull: -->
+log-logístico:
 
-<!-- $$H(x)=\lambda x^\alpha$$ entonces -->
-<!-- $\log \hat H(x)=\log \lambda+\alpha \log x$. El gráfico sugerido sería -->
-<!-- $\log \hat H(x)$ vs $\log x$. -->
+\begin{align*}
+    H(x)&=\log[1+\lambda x^\alpha]\\
+    \Longrightarrow \log[\exp(H(x))-1]&=\log \lambda+\alpha \log x
+\end{align*}
 
-<!-- En el caso log-normal: -->
 
-<!-- $$H(x)=-\log\left[1-\Phi\left[\frac{\log x-\mu}{\sigma}\right]\right]$$ -->
+Por lo tanto, asumiendo un modelo log-logístico:
 
-<!-- entonces $\frac{1}{\sigma}(\log x-\mu)=\Phi^{-1}(1-\exp(-H(x)))$. El -->
-<!-- gráfico sugerido en este caso es: -->
+```{r, echo=FALSE, out.width='70%', fig.align='center', fig.cap='Bondad de Ajuste'}
 
-<!-- $$\Phi^{-1}(1-\exp(-\hat H(x)))\quad \text{vs} \quad \log x$$ Si -->
-<!-- queremos comparar 2 grupos a través de un modelo de tiempo acelerado de -->
-<!-- fallo, se puede verificar la bondad de ajuste de este modelo usando el -->
-<!-- hecho de que: -->
+knitr::include_graphics("images/BAjusteparam.png")
 
-<!-- $$S_1(x):=S(x|Z=1)=S_0(x\exp(\beta^T\cdot 1))=S_0(\theta x)$$ donde -->
-<!-- $\theta$ es el factor de aceleración. -->
+```
 
-<!-- Sea $t_{0p}$ y $t_{1p}$ los p-cuantiles de los grupos 0 y 1 -->
-<!-- respectivamente, es decir: -->
+En el caso exponencial:
 
-<!-- $$t_{kp}=S_k^{-1}(1-p),\qquad k=0,1$$ entonces: -->
+$$H(x)=\lambda x$$ y por lo tanto el gráfico sugerido es $\hat H$ vs $x$.
 
-<!-- $$S_0(t_{0p})=1-p=S_1(t_{1p})=S_0(\theta t_{1p})$$ Por lo tanto, bajo el -->
-<!-- supuesto de tiempo acelerado: -->
+En el caso Weibull:
 
-<!-- $$t_{0p}=\theta t_{1p}$$ **Herramienta gráfica**: -->
+$$H(x)=\lambda x^\alpha$$ entonces $\log \hat H(x)=\log \lambda+\alpha \log x$. El gráfico sugerido sería $\log \hat H(x)$ vs $\log x$.
 
-<!-- -   Calcule los estimadores de Kaplan-Meier para cada grupo. -->
-<!-- -   Calcule estimadores de $t_{0p}$ y $t_{1p}$ para varios valores de -->
-<!--     $p$. -->
-<!-- -   Grafique $\hat t_{1p}$ vs $\hat t_{0p}$. La pendiente del gráfico -->
-<!--     estima el factor de aceleración y la linealidad por el origen ocurre -->
-<!--     bajo el supuesto de tiempo acelerado de fallo. -->
+En el caso log-normal:
 
-<!-- ### Residuos de Cox-Snell -->
+$$H(x)=-\log\left[1-\Phi\left[\frac{\log x-\mu}{\sigma}\right]\right]$$
 
-<!-- Mismo principio que en la regresión de Cox: bajo el supuesto de bondad -->
-<!-- de ajuste $\{r_j\}\sim \text{Exp}(1)$ donde $r_j=\hat H(T_j|Z_j)$. La -->
-<!-- herramienta gráfica es la misma que en el caso de la regresión de Cox: -->
-<!-- estimador de Nelson-Aalen $\hat H(r_j)$ versus $r_j$. Los residuos para -->
-<!-- cada caso son: -->
+entonces $\frac{1}{\sigma}(\log x-\mu)=\Phi^{-1}(1-\exp(-H(x)))$. El gráfico sugerido en este caso es:
 
-<!-- -   Exponencial: -->
+$$\Phi^{-1}(1-\exp(-\hat H(x)))\quad \text{vs} \quad \log x$$ 
 
-<!-- $$r_i=\hat \lambda t_i\exp\left[\hat \beta^TZ_i\right]$$ - Weibull: -->
+Si queremos comparar 2 grupos a través de un modelo de tiempo acelerado de fallo, se puede verificar la bondad de ajuste de este modelo usando el hecho de que:
 
-<!-- $$r_i=\hat \lambda t_i^{\alpha}\exp\left[\hat \beta^TZ_i\right]$$ - -->
-<!-- Log-logística: -->
+$$S_1(x):=S(x|Z=1)=S_0(x\exp(\beta^T\cdot 1))=S_0(\theta x)$$ donde $\theta$ es el factor de aceleración.
 
-<!-- $$r_i=\log\left[\frac{1}{1+\hat \lambda t_i^{\alpha}\exp\left[\hat \beta^TZ_i\right]}\right]$$ -->
+Sea $t_{0p}$ y $t_{1p}$ los p-cuantiles de los grupos 0 y 1 respectivamente, es decir:
 
-<!-- -   Log-normal: -->
+$$t_{kp}=S_k^{-1}(1-p),\qquad k=0,1$$ entonces:
 
-<!-- $$r_i=\log\left[1-\Phi\left(\frac{\log T_i-\hat \mu-\hat \gamma^TZ_i}{\hat \sigma}\right)\right]$$ -->
-<!-- *Nota*: el análisis de residuos de Cox-Snell es equivalente a analizar -->
-<!-- residuos estandarizados: -->
+$$S_0(t_{0p})=1-p=S_1(t_{1p})=S_0(\theta t_{1p})$$ Por lo tanto, bajo el supuesto de tiempo acelerado:
 
-<!-- $$s_j=\frac{\log T_j-\hat \mu-\hat \gamma^TZ_j}{\hat \sigma}$$ a través -->
-<!-- de la comparación de su distribución empírica con respecto a la -->
-<!-- distribución de $W$. (Usando un qqplot, por ejemplo) -->
+$$t_{0p}=\theta t_{1p}$$ **Herramienta gráfica**:
 
-<!-- El uso de residuos martingala o de devianza es análogo al uso que le -->
-<!-- dimos en modelos de Cox. -->
+-   Calcule los estimadores de Kaplan-Meier para cada grupo.
 
-<!-- ## Análisis Multivariado de Sobrevivencia -->
+-   Calcule estimadores de $t_{0p}$ y $t_{1p}$ para varios valores de $p$.
 
-<!-- *Problema*: en los modelos anteriores se asume que los tiempos de -->
-<!-- sobrevivencia de distintos individuos son independientes. Este es un -->
-<!-- supuesto poco realista, ya que por ejemplo el riesgo de un grupo no -->
-<!-- necesariamente representa la suma de los riesgos individuales e -->
-<!-- independientes. -->
+-   Grafique $\hat t_{1p}$ vs $\hat t_{0p}$. La pendiente del gráfico estima el factor de aceleración y la linealidad por el origen ocurre bajo el supuesto de tiempo acelerado de fallo.
 
-<!-- *Solución*: modelar la asociación entre tiempos de sobrevivencia entre -->
-<!-- distintos grupos. -->
+### Residuos de Cox-Snell
 
-<!-- **Modelo de Fragilidad** -->
+Mismo principio que en la regresión de Cox: bajo el supuesto de bondad de ajuste $\{r_j\}\sim \text{Exp}(1)$ donde $r_j=\hat H(T_j|Z_j)$. La herramienta gráfica es la misma que en el caso de la regresión de Cox: estimador de Nelson-Aalen $\hat H(r_j)$ versus $r_j$. Los residuos para cada caso son:
 
-<!-- Definición de fragilidad o debilidad en riesgo: efecto aleatorio no -->
-<!-- observable que es compartido por los sujetos de un subgrupo. -->
+-   Exponencial:
 
-<!-- Los grupos con mayor debilidad experimentan el evento antes que otros -->
-<!-- grupos con menor debilidad. Otra ventaja que presentan los modelos con -->
-<!-- fragilidad es que permiten mejorar el ajuste ante la presencia de -->
-<!-- sobredispersión en los datos, debido a errores no contabilizados en el -->
-<!-- modelo. -->
+$$r_i=\hat \lambda t_i\exp\left[\hat \beta^TZ_i\right]$$ 
 
-<!-- **Modelo de Fragilidad Compartida** -->
+- Weibull:
 
-<!-- Se asume que la tasa de riesgo para el $j$-ésimo individuo en el grupo -->
-<!-- $i$-ésimo tiene la forma: -->
+$$r_i=\hat \lambda t_i^{\alpha}\exp\left[\hat \beta^TZ_i\right]$$ -
 
-<!-- $$h_{ij}(t)=h_0(t)\exp[\beta^TZ_{ij}+\sigma w_i]$$ donde $i=1,\ldots,G$, -->
-<!-- $j=1,\ldots,n_i$, bajo la notación usual y asumiendo que -->
-<!-- $w_1,\ldots,w_G$ son las fragilidades, es decir $\{w_i\}$ son variables -->
-<!-- aleatorias independientes e identicamente distribuidas con media 0 y -->
-<!-- varianza 1. Algunas veces es más conveniente escribir el modelo: -->
+- Log-logística:
 
-<!-- $$h_{ij}(t)=h_0(t)u_i\exp[\beta^TZ_{ij}]$$ con $u_i$ variables -->
-<!-- aleatorias independientes, $E[u_i]=1$, $\text{Var}(u_i)<\infty$. -->
+$$r_i=\log\left[\frac{1}{1+\hat \lambda t_i^{\alpha}\exp\left[\hat \beta^TZ_i\right]}\right]$$
 
-<!-- -   Si $u_i>1$, entonces el grupo $i$-ésimo es de más riesgo que en el -->
-<!--     caso de riesgos proporcionales. -->
-<!-- -   Si $u_i<1$, entonces el grupo $i$-ésimo es de menos riesgo que en el -->
-<!--     caso de riesgos proporcionales. -->
+- Log-normal:
 
-<!-- Consecuencia: como $w_i$ no son variables observables entonces: -->
+$$r_i=\log\left[1-\Phi\left(\frac{\log T_i-\hat \mu-\hat \gamma^TZ_i}{\hat \sigma}\right)\right]$$
 
-<!-- ```{=tex} -->
-<!-- \begin{align*} -->
-<!-- S(x_{i1},\ldots,x_{in_i})&=P[X_{i1}>1,\ldots,X_{in_i}>x_{in_i}]\\ -->
-<!-- &=E\left[\exp\left(-\sum_{j=1}^{n_i}H_{ij}(X_{ij})\right)\right]\\ -->
-<!-- &=LP\left[\sum_{j=1}^{n_i}H_0(x_{ij})\exp(\beta^TZ_{ij})\right] -->
-<!-- \end{align*} -->
-<!-- ``` -->
-<!-- donde $LP(v)=E_v[\exp(-Uv)]$ (transformada de Laplace de la fragilidad -->
-<!-- U) -->
+*Nota*: el análisis de residuos de Cox-Snell es equivalente a analizar residuos estandarizados:
 
-<!-- Posibles escogencias para U: -->
+$$s_j=\frac{\log T_j-\hat \mu-\hat \gamma^TZ_j}{\hat \sigma}$$ 
 
-<!-- -   Distribución gamma univariada. -->
-<!-- -   Distribución normal inversa. -->
-<!-- -   Distribución log-normal. -->
-<!-- -   Distribución estable positiva. -->
-<!-- -   Distribución Uniforme -->
-<!-- -   ... -->
+a través de la comparación de su distribución empírica con respecto a la distribución de $W$. (Usando un qqplot, por ejemplo)
 
-<!-- **Prueba Score de Asociación** -->
+El uso de residuos martingala o de devianza es análogo al uso que le dimos en modelos de Cox.
 
-<!-- Objetivo: Probar la hipótesis nula de no fragilidad ($\sigma=0$) -->
+## Análisis Multivariado de Sobrevivencia
 
-<!-- Herramienta metodológica: Prueba de Commenges y Andersen (1995) -->
+*Problema*: en los modelos anteriores se asume que los tiempos de sobrevivencia de distintos individuos son independientes. Este es un supuesto poco realista, ya que por ejemplo el riesgo de un grupo no necesariamente representa la suma de los riesgos individuales e independientes.
 
-<!-- *Caso particular*: ($G=n$, $n_i=1$) se busca probar la existencia de -->
-<!-- sobredispersión en el modelo. -->
+*Solución*: modelar la asociación entre tiempos de sobrevivencia entre distintos grupos.
 
-<!-- Se busca probar la hipótesis nula: -->
+**Modelo de Fragilidad**
 
-<!-- $$H_0: \sigma=0 \qquad \text{vs}\qquad H_1: \sigma\neq 0$$ Usamos la -->
-<!-- notación ya definida, para $i=1,\ldots,G$ y $j=1,\ldots,n_i$: -->
+Definición de fragilidad o debilidad en riesgo: efecto aleatorio no observable que es compartido por los sujetos de un subgrupo.
 
-<!-- -   $T_{ij}$: tiempo -->
-<!-- -   $\delta_{ij}$: indicador de riesgo -->
-<!-- -   $Z_{ij}$: covariable -->
-<!-- -   $Y_{ij}(t)$: indicadora de exposición al riesgo al tiempo $t$. -->
+Los grupos con mayor debilidad experimentan el evento antes que otros grupos con menor debilidad. Otra ventaja que presentan los modelos con fragilidad es que permiten mejorar el ajuste ante la presencia de sobredispersión en los datos, debido a errores no contabilizados en el modelo.
 
-<!-- Se ajusta el modelo de Cox con riesgos proporcionales: -->
+**Modelo de Fragilidad Compartida**
 
-<!-- $$h(t|Z_{ij})=h_0(t)\exp[\beta^TZ_{ij}]$$ y se obtiene $b$: estimador de -->
-<!-- verosimilitud parcial y $\hat H_0(t)$: estimador de Breslow. -->
+Se asume que la tasa de riesgo para el $j$-ésimo individuo en el grupo $i$-ésimo tiene la forma:
 
-<!-- Sea: -->
+$$h_{ij}(t)=h_0(t)\exp[\beta^TZ_{ij}+\sigma w_i]$$ 
 
-<!-- $$S^{(0)}(t)=\sum_{i=1}^G\sum_{j=1}^{n_i}Y_{ij}(t)\exp[b^TZ_{ij}]$$ y -->
+donde $i=1,\ldots,G$, $j=1,\ldots,n_i$, bajo la notación usual y asumiendo que $w_1,\ldots,w_G$ son las fragilidades, es decir $\{w_i\}$ son variables aleatorias independientes e identicamente distribuidas con media 0 y varianza 1. Algunas veces es más conveniente escribir el modelo:
 
-<!-- $$M_{ij}=\delta_{ij}-\hat H_0(t)\exp[b^TZ_{ij}]$$ es el residuo -->
-<!-- martingala para el individuo $ij$. Calculamos el siguiente estadístico\* -->
-<!-- score: -->
+$$h_{ij}(t)=h_0(t)u_i\exp[\beta^TZ_{ij}]$$ 
 
-<!-- ```{=tex} -->
-<!-- \begin{align*} -->
-<!-- T&=\sum_{i=1}^G\left[\sum_{j=1}^{n_i}M_{ij}\right]^2-D+C\\ -->
-<!-- &=\sum_{i=1}^G \sum_{j=1}^{n_i}\sum_{\underset{k\neq j}{k=1}}^{n_j}M_{ij}M_{ik}+\left(\sum_{i=1}^G \sum_{j=1}^{n_i}M_{ij}^2-N\right)+C -->
-<!-- \end{align*} -->
-<!-- ``` -->
-<!-- donde: -->
+con $u_i$ variables aleatorias independientes, $E[u_i]=1$, $\text{Var}(u_i)<\infty$.
 
-<!-- -   $D$: número total de ocurrencias del riesgo. -->
+-   Si $u_i>1$, entonces el grupo $i$-ésimo es de más riesgo que en el caso de riesgos proporcionales.
 
-<!-- -   $N$: tamaño de muestra total. -->
+-   Si $u_i<1$, entonces el grupo $i$-ésimo es de menos riesgo que en el caso de riesgos proporcionales.
 
-<!-- -   El primer término en la última expresión corresponde a las -->
-<!--     correlaciones entre individuos para cada grupo. -->
+Consecuencia: como $w_i$ no son variables observables entonces:
 
-<!-- -   El segundo término es una medida de sobredispersión. -->
 
-<!-- -   $C$ es un factor de corrección que tiende a 0 conforme -->
-<!--     $N\longrightarrow 0$: -->
+\begin{align*}
+S(x_{i1},\ldots,x_{in_i})&=P[X_{i1}>1,\ldots,X_{in_i}>x_{in_i}]\\
+&=E\left[\exp\left(-\sum_{j=1}^{n_i}H_{ij}(X_{ij})\right)\right]\\
+&=LP\left[\sum_{j=1}^{n_i}H_0(x_{ij})\exp(\beta^TZ_{ij})\right]
+\end{align*}
 
-<!-- $$C=\sum_{i=1}^n\sum_{j=1}^{n_i}\frac{\delta_{ij}}{S^{(0)}(T_{ij})^2}\sum_{b=1}^G\left[\sum_{k=1}^{n_i}Y_{bk}(T_{ij})\exp[b^TZ_{bk}]\right]^2$$ -->
+donde $LP(v)=E_v[\exp(-Uv)]$ (transformada de Laplace de la fragilidad U)
 
-<!-- La varianza de $T$ se calcula usando la matriz de información de Fisher -->
-<!-- (de $b$) y residuos martingala $M_{ij}$ (ver fórmula 13.2.9 del Klein). -->
+Posibles escogencias para U:
 
-<!-- Bajo la hipótesis nula de no asociación: -->
+-   Distribución gamma univariada.
 
-<!-- $$\frac{T}{V^{1/2}}\underset{n \text{ grande}}{\longrightarrow}N(0,1)$$ -->
+-   Distribución normal inversa.
 
-<!-- ## Estimación de un modelo de fragilidad gamma -->
+-   Distribución log-normal.
 
-<!-- Asuma que la tasa de riesgo para el individuo $i$ del grupo $j$ es: -->
+-   Distribución estable positiva.
 
-<!-- $$h_{ij}(t)=h_0(t)u_i\exp[\beta^TZ_{ij}]$$ donde $i=1,\ldots,G$, -->
-<!-- $j=1,\ldots,n_i$ y $u_i\overset{iid}{\sim}\Gamma(1/\theta,\theta)$. Note -->
-<!-- que la función de densidad de $u_i$ es: -->
+-   Distribución Uniforme
 
-<!-- $$g(u)=\frac{u^{1/\theta-1}\exp(-u/\theta)}{\Gamma(1/\theta)\theta^{1/\theta}}$$ -->
-<!-- Note que $E[U]=1$ y $\text{Var}(U)=\theta$ (Valores grandes de $\theta$ -->
-<!-- reflejan mayor heterogeneidad entre grupos y una asociación más alta -->
-<!-- dentro de cada grupo). -->
+-   ...
 
-<!-- Distribución conjunta de los $n_i$ individuos (para el grupo $i$-ésimo) -->
+**Prueba Score de Asociación**
 
-<!-- ```{=tex} -->
-<!-- \begin{align*} -->
-<!--     S[x_{i1},\ldots,x_{in_i}]&=P[X_{i1}>x_{i1},\ldots,X_{in_i}>x_{in_i}]\\ -->
-<!--     &=\left[1+\theta \sum_{j=1}^{n_i}H_0(x_{ij})\exp[\beta^TZ_{ij}]\right]^{-1/\theta} -->
-<!-- \end{align*} -->
-<!-- ``` -->
-<!-- Usando los datos $(T_{ij},Z_{ij},\delta_{ij})$ para $i=1,\ldots,G$ y -->
-<!-- $j=1,\ldots,n_i$ se puede calcular la verosimilitud como: -->
+Objetivo: Probar la hipótesis nula de no fragilidad ($\sigma=0$)
 
-<!-- $$L(\theta,\beta)=L_1(\theta)+L_2(\beta,H_0)$$ donde -->
+Herramienta metodológica: Prueba de Commenges y Andersen (1995)
 
-<!-- $$L_1(\theta)=-G\left[\frac{\log \theta}{\theta}+\log \Gamma(1/\theta)\right]+\sum_{i=1}^G[1/\theta+D_i-1]\log u_i-\frac{u_i}{\theta}$$ -->
+*Caso particular*: ($G=n$, $n_i=1$) se busca probar la existencia de sobredispersión en el modelo. Se busca probar la hipótesis nula:
 
-<!-- y -->
+$$H_0: \sigma=0 \qquad \text{vs}\qquad H_1: \sigma\neq 0$$ 
 
-<!-- $$L_2(\beta,H_0)=\sum_{i=1}^G\sum_{j=1}^{n_i} \delta_{ij}[\beta^TZ_{ij}+\log h_0(T_{ij})]-u_iH_0(T_{ij})\exp[\beta^TZ_{ij}]$$ -->
-<!-- 2 posibles soluciones: -->
+Usamos la notación ya definida, para $i=1,\ldots,G$ y $j=1,\ldots,n_i$:
 
-<!-- -   Maximizar $L(\theta,\beta)$ asumiendo una forma paramétrica para -->
-<!--     $h_0(t)$. -->
-<!-- -   Maximizar $L(\theta,\beta)$ asumiendo un modelo semiparamétrico para -->
-<!--     $h(t)$. -->
+-   $T_{ij}$: tiempo
 
-<!-- Solución: Algoritmo EM (Esperanza-Maximización) en el segundo caso (ver -->
-<!-- pags. 432-435 del Klein) -->
+-   $\delta_{ij}$: indicador de riesgo
 
-<!-- ## Modelo Marginal de sobrevivencia multivariada -->
+-   $Z_{ij}$: covariable
 
-<!-- Inconveniente del modelo de fragilidad: las distribuciones marginales no -->
-<!-- siguen la estructura de un modelo de Cox (no se satisface el principio -->
-<!-- de riesgos proporcionales) -->
+-   $Y_{ij}(t)$: indicadora de exposición al riesgo al tiempo $t$.
 
-<!-- *Modelo de Lee et al (1992):* -->
+Se ajusta el modelo de Cox con riesgos proporcionales:
 
-<!-- Para cada individuo se asume un modelo de Cox condicional en $Z_{ij}$: -->
+$$h(t|Z_{ij})=h_0(t)\exp[\beta^TZ_{ij}]$$ 
 
-<!-- $$h_{ij}(t|Z_{ij})=h_0(t)\exp[\beta^TZ_{ij}]$$ y se construye la -->
-<!-- verosimilitud parcial asumiendo que todas las observaciones son -->
-<!-- independientes (modelo independiente de trabajo) -->
+y se obtiene $b$: estimador de verosimilitud parcial y $\hat H_0(t)$: estimador de Breslow.
 
-<!-- A partir del estimador de $\beta$ obtenido con la verosimilitud anterior -->
-<!-- se ajusta la matriz de covarianza de $b$ con los residuos score (ver -->
-<!-- ecuaciones 13.4.2 y 13.4.3 del Klein) para tomar en cuenta la relación -->
-<!-- de observaciones en cada grupo. -->
+Sea:
 
-<!-- Además, si $\hat V$ es la matriz de varianza ajustada: -->
+$$S^{(0)}(t)=\sum_{i=1}^G\sum_{j=1}^{n_i}Y_{ij}(t)\exp[b^TZ_{ij}]$$ y
 
-<!-- $$b\underset{n\text{ grande}}{\longrightarrow} N_p(\beta,\hat V)$$ -->
+$$M_{ij}=\delta_{ij}-\hat H_0(t)\exp[b^TZ_{ij}]$$ 
+
+es el residuo martingala para el individuo $ij$. Calculamos el siguiente estadístico score:
+
+\begin{align*}
+T&=\sum_{i=1}^G\left[\sum_{j=1}^{n_i}M_{ij}\right]^2-D+C\\
+&=\sum_{i=1}^G \sum_{j=1}^{n_i}\sum_{\underset{k\neq j}{k=1}}^{n_j}M_{ij}M_{ik}+\left(\sum_{i=1}^G \sum_{j=1}^{n_i}M_{ij}^2-N\right)+C
+\end{align*}
+
+donde:
+
+-   $D$: número total de ocurrencias del riesgo.
+
+-   $N$: tamaño de muestra total.
+
+-   El primer término en la última expresión corresponde a las correlaciones entre individuos para cada grupo.
+
+-   El segundo término es una medida de sobredispersión.
+
+-   $C$ es un factor de corrección que tiende a 0 conforme $N\longrightarrow 0$:
+
+$$C=\sum_{i=1}^n\sum_{j=1}^{n_i}\frac{\delta_{ij}}{S^{(0)}(T_{ij})^2}\sum_{b=1}^G\left[\sum_{k=1}^{n_i}Y_{bk}(T_{ij})\exp[b^TZ_{bk}]\right]^2$$
+
+La varianza de $T$ se calcula usando la matriz de información de Fisher (de $b$) y residuos martingala $M_{ij}$ (ver fórmula 13.2.9 del Klein).
+
+Bajo la hipótesis nula de no asociación:
+
+$$\frac{T}{V^{1/2}}\underset{n \text{ grande}}{\longrightarrow}N(0,1)$$
+
+## Estimación de un modelo de fragilidad gamma
+
+Asuma que la tasa de riesgo para el individuo $i$ del grupo $j$ es:
+
+$$h_{ij}(t)=h_0(t)u_i\exp[\beta^TZ_{ij}]$$ donde $i=1,\ldots,G$,
+
+$j=1,\ldots,n_i$ y $u_i\overset{iid}{\sim}\Gamma(1/\theta,\theta)$. Note
+
+que la función de densidad de $u_i$ es:
+
+$$g(u)=\frac{u^{1/\theta-1}\exp(-u/\theta)}{\Gamma(1/\theta)\theta^{1/\theta}}$$
+
+Note que $E[U]=1$ y $\text{Var}(U)=\theta$ (Valores grandes de $\theta$
+
+reflejan mayor heterogeneidad entre grupos y una asociación más alta
+
+dentro de cada grupo).
+
+Distribución conjunta de los $n_i$ individuos (para el grupo $i$-ésimo)
+
+```{=tex}
+
+\begin{align*}
+
+    S[x_{i1},\ldots,x_{in_i}]&=P[X_{i1}>x_{i1},\ldots,X_{in_i}>x_{in_i}]\\
+
+    &=\left[1+\theta \sum_{j=1}^{n_i}H_0(x_{ij})\exp[\beta^TZ_{ij}]\right]^{-1/\theta}
+
+\end{align*}
+
+```
+
+Usando los datos $(T_{ij},Z_{ij},\delta_{ij})$ para $i=1,\ldots,G$ y
+
+$j=1,\ldots,n_i$ se puede calcular la verosimilitud como:
+
+$$L(\theta,\beta)=L_1(\theta)+L_2(\beta,H_0)$$ donde
+
+$$L_1(\theta)=-G\left[\frac{\log \theta}{\theta}+\log \Gamma(1/\theta)\right]+\sum_{i=1}^G[1/\theta+D_i-1]\log u_i-\frac{u_i}{\theta}$$
+
+y
+
+$$L_2(\beta,H_0)=\sum_{i=1}^G\sum_{j=1}^{n_i} \delta_{ij}[\beta^TZ_{ij}+\log h_0(T_{ij})]-u_iH_0(T_{ij})\exp[\beta^TZ_{ij}]$$
+
+2 posibles soluciones:
+
+-   Maximizar $L(\theta,\beta)$ asumiendo una forma paramétrica para
+
+    $h_0(t)$.
+
+-   Maximizar $L(\theta,\beta)$ asumiendo un modelo semiparamétrico para
+
+    $h(t)$.
+
+Solución: Algoritmo EM (Esperanza-Maximización) en el segundo caso (ver
+
+pags. 432-435 del Klein)
+
+## Modelo Marginal de sobrevivencia multivariada
+
+Inconveniente del modelo de fragilidad: las distribuciones marginales no
+
+siguen la estructura de un modelo de Cox (no se satisface el principio
+
+de riesgos proporcionales)
+
+*Modelo de Lee et al (1992):*
+
+Para cada individuo se asume un modelo de Cox condicional en $Z_{ij}$:
+
+$$h_{ij}(t|Z_{ij})=h_0(t)\exp[\beta^TZ_{ij}]$$ y se construye la
+
+verosimilitud parcial asumiendo que todas las observaciones son
+
+independientes (modelo independiente de trabajo)
+
+A partir del estimador de $\beta$ obtenido con la verosimilitud anterior
+
+se ajusta la matriz de covarianza de $b$ con los residuos score (ver
+
+ecuaciones 13.4.2 y 13.4.3 del Klein) para tomar en cuenta la relación
+
+de observaciones en cada grupo.
+
+Además, si $\hat V$ es la matriz de varianza ajustada:
+
+$$b\underset{n\text{ grande}}{\longrightarrow} N_p(\beta,\hat V)$$
 
 <!-- ## Laboratorio -->
 
 <!-- ### Modelos Paramétricos -->
 
 <!-- En este ejemplo usamos como base los datos de 90 hombres diagnosticados -->
+
 <!-- con cáncer de laringe con su edad de diagnóstico (age), tiempo de muerte -->
+
 <!-- o censura en meses (time), indicador de censura (delta) y etapa de la -->
+
 <!-- enfermedad (stage). Carga de datos: -->
 
 <!-- ```{r} -->
+
 <!-- library(survival) -->
+
 <!-- library(KMsurv) -->
+
 <!-- library(survMisc) -->
+
 <!-- library(survminer) -->
+
 <!-- library(tidyverse) -->
+
 <!-- data(larynx) -->
+
 <!-- head(larynx) -->
+
 <!-- ``` -->
 
 <!-- Preliminarmente, se puede verificar la capacidad de un modelo bajo el -->
+
 <!-- supuesto de Weibull: -->
 
 <!-- ```{r} -->
+
 <!-- NA_prelim <- coxph(Surv(time,delta)~1,data = larynx,ties = 'breslow') -->
+
 <!-- hatH0_prelim <- basehaz(NA_prelim,centered = FALSE) -->
+
 <!-- hatH0_prelim <- hatH0_prelim %>% mutate(logtime=log(time),logH=log(hazard)) -->
+
 <!-- ggplot(data = hatH0_prelim,mapping = aes(x = logtime,y = logH))+ -->
+
 <!--   geom_point()+ -->
+
 <!--   geom_smooth(method = 'lm')+ -->
+
 <!--   theme_bw() -->
+
 <!-- summary(lm(logtime~logH,data = hatH0_prelim)) -->
+
 <!-- ``` -->
 
 <!-- Se ajusta un modelo de Weibull donde las covariables son los estadíos de -->
+
 <!-- la enfermedad *stage* y la edad del paciente *age*. -->
 
 <!-- ```{r} -->
+
 <!-- larynx <- larynx %>% mutate(stage=factor(stage)) -->
+
 <!-- modelo1 <- survreg(Surv(time,delta)~stage+age,data = larynx,dist = 'weibull') -->
+
 <!-- summary(modelo1) -->
+
 <!-- ``` -->
 
 <!-- Si queremos calcular el riesgo relativo de un paciente en etapa 4 -->
+
 <!-- comparado con uno en etapa 1 tenemos que usar la reparametrización del -->
+
 <!-- modelo de Weibull como modelo de riesgos proporcionales: -->
 
 <!-- ```{r} -->
+
 <!-- alpha <- 1/modelo1$scale -->
+
 <!-- lambda <- exp(-coefficients(modelo1)[1]/modelo1$scale) -->
+
 <!-- betas <- -coefficients(modelo1)[-1]/modelo1$scale -->
+
 <!-- c(alpha,lambda,betas) -->
+
 <!-- exp(betas[3]) -->
+
 <!-- ``` -->
 
 <!-- por lo tanto el riesgo relativo de un paciente en el cuarto estadío es -->
+
 <!-- casi seis veces mayor que uno en estadío 1. El factor de aceleración de -->
+
 <!-- un paciente en etapa 4 sería: -->
 
 <!-- ```{r} -->
+
 <!-- exp(-coefficients(modelo1)[4]) -->
+
 <!-- ``` -->
 
 <!-- por lo tanto el tiempo mediano de sobrevivencia para un paciente en -->
+
 <!-- estadío 1 es 4.68 veces mayor que el de un paciente en estadío 4. -->
 
 <!-- Ahora ajustamos un modelo log-logístico a las mismas covariables: -->
 
 <!-- ```{r} -->
+
 <!-- modelo1_ll <- survreg(Surv(time,delta)~stage+age,data = larynx,dist = 'loglogistic') -->
+
 <!-- summary(modelo1_ll) -->
+
 <!-- ``` -->
 
 <!-- con sus parámetros en representación de riesgos proporcionales: -->
 
 <!-- ```{r} -->
+
 <!-- alpha <- 1/modelo1_ll$scale -->
+
 <!-- lambda <- exp(-coefficients(modelo1_ll)[1]/modelo1_ll$scale) -->
+
 <!-- betas <- -coefficients(modelo1_ll)[-1]/modelo1_ll$scale -->
+
 <!-- c(alpha,lambda,betas) -->
+
 <!-- ``` -->
 
 <!-- En este caso podemos hacer comparaciones en términos de odds relativos -->
+
 <!-- (oportunidad relativa). Los odds relativos de sobrevivencia de un -->
+
 <!-- paciente en estadío 3 con respecto a uno de estadío 1 es: -->
 
 <!-- ```{r} -->
+
 <!-- exp(-betas[2]) -->
+
 <!-- ``` -->
 
 <!-- es decir un paciente en estadío 3 tiene aproximadamente 70% menos -->
+
 <!-- posibilidades de sobrevivir que uno en estadío 1. -->
 
 <!-- Ahora comparamos el ajuste bajo cinco modelos: Exponencial, Weibull, -->
+
 <!-- Log-logístico, Log-Normal y Gamma Generalizada: -->
 
 <!-- ```{r} -->
+
 <!-- library(flexsurv) -->
+
 <!-- modelo_exp <- survreg(Surv(time,delta)~stage+age,data = larynx,dist = 'exponential',x = T) -->
+
 <!-- modelo_weibull <- survreg(Surv(time,delta)~stage+age,data = larynx,dist = 'weibull') -->
+
 <!-- modelo_loglog <- survreg(Surv(time,delta)~stage+age,data = larynx,dist = 'loglogistic') -->
+
 <!-- modelo_lognor <- survreg(Surv(time,delta)~stage+age,data = larynx,dist = 'lognormal') -->
+
 <!-- modelo_gg <- flexsurvreg(Surv(time,delta)~stage+age,data = larynx,dist = 'gengamma') -->
 
 <!-- AIC_table <- data.frame(Modelos=c('Exponencial','Weibull','Log-logistico','Log-Normal','GammaGen'),AIC=c(AIC(modelo_exp),AIC(modelo_weibull),AIC(modelo_loglog),AIC(modelo_lognor),AIC(modelo_gg))) -->
+
 <!-- BIC_table <- data.frame(Modelos=c('Exponencial','Weibull','Log-logistico','Log-Normal','GammaGen'),BIC=c(BIC(modelo_exp),BIC(modelo_weibull),BIC(modelo_loglog),BIC(modelo_lognor),BIC(modelo_gg))) -->
+
 <!-- AIC_table -->
+
 <!-- BIC_table -->
+
 <!-- ``` -->
 
 <!-- por lo tanto el modelo con el mejor ajuste es el Exponencial. Ahora -->
+
 <!-- analizamos la bondad de ajuste de cada uno de los modelos anteriores -->
+
 <!-- usando los residuos de Cox-Snell: -->
 
 <!-- ```{r} -->
+
 <!-- lambda <- exp(-coefficients(modelo_exp)[1]/modelo_exp$scale) -->
+
 <!-- betas <- as.matrix(-coefficients(modelo_exp)[-1]/modelo_exp$scale) -->
+
 <!-- rCox <- lambda*larynx$time*exp(t(betas)%*%t(modelo_exp$x[,-1])) -->
+
 <!-- larynx$rCox <- t(rCox) -->
 
 <!-- modelo_exp_CoxSnell <- coxph(Surv(rCox,delta)~1,data = larynx,ties = 'breslow') -->
+
 <!-- H0_modelo_exp_CS <- basehaz(modelo_exp_CoxSnell,centered = FALSE) -->
+
 <!-- plot(H0_modelo_exp_CS$time,H0_modelo_exp_CS$hazard) -->
+
 <!-- abline(a = 0,b=1) -->
+
 <!-- ``` -->
 
 <!-- en donde podemos ver que el ajuste es bastante aceptable. También -->
+
 <!-- analizamos un gráfico de los residuos de devianza vs el tiempo de -->
+
 <!-- ocurrencia del evento: -->
 
 <!-- ```{r} -->
+
 <!-- rDev <- residuals(modelo_exp,type = 'deviance') -->
+
 <!-- plot(larynx$time,rDev) -->
+
 <!-- abline(h=c(-2,2),col=2) -->
+
 <!-- ``` -->
 
 <!-- Note que hay unos cuantas observaciones que tienen residuos absolutos -->
+
 <!-- ligeramente mayores a dos, estas observaciones son: -->
 
 <!-- ```{r} -->
+
 <!-- mayores_dev <- larynx %>% mutate(rDev=rDev)%>% arrange(rDev) -->
+
 <!-- mayores_dev[1:3,] -->
+
 <!-- ``` -->
 
 <!-- En estos casos pareciera que los pacientes fallecieron de forma muy -->
+
 <!-- temprana a distintas edades y en distintos estadíos de la enfermedad, -->
+
 <!-- por lo que se pueden considerar puntos extremos en la muestra. -->
 
 <!-- ### Modelos de fragilidad -->
 
 <!-- El siguiente ejemplo consiste en un experimento realizado sobre 50 -->
+
 <!-- camadas de ratas (Litter) en donde una rata se tomó al azar y se le -->
+
 <!-- aplicó una droga y a otras dos se les dió un un placebo con el fin de -->
+
 <!-- analizar el tiempo hasta la aparición de un tumor. Carga de datos: -->
 
 <!-- ```{r} -->
+
 <!-- ratas <- read_csv('./data/rats.csv') -->
+
 <!-- head(ratas) -->
+
 <!-- ``` -->
 
 <!-- Primero vamos a medir la posible asociación entre la camada *Litter* y -->
+
 <!-- el tiempo hasta la aparición del tumor (puede deberse a similitudes -->
+
 <!-- genéticas). Además ajustamos un modelo con una fragilidad en la variable -->
+
 <!-- *Litter* para verificar si hay una asociación en el comportamiento de la -->
+
 <!-- sobrevivencia en una camada a través de la significancia del componente -->
+
 <!-- aleatorio: -->
 
 <!-- ```{r} -->
+
 <!-- library(frailtyEM) -->
+
 <!-- modelo_fragil_EM <- emfrail(Surv(time,Delta)~Group+cluster(Litter),data = ratas) -->
+
 <!-- summary(modelo_fragil_EM) -->
+
 <!-- ``` -->
 
 <!-- Note que no hay evidencia de que haya una asociación entre la camada y -->
+
 <!-- el tiempo al desarrollo de un tumor según la prueba de -->
+
 <!-- Commenges-Andersen. Según el LRT el modelo es significativo con niveles -->
+
 <!-- de confianza inferiores al 89% aproximadamente, lo cual puede ser que no -->
+
 <!-- sea aplicable en este caso ya que el tamaño de muestra es de 150 -->
+
 <!-- individuos. El término de fragilidad tiene una varianza estimada de -->
+
 <!-- 0.472 pero este no es significativo al 95% ya que el intervalo de -->
+
 <!-- confianza de Var(Z) incluye al 0. El intervalo de confianza del tau de -->
+
 <!-- Kendall también incluye al 0 lo cual confirma el resultado obtenido en -->
+
 <!-- la prueba de asociación. -->
 
 <!-- Ahora ajustamos un modelo de sobrevivencia marginal en donde se use -->
+
 <!-- "working independence" para ajustar la varianza de los estimadores. Para -->
+
 <!-- eso usamos *coxph* y *cluster*: -->
 
 <!-- ```{r} -->
+
 <!-- modelo_marginal <- coxph(Surv(time,Delta)~Group,data = ratas,cluster = Litter) -->
+
 <!-- summary(modelo_marginal) -->
+
 <!-- ``` -->
 
 <!-- Note que el error estándar ajustado del único coeficiente es 0.3024. El -->
+
 <!-- resultado anterior lo comparamos con un modelo de Cox sin agrupar: -->
 
 <!-- ```{r} -->
+
 <!-- modelo_nagrupado <- coxph(Surv(time,Delta)~Group,data = ratas) -->
+
 <!-- summary(modelo_nagrupado) -->
+
 <!-- ``` -->
 
 <!-- en donde podemos también comparar los intervalos de confianza del riesgo -->
+
 <!-- relativo del grupo tratamiento sobre el placebo. En el caso del modelo -->
+
 <!-- Cox estándar, este intervalo es (1.326, 4.604) y en el caso del modelo -->
+
 <!-- marginal la variabilidad es menor: (1.366, 4.47). -->

@@ -214,6 +214,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#laboratorio" id="toc-laboratorio" class="nav-link" data-scroll-target="#laboratorio"><span class="toc-section-number">5.6</span>  Laboratorio</a>
   <ul class="collapse">
   <li><a href="#ejemplo-1" id="toc-ejemplo-1" class="nav-link" data-scroll-target="#ejemplo-1"><span class="toc-section-number">5.6.1</span>  Ejemplo 1</a></li>
+  <li><a href="#ejemplo-2" id="toc-ejemplo-2" class="nav-link" data-scroll-target="#ejemplo-2"><span class="toc-section-number">5.6.2</span>  Ejemplo 2</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -570,76 +571,161 @@ Score (logrank) test = 38.69  on 8 df,   p=6e-06</code></pre>
 </div>
 </div>
 <p>En ambos casos no se sobrepasa los umbrales de confianza de un puente Browniano al 95%, pero hay más evidencia (aunque muy poca) de que la variable MTX no satisface el supuesto de riesgos proporcionales.</p>
-<!-- ### Ejemplo 2 -->
-<!-- El siguiente ejemplo es de 43 pacientes que recibieron un transplante de -->
-<!-- médula ósea que tenían la enfermedad de Hodgkin (HOD) o el linfoma -->
-<!-- no-Hodgkin (NHL) (dtype) y se le suministró dos tipos distintos de -->
-<!-- transplantes (gtype: Allo, Auto). Dos covariables adicionales son el -->
-<!-- score de Karnofsky (score) y el tiempo de espera desde el diagnóstico -->
-<!-- hasta el transplante (wtime). Carga de datos: -->
-<!-- ```{r} -->
-<!-- data(hodg) -->
-<!-- head(hodg) -->
-<!-- ``` -->
-<!-- Ahora se determinará la mejor transformación de la variable wtime para -->
-<!-- el análisis a través de los residuos martingala del modelo reducido sin -->
-<!-- la variable wtime: -->
-<!-- ```{r} -->
-<!-- hodg <- hodg %>% mutate(gtype=factor(gtype),dtype=factor(dtype)) -->
-<!-- modelo2_ww <- coxph(Surv(time,delta)~gtype*dtype+score,data = hodg) -->
-<!-- residuos_mart_w <- residuals(modelo2_ww,type = 'martingale') -->
-<!-- datos_mart <- hodg %>% select(wtime) %>% mutate(rMart=residuos_mart_w) -->
-<!-- grafico_mart <- ggplot(data = datos_mart,mapping = aes(x=wtime,y = rMart))+geom_point()+geom_smooth() -->
-<!-- grafico_mart -->
-<!-- ``` -->
-<!-- En donde se puede observar que hay un comportamiento muy diferente en -->
-<!-- los residuos martingala antes y después de 75 meses. Una posible -->
-<!-- solución es usar una indicadora a los 75 meses. Usando las técnicas de -->
-<!-- discretización de variables que vimos en el capítulo 8 (prueba de -->
-<!-- Contal-O'Quigley): -->
-<!-- ```{r} -->
-<!-- modelo2 <- coxph(Surv(time,delta)~gtype*dtype+score+wtime,data = hodg) -->
-<!-- Contal_modelo2 <- cutp(modelo2) -->
-<!-- Contal_modelo2$wtime[1,] -->
-<!-- ``` -->
-<!-- Por lo tanto se selecciona un corte de 84 meses para la definición de la -->
-<!-- indicadora. Definimos la variable indicadora: -->
-<!-- ```{r} -->
-<!-- hodg <- hodg %>% mutate(i_wtime=ifelse(wtime>=84,1,0)) -->
-<!-- contrasts(hodg$gtype) <- contr.treatment(n = 2,base = 2) -->
-<!-- contrasts(hodg$dtype) -->
-<!-- modelo2_wi <- coxph(Surv(time,delta)~gtype*dtype+score+i_wtime,data = hodg) -->
-<!-- summary(modelo2_wi) -->
-<!-- ``` -->
-<!-- En este caso graficamos los residuos de devianza vs los scores de -->
-<!-- riesgo: -->
-<!-- ```{r} -->
-<!-- ggcoxdiagnostics(modelo2_wi,type = 'deviance',ggtheme = theme_bw()) -->
-<!-- ``` -->
-<!-- donde podemos observar que hay un par de individuos con valores -->
-<!-- relativamente altos en su residuos de devianza: -->
-<!-- ```{r} -->
-<!-- hodg <- hodg %>% mutate(rDev=residuals(modelo2_wi,type = 'deviance')) -->
-<!-- mayores_dev <- hodg %>% arrange(desc(rDev)) -->
-<!-- mayores_dev[1:2,] -->
-<!-- ``` -->
-<!-- Noten que los dos individuos fallecieron al mes aproximadamente, pero -->
-<!-- sus scores de riesgo eran bajos, es decir se esperaba que los dos -->
-<!-- sobrevivieran más. -->
-<!-- Ahora graficamos los estadísticos de influencia de las observaciones: -->
-<!-- ```{r} -->
-<!-- ggcoxdiagnostics(modelo2_wi,type = 'dfbetas') -->
-<!-- influence_m <- residuals(modelo2_wi,type = 'dfbetas') -->
-<!-- ``` -->
-<!-- Note que el individuo con mayor influencia en la estimación del score es -->
-<!-- el número 1: -->
-<!-- ```{r} -->
-<!-- which.max(influence_m[,3]) -->
-<!-- hodg[which.max(abs(influence_m[,3])),] -->
-<!-- ``` -->
-<!-- y es un individuo con un score relativamente alto (indicador de buen -->
-<!-- estado físico) pero murió en un momento muy temprano (1 mes -->
-<!-- aproximadamente). Este individuo es el mismo con un residuo de devianza alto. -->
+</section>
+<section id="ejemplo-2" class="level3" data-number="5.6.2">
+<h3 data-number="5.6.2" class="anchored" data-anchor-id="ejemplo-2"><span class="header-section-number">5.6.2</span> Ejemplo 2</h3>
+<p>El siguiente ejemplo es de 43 pacientes que recibieron un transplante de médula ósea que tenían la enfermedad de Hodgkin (HOD) o el linfoma no-Hodgkin (NHL) (dtype) y se le suministró dos tipos distintos de transplantes (gtype: Allo, Auto). Dos covariables adicionales son el score de Karnofsky (score) y el tiempo de espera desde el diagnóstico hasta el transplante (wtime). Carga de datos:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(hodg)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(hodg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  gtype dtype time delta score wtime
+1     1     1   28     1    90    24
+2     1     1   32     1    30     7
+3     1     1   49     1    40     8
+4     1     1   84     1    60    10
+5     1     1  357     1    70    42
+6     1     1  933     0    90     9</code></pre>
+</div>
+</div>
+<p>Ahora se determinará la mejor transformación de la variable wtime para el análisis a través de los residuos martingala del modelo reducido sin la variable wtime:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>hodg <span class="ot">&lt;-</span> hodg <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">gtype=</span><span class="fu">factor</span>(gtype),<span class="at">dtype=</span><span class="fu">factor</span>(dtype))</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>modelo2_ww <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(time,delta)<span class="sc">~</span>gtype<span class="sc">*</span>dtype<span class="sc">+</span>score,<span class="at">data =</span> hodg)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>residuos_mart_w <span class="ot">&lt;-</span> <span class="fu">residuals</span>(modelo2_ww,<span class="at">type =</span> <span class="st">'martingale'</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>datos_mart <span class="ot">&lt;-</span> hodg <span class="sc">%&gt;%</span> <span class="fu">select</span>(wtime) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">rMart=</span>residuos_mart_w)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>grafico_mart <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> datos_mart,<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x=</span>wtime,<span class="at">y =</span> rMart))<span class="sc">+</span><span class="fu">geom_point</span>()<span class="sc">+</span><span class="fu">geom_smooth</span>()</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>grafico_mart</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using method = 'loess' and formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="DRSP_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>En donde se puede observar que hay un comportamiento muy diferente en los residuos martingala antes y después de 75 meses. Una posible solución es usar una indicadora a los 75 meses. Usando las técnicas de discretización de variables que vimos en el capítulo 8 (prueba de Contal-O’Quigley):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>modelo2 <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(time,delta)<span class="sc">~</span>gtype<span class="sc">*</span>dtype<span class="sc">+</span>score<span class="sc">+</span>wtime,<span class="at">data =</span> hodg)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>Contal_modelo2 <span class="ot">&lt;-</span> <span class="fu">cutp</span>(modelo2)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>Contal_modelo2<span class="sc">$</span>wtime[<span class="dv">1</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   wtime        U         Q         p
+1:    84 3.206373 0.6813505 0.7420152</code></pre>
+</div>
+</div>
+<p>Por lo tanto se selecciona un corte de 84 meses para la definición de la indicadora. Definimos la variable indicadora:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>hodg <span class="ot">&lt;-</span> hodg <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">i_wtime=</span><span class="fu">ifelse</span>(wtime<span class="sc">&gt;=</span><span class="dv">84</span>,<span class="dv">1</span>,<span class="dv">0</span>))</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(hodg<span class="sc">$</span>gtype) <span class="ot">&lt;-</span> <span class="fu">contr.treatment</span>(<span class="at">n =</span> <span class="dv">2</span>,<span class="at">base =</span> <span class="dv">2</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="fu">contrasts</span>(hodg<span class="sc">$</span>dtype)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  2
+1 0
+2 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>modelo2_wi <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(time,delta)<span class="sc">~</span>gtype<span class="sc">*</span>dtype<span class="sc">+</span>score<span class="sc">+</span>i_wtime,<span class="at">data =</span> hodg)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo2_wi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(time, delta) ~ gtype * dtype + score + i_wtime, 
+    data = hodg)
+
+  n= 43, number of events= 26 
+
+                  coef exp(coef) se(coef)      z Pr(&gt;|z|)    
+gtype1        -0.66509   0.51423  0.59432 -1.119   0.2631    
+dtype2         0.26048   1.29756  0.55547  0.469   0.6391    
+score         -0.05504   0.94644  0.01234 -4.459 8.23e-06 ***
+i_wtime       -2.05982   0.12748  1.05066 -1.961   0.0499 *  
+gtype1:dtype2  2.06684   7.89983  0.92577  2.233   0.0256 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+              exp(coef) exp(-coef) lower .95 upper .95
+gtype1           0.5142     1.9447   0.16042    1.6483
+dtype2           1.2976     0.7707   0.43683    3.8543
+score            0.9464     1.0566   0.92382    0.9696
+i_wtime          0.1275     7.8446   0.01626    0.9994
+gtype1:dtype2    7.8998     0.1266   1.28705   48.4885
+
+Concordance= 0.796  (se = 0.05 )
+Likelihood ratio test= 35.48  on 5 df,   p=1e-06
+Wald test            = 28.8  on 5 df,   p=3e-05
+Score (logrank) test = 40.09  on 5 df,   p=1e-07</code></pre>
+</div>
+</div>
+<p>En este caso graficamos los residuos de devianza vs los scores de riesgo:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggcoxdiagnostics</span>(modelo2_wi,<span class="at">type =</span> <span class="st">'deviance'</span>,<span class="at">ggtheme =</span> <span class="fu">theme_bw</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: `gather_()` was deprecated in tidyr 1.2.0.
+ℹ Please use `gather()` instead.
+ℹ The deprecated feature was likely used in the survminer package.
+  Please report the issue at &lt;]8;;https://github.com/kassambara/survminer/issueshttps://github.com/kassambara/survminer/issues]8;;&gt;.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="DRSP_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>donde podemos observar que hay un par de individuos con valores relativamente altos en su residuos de devianza:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>hodg <span class="ot">&lt;-</span> hodg <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">rDev=</span><span class="fu">residuals</span>(modelo2_wi,<span class="at">type =</span> <span class="st">'deviance'</span>))</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>mayores_dev <span class="ot">&lt;-</span> hodg <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(rDev))</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>mayores_dev[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  gtype dtype time delta score wtime i_wtime    rDev
+1     1     1   28     1    90    24       0 2.80429
+2     2     2   30     1    90    73       0 2.29525</code></pre>
+</div>
+</div>
+<p>Noten que los dos individuos fallecieron al mes aproximadamente, pero sus scores de riesgo eran bajos, es decir se esperaba que los dos sobrevivieran más.</p>
+<p>Ahora graficamos los estadísticos de influencia de las observaciones:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggcoxdiagnostics</span>(modelo2_wi,<span class="at">type =</span> <span class="st">'dfbetas'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: contrasts dropped from factor gtype</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="DRSP_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>influence_m <span class="ot">&lt;-</span> <span class="fu">residuals</span>(modelo2_wi,<span class="at">type =</span> <span class="st">'dfbetas'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: contrasts dropped from factor gtype</code></pre>
+</div>
+</div>
+<p>Note que el individuo con mayor influencia en la estimación del score es el número 1:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which.max</span>(influence_m[,<span class="dv">3</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1 
+1 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>hodg[<span class="fu">which.max</span>(<span class="fu">abs</span>(influence_m[,<span class="dv">3</span>])),]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  gtype dtype time delta score wtime i_wtime    rDev
+1     1     1   28     1    90    24       0 2.80429</code></pre>
+</div>
+</div>
+<p>y es un individuo con un score relativamente alto (indicador de buen estado físico) pero murió en un momento muy temprano (1 mes aproximadamente). Este individuo es el mismo con un residuo de devianza alto.</p>
 
 
 </section>
