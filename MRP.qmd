@@ -437,237 +437,198 @@ Además, si $\hat V$ es la matriz de varianza ajustada:
 
 $$b\underset{n\text{ grande}}{\longrightarrow} N_p(\beta,\hat V)$$
 
-<!-- ## Laboratorio -->
+## Laboratorio
 
-<!-- ### Modelos Paramétricos -->
+### Modelos Paramétricos
 
-<!-- En este ejemplo usamos como base los datos de 90 hombres diagnosticados -->
+En este ejemplo usamos como base los datos de 90 hombres diagnosticados con cáncer de laringe con su edad de diagnóstico (age), tiempo de muerte o censura en meses (time), indicador de censura (delta) y etapa de la enfermedad (stage). Carga de datos:
 
-<!-- con cáncer de laringe con su edad de diagnóstico (age), tiempo de muerte -->
+```{r}
 
-<!-- o censura en meses (time), indicador de censura (delta) y etapa de la -->
+library(survival)
 
-<!-- enfermedad (stage). Carga de datos: -->
+library(KMsurv)
 
-<!-- ```{r} -->
+library(survMisc)
 
-<!-- library(survival) -->
+library(survminer)
 
-<!-- library(KMsurv) -->
+library(tidyverse)
 
-<!-- library(survMisc) -->
+data(larynx)
 
-<!-- library(survminer) -->
+head(larynx)
 
-<!-- library(tidyverse) -->
+```
 
-<!-- data(larynx) -->
+Preliminarmente, se puede verificar la capacidad de un modelo bajo el supuesto de Weibull:
 
-<!-- head(larynx) -->
+```{r}
 
-<!-- ``` -->
+NA_prelim <- coxph(Surv(time,delta)~1,data = larynx,ties = 'breslow')
 
-<!-- Preliminarmente, se puede verificar la capacidad de un modelo bajo el -->
+hatH0_prelim <- basehaz(NA_prelim,centered = FALSE)
 
-<!-- supuesto de Weibull: -->
+hatH0_prelim <- hatH0_prelim %>% 
+  mutate(logtime=log(time),logH=log(hazard))
 
-<!-- ```{r} -->
+ggplot(data = hatH0_prelim,mapping = aes(x = logtime,y = logH))+
 
-<!-- NA_prelim <- coxph(Surv(time,delta)~1,data = larynx,ties = 'breslow') -->
+  geom_point()+
 
-<!-- hatH0_prelim <- basehaz(NA_prelim,centered = FALSE) -->
+  geom_smooth(method = 'lm')+
 
-<!-- hatH0_prelim <- hatH0_prelim %>% mutate(logtime=log(time),logH=log(hazard)) -->
+  theme_bw()
 
-<!-- ggplot(data = hatH0_prelim,mapping = aes(x = logtime,y = logH))+ -->
+summary(lm(logtime~logH,data = hatH0_prelim))
 
-<!--   geom_point()+ -->
+```
 
-<!--   geom_smooth(method = 'lm')+ -->
+Se ajusta un modelo de Weibull donde las covariables son los estadíos de la enfermedad *stage* y la edad del paciente *age*:
 
-<!--   theme_bw() -->
+```{r}
 
-<!-- summary(lm(logtime~logH,data = hatH0_prelim)) -->
+larynx <- larynx %>% mutate(stage=factor(stage))
 
-<!-- ``` -->
+modelo1 <- survreg(Surv(time,delta)~stage+age,data = larynx,
+                   dist = 'weibull')
 
-<!-- Se ajusta un modelo de Weibull donde las covariables son los estadíos de -->
+summary(modelo1)
 
-<!-- la enfermedad *stage* y la edad del paciente *age*. -->
+```
 
-<!-- ```{r} -->
+Si queremos calcular el riesgo relativo de un paciente en etapa 4 comparado con uno en etapa 1 tenemos que usar la reparametrización del modelo de Weibull como modelo de riesgos proporcionales:
 
-<!-- larynx <- larynx %>% mutate(stage=factor(stage)) -->
+```{r}
 
-<!-- modelo1 <- survreg(Surv(time,delta)~stage+age,data = larynx,dist = 'weibull') -->
+alpha <- 1/modelo1$scale
 
-<!-- summary(modelo1) -->
+lambda <- exp(-coefficients(modelo1)[1]/modelo1$scale)
 
-<!-- ``` -->
+betas <- -coefficients(modelo1)[-1]/modelo1$scale
 
-<!-- Si queremos calcular el riesgo relativo de un paciente en etapa 4 -->
+c(alpha,lambda,betas)
 
-<!-- comparado con uno en etapa 1 tenemos que usar la reparametrización del -->
+exp(betas[3])
 
-<!-- modelo de Weibull como modelo de riesgos proporcionales: -->
+```
 
-<!-- ```{r} -->
+por lo tanto el riesgo relativo de un paciente en el cuarto estadío esvcasi seis veces mayor que uno en estadío 1. El factor de aceleración de un paciente en etapa 4 sería:
 
-<!-- alpha <- 1/modelo1$scale -->
+```{r}
 
-<!-- lambda <- exp(-coefficients(modelo1)[1]/modelo1$scale) -->
+exp(-coefficients(modelo1)[4])
 
-<!-- betas <- -coefficients(modelo1)[-1]/modelo1$scale -->
+```
 
-<!-- c(alpha,lambda,betas) -->
+por lo tanto el tiempo mediano de sobrevivencia para un paciente en estadío 1 es 4.68 veces mayor que el de un paciente en estadío 4.
 
-<!-- exp(betas[3]) -->
+Ahora ajustamos un modelo log-logístico a las mismas covariables:
 
-<!-- ``` -->
+```{r}
 
-<!-- por lo tanto el riesgo relativo de un paciente en el cuarto estadío es -->
+modelo1_ll <- survreg(Surv(time,delta)~stage+age,data = larynx,
+                      dist = 'loglogistic')
 
-<!-- casi seis veces mayor que uno en estadío 1. El factor de aceleración de -->
+summary(modelo1_ll)
 
-<!-- un paciente en etapa 4 sería: -->
+```
 
-<!-- ```{r} -->
+con sus parámetros en representación de riesgos proporcionales:
 
-<!-- exp(-coefficients(modelo1)[4]) -->
+```{r}
 
-<!-- ``` -->
+alpha <- 1/modelo1_ll$scale
 
-<!-- por lo tanto el tiempo mediano de sobrevivencia para un paciente en -->
+lambda <- exp(-coefficients(modelo1_ll)[1]/modelo1_ll$scale)
 
-<!-- estadío 1 es 4.68 veces mayor que el de un paciente en estadío 4. -->
+betas <- -coefficients(modelo1_ll)[-1]/modelo1_ll$scale
 
-<!-- Ahora ajustamos un modelo log-logístico a las mismas covariables: -->
+c(alpha,lambda,betas)
 
-<!-- ```{r} -->
+```
 
-<!-- modelo1_ll <- survreg(Surv(time,delta)~stage+age,data = larynx,dist = 'loglogistic') -->
+En este caso podemos hacer comparaciones en términos de odds relativos (oportunidad relativa). Los odds relativos de sobrevivencia de un paciente en estadío 3 con respecto a uno de estadío 1 es:
 
-<!-- summary(modelo1_ll) -->
+```{r}
 
-<!-- ``` -->
+exp(-betas[2])
 
-<!-- con sus parámetros en representación de riesgos proporcionales: -->
+```
 
-<!-- ```{r} -->
+es decir un paciente en estadío 3 tiene aproximadamente 70% menos posibilidades de sobrevivir que uno en estadío 1.
 
-<!-- alpha <- 1/modelo1_ll$scale -->
+Ahora comparamos el ajuste bajo cinco modelos: Exponencial, Weibull, Log-logístico, Log-Normal y Gamma Generalizada:
 
-<!-- lambda <- exp(-coefficients(modelo1_ll)[1]/modelo1_ll$scale) -->
+```{r}
 
-<!-- betas <- -coefficients(modelo1_ll)[-1]/modelo1_ll$scale -->
+library(flexsurv)
 
-<!-- c(alpha,lambda,betas) -->
+modelo_exp <- survreg(Surv(time,delta)~stage+age,data = larynx,dist = 'exponential',x = T)
 
-<!-- ``` -->
+modelo_weibull <- survreg(Surv(time,delta)~stage+age,data = larynx,dist = 'weibull')
 
-<!-- En este caso podemos hacer comparaciones en términos de odds relativos -->
+modelo_loglog <- survreg(Surv(time,delta)~stage+age,data = larynx,dist = 'loglogistic')
 
-<!-- (oportunidad relativa). Los odds relativos de sobrevivencia de un -->
+modelo_lognor <- survreg(Surv(time,delta)~stage+age,data = larynx,dist = 'lognormal')
 
-<!-- paciente en estadío 3 con respecto a uno de estadío 1 es: -->
+modelo_gg <- flexsurvreg(Surv(time,delta)~stage+age,data = larynx,dist = 'gengamma')
 
-<!-- ```{r} -->
+AIC_table <- data.frame(Modelos=c('Exponencial','Weibull','Log-logistico','Log-Normal','GammaGen'),AIC=c(AIC(modelo_exp),AIC(modelo_weibull),AIC(modelo_loglog),AIC(modelo_lognor),AIC(modelo_gg)))
 
-<!-- exp(-betas[2]) -->
+BIC_table <- data.frame(Modelos=c('Exponencial','Weibull','Log-logistico','Log-Normal','GammaGen'),BIC=c(BIC(modelo_exp),BIC(modelo_weibull),BIC(modelo_loglog),BIC(modelo_lognor),BIC(modelo_gg)))
 
-<!-- ``` -->
+AIC_table
 
-<!-- es decir un paciente en estadío 3 tiene aproximadamente 70% menos -->
+BIC_table
 
-<!-- posibilidades de sobrevivir que uno en estadío 1. -->
+```
 
-<!-- Ahora comparamos el ajuste bajo cinco modelos: Exponencial, Weibull, -->
+por lo tanto el modelo con el mejor ajuste es el Exponencial. Ahora analizamos la bondad de ajuste del mejor modelo usando los residuos de Cox-Snell:
 
-<!-- Log-logístico, Log-Normal y Gamma Generalizada: -->
+```{r}
 
-<!-- ```{r} -->
+lambda <- exp(-coefficients(modelo_exp)[1]/modelo_exp$scale)
 
-<!-- library(flexsurv) -->
+betas <- as.matrix(-coefficients(modelo_exp)[-1]/modelo_exp$scale)
 
-<!-- modelo_exp <- survreg(Surv(time,delta)~stage+age,data = larynx,dist = 'exponential',x = T) -->
+rCox <- lambda*larynx$time*exp(t(betas)%*%t(modelo_exp$x[,-1]))
 
-<!-- modelo_weibull <- survreg(Surv(time,delta)~stage+age,data = larynx,dist = 'weibull') -->
+larynx$rCox <- t(rCox)
 
-<!-- modelo_loglog <- survreg(Surv(time,delta)~stage+age,data = larynx,dist = 'loglogistic') -->
+modelo_exp_CoxSnell <- coxph(Surv(rCox,delta)~1,data = larynx,ties = 'breslow')
 
-<!-- modelo_lognor <- survreg(Surv(time,delta)~stage+age,data = larynx,dist = 'lognormal') -->
+H0_modelo_exp_CS <- basehaz(modelo_exp_CoxSnell,centered = FALSE)
 
-<!-- modelo_gg <- flexsurvreg(Surv(time,delta)~stage+age,data = larynx,dist = 'gengamma') -->
+plot(H0_modelo_exp_CS$time,H0_modelo_exp_CS$hazard)
 
-<!-- AIC_table <- data.frame(Modelos=c('Exponencial','Weibull','Log-logistico','Log-Normal','GammaGen'),AIC=c(AIC(modelo_exp),AIC(modelo_weibull),AIC(modelo_loglog),AIC(modelo_lognor),AIC(modelo_gg))) -->
+abline(a = 0,b=1)
 
-<!-- BIC_table <- data.frame(Modelos=c('Exponencial','Weibull','Log-logistico','Log-Normal','GammaGen'),BIC=c(BIC(modelo_exp),BIC(modelo_weibull),BIC(modelo_loglog),BIC(modelo_lognor),BIC(modelo_gg))) -->
+```
 
-<!-- AIC_table -->
+en donde podemos ver que el ajuste es bastante aceptable. También analizamos un gráfico de los residuos de devianza vs el tiempo de ocurrencia del evento:
 
-<!-- BIC_table -->
+```{r}
 
-<!-- ``` -->
+rDev <- residuals(modelo_exp,type = 'deviance')
 
-<!-- por lo tanto el modelo con el mejor ajuste es el Exponencial. Ahora -->
+plot(larynx$time,rDev)
 
-<!-- analizamos la bondad de ajuste de cada uno de los modelos anteriores -->
+abline(h=c(-2,2),col=2)
 
-<!-- usando los residuos de Cox-Snell: -->
+```
 
-<!-- ```{r} -->
+Note que hay unos cuantas observaciones que tienen residuos absolutos ligeramente mayores a dos, estas observaciones son:
 
-<!-- lambda <- exp(-coefficients(modelo_exp)[1]/modelo_exp$scale) -->
+```{r}
 
-<!-- betas <- as.matrix(-coefficients(modelo_exp)[-1]/modelo_exp$scale) -->
+mayores_dev <- larynx %>% mutate(rDev=rDev)%>% arrange(rDev)
 
-<!-- rCox <- lambda*larynx$time*exp(t(betas)%*%t(modelo_exp$x[,-1])) -->
+mayores_dev[1:3,]
 
-<!-- larynx$rCox <- t(rCox) -->
+```
 
-<!-- modelo_exp_CoxSnell <- coxph(Surv(rCox,delta)~1,data = larynx,ties = 'breslow') -->
-
-<!-- H0_modelo_exp_CS <- basehaz(modelo_exp_CoxSnell,centered = FALSE) -->
-
-<!-- plot(H0_modelo_exp_CS$time,H0_modelo_exp_CS$hazard) -->
-
-<!-- abline(a = 0,b=1) -->
-
-<!-- ``` -->
-
-<!-- en donde podemos ver que el ajuste es bastante aceptable. También -->
-
-<!-- analizamos un gráfico de los residuos de devianza vs el tiempo de -->
-
-<!-- ocurrencia del evento: -->
-
-<!-- ```{r} -->
-
-<!-- rDev <- residuals(modelo_exp,type = 'deviance') -->
-
-<!-- plot(larynx$time,rDev) -->
-
-<!-- abline(h=c(-2,2),col=2) -->
-
-<!-- ``` -->
-
-<!-- Note que hay unos cuantas observaciones que tienen residuos absolutos -->
-
-<!-- ligeramente mayores a dos, estas observaciones son: -->
-
-<!-- ```{r} -->
-
-<!-- mayores_dev <- larynx %>% mutate(rDev=rDev)%>% arrange(rDev) -->
-
-<!-- mayores_dev[1:3,] -->
-
-<!-- ``` -->
-
-<!-- En estos casos pareciera que los pacientes fallecieron de forma muy -->
-
-<!-- temprana a distintas edades y en distintos estadíos de la enfermedad, -->
-
-<!-- por lo que se pueden considerar puntos extremos en la muestra. -->
+En estos casos pareciera que los pacientes fallecieron de forma muy temprana a distintas edades y en distintos estadíos de la enfermedad, por lo que se pueden considerar puntos extremos en la muestra.
 
 <!-- ### Modelos de fragilidad -->
 

@@ -20,6 +20,69 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -153,6 +216,10 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#análisis-multivariado-de-sobrevivencia" id="toc-análisis-multivariado-de-sobrevivencia" class="nav-link" data-scroll-target="#análisis-multivariado-de-sobrevivencia"><span class="toc-section-number">6.5</span>  Análisis Multivariado de Sobrevivencia</a></li>
   <li><a href="#estimación-de-un-modelo-de-fragilidad-gamma" id="toc-estimación-de-un-modelo-de-fragilidad-gamma" class="nav-link" data-scroll-target="#estimación-de-un-modelo-de-fragilidad-gamma"><span class="toc-section-number">6.6</span>  Estimación de un modelo de fragilidad gamma</a></li>
   <li><a href="#modelo-marginal-de-sobrevivencia-multivariada" id="toc-modelo-marginal-de-sobrevivencia-multivariada" class="nav-link" data-scroll-target="#modelo-marginal-de-sobrevivencia-multivariada"><span class="toc-section-number">6.7</span>  Modelo Marginal de sobrevivencia multivariada</a></li>
+  <li><a href="#laboratorio" id="toc-laboratorio" class="nav-link" data-scroll-target="#laboratorio"><span class="toc-section-number">6.8</span>  Laboratorio</a>
+  <ul class="collapse">
+  <li><a href="#modelos-paramétricos" id="toc-modelos-paramétricos" class="nav-link" data-scroll-target="#modelos-paramétricos"><span class="toc-section-number">6.8.1</span>  Modelos Paramétricos</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -439,124 +506,290 @@ T&amp;=\sum_{i=1}^G\left[\sum_{j=1}^{n_i}M_{ij}\right]^2-D+C\\
 <p>de observaciones en cada grupo.</p>
 <p>Además, si <span class="math inline">\(\hat V\)</span> es la matriz de varianza ajustada:</p>
 <p><span class="math display">\[b\underset{n\text{ grande}}{\longrightarrow} N_p(\beta,\hat V)\]</span></p>
-<!-- ## Laboratorio -->
-<!-- ### Modelos Paramétricos -->
-<!-- En este ejemplo usamos como base los datos de 90 hombres diagnosticados -->
-<!-- con cáncer de laringe con su edad de diagnóstico (age), tiempo de muerte -->
-<!-- o censura en meses (time), indicador de censura (delta) y etapa de la -->
-<!-- enfermedad (stage). Carga de datos: -->
-<!-- ```{r} -->
-<!-- library(survival) -->
-<!-- library(KMsurv) -->
-<!-- library(survMisc) -->
-<!-- library(survminer) -->
-<!-- library(tidyverse) -->
-<!-- data(larynx) -->
-<!-- head(larynx) -->
-<!-- ``` -->
-<!-- Preliminarmente, se puede verificar la capacidad de un modelo bajo el -->
-<!-- supuesto de Weibull: -->
-<!-- ```{r} -->
-<!-- NA_prelim <- coxph(Surv(time,delta)~1,data = larynx,ties = 'breslow') -->
-<!-- hatH0_prelim <- basehaz(NA_prelim,centered = FALSE) -->
-<!-- hatH0_prelim <- hatH0_prelim %>% mutate(logtime=log(time),logH=log(hazard)) -->
-<!-- ggplot(data = hatH0_prelim,mapping = aes(x = logtime,y = logH))+ -->
-<!--   geom_point()+ -->
-<!--   geom_smooth(method = 'lm')+ -->
-<!--   theme_bw() -->
-<!-- summary(lm(logtime~logH,data = hatH0_prelim)) -->
-<!-- ``` -->
-<!-- Se ajusta un modelo de Weibull donde las covariables son los estadíos de -->
-<!-- la enfermedad *stage* y la edad del paciente *age*. -->
-<!-- ```{r} -->
-<!-- larynx <- larynx %>% mutate(stage=factor(stage)) -->
-<!-- modelo1 <- survreg(Surv(time,delta)~stage+age,data = larynx,dist = 'weibull') -->
-<!-- summary(modelo1) -->
-<!-- ``` -->
-<!-- Si queremos calcular el riesgo relativo de un paciente en etapa 4 -->
-<!-- comparado con uno en etapa 1 tenemos que usar la reparametrización del -->
-<!-- modelo de Weibull como modelo de riesgos proporcionales: -->
-<!-- ```{r} -->
-<!-- alpha <- 1/modelo1$scale -->
-<!-- lambda <- exp(-coefficients(modelo1)[1]/modelo1$scale) -->
-<!-- betas <- -coefficients(modelo1)[-1]/modelo1$scale -->
-<!-- c(alpha,lambda,betas) -->
-<!-- exp(betas[3]) -->
-<!-- ``` -->
-<!-- por lo tanto el riesgo relativo de un paciente en el cuarto estadío es -->
-<!-- casi seis veces mayor que uno en estadío 1. El factor de aceleración de -->
-<!-- un paciente en etapa 4 sería: -->
-<!-- ```{r} -->
-<!-- exp(-coefficients(modelo1)[4]) -->
-<!-- ``` -->
-<!-- por lo tanto el tiempo mediano de sobrevivencia para un paciente en -->
-<!-- estadío 1 es 4.68 veces mayor que el de un paciente en estadío 4. -->
-<!-- Ahora ajustamos un modelo log-logístico a las mismas covariables: -->
-<!-- ```{r} -->
-<!-- modelo1_ll <- survreg(Surv(time,delta)~stage+age,data = larynx,dist = 'loglogistic') -->
-<!-- summary(modelo1_ll) -->
-<!-- ``` -->
-<!-- con sus parámetros en representación de riesgos proporcionales: -->
-<!-- ```{r} -->
-<!-- alpha <- 1/modelo1_ll$scale -->
-<!-- lambda <- exp(-coefficients(modelo1_ll)[1]/modelo1_ll$scale) -->
-<!-- betas <- -coefficients(modelo1_ll)[-1]/modelo1_ll$scale -->
-<!-- c(alpha,lambda,betas) -->
-<!-- ``` -->
-<!-- En este caso podemos hacer comparaciones en términos de odds relativos -->
-<!-- (oportunidad relativa). Los odds relativos de sobrevivencia de un -->
-<!-- paciente en estadío 3 con respecto a uno de estadío 1 es: -->
-<!-- ```{r} -->
-<!-- exp(-betas[2]) -->
-<!-- ``` -->
-<!-- es decir un paciente en estadío 3 tiene aproximadamente 70% menos -->
-<!-- posibilidades de sobrevivir que uno en estadío 1. -->
-<!-- Ahora comparamos el ajuste bajo cinco modelos: Exponencial, Weibull, -->
-<!-- Log-logístico, Log-Normal y Gamma Generalizada: -->
-<!-- ```{r} -->
-<!-- library(flexsurv) -->
-<!-- modelo_exp <- survreg(Surv(time,delta)~stage+age,data = larynx,dist = 'exponential',x = T) -->
-<!-- modelo_weibull <- survreg(Surv(time,delta)~stage+age,data = larynx,dist = 'weibull') -->
-<!-- modelo_loglog <- survreg(Surv(time,delta)~stage+age,data = larynx,dist = 'loglogistic') -->
-<!-- modelo_lognor <- survreg(Surv(time,delta)~stage+age,data = larynx,dist = 'lognormal') -->
-<!-- modelo_gg <- flexsurvreg(Surv(time,delta)~stage+age,data = larynx,dist = 'gengamma') -->
+</section>
+<section id="laboratorio" class="level2" data-number="6.8">
+<h2 data-number="6.8" class="anchored" data-anchor-id="laboratorio"><span class="header-section-number">6.8</span> Laboratorio</h2>
+<section id="modelos-paramétricos" class="level3" data-number="6.8.1">
+<h3 data-number="6.8.1" class="anchored" data-anchor-id="modelos-paramétricos"><span class="header-section-number">6.8.1</span> Modelos Paramétricos</h3>
+<p>En este ejemplo usamos como base los datos de 90 hombres diagnosticados con cáncer de laringe con su edad de diagnóstico (age), tiempo de muerte o censura en meses (time), indicador de censura (delta) y etapa de la enfermedad (stage). Carga de datos:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(KMsurv)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survMisc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'survMisc'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:ggplot2':
 
-<!-- AIC_table <- data.frame(Modelos=c('Exponencial','Weibull','Log-logistico','Log-Normal','GammaGen'),AIC=c(AIC(modelo_exp),AIC(modelo_weibull),AIC(modelo_loglog),AIC(modelo_lognor),AIC(modelo_gg))) -->
-<!-- BIC_table <- data.frame(Modelos=c('Exponencial','Weibull','Log-logistico','Log-Normal','GammaGen'),BIC=c(BIC(modelo_exp),BIC(modelo_weibull),BIC(modelo_loglog),BIC(modelo_lognor),BIC(modelo_gg))) -->
-<!-- AIC_table -->
-<!-- BIC_table -->
-<!-- ``` -->
-<!-- por lo tanto el modelo con el mejor ajuste es el Exponencial. Ahora -->
-<!-- analizamos la bondad de ajuste de cada uno de los modelos anteriores -->
-<!-- usando los residuos de Cox-Snell: -->
-<!-- ```{r} -->
-<!-- lambda <- exp(-coefficients(modelo_exp)[1]/modelo_exp$scale) -->
-<!-- betas <- as.matrix(-coefficients(modelo_exp)[-1]/modelo_exp$scale) -->
-<!-- rCox <- lambda*larynx$time*exp(t(betas)%*%t(modelo_exp$x[,-1])) -->
-<!-- larynx$rCox <- t(rCox) -->
-<!-- modelo_exp_CoxSnell <- coxph(Surv(rCox,delta)~1,data = larynx,ties = 'breslow') -->
-<!-- H0_modelo_exp_CS <- basehaz(modelo_exp_CoxSnell,centered = FALSE) -->
-<!-- plot(H0_modelo_exp_CS$time,H0_modelo_exp_CS$hazard) -->
-<!-- abline(a = 0,b=1) -->
-<!-- ``` -->
+    autoplot</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survminer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: ggpubr</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'survminer'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:survival':
 
-<!-- en donde podemos ver que el ajuste es bastante aceptable. También -->
-<!-- analizamos un gráfico de los residuos de devianza vs el tiempo de -->
-<!-- ocurrencia del evento: -->
-<!-- ```{r} -->
-<!-- rDev <- residuals(modelo_exp,type = 'deviance') -->
-<!-- plot(larynx$time,rDev) -->
-<!-- abline(h=c(-2,2),col=2) -->
-<!-- ``` -->
-<!-- Note que hay unos cuantas observaciones que tienen residuos absolutos -->
-<!-- ligeramente mayores a dos, estas observaciones son: -->
-<!-- ```{r} -->
-<!-- mayores_dev <- larynx %>% mutate(rDev=rDev)%>% arrange(rDev) -->
-<!-- mayores_dev[1:3,] -->
-<!-- ``` -->
-<!-- En estos casos pareciera que los pacientes fallecieron de forma muy -->
-<!-- temprana a distintas edades y en distintos estadíos de la enfermedad, -->
-<!-- por lo que se pueden considerar puntos extremos en la muestra. -->
+    myeloma</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(larynx)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(larynx)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  stage time age diagyr delta
+1     1  0.6  77     76     1
+2     1  1.3  53     71     1
+3     1  2.4  45     71     1
+4     1  2.5  57     78     0
+5     1  3.2  58     74     1
+6     1  3.2  51     77     0</code></pre>
+</div>
+</div>
+<p>Preliminarmente, se puede verificar la capacidad de un modelo bajo el supuesto de Weibull:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>NA_prelim <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(time,delta)<span class="sc">~</span><span class="dv">1</span>,<span class="at">data =</span> larynx,<span class="at">ties =</span> <span class="st">'breslow'</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>hatH0_prelim <span class="ot">&lt;-</span> <span class="fu">basehaz</span>(NA_prelim,<span class="at">centered =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>hatH0_prelim <span class="ot">&lt;-</span> hatH0_prelim <span class="sc">%&gt;%</span> </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">logtime=</span><span class="fu">log</span>(time),<span class="at">logH=</span><span class="fu">log</span>(hazard))</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> hatH0_prelim,<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> logtime,<span class="at">y =</span> logH))<span class="sc">+</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">'lm'</span>)<span class="sc">+</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="MRP_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">lm</span>(logtime<span class="sc">~</span>logH,<span class="at">data =</span> hatH0_prelim))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = logtime ~ logH, data = hatH0_prelim)
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.278525 -0.079680 -0.005458  0.074789  0.294080 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  2.03057    0.02213   91.77   &lt;2e-16 ***
+logH         1.02832    0.01617   63.59   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.1208 on 52 degrees of freedom
+Multiple R-squared:  0.9873,    Adjusted R-squared:  0.9871 
+F-statistic:  4043 on 1 and 52 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>Se ajusta un modelo de Weibull donde las covariables son los estadíos de la enfermedad <em>stage</em> y la edad del paciente <em>age</em>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>larynx <span class="ot">&lt;-</span> larynx <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">stage=</span><span class="fu">factor</span>(stage))</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>modelo1 <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(time,delta)<span class="sc">~</span>stage<span class="sc">+</span>age,<span class="at">data =</span> larynx,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">dist =</span> <span class="st">'weibull'</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+survreg(formula = Surv(time, delta) ~ stage + age, data = larynx, 
+    dist = "weibull")
+              Value Std. Error     z       p
+(Intercept)  3.5288     0.9041  3.90 9.5e-05
+stage2      -0.1477     0.4076 -0.36   0.717
+stage3      -0.5866     0.3199 -1.83   0.067
+stage4      -1.5441     0.3633 -4.25 2.1e-05
+age         -0.0175     0.0128 -1.37   0.172
+Log(scale)  -0.1223     0.1225 -1.00   0.318
+
+Scale= 0.885 
+
+Weibull distribution
+Loglik(model)= -141.4   Loglik(intercept only)= -151.1
+    Chisq= 19.37 on 4 degrees of freedom, p= 0.00066 
+Number of Newton-Raphson Iterations: 5 
+n= 90 </code></pre>
+</div>
+</div>
+<p>Si queremos calcular el riesgo relativo de un paciente en etapa 4 comparado con uno en etapa 1 tenemos que usar la reparametrización del modelo de Weibull como modelo de riesgos proporcionales:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>modelo1<span class="sc">$</span>scale</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">coefficients</span>(modelo1)[<span class="dv">1</span>]<span class="sc">/</span>modelo1<span class="sc">$</span>scale)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>betas <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fu">coefficients</span>(modelo1)[<span class="sc">-</span><span class="dv">1</span>]<span class="sc">/</span>modelo1<span class="sc">$</span>scale</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(alpha,lambda,betas)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            (Intercept)      stage2      stage3      stage4         age 
+ 1.13014371  0.01853664  0.16692694  0.66289534  1.74502788  0.01973646 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(betas[<span class="dv">3</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  stage4 
+5.726061 </code></pre>
+</div>
+</div>
+<p>por lo tanto el riesgo relativo de un paciente en el cuarto estadío esvcasi seis veces mayor que uno en estadío 1. El factor de aceleración de un paciente en etapa 4 sería:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="sc">-</span><span class="fu">coefficients</span>(modelo1)[<span class="dv">4</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  stage4 
+4.683642 </code></pre>
+</div>
+</div>
+<p>por lo tanto el tiempo mediano de sobrevivencia para un paciente en estadío 1 es 4.68 veces mayor que el de un paciente en estadío 4.</p>
+<p>Ahora ajustamos un modelo log-logístico a las mismas covariables:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>modelo1_ll <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(time,delta)<span class="sc">~</span>stage<span class="sc">+</span>age,<span class="at">data =</span> larynx,</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">dist =</span> <span class="st">'loglogistic'</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo1_ll)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+survreg(formula = Surv(time, delta) ~ stage + age, data = larynx, 
+    dist = "loglogistic")
+              Value Std. Error     z       p
+(Intercept)  3.1022     0.9527  3.26  0.0011
+stage2      -0.1257     0.4152 -0.30  0.7621
+stage3      -0.8057     0.3539 -2.28  0.0228
+stage4      -1.7661     0.4257 -4.15 3.3e-05
+age         -0.0151     0.0138 -1.10  0.2734
+Log(scale)  -0.3352     0.1202 -2.79  0.0053
+
+Scale= 0.715 
+
+Log logistic distribution
+Loglik(model)= -141.6   Loglik(intercept only)= -151.6
+    Chisq= 20.07 on 4 degrees of freedom, p= 0.00048 
+Number of Newton-Raphson Iterations: 4 
+n= 90 </code></pre>
+</div>
+</div>
+<p>con sus parámetros en representación de riesgos proporcionales:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>modelo1_ll<span class="sc">$</span>scale</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">coefficients</span>(modelo1_ll)[<span class="dv">1</span>]<span class="sc">/</span>modelo1_ll<span class="sc">$</span>scale)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>betas <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fu">coefficients</span>(modelo1_ll)[<span class="sc">-</span><span class="dv">1</span>]<span class="sc">/</span>modelo1_ll<span class="sc">$</span>scale</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(alpha,lambda,betas)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            (Intercept)      stage2      stage3      stage4         age 
+ 1.39816885  0.01307096  0.17577151  1.12654150  2.46937245  0.02109404 </code></pre>
+</div>
+</div>
+<p>En este caso podemos hacer comparaciones en términos de odds relativos (oportunidad relativa). Los odds relativos de sobrevivencia de un paciente en estadío 3 con respecto a uno de estadío 1 es:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="sc">-</span>betas[<span class="dv">2</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   stage3 
+0.3241524 </code></pre>
+</div>
+</div>
+<p>es decir un paciente en estadío 3 tiene aproximadamente 70% menos posibilidades de sobrevivir que uno en estadío 1.</p>
+<p>Ahora comparamos el ajuste bajo cinco modelos: Exponencial, Weibull, Log-logístico, Log-Normal y Gamma Generalizada:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(flexsurv)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>modelo_exp <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(time,delta)<span class="sc">~</span>stage<span class="sc">+</span>age,<span class="at">data =</span> larynx,<span class="at">dist =</span> <span class="st">'exponential'</span>,<span class="at">x =</span> T)</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>modelo_weibull <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(time,delta)<span class="sc">~</span>stage<span class="sc">+</span>age,<span class="at">data =</span> larynx,<span class="at">dist =</span> <span class="st">'weibull'</span>)</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>modelo_loglog <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(time,delta)<span class="sc">~</span>stage<span class="sc">+</span>age,<span class="at">data =</span> larynx,<span class="at">dist =</span> <span class="st">'loglogistic'</span>)</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>modelo_lognor <span class="ot">&lt;-</span> <span class="fu">survreg</span>(<span class="fu">Surv</span>(time,delta)<span class="sc">~</span>stage<span class="sc">+</span>age,<span class="at">data =</span> larynx,<span class="at">dist =</span> <span class="st">'lognormal'</span>)</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>modelo_gg <span class="ot">&lt;-</span> <span class="fu">flexsurvreg</span>(<span class="fu">Surv</span>(time,delta)<span class="sc">~</span>stage<span class="sc">+</span>age,<span class="at">data =</span> larynx,<span class="at">dist =</span> <span class="st">'gengamma'</span>)</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>AIC_table <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Modelos=</span><span class="fu">c</span>(<span class="st">'Exponencial'</span>,<span class="st">'Weibull'</span>,<span class="st">'Log-logistico'</span>,<span class="st">'Log-Normal'</span>,<span class="st">'GammaGen'</span>),<span class="at">AIC=</span><span class="fu">c</span>(<span class="fu">AIC</span>(modelo_exp),<span class="fu">AIC</span>(modelo_weibull),<span class="fu">AIC</span>(modelo_loglog),<span class="fu">AIC</span>(modelo_lognor),<span class="fu">AIC</span>(modelo_gg)))</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>BIC_table <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Modelos=</span><span class="fu">c</span>(<span class="st">'Exponencial'</span>,<span class="st">'Weibull'</span>,<span class="st">'Log-logistico'</span>,<span class="st">'Log-Normal'</span>,<span class="st">'GammaGen'</span>),<span class="at">BIC=</span><span class="fu">c</span>(<span class="fu">BIC</span>(modelo_exp),<span class="fu">BIC</span>(modelo_weibull),<span class="fu">BIC</span>(modelo_loglog),<span class="fu">BIC</span>(modelo_lognor),<span class="fu">BIC</span>(modelo_gg)))</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>AIC_table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        Modelos      AIC
+1   Exponencial 293.7955
+2       Weibull 294.8468
+3 Log-logistico 295.1780
+4    Log-Normal 294.7833
+5      GammaGen 296.1541</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>BIC_table</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        Modelos      BIC
+1   Exponencial 306.2946
+2       Weibull 309.8456
+3 Log-logistico 310.1769
+4    Log-Normal 309.7822
+5      GammaGen 313.6528</code></pre>
+</div>
+</div>
+<p>por lo tanto el modelo con el mejor ajuste es el Exponencial. Ahora analizamos la bondad de ajuste del mejor modelo usando los residuos de Cox-Snell:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="sc">-</span><span class="fu">coefficients</span>(modelo_exp)[<span class="dv">1</span>]<span class="sc">/</span>modelo_exp<span class="sc">$</span>scale)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>betas <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="sc">-</span><span class="fu">coefficients</span>(modelo_exp)[<span class="sc">-</span><span class="dv">1</span>]<span class="sc">/</span>modelo_exp<span class="sc">$</span>scale)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>rCox <span class="ot">&lt;-</span> lambda<span class="sc">*</span>larynx<span class="sc">$</span>time<span class="sc">*</span><span class="fu">exp</span>(<span class="fu">t</span>(betas)<span class="sc">%*%</span><span class="fu">t</span>(modelo_exp<span class="sc">$</span>x[,<span class="sc">-</span><span class="dv">1</span>]))</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>larynx<span class="sc">$</span>rCox <span class="ot">&lt;-</span> <span class="fu">t</span>(rCox)</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>modelo_exp_CoxSnell <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(rCox,delta)<span class="sc">~</span><span class="dv">1</span>,<span class="at">data =</span> larynx,<span class="at">ties =</span> <span class="st">'breslow'</span>)</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>H0_modelo_exp_CS <span class="ot">&lt;-</span> <span class="fu">basehaz</span>(modelo_exp_CoxSnell,<span class="at">centered =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(H0_modelo_exp_CS<span class="sc">$</span>time,H0_modelo_exp_CS<span class="sc">$</span>hazard)</span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">a =</span> <span class="dv">0</span>,<span class="at">b=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="MRP_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>en donde podemos ver que el ajuste es bastante aceptable. También analizamos un gráfico de los residuos de devianza vs el tiempo de ocurrencia del evento:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>rDev <span class="ot">&lt;-</span> <span class="fu">residuals</span>(modelo_exp,<span class="at">type =</span> <span class="st">'deviance'</span>)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(larynx<span class="sc">$</span>time,rDev)</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>,<span class="dv">2</span>),<span class="at">col=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="MRP_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Note que hay unos cuantas observaciones que tienen residuos absolutos ligeramente mayores a dos, estas observaciones son:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>mayores_dev <span class="ot">&lt;-</span> larynx <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">rDev=</span>rDev)<span class="sc">%&gt;%</span> <span class="fu">arrange</span>(rDev)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>mayores_dev[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  stage time age diagyr delta       rCox      rDev
+1     2  0.2  86     74     1 0.02951445 -2.259376
+2     3  0.3  49     72     1 0.03528154 -2.181594
+3     4  0.1  65     72     1 0.04325168 -2.089962</code></pre>
+</div>
+</div>
+<p>En estos casos pareciera que los pacientes fallecieron de forma muy temprana a distintas edades y en distintos estadíos de la enfermedad, por lo que se pueden considerar puntos extremos en la muestra.</p>
 <!-- ### Modelos de fragilidad -->
 <!-- El siguiente ejemplo consiste en un experimento realizado sobre 50 -->
 <!-- camadas de ratas (Litter) en donde una rata se tomó al azar y se le -->
@@ -606,6 +839,7 @@ T&amp;=\sum_{i=1}^G\left[\sum_{j=1}^{n_i}M_{ij}\right]^2-D+C\\
 <!-- marginal la variabilidad es menor: (1.366, 4.47). -->
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
