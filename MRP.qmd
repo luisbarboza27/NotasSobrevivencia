@@ -161,12 +161,12 @@ Para verificar la bondad de ajuste de un modelo paramétrico se puede graficar t
 
 log-logístico:
 
+```{=tex}
 \begin{align*}
     H(x)&=\log[1+\lambda x^\alpha]\\
     \Longrightarrow \log[\exp(H(x))-1]&=\log \lambda+\alpha \log x
 \end{align*}
-
-
+```
 Por lo tanto, asumiendo un modelo log-logístico:
 
 ```{r, echo=FALSE, out.width='70%', fig.align='center', fig.cap='Bondad de Ajuste'}
@@ -189,7 +189,7 @@ $$H(x)=-\log\left[1-\Phi\left[\frac{\log x-\mu}{\sigma}\right]\right]$$
 
 entonces $\frac{1}{\sigma}(\log x-\mu)=\Phi^{-1}(1-\exp(-H(x)))$. El gráfico sugerido en este caso es:
 
-$$\Phi^{-1}(1-\exp(-\hat H(x)))\quad \text{vs} \quad \log x$$ 
+$$\Phi^{-1}(1-\exp(-\hat H(x)))\quad \text{vs} \quad \log x$$
 
 Si queremos comparar 2 grupos a través de un modelo de tiempo acelerado de fallo, se puede verificar la bondad de ajuste de este modelo usando el hecho de que:
 
@@ -215,23 +215,23 @@ Mismo principio que en la regresión de Cox: bajo el supuesto de bondad de ajust
 
 -   Exponencial:
 
-$$r_i=\hat \lambda t_i\exp\left[\hat \beta^TZ_i\right]$$ 
+$$r_i=\hat \lambda t_i\exp\left[\hat \beta^TZ_i\right]$$
 
-- Weibull:
+-   Weibull:
 
 $$r_i=\hat \lambda t_i^{\alpha}\exp\left[\hat \beta^TZ_i\right]$$ -
 
-- Log-logística:
+-   Log-logística:
 
 $$r_i=\log\left[\frac{1}{1+\hat \lambda t_i^{\alpha}\exp\left[\hat \beta^TZ_i\right]}\right]$$
 
-- Log-normal:
+-   Log-normal:
 
 $$r_i=\log\left[1-\Phi\left(\frac{\log T_i-\hat \mu-\hat \gamma^TZ_i}{\hat \sigma}\right)\right]$$
 
 *Nota*: el análisis de residuos de Cox-Snell es equivalente a analizar residuos estandarizados:
 
-$$s_j=\frac{\log T_j-\hat \mu-\hat \gamma^TZ_j}{\hat \sigma}$$ 
+$$s_j=\frac{\log T_j-\hat \mu-\hat \gamma^TZ_j}{\hat \sigma}$$
 
 a través de la comparación de su distribución empírica con respecto a la distribución de $W$. (Usando un qqplot, por ejemplo)
 
@@ -253,11 +253,11 @@ Los grupos con mayor debilidad experimentan el evento antes que otros grupos con
 
 Se asume que la tasa de riesgo para el $j$-ésimo individuo en el grupo $i$-ésimo tiene la forma:
 
-$$h_{ij}(t)=h_0(t)\exp[\beta^TZ_{ij}+\sigma w_i]$$ 
+$$h_{ij}(t)=h_0(t)\exp[\beta^TZ_{ij}+\sigma w_i]$$
 
 donde $i=1,\ldots,G$, $j=1,\ldots,n_i$, bajo la notación usual y asumiendo que $w_1,\ldots,w_G$ son las fragilidades, es decir $\{w_i\}$ son variables aleatorias independientes e identicamente distribuidas con media 0 y varianza 1. Algunas veces es más conveniente escribir el modelo:
 
-$$h_{ij}(t)=h_0(t)u_i\exp[\beta^TZ_{ij}]$$ 
+$$h_{ij}(t)=h_0(t)u_i\exp[\beta^TZ_{ij}]$$
 
 con $u_i$ variables aleatorias independientes, $E[u_i]=1$, $\text{Var}(u_i)<\infty$.
 
@@ -267,13 +267,13 @@ con $u_i$ variables aleatorias independientes, $E[u_i]=1$, $\text{Var}(u_i)<\inf
 
 Consecuencia: como $w_i$ no son variables observables entonces:
 
-
+```{=tex}
 \begin{align*}
 S(x_{i1},\ldots,x_{in_i})&=P[X_{i1}>1,\ldots,X_{in_i}>x_{in_i}]\\
 &=E\left[\exp\left(-\sum_{j=1}^{n_i}H_{ij}(X_{ij})\right)\right]\\
 &=LP\left[\sum_{j=1}^{n_i}H_0(x_{ij})\exp(\beta^TZ_{ij})\right]
 \end{align*}
-
+```
 donde $LP(v)=E_v[\exp(-Uv)]$ (transformada de Laplace de la fragilidad U)
 
 Posibles escogencias para U:
@@ -298,7 +298,7 @@ Herramienta metodológica: Prueba de Commenges y Andersen (1995)
 
 *Caso particular*: ($G=n$, $n_i=1$) se busca probar la existencia de sobredispersión en el modelo. Se busca probar la hipótesis nula:
 
-$$H_0: \sigma=0 \qquad \text{vs}\qquad H_1: \sigma\neq 0$$ 
+$$H_0: \sigma=0 \qquad \text{vs}\qquad H_1: \sigma\neq 0$$
 
 Usamos la notación ya definida, para $i=1,\ldots,G$ y $j=1,\ldots,n_i$:
 
@@ -312,7 +312,7 @@ Usamos la notación ya definida, para $i=1,\ldots,G$ y $j=1,\ldots,n_i$:
 
 Se ajusta el modelo de Cox con riesgos proporcionales:
 
-$$h(t|Z_{ij})=h_0(t)\exp[\beta^TZ_{ij}]$$ 
+$$h(t|Z_{ij})=h_0(t)\exp[\beta^TZ_{ij}]$$
 
 y se obtiene $b$: estimador de verosimilitud parcial y $\hat H_0(t)$: estimador de Breslow.
 
@@ -320,15 +320,16 @@ Sea:
 
 $$S^{(0)}(t)=\sum_{i=1}^G\sum_{j=1}^{n_i}Y_{ij}(t)\exp[b^TZ_{ij}]$$ y
 
-$$M_{ij}=\delta_{ij}-\hat H_0(t)\exp[b^TZ_{ij}]$$ 
+$$M_{ij}=\delta_{ij}-\hat H_0(t)\exp[b^TZ_{ij}]$$
 
 es el residuo martingala para el individuo $ij$. Calculamos el siguiente estadístico score:
 
+```{=tex}
 \begin{align*}
 T&=\sum_{i=1}^G\left[\sum_{j=1}^{n_i}M_{ij}\right]^2-D+C\\
 &=\sum_{i=1}^G \sum_{j=1}^{n_i}\sum_{\underset{k\neq j}{k=1}}^{n_j}M_{ij}M_{ik}+\left(\sum_{i=1}^G \sum_{j=1}^{n_i}M_{ij}^2-N\right)+C
 \end{align*}
-
+```
 donde:
 
 -   $D$: número total de ocurrencias del riesgo.
@@ -355,35 +356,21 @@ Asuma que la tasa de riesgo para el individuo $i$ del grupo $j$ es:
 
 $$h_{ij}(t)=h_0(t)u_i\exp[\beta^TZ_{ij}]$$ donde $i=1,\ldots,G$,
 
-$j=1,\ldots,n_i$ y $u_i\overset{iid}{\sim}\Gamma(1/\theta,\theta)$. Note
-
-que la función de densidad de $u_i$ es:
+$j=1,\ldots,n_i$ y $u_i\overset{iid}{\sim}\Gamma(1/\theta,\theta)$. Note que la función de densidad de $u_i$ es:
 
 $$g(u)=\frac{u^{1/\theta-1}\exp(-u/\theta)}{\Gamma(1/\theta)\theta^{1/\theta}}$$
 
-Note que $E[U]=1$ y $\text{Var}(U)=\theta$ (Valores grandes de $\theta$
-
-reflejan mayor heterogeneidad entre grupos y una asociación más alta
-
-dentro de cada grupo).
+Note que $E[U]=1$ y $\text{Var}(U)=\theta$ (Valores grandes de $\theta$ reflejan mayor heterogeneidad entre grupos y una asociación más alta dentro de cada grupo).
 
 Distribución conjunta de los $n_i$ individuos (para el grupo $i$-ésimo)
 
 ```{=tex}
-
 \begin{align*}
-
     S[x_{i1},\ldots,x_{in_i}]&=P[X_{i1}>x_{i1},\ldots,X_{in_i}>x_{in_i}]\\
-
     &=\left[1+\theta \sum_{j=1}^{n_i}H_0(x_{ij})\exp[\beta^TZ_{ij}]\right]^{-1/\theta}
-
 \end{align*}
-
 ```
-
-Usando los datos $(T_{ij},Z_{ij},\delta_{ij})$ para $i=1,\ldots,G$ y
-
-$j=1,\ldots,n_i$ se puede calcular la verosimilitud como:
+Usando los datos $(T_{ij},Z_{ij},\delta_{ij})$ para $i=1,\ldots,G$ y $j=1,\ldots,n_i$ se puede calcular la verosimilitud como:
 
 $$L(\theta,\beta)=L_1(\theta)+L_2(\beta,H_0)$$ donde
 
@@ -395,43 +382,23 @@ $$L_2(\beta,H_0)=\sum_{i=1}^G\sum_{j=1}^{n_i} \delta_{ij}[\beta^TZ_{ij}+\log h_0
 
 2 posibles soluciones:
 
--   Maximizar $L(\theta,\beta)$ asumiendo una forma paramétrica para
+-   Maximizar $L(\theta,\beta)$ asumiendo una forma paramétrica para $h_0(t)$.
 
-    $h_0(t)$.
+-   Maximizar $L(\theta,\beta)$ asumiendo un modelo semiparamétrico para $h(t)$.
 
--   Maximizar $L(\theta,\beta)$ asumiendo un modelo semiparamétrico para
-
-    $h(t)$.
-
-Solución: Algoritmo EM (Esperanza-Maximización) en el segundo caso (ver
-
-pags. 432-435 del Klein)
+Solución: Algoritmo EM (Esperanza-Maximización) en el segundo caso (ver pags. 432-435 del Klein)
 
 ## Modelo Marginal de sobrevivencia multivariada
 
-Inconveniente del modelo de fragilidad: las distribuciones marginales no
-
-siguen la estructura de un modelo de Cox (no se satisface el principio
-
-de riesgos proporcionales)
+Inconveniente del modelo de fragilidad: las distribuciones marginales no siguen la estructura de un modelo de Cox (no se satisface el principio de riesgos proporcionales)
 
 *Modelo de Lee et al (1992):*
 
 Para cada individuo se asume un modelo de Cox condicional en $Z_{ij}$:
 
-$$h_{ij}(t|Z_{ij})=h_0(t)\exp[\beta^TZ_{ij}]$$ y se construye la
+$$h_{ij}(t|Z_{ij})=h_0(t)\exp[\beta^TZ_{ij}]$$ y se construye la verosimilitud parcial asumiendo que todas las observaciones son independientes (modelo independiente de trabajo)
 
-verosimilitud parcial asumiendo que todas las observaciones son
-
-independientes (modelo independiente de trabajo)
-
-A partir del estimador de $\beta$ obtenido con la verosimilitud anterior
-
-se ajusta la matriz de covarianza de $b$ con los residuos score (ver
-
-ecuaciones 13.4.2 y 13.4.3 del Klein) para tomar en cuenta la relación
-
-de observaciones en cada grupo.
+A partir del estimador de $\beta$ obtenido con la verosimilitud anterior se ajusta la matriz de covarianza de $b$ con los residuos score (ver ecuaciones 13.4.2 y 13.4.3 del Klein) para tomar en cuenta la relación de observaciones en cada grupo.
 
 Además, si $\hat V$ es la matriz de varianza ajustada:
 

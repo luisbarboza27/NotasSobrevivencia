@@ -335,10 +335,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 data-number="6.4" class="anchored" data-anchor-id="análisis-de-diagnósticos"><span class="header-section-number">6.4</span> Análisis de diagnósticos</h2>
 <p>Para verificar la bondad de ajuste de un modelo paramétrico se puede graficar transformaciones de <span class="math inline">\(\hat H(x)\)</span> (usando el estimador de Nelson-Aalen) versus transformaciones de <span class="math inline">\(x\)</span>. Por ejemplo para el caso</p>
 <p>log-logístico:</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
     H(x)&amp;=\log[1+\lambda x^\alpha]\\
     \Longrightarrow \log[\exp(H(x))-1]&amp;=\log \lambda+\alpha \log x
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>Por lo tanto, asumiendo un modelo log-logístico:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
@@ -412,11 +412,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p>Si <span class="math inline">\(u_i&lt;1\)</span>, entonces el grupo <span class="math inline">\(i\)</span>-ésimo es de menos riesgo que en el caso de riesgos proporcionales.</p></li>
 </ul>
 <p>Consecuencia: como <span class="math inline">\(w_i\)</span> no son variables observables entonces:</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
 S(x_{i1},\ldots,x_{in_i})&amp;=P[X_{i1}&gt;1,\ldots,X_{in_i}&gt;x_{in_i}]\\
 &amp;=E\left[\exp\left(-\sum_{j=1}^{n_i}H_{ij}(X_{ij})\right)\right]\\
 &amp;=LP\left[\sum_{j=1}^{n_i}H_0(x_{ij})\exp(\beta^TZ_{ij})\right]
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>donde <span class="math inline">\(LP(v)=E_v[\exp(-Uv)]\)</span> (transformada de Laplace de la fragilidad U)</p>
 <p>Posibles escogencias para U:</p>
 <ul>
@@ -446,10 +446,10 @@ S(x_{i1},\ldots,x_{in_i})&amp;=P[X_{i1}&gt;1,\ldots,X_{in_i}&gt;x_{in_i}]\\
 <p><span class="math display">\[S^{(0)}(t)=\sum_{i=1}^G\sum_{j=1}^{n_i}Y_{ij}(t)\exp[b^TZ_{ij}]\]</span> y</p>
 <p><span class="math display">\[M_{ij}=\delta_{ij}-\hat H_0(t)\exp[b^TZ_{ij}]\]</span></p>
 <p>es el residuo martingala para el individuo <span class="math inline">\(ij\)</span>. Calculamos el siguiente estadístico score:</p>
-<p><span class="math display">\[\begin{align*}
+<span class="math display">\[\begin{align*}
 T&amp;=\sum_{i=1}^G\left[\sum_{j=1}^{n_i}M_{ij}\right]^2-D+C\\
 &amp;=\sum_{i=1}^G \sum_{j=1}^{n_i}\sum_{\underset{k\neq j}{k=1}}^{n_j}M_{ij}M_{ik}+\left(\sum_{i=1}^G \sum_{j=1}^{n_i}M_{ij}^2-N\right)+C
-\end{align*}\]</span></p>
+\end{align*}\]</span>
 <p>donde:</p>
 <ul>
 <li><p><span class="math inline">\(D\)</span>: número total de ocurrencias del riesgo.</p></li>
@@ -467,43 +467,33 @@ T&amp;=\sum_{i=1}^G\left[\sum_{j=1}^{n_i}M_{ij}\right]^2-D+C\\
 <h2 data-number="6.6" class="anchored" data-anchor-id="estimación-de-un-modelo-de-fragilidad-gamma"><span class="header-section-number">6.6</span> Estimación de un modelo de fragilidad gamma</h2>
 <p>Asuma que la tasa de riesgo para el individuo <span class="math inline">\(i\)</span> del grupo <span class="math inline">\(j\)</span> es:</p>
 <p><span class="math display">\[h_{ij}(t)=h_0(t)u_i\exp[\beta^TZ_{ij}]\]</span> donde <span class="math inline">\(i=1,\ldots,G\)</span>,</p>
-<p><span class="math inline">\(j=1,\ldots,n_i\)</span> y <span class="math inline">\(u_i\overset{iid}{\sim}\Gamma(1/\theta,\theta)\)</span>. Note</p>
-<p>que la función de densidad de <span class="math inline">\(u_i\)</span> es:</p>
+<p><span class="math inline">\(j=1,\ldots,n_i\)</span> y <span class="math inline">\(u_i\overset{iid}{\sim}\Gamma(1/\theta,\theta)\)</span>. Note que la función de densidad de <span class="math inline">\(u_i\)</span> es:</p>
 <p><span class="math display">\[g(u)=\frac{u^{1/\theta-1}\exp(-u/\theta)}{\Gamma(1/\theta)\theta^{1/\theta}}\]</span></p>
-<p>Note que <span class="math inline">\(E[U]=1\)</span> y <span class="math inline">\(\text{Var}(U)=\theta\)</span> (Valores grandes de <span class="math inline">\(\theta\)</span></p>
-<p>reflejan mayor heterogeneidad entre grupos y una asociación más alta</p>
-<p>dentro de cada grupo).</p>
+<p>Note que <span class="math inline">\(E[U]=1\)</span> y <span class="math inline">\(\text{Var}(U)=\theta\)</span> (Valores grandes de <span class="math inline">\(\theta\)</span> reflejan mayor heterogeneidad entre grupos y una asociación más alta dentro de cada grupo).</p>
 <p>Distribución conjunta de los <span class="math inline">\(n_i\)</span> individuos (para el grupo <span class="math inline">\(i\)</span>-ésimo)</p>
-<p>Usando los datos <span class="math inline">\((T_{ij},Z_{ij},\delta_{ij})\)</span> para <span class="math inline">\(i=1,\ldots,G\)</span> y</p>
-<p><span class="math inline">\(j=1,\ldots,n_i\)</span> se puede calcular la verosimilitud como:</p>
+<span class="math display">\[\begin{align*}
+    S[x_{i1},\ldots,x_{in_i}]&amp;=P[X_{i1}&gt;x_{i1},\ldots,X_{in_i}&gt;x_{in_i}]\\
+    &amp;=\left[1+\theta \sum_{j=1}^{n_i}H_0(x_{ij})\exp[\beta^TZ_{ij}]\right]^{-1/\theta}
+\end{align*}\]</span>
+<p>Usando los datos <span class="math inline">\((T_{ij},Z_{ij},\delta_{ij})\)</span> para <span class="math inline">\(i=1,\ldots,G\)</span> y <span class="math inline">\(j=1,\ldots,n_i\)</span> se puede calcular la verosimilitud como:</p>
 <p><span class="math display">\[L(\theta,\beta)=L_1(\theta)+L_2(\beta,H_0)\]</span> donde</p>
 <p><span class="math display">\[L_1(\theta)=-G\left[\frac{\log \theta}{\theta}+\log \Gamma(1/\theta)\right]+\sum_{i=1}^G[1/\theta+D_i-1]\log u_i-\frac{u_i}{\theta}\]</span></p>
 <p>y</p>
 <p><span class="math display">\[L_2(\beta,H_0)=\sum_{i=1}^G\sum_{j=1}^{n_i} \delta_{ij}[\beta^TZ_{ij}+\log h_0(T_{ij})]-u_iH_0(T_{ij})\exp[\beta^TZ_{ij}]\]</span></p>
 <p>2 posibles soluciones:</p>
 <ul>
-<li><p>Maximizar <span class="math inline">\(L(\theta,\beta)\)</span> asumiendo una forma paramétrica para</p>
-<p><span class="math inline">\(h_0(t)\)</span>.</p></li>
-<li><p>Maximizar <span class="math inline">\(L(\theta,\beta)\)</span> asumiendo un modelo semiparamétrico para</p>
-<p><span class="math inline">\(h(t)\)</span>.</p></li>
+<li><p>Maximizar <span class="math inline">\(L(\theta,\beta)\)</span> asumiendo una forma paramétrica para <span class="math inline">\(h_0(t)\)</span>.</p></li>
+<li><p>Maximizar <span class="math inline">\(L(\theta,\beta)\)</span> asumiendo un modelo semiparamétrico para <span class="math inline">\(h(t)\)</span>.</p></li>
 </ul>
-<p>Solución: Algoritmo EM (Esperanza-Maximización) en el segundo caso (ver</p>
-<p>pags. 432-435 del Klein)</p>
+<p>Solución: Algoritmo EM (Esperanza-Maximización) en el segundo caso (ver pags. 432-435 del Klein)</p>
 </section>
 <section id="modelo-marginal-de-sobrevivencia-multivariada" class="level2" data-number="6.7">
 <h2 data-number="6.7" class="anchored" data-anchor-id="modelo-marginal-de-sobrevivencia-multivariada"><span class="header-section-number">6.7</span> Modelo Marginal de sobrevivencia multivariada</h2>
-<p>Inconveniente del modelo de fragilidad: las distribuciones marginales no</p>
-<p>siguen la estructura de un modelo de Cox (no se satisface el principio</p>
-<p>de riesgos proporcionales)</p>
+<p>Inconveniente del modelo de fragilidad: las distribuciones marginales no siguen la estructura de un modelo de Cox (no se satisface el principio de riesgos proporcionales)</p>
 <p><em>Modelo de Lee et al (1992):</em></p>
 <p>Para cada individuo se asume un modelo de Cox condicional en <span class="math inline">\(Z_{ij}\)</span>:</p>
-<p><span class="math display">\[h_{ij}(t|Z_{ij})=h_0(t)\exp[\beta^TZ_{ij}]\]</span> y se construye la</p>
-<p>verosimilitud parcial asumiendo que todas las observaciones son</p>
-<p>independientes (modelo independiente de trabajo)</p>
-<p>A partir del estimador de <span class="math inline">\(\beta\)</span> obtenido con la verosimilitud anterior</p>
-<p>se ajusta la matriz de covarianza de <span class="math inline">\(b\)</span> con los residuos score (ver</p>
-<p>ecuaciones 13.4.2 y 13.4.3 del Klein) para tomar en cuenta la relación</p>
-<p>de observaciones en cada grupo.</p>
+<p><span class="math display">\[h_{ij}(t|Z_{ij})=h_0(t)\exp[\beta^TZ_{ij}]\]</span> y se construye la verosimilitud parcial asumiendo que todas las observaciones son independientes (modelo independiente de trabajo)</p>
+<p>A partir del estimador de <span class="math inline">\(\beta\)</span> obtenido con la verosimilitud anterior se ajusta la matriz de covarianza de <span class="math inline">\(b\)</span> con los residuos score (ver ecuaciones 13.4.2 y 13.4.3 del Klein) para tomar en cuenta la relación de observaciones en cada grupo.</p>
 <p>Además, si <span class="math inline">\(\hat V\)</span> es la matriz de varianza ajustada:</p>
 <p><span class="math display">\[b\underset{n\text{ grande}}{\longrightarrow} N_p(\beta,\hat V)\]</span></p>
 </section>

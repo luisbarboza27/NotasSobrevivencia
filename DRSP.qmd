@@ -142,7 +142,7 @@ knitr::include_graphics("images/Arjas.png")
 
 Si la covariable $Z$ debe ser incluida en el modelo entonces:
 
-$$h(t|Z=g,Z^*)=h_0(t)\exp(\gamma_g)\exp(\beta^TZ^*)$$ 
+$$h(t|Z=g,Z^*)=h_0(t)\exp(\gamma_g)\exp(\beta^TZ^*)$$
 
 y las curvas son aproximadamente lineales con pendientes distintas de 1. Si $Z$ no satisface el principio de riesgos proporcionales entonces las curvas no son lineales y su pendiente difiere de 1.
 
@@ -164,22 +164,21 @@ $$\hat M_j(t)=N_j(t)-\int_0^tY_j(u)\exp[b^TZ_j(u)]d\hat H_0(u)\qquad j=1,\ldots,
 
 El residuo score para la $k$-ésima covariable y el individuo $j$-ésimo se define como:
 
-$$S_{jk}(t)=\int_0^t[Z_{jk}(u)-\bar Z_k(u)]d\hat M_j(u)$$ 
+$$S_{jk}(t)=\int_0^t[Z_{jk}(u)-\bar Z_k(u)]d\hat M_j(u)$$
 
 El proceso score para la $k$-ésima covariable es:
 
-$$U_k(t)=\sum_{j=1}^n S_{jk}(t)$$ 
-En el caso de que todas las covariables son fijas en tiempo 0 entonces:
+$$U_k(t)=\sum_{j=1}^n S_{jk}(t)$$ En el caso de que todas las covariables son fijas en tiempo 0 entonces:
 
 $$U_k(t)=\sum_{\text{muertes}\leq t}\underbrace{[Z_{jk}-\bar Z_k(T_j)]}_\text{residuos de Schoenfeld}$$
 
 Nota: el proceso score $U_k(t)$ es la primera derivada parcial de la verosimilitud parcial del modelo de Cox ajustado con información hasta tiempo $t$. Además:
 
-$$U_k(0)=0 \qquad \text{y} \qquad U_k(\infty)=0$$ 
+$$U_k(0)=0 \qquad \text{y} \qquad U_k(\infty)=0$$
 
 dado que $b$ resuelve la ecuación score. Además bajo la hipótesis de que el modelo ajusta bien entonces:
 
-$$W_k(t)=U_k(t)\cdot \text{Error estándar}(b_k)$$ 
+$$W_k(t)=U_k(t)\cdot \text{Error estándar}(b_k)$$
 
 y la expresión anterior converge a un puente browniano que se anula en 0 y en $\infty$, siempre y cuando $\text{Cov}(b_k,b_{k'})=0$ para $k\neq k'$.
 
@@ -205,7 +204,7 @@ $$D_j=\text{signo}[\hat M_j]\cdot \left\{-2\left[\hat M_j+\delta_j\log(\delta_j-
 
 -   Si $\hat M_j\longrightarrow 1$ entonces $D_j\longrightarrow \infty$
 
--   Si $\hat M_j\longrightarrow -\infty$ entonces     $D_j\longrightarrow -\infty$ (a una menor tasa).
+-   Si $\hat M_j\longrightarrow -\infty$ entonces $D_j\longrightarrow -\infty$ (a una menor tasa).
 
 Gráfico sugerido (misma interpretación de un gráfico de residuos en regresión):
 
@@ -432,9 +431,8 @@ summary(modelo2_wi)
 En este caso graficamos los residuos de devianza vs los scores de riesgo:
 
 ```{r}
-
-ggcoxdiagnostics(modelo2_wi,type = 'deviance',ggtheme = theme_bw())
-
+ggcoxdiagnostics(modelo2_wi,type = 'deviance',
+                 ggtheme = theme_bw())
 ```
 
 donde podemos observar que hay un par de individuos con valores relativamente altos en su residuos de devianza:

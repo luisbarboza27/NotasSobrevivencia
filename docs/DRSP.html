@@ -667,7 +667,8 @@ Score (logrank) test = 40.09  on 5 df,   p=1e-07</code></pre>
 </div>
 <p>En este caso graficamos los residuos de devianza vs los scores de riesgo:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggcoxdiagnostics</span>(modelo2_wi,<span class="at">type =</span> <span class="st">'deviance'</span>,<span class="at">ggtheme =</span> <span class="fu">theme_bw</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggcoxdiagnostics</span>(modelo2_wi,<span class="at">type =</span> <span class="st">'deviance'</span>,</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">ggtheme =</span> <span class="fu">theme_bw</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: `gather_()` was deprecated in tidyr 1.2.0.
 ℹ Please use `gather()` instead.
