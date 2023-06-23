@@ -597,96 +597,66 @@ mayores_dev[1:3,]
 
 En estos casos pareciera que los pacientes fallecieron de forma muy temprana a distintas edades y en distintos estadíos de la enfermedad, por lo que se pueden considerar puntos extremos en la muestra.
 
-<!-- ### Modelos de fragilidad -->
+### Modelos de fragilidad
 
-<!-- El siguiente ejemplo consiste en un experimento realizado sobre 50 -->
+El siguiente ejemplo consiste en un experimento realizado sobre 50 camadas de ratas (Litter) en donde una rata se tomó al azar y se le aplicó una droga y a otras dos se les dió un placebo con el fin de analizar el tiempo hasta la aparición de un tumor. Carga de datos:
 
-<!-- camadas de ratas (Litter) en donde una rata se tomó al azar y se le -->
+```{r}
 
-<!-- aplicó una droga y a otras dos se les dió un un placebo con el fin de -->
+ratas <- read_csv('rats.csv')
 
-<!-- analizar el tiempo hasta la aparición de un tumor. Carga de datos: -->
+head(ratas)
 
-<!-- ```{r} -->
+```
 
-<!-- ratas <- read_csv('./data/rats.csv') -->
+Primero vamos a medir la posible asociación entre la camada *Litter* y el tiempo hasta la aparición del tumor (puede deberse a similitudes genéticas). Además ajustamos un modelo con una fragilidad en la variable *Litter* para verificar si hay una asociación en el comportamiento de la sobrevivencia en una camada a través de la significancia del componente aleatorio:
 
-<!-- head(ratas) -->
+```{r}
 
-<!-- ``` -->
+library(frailtyEM)
 
-<!-- Primero vamos a medir la posible asociación entre la camada *Litter* y -->
+modelo_fragil_EM <- emfrail(Surv(time,Delta)~Group+cluster(Litter),
+                            data = ratas)
 
-<!-- el tiempo hasta la aparición del tumor (puede deberse a similitudes -->
+summary(modelo_fragil_EM)
 
-<!-- genéticas). Además ajustamos un modelo con una fragilidad en la variable -->
+```
 
-<!-- *Litter* para verificar si hay una asociación en el comportamiento de la -->
+Note que no hay evidencia de que haya una asociación entre la camada y el tiempo al desarrollo de un tumor según la prueba de Commenges-Andersen. Según el LRT el modelo es significativo con niveles de confianza inferiores al 89% aproximadamente, lo cual puede ser que no sea aplicable en este caso ya que el tamaño de muestra es de 150 individuos. El término de fragilidad tiene una varianza estimada de 0.472 pero este no es significativo al 95% ya que el intervalo de confianza de Var(Z) incluye al 0. El intervalo de confianza del tau de Kendall también incluye al 0 lo cual confirma el resultado obtenido en la prueba de asociación.
 
-<!-- sobrevivencia en una camada a través de la significancia del componente -->
+También podemos ajustar un modelo de fragilidad gaussiano inverso:
+```{r}
 
-<!-- aleatorio: -->
 
-<!-- ```{r} -->
 
-<!-- library(frailtyEM) -->
+modelo_fragil_EM_2 <- emfrail(Surv(time,Delta)~Group+cluster(Litter),
+                            data = ratas,distribution = emfrail_dist(dist = 'pvf'))
 
-<!-- modelo_fragil_EM <- emfrail(Surv(time,Delta)~Group+cluster(Litter),data = ratas) -->
+summary(modelo_fragil_EM_2)
 
-<!-- summary(modelo_fragil_EM) -->
 
-<!-- ``` -->
+```
 
-<!-- Note que no hay evidencia de que haya una asociación entre la camada y -->
 
-<!-- el tiempo al desarrollo de un tumor según la prueba de -->
+Ahora ajustamos un modelo de sobrevivencia marginal en donde se use "working independence" para ajustar la varianza de los estimadores. Para eso usamos *coxph* y *cluster*:
 
-<!-- Commenges-Andersen. Según el LRT el modelo es significativo con niveles -->
+```{r}
 
-<!-- de confianza inferiores al 89% aproximadamente, lo cual puede ser que no -->
+modelo_marginal <- coxph(Surv(time,Delta)~Group,data = ratas,
+                         cluster = Litter)
 
-<!-- sea aplicable en este caso ya que el tamaño de muestra es de 150 -->
+summary(modelo_marginal)
 
-<!-- individuos. El término de fragilidad tiene una varianza estimada de -->
+```
 
-<!-- 0.472 pero este no es significativo al 95% ya que el intervalo de -->
+Note que el error estándar ajustado del único coeficiente es 0.3024. El resultado anterior lo comparamos con un modelo de Cox sin agrupar:
 
-<!-- confianza de Var(Z) incluye al 0. El intervalo de confianza del tau de -->
+```{r}
 
-<!-- Kendall también incluye al 0 lo cual confirma el resultado obtenido en -->
+modelo_nagrupado <- coxph(Surv(time,Delta)~Group,data = ratas)
 
-<!-- la prueba de asociación. -->
+summary(modelo_nagrupado)
 
-<!-- Ahora ajustamos un modelo de sobrevivencia marginal en donde se use -->
+```
 
-<!-- "working independence" para ajustar la varianza de los estimadores. Para -->
-
-<!-- eso usamos *coxph* y *cluster*: -->
-
-<!-- ```{r} -->
-
-<!-- modelo_marginal <- coxph(Surv(time,Delta)~Group,data = ratas,cluster = Litter) -->
-
-<!-- summary(modelo_marginal) -->
-
-<!-- ``` -->
-
-<!-- Note que el error estándar ajustado del único coeficiente es 0.3024. El -->
-
-<!-- resultado anterior lo comparamos con un modelo de Cox sin agrupar: -->
-
-<!-- ```{r} -->
-
-<!-- modelo_nagrupado <- coxph(Surv(time,Delta)~Group,data = ratas) -->
-
-<!-- summary(modelo_nagrupado) -->
-
-<!-- ``` -->
-
-<!-- en donde podemos también comparar los intervalos de confianza del riesgo -->
-
-<!-- relativo del grupo tratamiento sobre el placebo. En el caso del modelo -->
-
-<!-- Cox estándar, este intervalo es (1.326, 4.604) y en el caso del modelo -->
-
-<!-- marginal la variabilidad es menor: (1.366, 4.47). -->
+en donde podemos también comparar los intervalos de confianza del riesgo relativo del grupo tratamiento sobre el placebo. En el caso del modelo Cox estándar, este intervalo es (1.326, 4.604) y en el caso del modelo marginal la variabilidad es menor: (1.366, 4.47).

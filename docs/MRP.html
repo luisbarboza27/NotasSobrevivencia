@@ -219,6 +219,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#laboratorio" id="toc-laboratorio" class="nav-link" data-scroll-target="#laboratorio"><span class="toc-section-number">6.8</span>  Laboratorio</a>
   <ul class="collapse">
   <li><a href="#modelos-paramétricos" id="toc-modelos-paramétricos" class="nav-link" data-scroll-target="#modelos-paramétricos"><span class="toc-section-number">6.8.1</span>  Modelos Paramétricos</a></li>
+  <li><a href="#modelos-de-fragilidad" id="toc-modelos-de-fragilidad" class="nav-link" data-scroll-target="#modelos-de-fragilidad"><span class="toc-section-number">6.8.2</span>  Modelos de fragilidad</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -780,53 +781,166 @@ n= 90 </code></pre>
 </div>
 </div>
 <p>En estos casos pareciera que los pacientes fallecieron de forma muy temprana a distintas edades y en distintos estadíos de la enfermedad, por lo que se pueden considerar puntos extremos en la muestra.</p>
-<!-- ### Modelos de fragilidad -->
-<!-- El siguiente ejemplo consiste en un experimento realizado sobre 50 -->
-<!-- camadas de ratas (Litter) en donde una rata se tomó al azar y se le -->
-<!-- aplicó una droga y a otras dos se les dió un un placebo con el fin de -->
-<!-- analizar el tiempo hasta la aparición de un tumor. Carga de datos: -->
-<!-- ```{r} -->
-<!-- ratas <- read_csv('./data/rats.csv') -->
-<!-- head(ratas) -->
-<!-- ``` -->
-<!-- Primero vamos a medir la posible asociación entre la camada *Litter* y -->
-<!-- el tiempo hasta la aparición del tumor (puede deberse a similitudes -->
-<!-- genéticas). Además ajustamos un modelo con una fragilidad en la variable -->
-<!-- *Litter* para verificar si hay una asociación en el comportamiento de la -->
-<!-- sobrevivencia en una camada a través de la significancia del componente -->
-<!-- aleatorio: -->
-<!-- ```{r} -->
-<!-- library(frailtyEM) -->
-<!-- modelo_fragil_EM <- emfrail(Surv(time,Delta)~Group+cluster(Litter),data = ratas) -->
-<!-- summary(modelo_fragil_EM) -->
-<!-- ``` -->
-<!-- Note que no hay evidencia de que haya una asociación entre la camada y -->
-<!-- el tiempo al desarrollo de un tumor según la prueba de -->
-<!-- Commenges-Andersen. Según el LRT el modelo es significativo con niveles -->
-<!-- de confianza inferiores al 89% aproximadamente, lo cual puede ser que no -->
-<!-- sea aplicable en este caso ya que el tamaño de muestra es de 150 -->
-<!-- individuos. El término de fragilidad tiene una varianza estimada de -->
-<!-- 0.472 pero este no es significativo al 95% ya que el intervalo de -->
-<!-- confianza de Var(Z) incluye al 0. El intervalo de confianza del tau de -->
-<!-- Kendall también incluye al 0 lo cual confirma el resultado obtenido en -->
-<!-- la prueba de asociación. -->
-<!-- Ahora ajustamos un modelo de sobrevivencia marginal en donde se use -->
-<!-- "working independence" para ajustar la varianza de los estimadores. Para -->
-<!-- eso usamos *coxph* y *cluster*: -->
-<!-- ```{r} -->
-<!-- modelo_marginal <- coxph(Surv(time,Delta)~Group,data = ratas,cluster = Litter) -->
-<!-- summary(modelo_marginal) -->
-<!-- ``` -->
-<!-- Note que el error estándar ajustado del único coeficiente es 0.3024. El -->
-<!-- resultado anterior lo comparamos con un modelo de Cox sin agrupar: -->
-<!-- ```{r} -->
-<!-- modelo_nagrupado <- coxph(Surv(time,Delta)~Group,data = ratas) -->
-<!-- summary(modelo_nagrupado) -->
-<!-- ``` -->
-<!-- en donde podemos también comparar los intervalos de confianza del riesgo -->
-<!-- relativo del grupo tratamiento sobre el placebo. En el caso del modelo -->
-<!-- Cox estándar, este intervalo es (1.326, 4.604) y en el caso del modelo -->
-<!-- marginal la variabilidad es menor: (1.366, 4.47). -->
+</section>
+<section id="modelos-de-fragilidad" class="level3" data-number="6.8.2">
+<h3 data-number="6.8.2" class="anchored" data-anchor-id="modelos-de-fragilidad"><span class="header-section-number">6.8.2</span> Modelos de fragilidad</h3>
+<p>El siguiente ejemplo consiste en un experimento realizado sobre 50 camadas de ratas (Litter) en donde una rata se tomó al azar y se le aplicó una droga y a otras dos se les dió un placebo con el fin de analizar el tiempo hasta la aparición de un tumor. Carga de datos:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>ratas <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">'rats.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 150 Columns: 4
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (1): Group
+dbl (3): time, Delta, Litter
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ratas)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+   time Delta Litter Group    
+  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;    
+1   101     0      1 Treatment
+2   104     0      2 Treatment
+3   104     0      3 Treatment
+4    77     0      4 Treatment
+5    89     0      5 Treatment
+6    88     1      6 Treatment</code></pre>
+</div>
+</div>
+<p>Primero vamos a medir la posible asociación entre la camada <em>Litter</em> y el tiempo hasta la aparición del tumor (puede deberse a similitudes genéticas). Además ajustamos un modelo con una fragilidad en la variable <em>Litter</em> para verificar si hay una asociación en el comportamiento de la sobrevivencia en una camada a través de la significancia del componente aleatorio:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(frailtyEM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'frailtyEM'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:survMisc':
+
+    autoplot</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>modelo_fragil_EM <span class="ot">&lt;-</span> <span class="fu">emfrail</span>(<span class="fu">Surv</span>(time,Delta)<span class="sc">~</span>Group<span class="sc">+</span><span class="fu">cluster</span>(Litter),</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">data =</span> ratas)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_fragil_EM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call: 
+emfrail(formula = Surv(time, Delta) ~ Group + cluster(Litter), 
+    data = ratas)
+
+Regression coefficients:
+                coef exp(coef) se(coef) adj. se     z    p
+GroupTreatment 0.904     2.468    0.323   0.323 2.800 0.01
+Estimated distribution: gamma / left truncation: FALSE 
+
+Fit summary:
+Commenges-Andersen test for heterogeneity: p-val  0.183 
+no-frailty Log-likelihood: -181.887 
+Log-likelihood: -181.126 
+LRT: 1/2 * pchisq(1.52), p-val 0.109
+
+Frailty summary:
+                   estimate lower 95% upper 95%
+Var[Z]                0.472     0.000     1.732
+Kendall's tau         0.191     0.000     0.464
+Median concordance    0.187     0.000     0.473
+E[logZ]              -0.254    -1.077     0.000
+Var[logZ]             0.600     0.000     3.876
+theta                 2.120     0.577       Inf
+Confidence intervals based on the likelihood function</code></pre>
+</div>
+</div>
+<p>Note que no hay evidencia de que haya una asociación entre la camada y el tiempo al desarrollo de un tumor según la prueba de Commenges-Andersen. Según el LRT el modelo es significativo con niveles de confianza inferiores al 89% aproximadamente, lo cual puede ser que no sea aplicable en este caso ya que el tamaño de muestra es de 150 individuos. El término de fragilidad tiene una varianza estimada de 0.472 pero este no es significativo al 95% ya que el intervalo de confianza de Var(Z) incluye al 0. El intervalo de confianza del tau de Kendall también incluye al 0 lo cual confirma el resultado obtenido en la prueba de asociación.</p>
+<p>También podemos ajustar un modelo de fragilidad gaussiano inverso:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>modelo_fragil_EM_2 <span class="ot">&lt;-</span> <span class="fu">emfrail</span>(<span class="fu">Surv</span>(time,Delta)<span class="sc">~</span>Group<span class="sc">+</span><span class="fu">cluster</span>(Litter),</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">data =</span> ratas,<span class="at">distribution =</span> <span class="fu">emfrail_dist</span>(<span class="at">dist =</span> <span class="st">'pvf'</span>))</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_fragil_EM_2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call: 
+emfrail(formula = Surv(time, Delta) ~ Group + cluster(Litter), 
+    data = ratas, distribution = emfrail_dist(dist = "pvf"))
+
+Regression coefficients:
+                coef exp(coef) se(coef) adj. se     z    p
+GroupTreatment 0.906     2.475    0.323   0.323 2.804 0.01
+Estimated distribution: pvf / left truncation: FALSE 
+PVF m = -0.5  (Inverse Gaussian)
+
+Fit summary:
+Commenges-Andersen test for heterogeneity: p-val  0.183 
+no-frailty Log-likelihood: -181.887 
+Log-likelihood: -181.213 
+LRT: 1/2 * pchisq(1.35), p-val 0.123
+
+Frailty summary:
+                   estimate lower 95% upper 95%
+Var[Z]                0.496     0.000     3.261
+Kendall's tau         0.150     0.000     0.347
+Median concordance    0.155     0.000     0.367
+theta                 2.014     0.307       Inf
+Confidence intervals based on the likelihood function</code></pre>
+</div>
+</div>
+<p>Ahora ajustamos un modelo de sobrevivencia marginal en donde se use “working independence” para ajustar la varianza de los estimadores. Para eso usamos <em>coxph</em> y <em>cluster</em>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>modelo_marginal <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(time,Delta)<span class="sc">~</span>Group,<span class="at">data =</span> ratas,</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">cluster =</span> Litter)</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_marginal)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(time, Delta) ~ Group, data = ratas, cluster = Litter)
+
+  n= 150, number of events= 40 
+
+                 coef exp(coef) se(coef) robust se     z Pr(&gt;|z|)   
+GroupTreatment 0.9047    2.4711   0.3175    0.3024 2.992  0.00277 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+               exp(coef) exp(-coef) lower .95 upper .95
+GroupTreatment     2.471     0.4047     1.366      4.47
+
+Concordance= 0.586  (se = 0.037 )
+Likelihood ratio test= 7.97  on 1 df,   p=0.005
+Wald test            = 8.95  on 1 df,   p=0.003
+Score (logrank) test = 8.68  on 1 df,   p=0.003,   Robust = 7.65  p=0.006
+
+  (Note: the likelihood ratio and score tests assume independence of
+     observations within a cluster, the Wald and robust score tests do not).</code></pre>
+</div>
+</div>
+<p>Note que el error estándar ajustado del único coeficiente es 0.3024. El resultado anterior lo comparamos con un modelo de Cox sin agrupar:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>modelo_nagrupado <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(time,Delta)<span class="sc">~</span>Group,<span class="at">data =</span> ratas)</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_nagrupado)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call:
+coxph(formula = Surv(time, Delta) ~ Group, data = ratas)
+
+  n= 150, number of events= 40 
+
+                 coef exp(coef) se(coef)     z Pr(&gt;|z|)   
+GroupTreatment 0.9047    2.4711   0.3175 2.849  0.00438 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+               exp(coef) exp(-coef) lower .95 upper .95
+GroupTreatment     2.471     0.4047     1.326     4.604
+
+Concordance= 0.586  (se = 0.041 )
+Likelihood ratio test= 7.97  on 1 df,   p=0.005
+Wald test            = 8.12  on 1 df,   p=0.004
+Score (logrank) test = 8.68  on 1 df,   p=0.003</code></pre>
+</div>
+</div>
+<p>en donde podemos también comparar los intervalos de confianza del riesgo relativo del grupo tratamiento sobre el placebo. En el caso del modelo Cox estándar, este intervalo es (1.326, 4.604) y en el caso del modelo marginal la variabilidad es menor: (1.366, 4.47).</p>
 
 
 </section>
