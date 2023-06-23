@@ -637,6 +637,7 @@ summary(modelo_fragil_EM_2)
 
 ```
 
+Para ajustar un modelo de fragilidad log-normal se recomienda usar el paquete *frailtypack* <https://cran.r-project.org/web/packages/frailtypack/index.html>
 
 Ahora ajustamos un modelo de sobrevivencia marginal en donde se use "working independence" para ajustar la varianza de los estimadores. Para eso usamos *coxph* y *cluster*:
 
